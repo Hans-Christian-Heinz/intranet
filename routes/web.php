@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,10 +11,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@index')->name('home');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::group(["middleware" => "auth"], function () {
+    // Routen für Berichtsheft:
+    Route::get("/berichtshefte", "BerichtsheftController@index")->name("berichtshefte.index");
+    Route::get("/berichtshefte/create", "BerichtsheftController@create")->name("berichtshefte.create");
+    Route::post("/berichtshefte", "BerichtsheftController@store")->name("berichtshefte.store");
+    Route::get("/berichtshefte/{berichtsheft}/edit", "BerichtsheftController@edit")->name("berichtshefte.edit");
+    Route::get("/berichtshefte/{berichtsheft}", "BerichtsheftController@show")->name("berichtshefte.show");
+    Route::patch("/berichtshefte/{berichtsheft}", "BerichtsheftController@update")->name("berichtshefte.update");
+    Route::delete("/berichtshefte/{berichtsheft}", "BerichtsheftController@destroy")->name("berichtshefte.destroy");
+});
