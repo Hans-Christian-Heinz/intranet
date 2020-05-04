@@ -24,4 +24,7 @@ Route::group(["middleware" => "auth"], function () {
     Route::get("/berichtshefte/{berichtsheft}", "BerichtsheftController@show")->name("berichtshefte.show");
     Route::patch("/berichtshefte/{berichtsheft}", "BerichtsheftController@update")->name("berichtshefte.update");
     Route::delete("/berichtshefte/{berichtsheft}", "BerichtsheftController@destroy")->name("berichtshefte.destroy");
+
+    // Routen für Werkstattregeln:
+    Route::get("/rules", "RulesController@index")->name("regeln.index");
 });

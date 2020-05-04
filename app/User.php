@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'accepted_rules_at',
     ];
 
     /**
@@ -37,6 +37,23 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function isAdmin()
+    {
+        return (bool) $this->is_admin;
+    }
+
+    public function acceptRules()
+    {
+        return $this->update([
+            "accepted_rules_at" => Carbon::now()
+        ]);
+    }
+
+    public function hasAcceptedRules()
+    {
+        return $this->accepted_rules_at >= Option::where("key", "regeln")->first()->updated_at;
+    }
 
     public function berichtshefte()
     {
