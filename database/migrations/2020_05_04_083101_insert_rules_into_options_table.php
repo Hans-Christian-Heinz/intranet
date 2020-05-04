@@ -14,7 +14,7 @@ class InsertRulesIntoOptionsTable extends Migration
      */
     public function up()
     {
-        Option::addOption("rules", "<h3>Regeln</h3><p>Lorem ipsum dolor sit amet.</p>");
+        Option::addOption("rules", "<p>Lorem ipsum dolor sit amet.</p>");
     }
 
     /**
@@ -24,6 +24,6 @@ class InsertRulesIntoOptionsTable extends Migration
      */
     public function down()
     {
-        Option::where("key", "regeln")->delete();
+        Option::where("key", "rules")->delete();
     }
 }
