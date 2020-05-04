@@ -10,7 +10,7 @@ class AdminRulesController extends Controller
     public function edit()
     {
         return view("admin.rules.edit", [
-            "regeln" => Option::where("key", "rules")->first()->value
+            "rules" => Option::where("key", "rules")->first()->value
         ]);
     }
 

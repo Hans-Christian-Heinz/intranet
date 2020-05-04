@@ -38,7 +38,7 @@
                     <a href="{{ route("admin.berichtshefte.index") }}" class="nav-link">Berichtshefte</a>
                 </li>
                 <li class="nav-item {{ (request()->is("admin/freistellungen*")) ? 'active' : '' }}">
-                    <a href="{{ route("admin.freistellungen.index") }}" class="nav-link">Freistellungen</a>
+                    <a href="{{ route("admin.exemptions.index") }}" class="nav-link">Freistellungen</a>
                 </li>
             </ul>
         </div>
