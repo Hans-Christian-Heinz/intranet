@@ -26,5 +26,16 @@ Route::group(["middleware" => "auth"], function () {
     Route::delete("/berichtshefte/{berichtsheft}", "BerichtsheftController@destroy")->name("berichtshefte.destroy");
 
     // Routen für Werkstattregeln:
-    Route::get("/rules", "RulesController@index")->name("regeln.index");
+    Route::get("/rules", "RulesController@index")->name("rules.index");
+});
+
+Route::group(["middleware" => "admin"], function () {
+    Route::get("/admin", "AdminDashboardController@index")->name("admin.index");
+    
+    Route::get("/admin/berichtshefte", "AdminBerichtsheftController@index")->name("admin.berichtshefte.index");
+    
+    Route::get("/admin/rules", "AdminRulesController@edit")->name("admin.rules.edit");
+    Route::patch("/admin/rules", "AdminRulesController@update")->name("admin.rules.update");
+    
+    Route::get("/admin/exemptions", "AdminExemtionsController@index")->name("admin.exemptions.index");
 });

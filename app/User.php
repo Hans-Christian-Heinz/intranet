@@ -52,7 +52,7 @@ class User extends Authenticatable
 
     public function hasAcceptedRules()
     {
-        return $this->accepted_rules_at >= Option::where("key", "regeln")->first()->updated_at;
+        return $this->accepted_rules_at >= Option::where("key", "rules")->first()->updated_at;
     }
 
     public function berichtshefte()
