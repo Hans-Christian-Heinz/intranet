@@ -37,5 +37,5 @@ Route::group(["middleware" => "admin"], function () {
     Route::get("/admin/rules", "AdminRulesController@edit")->name("admin.rules.edit");
     Route::patch("/admin/rules", "AdminRulesController@update")->name("admin.rules.update");
     
-    Route::get("/admin/exemptions", "AdminExemtionsController@index")->name("admin.exemptions.index");
+    Route::get("/admin/exemptions", "AdminExemptionController@index")->name("admin.exemptions.index");
 });

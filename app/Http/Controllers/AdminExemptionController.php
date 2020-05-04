@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class AdminFreistellungController extends Controller
+class AdminExemptionController extends Controller
 {
     public function index()
     {
