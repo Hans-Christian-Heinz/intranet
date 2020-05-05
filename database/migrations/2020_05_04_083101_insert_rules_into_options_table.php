@@ -14,6 +14,7 @@ class InsertRulesIntoOptionsTable extends Migration
      */
     public function up()
     {
+        Option::where("key", "rules")->delete();
         Option::addOption("rules", "<p>Lorem ipsum dolor sit amet.</p>");
     }
 
