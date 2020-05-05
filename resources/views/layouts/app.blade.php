@@ -21,7 +21,7 @@
 </head>
 <body>
 <div id="app">
-        @if (request()->is('admin'))
+        @if (request()->is('admin*'))
             @include('layouts._admin_navigation')
         @else
             @include('layouts._navigation')

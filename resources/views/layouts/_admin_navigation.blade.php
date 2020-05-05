@@ -14,7 +14,7 @@
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a href="{{ route("home") }}" class="nav-link"><span class="fas fa-sign-out-alt mr-2"></span>Zurück zur Benutzeroberfläche</a>
+                    <a href="{{ route("home") }}" class="nav-link"><span class="fas fa-sign-out-alt mr-2"></span>Zurück zur Benutzeransicht</a>
                 </li>
             </ul>
         </div>
