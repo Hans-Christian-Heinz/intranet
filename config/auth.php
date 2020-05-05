@@ -38,15 +38,17 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'ldap',
         ],
 
-        'api' => [
+        /* 'api' => [
             'driver' => 'token',
             'provider' => 'users',
             'hash' => false,
-        ],
+        ], */
     ],
+
+    'auth_user_key' => env('AUTH_USER_KEY_FIELD', null),
 
     /*
     |--------------------------------------------------------------------------
@@ -71,10 +73,9 @@ return [
             'model' => App\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'ldap' => [
+            'driver' => 'adminless_ldap',
+        ],
     ],
 
     /*
