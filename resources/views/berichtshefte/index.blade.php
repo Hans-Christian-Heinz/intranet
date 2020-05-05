@@ -11,7 +11,7 @@
                         <div class="d-flex pb-3">
                             <h3 class="mr-auto">Berichtshefte</h3>
                             <a href="{{ route("berichtshefte.create") }}" class="btn btn-outline-primary">
-                                <i class="fas fa-plus mr-2"></i>Hinzufügen
+                                <span class="fas fa-plus mr-2"></span>Hinzufügen
                             </a>
                         </div>
                         <table class="table table-striped table-bordered table-hover">
@@ -43,7 +43,7 @@
                             <div class="card-body text-center p-5">
                                 <h3>Noch kein Berichtheft vorhanden</h3>
                                 <p>Bitte legen Sie Ihr erstes Berichtsheft an</p>
-                                <a href="{{ route("berichtshefte.create") }}" class="btn btn-outline-primary"><i class="fas fa-plus mr-2"></i>Berichtsheft hinzufügen</a>
+                                <a href="{{ route("berichtshefte.create") }}" class="btn btn-outline-primary"><span class="fas fa-plus mr-2"></span>Berichtsheft hinzufügen</a>
                             </div>
                         </div>
                     @endif

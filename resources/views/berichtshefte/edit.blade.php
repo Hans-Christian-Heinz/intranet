@@ -63,10 +63,10 @@
                                     </div>
                                     <div>
                                         <a href="{{ $previousWeek ? route("berichtshefte.edit", $previousWeek) : "#" }}" class="btn btn-outline-secondary {{ (!$previousWeek) ? "disabled" : "" }}" {{ (!$previousWeek) ? "disabled" : "" }}>
-                                            <i class="fas fa-caret-left mr-2"></i>Vorherige Woche
+                                            <span class="fas fa-caret-left mr-2"></span>Vorherige Woche
                                         </a>
                                         <a href="{{ $nextWeek ? route("berichtshefte.edit", $nextWeek) : "#" }}" class="btn btn-outline-secondary {{ (!$nextWeek) ? "disabled" : "" }}" {{ (!$nextWeek) ? "disabled" : "" }}>
-                                            Nächste Woche<i class="fas fa-caret-right ml-2"></i>
+                                            Nächste Woche<span class="fas fa-caret-right ml-2"></span>
                                         </a>
                                     </div>
                                 </div>

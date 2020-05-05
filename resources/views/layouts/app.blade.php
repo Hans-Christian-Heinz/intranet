@@ -15,6 +15,9 @@
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}" >
     <link rel="stylesheet" href="{{ asset('css/fork-awesome.css') }}">
+    <style>
+        @yield('style')
+    </style>
 </head>
 <body>
 <div id="app">

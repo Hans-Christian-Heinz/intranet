@@ -10,9 +10,9 @@
                     @enderror
                     <div class="d-flex pb-3">
                         <h3 class="mr-auto my-auto">Werkstattregeln</h3>
-                        <a href="{{ route("rules.index") }}" class="btn btn-outline-secondary mr-2"><i class="far fa-eye mr-2"></i>Zu den Werkstattregeln</a>
+                        <a href="{{ route("rules.index") }}" class="btn btn-outline-secondary mr-2"><span class="far fa-eye mr-2"></span>Zu den Werkstattregeln</a>
                         <button type="submit" class="btn btn-outline-primary" form="saveRules">
-                            <i class="fas fa-save mr-2"></i>Änderungen Speichern
+                            <span class="fas fa-save mr-2"></span>Änderungen Speichern
                         </button>
                     </div>
                     <form action="{{ route("admin.rules.update") }}" method="POST" id="saveRules">

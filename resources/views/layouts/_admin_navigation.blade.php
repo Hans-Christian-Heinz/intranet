@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="{{ route('admin.index') }}">Admin Dashboard</a>
+        <a class="navbar-brand" href="{{ route('admin.index') }}">Administration</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Navigation umschalten">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -14,7 +14,7 @@
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a href="{{ route("home") }}" class="nav-link"><i class="fas fa-sign-out-alt mr-2"></i>Zurück zur Benutzeroberfläche</a>
+                    <a href="{{ route("home") }}" class="nav-link"><span class="fas fa-sign-out-alt mr-2"></span>Zurück zur Benutzeroberfläche</a>
                 </li>
             </ul>
         </div>
