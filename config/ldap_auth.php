@@ -132,11 +132,9 @@ return [
         */
 
         'ldap' => [
-
-            'locate_users_by' => 'userprincipalname',
-
-            'bind_users_by' => 'distinguishedname',
-
+            'locate_users_by' => env('LDAP_USER_SEARCH_ATTRIBUTE', ''),
+            'bind_users_by' => env('LDAP_USER_BIND_ATTRIBUTE', ''),
+            'user_format' => env('LDAP_USER_FULL_DN_FMT', ''),
         ],
 
         'database' => [
@@ -288,11 +286,11 @@ return [
     */
 
     'sync_attributes' => [
-
-        'email' => 'userprincipalname',
-
+        // 'field_in_local_user_model' => 'attribute_in_ldap_server',
+        env('AUTH_USER_KEY_FIELD', null) => env('LDAP_USER_SEARCH_ATTRIBUTE', null),
         'name' => 'cn',
-
+        'email' => 'mail',
+        'phone' => 'telephonenumber',
     ],
 
     /*
