@@ -11,11 +11,11 @@
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
                 @auth
-                    @if (auth()->user()->isAdmin())
+                    @if (false && auth()->user()->isAdmin())
                     <li class="nav-item">
                         <a href="{{ route("admin.index") }}" class="nav-link text-danger">Administration</a>
                     </li>
-                    @endif 
+                    @endif
                 @endauth
             </ul>
 
