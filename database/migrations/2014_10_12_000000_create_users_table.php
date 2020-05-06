@@ -15,12 +15,8 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('ldap_username')->unique();
             $table->boolean("is_admin")->default(false);
-            $table->rememberToken();
             $table->timestamp("accepted_rules_at")->nullable();
             $table->timestamps();
         });

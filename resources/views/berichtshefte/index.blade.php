@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', "Berichtsheft Übersicht")
+@section('title', "Berichtsheft")
 
 @section('content')
     <div class="section">
@@ -19,7 +19,7 @@
                                 <tr>
                                     <th class="text-center text-strong" style="width: 2%;">#</th>
                                     <th>Lehrjahr</th>
-                                    <th class="text-center" style="width: 13%;">Kalender Woche</th>
+                                    <th class="text-center" style="width: 13%;">KW</th>
                                     <th class="text-center" style="width: 10%;">Optionen</th>
                                 </tr>
                             </thead>
