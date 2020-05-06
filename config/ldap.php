@@ -50,7 +50,7 @@ return [
             |
             */
 
-            'auto_connect' => env('LDAP_AUTO_CONNECT', true),
+            'auto_connect' => env('LDAP_AUTO_CONNECT', false),
 
             /*
             |--------------------------------------------------------------------------
@@ -101,7 +101,11 @@ return [
                 |
                 */
 
-                'schema' => Adldap\Schemas\ActiveDirectory::class,
+                'schema' => env('LDAP_SCHEMA', '') == 'OpenLDAP' ?
+                    Adldap\Schemas\OpenLDAP::class :
+                    ( env('LDAP_SCHEMA', '') == 'FreeIPA' ?
+                        Adldap\Schemas\FreeIPA::class :
+                        Adldap\Schemas\ActiveDirectory::class ),
 
                 /*
                 |--------------------------------------------------------------------------
@@ -143,7 +147,7 @@ return [
                 |
                 */
 
-                'hosts' => explode(' ', env('LDAP_HOSTS', 'corp-dc1.corp.acme.org corp-dc2.corp.acme.org')),
+                'hosts' => explode(' ', env('LDAP_HOSTS', '')),
 
                 /*
                 |--------------------------------------------------------------------------
@@ -183,7 +187,7 @@ return [
                 |
                 */
 
-                'base_dn' => env('LDAP_BASE_DN', 'dc=corp,dc=acme,dc=org'),
+                'base_dn' => env('LDAP_BASE_DN', ''),
 
                 /*
                 |--------------------------------------------------------------------------
@@ -198,8 +202,8 @@ return [
                 |
                 */
 
-                'username' => env('LDAP_USERNAME', 'username'),
-                'password' => env('LDAP_PASSWORD', 'secret'),
+                'username' => env('LDAP_ADMIN_USERNAME', ''),
+                'password' => env('LDAP_ADMIN_PASSWORD', ''),
 
                 /*
                 |--------------------------------------------------------------------------
@@ -215,7 +219,7 @@ return [
                 |
                 */
 
-                'follow_referrals' => false,
+                'follow_referrals' => env('LDAP_FOLLOW_REFERRALS', false),
 
                 /*
                 |--------------------------------------------------------------------------
