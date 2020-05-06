@@ -11,7 +11,7 @@
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
                 @auth
-                    @if (false && auth()->user()->isAdmin())
+                    @if (app()->user->isAdmin())
                     <li class="nav-item">
                         <a href="{{ route("admin.index") }}" class="nav-link text-danger">Administration</a>
                     </li>

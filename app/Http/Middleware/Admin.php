@@ -16,7 +16,7 @@ class Admin
      */
     public function handle($request, Closure $next)
     {
-        if (!Auth::check() || !Auth::user()->isAdmin()) {
+        if (!Auth::check() || !app()->user->isAdmin()) {
             return redirect(route("home"));
         }
 
