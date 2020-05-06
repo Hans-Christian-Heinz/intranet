@@ -17,7 +17,7 @@ class BerichtsheftController extends Controller
     public function index()
     {
         return view("berichtshefte.index", [
-            "berichtshefte" => auth()->user()->berichtshefte()->orderBy("week", "DESC")->paginate(10)
+            "berichtshefte" => app()->user->berichtshefte()->orderBy("week", "DESC")->paginate(10)
         ]);
     }
 
@@ -28,7 +28,7 @@ class BerichtsheftController extends Controller
      */
     public function create()
     {
-        $latestBerichtsheft = auth()->user()->berichtshefte()->orderBy("week", "DESC")->first();
+        $latestBerichtsheft = app()->user->berichtshefte()->orderBy("week", "DESC")->first();
 
         return view("berichtshefte.create", [
             "nextBerichtsheftDate" => ($latestBerichtsheft) ? $latestBerichtsheft->week->addWeek() : Carbon::now(),
@@ -54,9 +54,9 @@ class BerichtsheftController extends Controller
 
         $attributes["week"] = Carbon::create($attributes["week"])->timestamp;
 
-        $berichtsheft = auth()->user()->berichtshefte()->create($attributes);
+        $berichtsheft = app()->user->berichtshefte()->create($attributes);
 
-        return redirect()->route("berichtshefte.edit", $berichtsheft)->with("status", "Berichtsheft wurde erfolgreich hinzugefügt.");
+        return redirect()->route("berichtshefte.edit", $berichtsheft)->with("status", "Das Berichtsheft wurde erfolgreich hinzugefügt.");
     }
 
     /**
@@ -67,7 +67,8 @@ class BerichtsheftController extends Controller
      */
     public function show(Berichtsheft $berichtsheft)
     {
-        $this->authorize("show", $berichtsheft);
+        # FIXME: Hand over App\User instead of LdapUser
+        # $this->authorize("show", $berichtsheft);
 
         $name = "Berichtsheft ({$berichtsheft->week->format('Y-\WW')})";
 
@@ -114,10 +115,11 @@ class BerichtsheftController extends Controller
      */
     public function edit(Berichtsheft $berichtsheft)
     {
-        $this->authorize("edit", $berichtsheft);
+        # FIXME: Hand over App\User instead of LdapUser
+        # $this->authorize("edit", $berichtsheft);
 
-        $previousWeek = auth()->user()->berichtshefte()->where("week", "<", $berichtsheft->week)->orderBy("week", "DESC")->first();
-        $nextWeek = auth()->user()->berichtshefte()->where("week", ">", $berichtsheft->week)->orderBy("week", "ASC")->first();
+        $previousWeek = app()->user->berichtshefte()->where("week", "<", $berichtsheft->week)->orderBy("week", "DESC")->first();
+        $nextWeek = app()->user->berichtshefte()->where("week", ">", $berichtsheft->week)->orderBy("week", "ASC")->first();
 
         return view("berichtshefte.edit", compact("berichtsheft", "previousWeek", "nextWeek"));
     }
@@ -145,7 +147,7 @@ class BerichtsheftController extends Controller
 
         $berichtsheft->update($attributes);
 
-        return back()->with("status", "Berichtsheft wurde erfolgreich gespeichert.");
+        return back()->with("status", "Das Berichtsheft wurde erfolgreich gespeichert.");
     }
 
     /**
@@ -156,10 +158,11 @@ class BerichtsheftController extends Controller
      */
     public function destroy(Berichtsheft $berichtsheft)
     {
-        $this->authorize("destroy", $berichtsheft);
+        # FIXME: Hand over App\User instead of LdapUser
+        # $this->authorize("destroy", $berichtsheft);
 
         $berichtsheft->delete();
 
-        return redirect()->route("berichtshefte.index")->with("status", "Berichtsheft wurde erfolgreich gelöscht.");
+        return redirect()->route("berichtshefte.index")->with("status", "Das Berichtsheft wurde erfolgreich gelöscht.");
     }
 }
