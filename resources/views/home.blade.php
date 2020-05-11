@@ -15,7 +15,7 @@
                     @endif
 
                     Erfolgreich angemeldet<br>
-                    Willkommen, {{ app()->user->ldap_username }}.
+                    Willkommen, {{ Auth::user()->name }}.
                 </div>
             </div>
         </div>
