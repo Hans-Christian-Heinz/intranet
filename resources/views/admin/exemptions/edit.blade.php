@@ -51,7 +51,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <a href="{{ route('exemptions.index') }}" class="btn btn-outline-secondary">Abbrechen</a>
+                                    <a href="{{ route('admin.exemptions.index') }}" class="btn btn-outline-secondary">Abbrechen</a>
                                     <input type="submit" class="btn btn-primary" value="Änderungen Speichern">
                                 </div>
                             </form>

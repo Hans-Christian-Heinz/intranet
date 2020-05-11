@@ -14,9 +14,10 @@ class AdminExemptionController extends Controller
      */
     public function index()
     {
-        $exemptions = Exemption::where('status', 'new')->get();
+        $newExemptions = Exemption::where('status', 'new')->get();
+        $pastExemptions = Exemption::where('status', '!=', 'new')->get();
 
-        return view("admin.exemptions.index", compact("exemptions"));
+        return view("admin.exemptions.index", compact("newExemptions", "pastExemptions"));
     }
 
     public function edit(Exemption $exemption)
