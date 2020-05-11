@@ -8,7 +8,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
-                
+
             </ul>
 
             <!-- Right Side Of Navbar -->
@@ -37,7 +37,7 @@
                 <li class="nav-item {{ (request()->is("admin/berichtshefte*")) ? 'active' : '' }}">
                     <a href="{{ route("admin.berichtshefte.index") }}" class="nav-link">Berichtshefte</a>
                 </li>
-                <li class="nav-item {{ (request()->is("admin/freistellungen*")) ? 'active' : '' }}">
+                <li class="nav-item {{ (request()->is("admin/exemptions*")) ? 'active' : '' }}">
                     <a href="{{ route("admin.exemptions.index") }}" class="nav-link">Freistellungen</a>
                 </li>
             </ul>
