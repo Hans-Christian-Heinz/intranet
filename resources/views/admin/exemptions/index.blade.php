@@ -40,9 +40,8 @@
                     @else
                         <div class="card">
                             <div class="card-body text-center p-5">
-                                <h3>Noch keine Freistellungen vorhanden</h3>
-                                <p>Sie können hier eine neue Freistellung beantragen</p>
-                                <a href="{{ route("exemptions.create") }}" class="btn btn-outline-primary"><span class="fas fa-plus mr-2"></span>Freistellung beantragen</a>
+                                <h3>Keine Freistellungen vorhanden</h3>
+                                <p>Aktuell sind keine neuen Freistellungen vorhanden.</p>
                             </div>
                         </div>
                     @endif

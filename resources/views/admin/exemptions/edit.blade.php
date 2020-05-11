@@ -42,7 +42,7 @@
                                     <label for="status" class="font-weight-bold">Status:</label>
                                     <select class="custom-select" name="status" id="status">
                                         <option value="new" @if($exemption->status === 'new'){{'selected'}}@endif>&lt;Status auswählen&gt;</option>
-                                        <option value="accepted" @if($exemption->status === 'accepted'){{'selected'}}@endif>Genehmigt</option>
+                                        <option value="approved" @if($exemption->status === 'approved'){{'selected'}}@endif>Genehmigt</option>
                                         <option value="rejected" @if($exemption->status === 'rejected'){{'selected'}}@endif>Abgelehnt</option>
                                       </select>
                                     @error('status')

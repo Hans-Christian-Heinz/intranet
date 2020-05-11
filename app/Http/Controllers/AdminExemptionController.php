@@ -30,7 +30,7 @@ class AdminExemptionController extends Controller
             "start" => "required",
             "end" => "required",
             "reason" => "required",
-            "status" => "required|in:new,accepted,rejected"
+            "status" => "required|in:new,approved,rejected"
         ]);
 
         # $attributes["start"] = Carbon::create($attributes["start"])->timestamp;
