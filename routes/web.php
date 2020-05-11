@@ -29,15 +29,24 @@ Route::group(["middleware" => "auth"], function () {
 
     // Routen für Werkstattregeln:
     Route::get("/rules", "RulesController@index")->name("rules.index");
+
+    // Routen für Freistellungen:
+    Route::get("/exemptions", "ExemptionController@index")->name("exemptions.index");
+    Route::get("/exemptions/create", "ExemptionController@create")->name("exemptions.create");
+    Route::post("/exemptions", "ExemptionController@store")->name("exemptions.store");
+    Route::get("/exemptions/{exemption}/edit", "ExemptionController@edit")->name("exemptions.edit");
+    Route::patch("/exemptions/{exemption}", "ExemptionController@update")->name("exemptions.update");
 });
 
 Route::group(["middleware" => "admin"], function () {
     Route::get("/admin", "AdminDashboardController@index")->name("admin.index");
-    
+
     Route::get("/admin/berichtshefte", "AdminBerichtsheftController@index")->name("admin.berichtshefte.index");
-    
+
     Route::get("/admin/rules", "AdminRulesController@edit")->name("admin.rules.edit");
     Route::patch("/admin/rules", "AdminRulesController@update")->name("admin.rules.update");
-    
+
     Route::get("/admin/exemptions", "AdminExemptionController@index")->name("admin.exemptions.index");
+    Route::get("/admin/exemptions/{exemption}/edit", "AdminExemptionController@edit")->name("admin.exemptions.edit");
+    Route::patch("/admin/exemptions/{exemption}", "AdminExemptionController@update")->name("admin.exemptions.update");
 });

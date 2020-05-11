@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exemption;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ExemptionController extends Controller
@@ -14,7 +15,9 @@ class ExemptionController extends Controller
      */
     public function index()
     {
-        return view("exemptions.index");
+        return view("exemptions.index", [
+            "exemptions" => app()->user->exemptions()->orderBy("start", "DESC")->paginate(10)
+        ]);
     }
 
     /**
@@ -24,7 +27,7 @@ class ExemptionController extends Controller
      */
     public function create()
     {
-        return view("exemptions.show");
+        return view("exemptions.create");
     }
 
     /**
@@ -35,7 +38,20 @@ class ExemptionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $attributes = request()->validate([
+            "start" => "required",
+            "end" => "required",
+            "reason" => "required",
+        ]);
+
+        # $attributes["start"] = Carbon::create($attributes["start"])->timestamp;
+        # $attributes["end"] = Carbon::create($attributes["end"])->timestamp;
+
+        $attributes['status'] = 'new';
+
+        $berichtsheft = app()->user->exemptions()->create($attributes);
+
+        return redirect()->route("exemptions.index")->with("status", "Der Freistellungsantrag wurde erfolgreich hinzugefügt.");
     }
 
     /**
@@ -57,7 +73,7 @@ class ExemptionController extends Controller
      */
     public function edit(Exemption $exemption)
     {
-        //
+        return view("exemptions.edit", compact("exemption"));
     }
 
     /**
@@ -69,7 +85,18 @@ class ExemptionController extends Controller
      */
     public function update(Request $request, Exemption $exemption)
     {
-        //
+        $attributes = request()->validate([
+            "start" => "required",
+            "end" => "required",
+            "reason" => "required",
+        ]);
+
+        # $attributes["start"] = Carbon::create($attributes["start"])->timestamp;
+        # $attributes["end"] = Carbon::create($attributes["end"])->timestamp;
+
+        $exemption->update($attributes);
+
+        return redirect()->route("exemptions.index")->with("status", "Der Freistellungsantrag wurde erfolgreich aktualisiert.");
     }
 
     /**

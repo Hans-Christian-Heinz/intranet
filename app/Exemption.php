@@ -10,7 +10,8 @@ class Exemption extends Model
         'start',
         'end',
         'reason',
-        
+        'status',
+        'admin_id',
     ];
 
     public function owner()

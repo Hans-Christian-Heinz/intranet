@@ -59,4 +59,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Berichtsheft::class);
     }
+
+    public function exemptions()
+    {
+        return $this->hasMany(Exemption::class);
+    }
 }

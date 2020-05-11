@@ -147,7 +147,7 @@ class BerichtsheftController extends Controller
 
         $berichtsheft->update($attributes);
 
-        return back()->with("status", "Das Berichtsheft wurde erfolgreich gespeichert.");
+        return back()->with("status", "Das Berichtsheft wurde erfolgreich aktualisiert.");
     }
 
     /**

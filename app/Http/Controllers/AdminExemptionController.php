@@ -14,11 +14,31 @@ class AdminExemptionController extends Controller
      */
     public function index()
     {
-        return view("admin.exemptions.index");
+        $exemptions = Exemption::where('status', 'new')->get();
+
+        return view("admin.exemptions.index", compact("exemptions"));
     }
 
-    public function show(Exemption $exemption)
+    public function edit(Exemption $exemption)
     {
+        return view('admin.exemptions.edit', compact("exemption"));
+    }
 
+    public function update(Exemption $exemption)
+    {
+        $attributes = request()->validate([
+            "start" => "required",
+            "end" => "required",
+            "reason" => "required",
+            "status" => "required|in:new,accepted,rejected"
+        ]);
+
+        # $attributes["start"] = Carbon::create($attributes["start"])->timestamp;
+        # $attributes["end"] = Carbon::create($attributes["end"])->timestamp;
+        $attributes['admin_id'] = app()->user->id;
+
+        $exemption->update($attributes);
+
+        return redirect(route("admin.exemptions.index"))->with('status', 'Die Freistellung wurde erfolgreich aktualisiert.');
     }
 }
