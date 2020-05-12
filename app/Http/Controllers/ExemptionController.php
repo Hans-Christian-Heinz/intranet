@@ -40,8 +40,8 @@ class ExemptionController extends Controller
     public function store(Request $request)
     {
         $attributes = request()->validate([
-            'start' => 'required',
-            'end' => 'required',
+            'start' => 'required|date|after_or_equal:now',
+            'end' => 'required|date|after_or_equal:start',
             'reason' => 'required',
         ]);
 
@@ -91,8 +91,8 @@ class ExemptionController extends Controller
         $this->authorize('update', $exemption);
 
         $attributes = request()->validate([
-            'start' => 'required',
-            'end' => 'required',
+            'start' => 'required|date|after_or_equal:now',
+            'end' => 'required|date|after_or_equal:start',
             'reason' => 'required',
         ]);
 
