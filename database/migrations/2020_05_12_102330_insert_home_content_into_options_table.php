@@ -5,7 +5,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class InsertRulesIntoOptionsTable extends Migration
+class InsertHomeContentIntoOptionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,7 @@ class InsertRulesIntoOptionsTable extends Migration
      */
     public function up()
     {
-        Option::where("key", "rules")->delete();
-        Option::addOption("rules", "<p>Lorem ipsum dolor sit amet.</p>");
+        Option::where("key", "home_content")->delete();
         Option::addOption("home_content", "<h1>Home</h1><p>Lorem ipsum dolor sit amet.</p>");
     }
 
@@ -26,6 +25,6 @@ class InsertRulesIntoOptionsTable extends Migration
      */
     public function down()
     {
-        Option::where("key", "rules")->delete();
+        Option::where("key", "home_content")->delete();
     }
 }
