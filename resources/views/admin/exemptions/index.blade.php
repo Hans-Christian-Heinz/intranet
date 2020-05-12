@@ -27,7 +27,7 @@
                                         <td class="text-center">{{ $exemption->owner->ldap_username }}</td>
                                         <td class="text-center">{{ $exemption->start . ' - ' . $exemption->end }}</td>
                                         <td>{{ $exemption->reason }}</td>
-                                        <td class="text-center">{{ $exemption->status }}</td>
+                                        <td class="text-center">{{ $statuses[$exemption->status] }}</td>
                                         <td class="d-flex">
                                             <a href="{{ route("admin.exemptions.edit", $exemption) }}" class="btn btn-sm btn-secondary mx-auto">Bearbeiten</a>
                                         </td>
@@ -69,7 +69,10 @@
                                             <td class="text-center">{{ $exemption->owner->ldap_username }}</td>
                                             <td class="text-center">{{ $exemption->start . ' - ' . $exemption->end }}</td>
                                             <td>{{ $exemption->reason }}</td>
-                                            <td class="text-center">{{ $exemption->status }}</td>
+                                            <td class="text-center">
+                                                {{ $statuses[$exemption->status] }}
+                                                @if($exemption->admin) von {{ $exemption->admin->ldap_username }}@endif
+                                            </td>
                                             <td class="d-flex">
                                                 <a href="{{ route("admin.exemptions.edit", $exemption) }}" class="btn btn-sm btn-secondary mx-auto">Bearbeiten</a>
                                             </td>

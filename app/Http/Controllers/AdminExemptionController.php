@@ -16,22 +16,23 @@ class AdminExemptionController extends Controller
     {
         $newExemptions = Exemption::where('status', 'new')->orderBy('start')->get();
         $pastExemptions = Exemption::where('status', '!=', 'new')->orderBy('start', 'DESC')->get();
+        $statuses = ['new' => 'Neu', 'approved' => 'Genehmigt', 'rejected' => 'Abgelehnt'];
 
-        return view("admin.exemptions.index", compact("newExemptions", "pastExemptions"));
+        return view('admin.exemptions.index', compact('newExemptions', 'pastExemptions', 'statuses'));
     }
 
     public function edit(Exemption $exemption)
     {
-        return view('admin.exemptions.edit', compact("exemption"));
+        return view('admin.exemptions.edit', compact('exemption'));
     }
 
     public function update(Exemption $exemption)
     {
         $attributes = request()->validate([
-            "start" => "required",
-            "end" => "required",
-            "reason" => "required",
-            "status" => "required|in:new,approved,rejected"
+            'start' => 'required',
+            'end' => 'required',
+            'reason' => 'required',
+            'status' => 'required|in:new,approved,rejected'
         ]);
 
         # $attributes["start"] = Carbon::create($attributes["start"])->timestamp;
@@ -40,6 +41,6 @@ class AdminExemptionController extends Controller
 
         $exemption->update($attributes);
 
-        return redirect(route("admin.exemptions.index"))->with('status', 'Die Freistellung wurde erfolgreich aktualisiert.');
+        return redirect()->route('admin.exemptions.index')->with('status', 'Die Freistellung wurde erfolgreich aktualisiert.');
     }
 }

@@ -30,7 +30,7 @@
                                         <td class="text-center">{{ $exemption->id }}</td>
                                         <td class="text-center">{{ $exemption->start . ' - ' . $exemption->end }}</td>
                                         <td>{{ $exemption->reason }}</td>
-                                        <td class="text-center">{{ $exemption->status }}</td>
+                                        <td class="text-center">{{ $statuses[$exemption->status] }}</td>
                                         <td class="d-flex">
                                             @if($exemption->status === 'new')
                                                 <a href="{{ route("exemptions.edit", $exemption) }}" class="btn btn-sm btn-secondary mx-auto">Bearbeiten</a>

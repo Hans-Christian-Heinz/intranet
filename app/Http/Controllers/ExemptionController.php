@@ -15,9 +15,10 @@ class ExemptionController extends Controller
      */
     public function index()
     {
-        return view("exemptions.index", [
-            "exemptions" => app()->user->exemptions()->orderBy("start", "DESC")->paginate(10)
-        ]);
+        $exemptions = app()->user->exemptions()->orderBy('start', 'DESC')->paginate(10);
+        $statuses = ['new' => 'Neu', 'approved' => 'Genehmigt', 'rejected' => 'Abgelehnt'];
+
+        return view('exemptions.index', compact('exemptions', 'statuses'));
     }
 
     /**
@@ -27,7 +28,7 @@ class ExemptionController extends Controller
      */
     public function create()
     {
-        return view("exemptions.create");
+        return view('exemptions.create');
     }
 
     /**
@@ -39,19 +40,19 @@ class ExemptionController extends Controller
     public function store(Request $request)
     {
         $attributes = request()->validate([
-            "start" => "required",
-            "end" => "required",
-            "reason" => "required",
+            'start' => 'required',
+            'end' => 'required',
+            'reason' => 'required',
         ]);
 
-        # $attributes["start"] = Carbon::create($attributes["start"])->timestamp;
-        # $attributes["end"] = Carbon::create($attributes["end"])->timestamp;
+        # $attributes['start'] = Carbon::create($attributes['start'])->timestamp;
+        # $attributes['end'] = Carbon::create($attributes['end'])->timestamp;
 
         $attributes['status'] = 'new';
 
         $berichtsheft = app()->user->exemptions()->create($attributes);
 
-        return redirect()->route("exemptions.index")->with("status", "Der Freistellungsantrag wurde erfolgreich hinzugefügt.");
+        return redirect()->route('exemptions.index')->with('status', 'Der Freistellungsantrag wurde erfolgreich hinzugefügt.');
     }
 
     /**
@@ -73,9 +74,9 @@ class ExemptionController extends Controller
      */
     public function edit(Exemption $exemption)
     {
-        $this->authorize("edit", $exemption);
+        $this->authorize('edit', $exemption);
 
-        return view("exemptions.edit", compact("exemption"));
+        return view('exemptions.edit', compact('exemption'));
     }
 
     /**
@@ -87,20 +88,20 @@ class ExemptionController extends Controller
      */
     public function update(Request $request, Exemption $exemption)
     {
-        $this->authorize("update", $exemption);
+        $this->authorize('update', $exemption);
 
         $attributes = request()->validate([
-            "start" => "required",
-            "end" => "required",
-            "reason" => "required",
+            'start' => 'required',
+            'end' => 'required',
+            'reason' => 'required',
         ]);
 
-        # $attributes["start"] = Carbon::create($attributes["start"])->timestamp;
-        # $attributes["end"] = Carbon::create($attributes["end"])->timestamp;
+        # $attributes['start'] = Carbon::create($attributes['start'])->timestamp;
+        # $attributes['end'] = Carbon::create($attributes['end'])->timestamp;
 
         $exemption->update($attributes);
 
-        return redirect()->route("exemptions.index")->with("status", "Der Freistellungsantrag wurde erfolgreich aktualisiert.");
+        return redirect()->route('exemptions.index')->with('status', 'Der Freistellungsantrag wurde erfolgreich aktualisiert.');
     }
 
     /**
@@ -111,6 +112,8 @@ class ExemptionController extends Controller
      */
     public function destroy(Exemption $exemption)
     {
-        //
+        $exemption->delete();
+
+        return redirect()->route('exemptions.index')->with('status', 'Der Freistellungsantrag wurde erfolgreich gelöscht.');
     }
 }
