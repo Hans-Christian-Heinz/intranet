@@ -31,11 +31,11 @@
                 <li class="nav-item {{ (request()->is("admin")) ? 'active' : '' }}">
                     <a href="{{ route("admin.index") }}" class="nav-link pl-0">Dashboard</a>
                 </li>
-                <li class="nav-item {{ (request()->is("admin/rules*")) ? 'active' : '' }}">
-                    <a href="{{ route("admin.rules.edit") }}" class="nav-link">Werkstattregeln</a>
-                </li>
                 <li class="nav-item {{ (request()->is("admin/exemptions*")) ? 'active' : '' }}">
                     <a href="{{ route("admin.exemptions.index") }}" class="nav-link">Freistellungen</a>
+                </li>
+                <li class="nav-item {{ (request()->is("admin/rules*")) ? 'active' : '' }}">
+                    <a href="{{ route("admin.rules.edit") }}" class="nav-link">Werkstattregeln</a>
                 </li>
             </ul>
         </div>

@@ -27,14 +27,14 @@
                         <a class="nav-link" href="{{ route('login') }}">Anmelden</a>
                     </li>
                 @else
-                    <li class="nav-item {{ (request()->is('rules')) ? 'active' : '' }}">
-                        <a href="{{ route("rules.index") }}" class="nav-link">Werkstattregeln</a>
-                    </li>
                     <li class="nav-item {{ (request()->is('berichtsheft*')) ? 'active' : '' }}">
                         <a href="{{ route("berichtshefte.index") }}" class="nav-link">Berichtshefte</a>
                     </li>
                     <li class="nav-item {{ (request()->is('exemptions*')) ? 'active' : '' }}">
                         <a href="{{ route("exemptions.index") }}" class="nav-link">Freistellungen</a>
+                    </li>
+                    <li class="nav-item {{ (request()->is('rules')) ? 'active' : '' }}">
+                        <a href="{{ route("rules.index") }}" class="nav-link">Werkstattregeln</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
