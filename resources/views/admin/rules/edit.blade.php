@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Werkstattregeln bearbeiten · ')
+
 @section('content')
     <div class="section">
         <div class="container">
@@ -12,7 +14,7 @@
                         <h3 class="mr-auto my-auto">Werkstattregeln</h3>
                         <a href="{{ route("rules.index") }}" class="btn btn-outline-secondary mr-2"><span class="far fa-eye mr-2"></span>Zu den Werkstattregeln</a>
                         <button type="submit" class="btn btn-outline-primary" form="saveRules">
-                            <span class="fas fa-save mr-2"></span>Änderungen Speichern
+                            <span class="fa fa-floppy-o mr-2"></span>Änderungen speichern
                         </button>
                     </div>
                     <form action="{{ route("admin.rules.update") }}" method="POST" id="saveRules">

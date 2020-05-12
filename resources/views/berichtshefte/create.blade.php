@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Berichtsheft hinzufügen · ')
+
 @section("content")
     <div class="section">
         <div class="container">

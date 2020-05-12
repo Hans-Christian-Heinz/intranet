@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', "Freistellung bearbeiten")
+@section('title', "Freistellung bearbeiten ·")
 
 @section("content")
     <div class="section">
@@ -39,7 +39,9 @@
                                 </div>
                                 <div class="form-group">
                                     <a href="{{ route('exemptions.index') }}" class="btn btn-outline-secondary">Abbrechen</a>
-                                    <input type="submit" class="btn btn-primary" value="Änderungen Speichern">
+                                    <button type="submit" class="btn btn-primary">
+                                        <span class="fa fa-floppy-o mr-2">Änderungen speichern</span>
+                                    </button>
                                 </div>
                             </form>
                         </div>

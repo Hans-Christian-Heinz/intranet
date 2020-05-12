@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="{{ route('admin.index') }}">Administration</a>
+        <a class="navbar-brand" href="{{ route('admin.index') }}">FI-Intranet · <span class="text-danger">Administration</span></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Navigation umschalten">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -14,7 +14,7 @@
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a href="{{ route("home") }}" class="nav-link"><span class="fas fa-sign-out-alt mr-2"></span>Zurück zur Benutzeransicht</a>
+                    <a href="{{ route("home") }}" class="nav-link"><span class="fa fa-user-circle-o mr-2"></span>Zurück zur Benutzeransicht</a>
                 </li>
             </ul>
         </div>

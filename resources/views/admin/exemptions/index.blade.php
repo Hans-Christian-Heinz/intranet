@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Freistellungen · ')
+
 @section('content')
     <div class="section">
         <div class="container">
@@ -14,10 +16,10 @@
                                 <tr>
                                     <th class="text-center text-strong" style="width: 2%;">#</th>
                                     <th class="text-center">Benutzer</th>
-                                    <th class="text-center">Zeitraum</th>
+                                    <th class="text-center" style="width: 15%">Zeitraum</th>
                                     <th class="text-center">Begründung</th>
                                     <th class="text-center" style="width: 10%;">Status</th>
-                                    <th class="text-center">Optionen</th>
+                                    <th class="text-center" style="width: 12%">Optionen</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -31,8 +33,10 @@
                                         </td>
                                         <td>{{ $exemption->reason }}</td>
                                         <td class="text-center">{{ $statuses[$exemption->status] }}</td>
-                                        <td class="d-flex">
-                                            <a href="{{ route("admin.exemptions.edit", $exemption) }}" class="btn btn-sm btn-secondary mx-auto">Bearbeiten</a>
+                                        <td>
+                                            <a href="{{ route("admin.exemptions.edit", $exemption) }}" class="btn btn-sm btn-secondary">
+                                                <span class="fa fa-pencil-square-o mr-1" aria-hidden="true"></span>Bearbeiten
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -59,10 +63,10 @@
                                     <tr>
                                         <th class="text-center text-strong" style="width: 2%;">#</th>
                                         <th class="text-center">Benutzer</th>
-                                        <th class="text-center">Zeitraum</th>
+                                        <th class="text-center" style="width: 15%">Zeitraum</th>
                                         <th class="text-center">Begründung</th>
                                         <th class="text-center" style="width: 10%;">Status</th>
-                                        <th class="text-center">Optionen</th>
+                                        <th class="text-center" style="width: 12%">Optionen</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -79,8 +83,10 @@
                                                 {{ $statuses[$exemption->status] }}
                                                 @if($exemption->admin) von {{ $exemption->admin->ldap_username }}@endif
                                             </td>
-                                            <td class="d-flex">
-                                                <a href="{{ route("admin.exemptions.edit", $exemption) }}" class="btn btn-sm btn-secondary mx-auto">Bearbeiten</a>
+                                            <td>
+                                                <a href="{{ route("admin.exemptions.edit", $exemption) }}" class="btn btn-sm btn-secondary">
+                                                    <span class="fa fa-pencil-square-o mr-1" aria-hidden="true"></span>Bearbeiten
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach

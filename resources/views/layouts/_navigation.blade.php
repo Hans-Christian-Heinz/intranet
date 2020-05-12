@@ -28,7 +28,7 @@
                     </li>
                 @else
                     <li class="nav-item {{ (request()->is('rules')) ? 'active' : '' }}">
-                        <a href="{{ route("rules.index") }}" class="nav-link">Regeln</a>
+                        <a href="{{ route("rules.index") }}" class="nav-link">Werkstattregeln</a>
                     </li>
                     <li class="nav-item {{ (request()->is('berichtsheft*')) ? 'active' : '' }}">
                         <a href="{{ route("berichtshefte.index") }}" class="nav-link">Berichtshefte</a>

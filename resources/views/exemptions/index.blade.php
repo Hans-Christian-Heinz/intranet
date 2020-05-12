@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', "Freistellungen")
+@section('title', "Freistellungen · ")
 
 @section('content')
     <div class="section">
@@ -39,7 +39,9 @@
                                         </td>
                                         <td class="d-flex">
                                             @if($exemption->status === 'new')
-                                                <a href="{{ route("exemptions.edit", $exemption) }}" class="btn btn-sm btn-secondary mx-auto">Bearbeiten</a>
+                                                <a href="{{ route("exemptions.edit", $exemption) }}" class="btn btn-sm btn-secondary mx-auto">
+                                                    <span class="fa fa-pencil-square-o mr-1" aria-hidden="true"></span>Bearbeiten
+                                                </a>
                                             @endif
                                         </td>
                                     </tr>

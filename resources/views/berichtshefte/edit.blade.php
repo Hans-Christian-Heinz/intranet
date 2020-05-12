@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', "Berichtsheft bearbeiten")
+@section('title', "Berichtsheft bearbeiten ·")
 
 @section("content")
     <div class="section">
@@ -57,9 +57,15 @@
                                 </div>
                                 <div class="form-group d-flex">
                                     <div class="mr-auto">
-                                        <button type="submit" class="btn btn-primary">Änderungen Speichern</button>
-                                        <a href="{{ route("berichtshefte.show", $berichtsheft) }}" class="btn btn-secondary" target="_blank">Drucken</a>
-                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteBerichtsheft">Löschen</button>
+                                        <button type="submit" class="btn btn-primary">
+                                            <span class="fa fa-floppy-o mr-2"></span>Änderungen speichern
+                                        </button>
+                                        <a href="{{ route("berichtshefte.show", $berichtsheft) }}" class="btn btn-secondary" target="_blank">
+                                            <span class="fa fa-print mr-2" aria-hidden="true"></span>Drucken
+                                        </a>
+                                        <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#deleteBerichtsheft">
+                                            <span class="fa fa-trash mr-2" aria-hidden="true"></span>Löschen
+                                        </button>
                                     </div>
                                     <div>
                                         <a href="{{ $previousWeek ? route("berichtshefte.edit", $previousWeek) : "#" }}" class="btn btn-outline-secondary {{ (!$previousWeek) ? "disabled" : "" }}" {{ (!$previousWeek) ? "disabled" : "" }}>

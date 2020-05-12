@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Freistellung erstellen · ')
+
 @section("content")
     <div class="section">
         <div class="container">

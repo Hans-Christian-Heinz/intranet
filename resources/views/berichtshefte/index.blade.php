@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', "Berichtsheft")
+@section('title', "Berichtsheft · ")
 
 @section('content')
     <div class="section">
@@ -9,7 +9,7 @@
                 <div class="col-md-12">
                     @if ($berichtshefte->count())
                         <div class="d-flex pb-3">
-                            <h3 class="mr-auto">Berichtshefte</h3>
+                            <h3 class="mr-auto">Berichtsheft</h3>
                             <a href="{{ route("berichtshefte.create") }}" class="btn btn-outline-primary">
                                 <span class="fas fa-plus mr-2"></span>Hinzufügen
                             </a>
@@ -20,7 +20,7 @@
                                     <th class="text-center text-strong" style="width: 2%;">#</th>
                                     <th>Lehrjahr</th>
                                     <th class="text-center" style="width: 13%;">KW</th>
-                                    <th class="text-center" style="width: 10%;">Optionen</th>
+                                    <th class="text-center" style="width: 11%;">Optionen</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -30,7 +30,9 @@
                                         <td>{{ $berichtsheft->grade }}</td>
                                         <td class="text-center">{{ $berichtsheft->week->format("Y-W") }}</td>
                                         <td>
-                                            <a href="{{ route("berichtshefte.edit", $berichtsheft) }}" class="btn btn-sm btn-secondary">Bearbeiten</a>
+                                            <a href="{{ route("berichtshefte.edit", $berichtsheft) }}" class="btn btn-sm btn-secondary">
+                                                <span class="fa fa-pencil-square-o mr-1" aria-hidden="true"></span>Bearbeiten
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach
