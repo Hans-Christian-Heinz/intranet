@@ -41,8 +41,6 @@ Route::group(["middleware" => "auth"], function () {
 Route::group(["middleware" => "admin"], function () {
     Route::get("/admin", "AdminDashboardController@index")->name("admin.index");
 
-    Route::get("/admin/berichtshefte", "AdminBerichtsheftController@index")->name("admin.berichtshefte.index");
-
     Route::get("/admin/rules", "AdminRulesController@edit")->name("admin.rules.edit");
     Route::patch("/admin/rules", "AdminRulesController@update")->name("admin.rules.update");
 
