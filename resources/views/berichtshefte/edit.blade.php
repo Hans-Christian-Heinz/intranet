@@ -84,7 +84,6 @@
         </div>
     </div>
 
-    {{-- Berichtsheft Löschen Modal --}}
     <div class="modal fade" id="deleteBerichtsheft" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -101,9 +100,9 @@
                     <button type="button" class="btn btn-link text-secondary" data-dismiss="modal">Abbrechen</button>
                     <button type="submit" class="btn btn-danger" form="deleteBerichtsheftForm">Löschen</button>
 
-                    <form id="deleteBerichtsheftForm" action="{{ route("berichtshefte.destroy", $berichtsheft) }}" method="POST">
+                    <form id="deleteBerichtsheftForm" action="{{ route('berichtshefte.destroy', $berichtsheft) }}" method="POST">
                         @csrf
-                        @method("DELETE")
+                        @method('DELETE')
                     </form>
                 </div>
             </div>

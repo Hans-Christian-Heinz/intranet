@@ -43,4 +43,11 @@ class AdminExemptionController extends Controller
 
         return redirect()->route('admin.exemptions.index')->with('status', 'Die Freistellung wurde erfolgreich aktualisiert.');
     }
+
+    public function destroy(Exemption $exemption)
+    {
+        $exemption->delete();
+
+        return redirect()->route('admin.exemptions.index')->with('status', 'Der Freistellungsantrag wurde erfolgreich gelöscht.');
+    }
 }

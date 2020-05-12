@@ -36,6 +36,7 @@ Route::group(["middleware" => "auth"], function () {
     Route::post("/exemptions", "ExemptionController@store")->name("exemptions.store");
     Route::get("/exemptions/{exemption}/edit", "ExemptionController@edit")->name("exemptions.edit");
     Route::patch("/exemptions/{exemption}", "ExemptionController@update")->name("exemptions.update");
+    Route::delete("/exemptions/{berichtsheft}", "ExemptionController@destroy")->name("exemptions.destroy");
 });
 
 Route::group(["middleware" => "admin"], function () {
@@ -47,4 +48,5 @@ Route::group(["middleware" => "admin"], function () {
     Route::get("/admin/exemptions", "AdminExemptionController@index")->name("admin.exemptions.index");
     Route::get("/admin/exemptions/{exemption}/edit", "AdminExemptionController@edit")->name("admin.exemptions.edit");
     Route::patch("/admin/exemptions/{exemption}", "AdminExemptionController@update")->name("admin.exemptions.update");
+    Route::delete("/admin/exemptions/{berichtsheft}", "AdminExemptionController@destroy")->name("admin.exemptions.destroy");
 });

@@ -57,10 +57,38 @@
                                     <button type="submit" class="btn btn-primary">
                                         <span class="fa fa-floppy-o mr-2"></span>Änderungen speichern
                                     </button>
+                                    <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#deleteExemption">
+                                        <span class="fa fa-trash mr-2" aria-hidden="true"></span>Löschen
+                                    </button>
                                 </div>
                             </form>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteExemption" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Freistellung löschen</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-center">Möchten Sie die Freistellung wirklich löschen?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link text-secondary" data-dismiss="modal">Abbrechen</button>
+                    <button type="submit" class="btn btn-danger" form="deleteExemptionForm">Löschen</button>
+
+                    <form id="deleteExemptionForm" action="{{ route("admin.exemptions.destroy", $exemption) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                    </form>
                 </div>
             </div>
         </div>

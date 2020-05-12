@@ -112,6 +112,8 @@ class ExemptionController extends Controller
      */
     public function destroy(Exemption $exemption)
     {
+        $this->authorize('destroy', $exemption);
+
         $exemption->delete();
 
         return redirect()->route('exemptions.index')->with('status', 'Der Freistellungsantrag wurde erfolgreich gelöscht.');
