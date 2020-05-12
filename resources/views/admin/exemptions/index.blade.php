@@ -25,7 +25,10 @@
                                     <tr>
                                         <td class="text-center">{{ $exemption->id }}</td>
                                         <td class="text-center">{{ $exemption->owner->ldap_username }}</td>
-                                        <td class="text-center">{{ $exemption->start . ' - ' . $exemption->end }}</td>
+                                        <td>
+                                            {{ $exemption->start->format('d. M Y H:i') }} –<br>
+                                            {{$exemption->end->format('d. M Y H:i') }}
+                                        </td>
                                         <td>{{ $exemption->reason }}</td>
                                         <td class="text-center">{{ $statuses[$exemption->status] }}</td>
                                         <td class="d-flex">
@@ -67,7 +70,10 @@
                                         <tr>
                                             <td class="text-center">{{ $exemption->id }}</td>
                                             <td class="text-center">{{ $exemption->owner->ldap_username }}</td>
-                                            <td class="text-center">{{ $exemption->start . ' - ' . $exemption->end }}</td>
+                                            <td>
+                                                {{ $exemption->start->format('d. M Y H:i') }} –<br>
+                                                {{$exemption->end->format('d. M Y H:i') }}
+                                            </td>
                                             <td>{{ $exemption->reason }}</td>
                                             <td class="text-center">
                                                 {{ $statuses[$exemption->status] }}

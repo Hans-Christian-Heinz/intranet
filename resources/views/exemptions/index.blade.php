@@ -28,9 +28,15 @@
                                 @foreach ($exemptions as $exemption)
                                     <tr>
                                         <td class="text-center">{{ $exemption->id }}</td>
-                                        <td class="text-center">{{ $exemption->start . ' - ' . $exemption->end }}</td>
+                                        <td>
+                                            {{ $exemption->start->format('d. M Y H:i') }} –<br>
+                                            {{$exemption->end->format('d. M Y H:i') }}
+                                        </td>
                                         <td>{{ $exemption->reason }}</td>
-                                        <td class="text-center">{{ $statuses[$exemption->status] }}</td>
+                                        <td class="text-center">
+                                            {{ $statuses[$exemption->status] }}
+                                            @if($exemption->admin) von {{ $exemption->admin->ldap_username }}@endif
+                                        </td>
                                         <td class="d-flex">
                                             @if($exemption->status === 'new')
                                                 <a href="{{ route("exemptions.edit", $exemption) }}" class="btn btn-sm btn-secondary mx-auto">Bearbeiten</a>
