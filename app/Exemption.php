@@ -14,13 +14,15 @@ class Exemption extends Model
         'admin_id',
     ];
 
+    protected $dates = ['start', 'end'];
+
     public function owner()
     {
-        return $this->belongsTo(User::class, "user_id");
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function admin()
     {
-        return $this->belongsTo(User::class, "admin_id");
+        return $this->belongsTo(User::class, 'admin_id');
     }
 }

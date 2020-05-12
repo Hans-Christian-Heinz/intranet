@@ -46,13 +46,13 @@ class User extends Authenticatable
     public function acceptRules()
     {
         return $this->update([
-            "accepted_rules_at" => Carbon::now()
+            'accepted_rules_at' => Carbon::now()
         ]);
     }
 
     public function hasAcceptedRules()
     {
-        return $this->accepted_rules_at >= Option::where("key", "rules")->first()->updated_at;
+        return $this->accepted_rules_at >= Option::where('key', 'rules')->first()->updated_at;
     }
 
     public function berichtshefte()

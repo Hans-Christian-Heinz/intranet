@@ -8,11 +8,11 @@ class Option extends Model
 {
     protected $guarded = [];
 
-    public static function addOption($key, $value = "")
+    public static function addOption($key, $value = '')
     {
         return Option::create([
-            "key" => $key,
-            "value" => $value
+            'key' => $key,
+            'value' => $value
         ]);
     }
 }

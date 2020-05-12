@@ -15,8 +15,8 @@ class BerichtsheftController extends Controller
      */
     public function index()
     {
-        return view("berichtshefte.index", [
-            "berichtshefte" => app()->user->berichtshefte()->orderBy("week", "DESC")->paginate(10)
+        return view('berichtshefte.index', [
+            'berichtshefte' => app()->user->berichtshefte()->orderBy('week', 'DESC')->paginate(10)
         ]);
     }
 
@@ -27,11 +27,11 @@ class BerichtsheftController extends Controller
      */
     public function create()
     {
-        $latestBerichtsheft = app()->user->berichtshefte()->orderBy("week", "DESC")->first();
+        $latestBerichtsheft = app()->user->berichtshefte()->orderBy('week', 'DESC')->first();
 
-        return view("berichtshefte.create", [
-            "nextBerichtsheftDate" => ($latestBerichtsheft) ? $latestBerichtsheft->week->addWeek() : Carbon::now(),
-            "nextBerichtsheftGrade" => ($latestBerichtsheft) ? $latestBerichtsheft->grade : 1
+        return view('berichtshefte.create', [
+            'nextBerichtsheftDate' => ($latestBerichtsheft) ? $latestBerichtsheft->week->addWeek() : Carbon::now(),
+            'nextBerichtsheftGrade' => ($latestBerichtsheft) ? $latestBerichtsheft->grade : 1
         ]);
     }
 
@@ -44,18 +44,18 @@ class BerichtsheftController extends Controller
     public function store(Request $request)
     {
         $attributes = request()->validate([
-            "grade" => "required|numeric|between:1,3",
-            "work_activities" => "nullable|string",
-            "instructions" => "nullable|string",
-            "school" => "nullable|string",
-            "week" => "required|date"
+            'grade' => 'required|numeric|between:1,3',
+            'work_activities' => 'nullable|string',
+            'instructions' => 'nullable|string',
+            'school' => 'nullable|string',
+            'week' => 'required|date'
         ]);
 
-        $attributes["week"] = Carbon::create($attributes["week"])->timestamp;
+        $attributes['week'] = Carbon::create($attributes['week'])->timestamp;
 
         $berichtsheft = app()->user->berichtshefte()->create($attributes);
 
-        return redirect()->route("berichtshefte.edit", $berichtsheft)->with("status", "Das Berichtsheft wurde erfolgreich hinzugefügt.");
+        return redirect()->route('berichtshefte.edit', $berichtsheft)->with('status', 'Das Berichtsheft wurde erfolgreich hinzugefügt.');
     }
 
     /**
@@ -66,9 +66,9 @@ class BerichtsheftController extends Controller
      */
     public function show(Berichtsheft $berichtsheft)
     {
-        $this->authorize("show", $berichtsheft);
+        $this->authorize('show', $berichtsheft);
 
-        $name = "Berichtsheft ({$berichtsheft->week->format('Y-\WW')})";
+        $name = 'Berichtsheft ' . $berichtsheft->week->format('Y-\WW');
 
         $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
         $fontDirs = $defaultConfig['fontDir'];
@@ -77,32 +77,32 @@ class BerichtsheftController extends Controller
         $fontData = $defaultFontConfig['fontdata'];
 
         $mpdf = new \Mpdf\Mpdf([
-            "mode" => "utf-8",
-            "format" => "A4",
+            'mode' => 'utf-8',
+            'format' => 'A4',
 
-            "margin_left" => 20,
-            "margin_right" => 20,
-            "margin_top" => 20,
-            "margin_bottom" => 20,
+            'margin_left' => 20,
+            'margin_right' => 20,
+            'margin_top' => 20,
+            'margin_bottom' => 20,
 
-            "fontDir" => array_merge($fontDirs, [base_path() . "/resources/fonts"]),
-            "fontdata" => $fontData + [
-                "opensans" => [
-                    "R" => "OpenSans-Regular.ttf",
-                    "B" => "OpenSans-Bold.ttf"
+            'fontDir' => array_merge($fontDirs, [base_path() . '/resources/fonts']),
+            'fontdata' => $fontData + [
+                'opensans' => [
+                    'R' => 'OpenSans-Regular.ttf',
+                    'B' => 'OpenSans-Bold.ttf'
                 ]
             ],
-            "default_font_size" => 12,
-            "default_font" => "opensans",
+            'default_font_size' => 12,
+            'default_font' => 'opensans',
 
-            "tempDir" => sys_get_temp_dir()
+            'tempDir' => sys_get_temp_dir()
         ]);
 
         $mpdf->SetTitle($name);
 
-        $mpdf->WriteHTML(view("pdf.berichtsheft", compact("berichtsheft"))->render());
+        $mpdf->WriteHTML(view('pdf.berichtsheft', compact('berichtsheft'))->render());
 
-        return $mpdf->Output($name . ".pdf", "I");
+        return $mpdf->Output($name . '.pdf', 'I');
     }
 
     /**
@@ -113,12 +113,12 @@ class BerichtsheftController extends Controller
      */
     public function edit(Berichtsheft $berichtsheft)
     {
-        $this->authorize("edit", $berichtsheft);
+        $this->authorize('edit', $berichtsheft);
 
-        $previousWeek = app()->user->berichtshefte()->where("week", "<", $berichtsheft->week)->orderBy("week", "DESC")->first();
-        $nextWeek = app()->user->berichtshefte()->where("week", ">", $berichtsheft->week)->orderBy("week", "ASC")->first();
+        $previousWeek = app()->user->berichtshefte()->where('week', '<', $berichtsheft->week)->orderBy('week', 'DESC')->first();
+        $nextWeek = app()->user->berichtshefte()->where('week', '>', $berichtsheft->week)->orderBy('week', 'ASC')->first();
 
-        return view("berichtshefte.edit", compact("berichtsheft", "previousWeek", "nextWeek"));
+        return view('berichtshefte.edit', compact('berichtsheft', 'previousWeek', 'nextWeek'));
     }
 
     /**
@@ -130,21 +130,21 @@ class BerichtsheftController extends Controller
      */
     public function update(Request $request, Berichtsheft $berichtsheft)
     {
-        $this->authorize("update", $berichtsheft);
+        $this->authorize('update', $berichtsheft);
 
         $attributes = request()->validate([
-            "grade" => "required|numeric|between:1,3",
-            "work_activities" => "nullable|string",
-            "instructions" => "nullable|string",
-            "school" => "nullable|string",
-            "week" => "required|date"
+            'grade' => 'required|numeric|between:1,3',
+            'work_activities' => 'nullable|string',
+            'instructions' => 'nullable|string',
+            'school' => 'nullable|string',
+            'week' => 'required|date'
         ]);
 
-        $attributes["week"] = Carbon::create($attributes["week"])->timestamp;
+        $attributes['week'] = Carbon::create($attributes['week'])->timestamp;
 
         $berichtsheft->update($attributes);
 
-        return back()->with("status", "Das Berichtsheft wurde erfolgreich aktualisiert.");
+        return back()->with('status', 'Das Berichtsheft wurde erfolgreich aktualisiert.');
     }
 
     /**
@@ -155,10 +155,10 @@ class BerichtsheftController extends Controller
      */
     public function destroy(Berichtsheft $berichtsheft)
     {
-        $this->authorize("destroy", $berichtsheft);
+        $this->authorize('destroy', $berichtsheft);
 
         $berichtsheft->delete();
 
-        return redirect()->route("berichtshefte.index")->with("status", "Das Berichtsheft wurde erfolgreich gelöscht.");
+        return redirect()->route('berichtshefte.index')->with('status', 'Das Berichtsheft wurde erfolgreich gelöscht.');
     }
 }
