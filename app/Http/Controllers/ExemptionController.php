@@ -73,6 +73,8 @@ class ExemptionController extends Controller
      */
     public function edit(Exemption $exemption)
     {
+        $this->authorize("edit", $exemption);
+
         return view("exemptions.edit", compact("exemption"));
     }
 
@@ -85,6 +87,8 @@ class ExemptionController extends Controller
      */
     public function update(Request $request, Exemption $exemption)
     {
+        $this->authorize("update", $exemption);
+
         $attributes = request()->validate([
             "start" => "required",
             "end" => "required",

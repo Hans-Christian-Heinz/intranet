@@ -66,8 +66,7 @@ class BerichtsheftController extends Controller
      */
     public function show(Berichtsheft $berichtsheft)
     {
-        # FIXME: Hand over App\User instead of LdapUser
-        # $this->authorize("show", $berichtsheft);
+        $this->authorize("show", $berichtsheft);
 
         $name = "Berichtsheft ({$berichtsheft->week->format('Y-\WW')})";
 
@@ -114,8 +113,7 @@ class BerichtsheftController extends Controller
      */
     public function edit(Berichtsheft $berichtsheft)
     {
-        # FIXME: Hand over App\User instead of LdapUser
-        # $this->authorize("edit", $berichtsheft);
+        $this->authorize("edit", $berichtsheft);
 
         $previousWeek = app()->user->berichtshefte()->where("week", "<", $berichtsheft->week)->orderBy("week", "DESC")->first();
         $nextWeek = app()->user->berichtshefte()->where("week", ">", $berichtsheft->week)->orderBy("week", "ASC")->first();
@@ -132,8 +130,7 @@ class BerichtsheftController extends Controller
      */
     public function update(Request $request, Berichtsheft $berichtsheft)
     {
-        # FIXME: Hand over App\User instead of LdapUser
-        # $this->authorize("update", $berichtsheft);
+        $this->authorize("update", $berichtsheft);
 
         $attributes = request()->validate([
             "grade" => "required|numeric|between:1,3",
@@ -158,8 +155,7 @@ class BerichtsheftController extends Controller
      */
     public function destroy(Berichtsheft $berichtsheft)
     {
-        # FIXME: Hand over App\User instead of LdapUser
-        # $this->authorize("destroy", $berichtsheft);
+        $this->authorize("destroy", $berichtsheft);
 
         $berichtsheft->delete();
 

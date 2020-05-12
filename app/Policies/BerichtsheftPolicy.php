@@ -3,30 +3,34 @@
 namespace App\Policies;
 
 use App\Berichtsheft;
-use App\User;
+use JotaEleSalinas\AdminlessLdap\LdapUser;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class BerichtsheftPolicy
 {
     use HandlesAuthorization;
 
-    public function show(User $user, Berichtsheft $berichtsheft)
+    public function show(LdapUser $ldapUser, Berichtsheft $berichtsheft)
     {
-        return $user->is($berichtsheft->owner);
+        $user = app()->user;
+        return $user->is_admin || $user->is($berichtsheft->owner);
     }
 
-    public function update(User $user, Berichtsheft $berichtsheft)
+    public function update(LdapUser $ldapUser, Berichtsheft $berichtsheft)
     {
-        return $user->is($berichtsheft->owner);
+        $user = app()->user;
+        return $user->is_admin || $user->is($berichtsheft->owner);
     }
 
-    public function edit(User $user, Berichtsheft $berichtsheft)
+    public function edit(LdapUser $ldapUser, Berichtsheft $berichtsheft)
     {
-        return $user->is($berichtsheft->owner);
+        $user = app()->user;
+        return $user->is_admin || $user->is($berichtsheft->owner);
     }
 
-    public function destroy(User $user, Berichtsheft $berichtsheft)
+    public function destroy(LdapUser $ldapUser, Berichtsheft $berichtsheft)
     {
-        return $user->is($berichtsheft->owner);
+        $user = app()->user;
+        return $user->is_admin || $user->is($berichtsheft->owner);
     }
 }

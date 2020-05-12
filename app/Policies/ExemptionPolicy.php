@@ -3,30 +3,34 @@
 namespace App\Policies;
 
 use App\Exemption;
-use App\User;
+use JotaEleSalinas\AdminlessLdap\LdapUser;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ExemptionPolicy
 {
     use HandlesAuthorization;
 
-    public function show(User $user, Exemption $exemption)
+    public function show(LdapUser $ldapUser, Exemption $exemption)
     {
-        return $user->is($exemption->owner);
+        $user = app()->user;
+        return $user->is_admin || $user->is($exemption->owner);
     }
 
-    public function update(User $user, Exemption $exemption)
+    public function update(LdapUser $ldapUser, Exemption $exemption)
     {
-        return $user->is($exemption->owner);
+        $user = app()->user;
+        return $user->is_admin || $user->is($exemption->owner);
     }
 
-    public function edit(User $user, Exemption $exemption)
+    public function edit(LdapUser $ldapUser, Exemption $exemption)
     {
-        return $user->is($exemption->owner);
+        $user = app()->user;
+        return $user->is_admin || $user->is($exemption->owner);
     }
 
-    public function destroy(User $user, Exemption $exemption)
+    public function destroy(LdapUser $ldapUser, Exemption $exemption)
     {
-        return $user->is($exemption->owner);
+        $user = app()->user;
+        return $user->is_admin || $user->is($exemption->owner);
     }
 }
