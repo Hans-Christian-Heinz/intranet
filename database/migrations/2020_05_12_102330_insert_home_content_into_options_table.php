@@ -1,9 +1,7 @@
 <?php
 
-use App\Option;
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class InsertHomeContentIntoOptionsTable extends Migration
 {
@@ -14,8 +12,10 @@ class InsertHomeContentIntoOptionsTable extends Migration
      */
     public function up()
     {
-        Option::where("key", "home_content")->delete();
-        Option::addOption("home_content", "<h1>Home</h1><p>Lorem ipsum dolor sit amet.</p>");
+        DB::table('options')->insert([
+            'key' => 'rules',
+            'value' => '<h1>Home</h1><p>Lorem ipsum dolor sit amet.</p>',
+        ]);
     }
 
     /**
@@ -25,6 +25,6 @@ class InsertHomeContentIntoOptionsTable extends Migration
      */
     public function down()
     {
-        Option::where("key", "home_content")->delete();
+        DB::table('options')->where('key', 'home_content')->delete();
     }
 }

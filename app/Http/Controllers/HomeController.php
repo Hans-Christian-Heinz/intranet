@@ -24,8 +24,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $homeContent = Option::where('key', 'home_content')->first()->value;
-
+        $homeContent = Option::find('home_content')->value;
         return view('home', compact('homeContent'));
     }
 }

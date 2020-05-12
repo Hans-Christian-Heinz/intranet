@@ -9,8 +9,7 @@ class RulesController extends Controller
 {
     public function index()
     {
-        return view('rules', [
-            'rules' => Option::where('key', 'rules')->first()
-        ]);
+        $rules = Option::find('rules');
+        return view('rules', compact('rules'));
     }
 }

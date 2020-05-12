@@ -9,9 +9,8 @@ class AdminRulesController extends Controller
 {
     public function edit()
     {
-        return view('admin.rules.edit', [
-            'rules' => Option::where('key', 'rules')->first()->value
-        ]);
+        $rules = Option::find('rules')->value;
+        return view('admin.rules.edit', compact('rules'));
     }
 
     public function update()
@@ -20,7 +19,7 @@ class AdminRulesController extends Controller
             'rules' => 'required'
         ]);
 
-        Option::where('key', 'rules')->update([
+        Option::find('rules')->update([
             'value' => request('rules')
         ]);
 
