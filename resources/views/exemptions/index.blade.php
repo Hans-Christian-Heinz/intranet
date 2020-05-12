@@ -37,7 +37,7 @@
                                             {{ $statuses[$exemption->status] }}
                                             @if($exemption->admin) von {{ $exemption->admin->ldap_username }}@endif
                                         </td>
-                                        <td class="d-flex">
+                                        <td>
                                             @if($exemption->status === 'new')
                                                 <a href="{{ route("exemptions.edit", $exemption) }}" class="btn btn-sm btn-secondary mx-auto">
                                                     <span class="fa fa-pencil-square-o mr-1" aria-hidden="true"></span>Bearbeiten
