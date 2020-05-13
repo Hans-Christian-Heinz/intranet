@@ -17,16 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'accepted_rules_at',
-    ];
-
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
+        'accepted_rules_at',
     ];
 
     /**
@@ -35,7 +26,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'accepted_rules_at' => 'datetime',
     ];
 
     public function isAdmin()

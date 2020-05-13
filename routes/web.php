@@ -29,6 +29,7 @@ Route::group(["middleware" => "auth"], function () {
 
     // Routen für Werkstattregeln:
     Route::get("/rules", "RulesController@index")->name("rules.index");
+    Route::patch("/rules", "RulesController@accept")->name("rules.accept");
 
     // Routen für Freistellungen:
     Route::get("/exemptions", "ExemptionController@index")->name("exemptions.index");
