@@ -13,24 +13,24 @@ class ExemptionPolicy
     public function show(LdapUser $ldapUser, Exemption $exemption)
     {
         $user = app()->user;
-        return $user->is_admin || $user->is($exemption->owner);
+        return $user->is($exemption->owner);
     }
 
     public function update(LdapUser $ldapUser, Exemption $exemption)
     {
         $user = app()->user;
-        return $user->is_admin || ($exemption->status === 'new' && $user->is($exemption->owner));
+        return $exemption->status === 'new' && $user->is($exemption->owner)
     }
 
     public function edit(LdapUser $ldapUser, Exemption $exemption)
     {
         $user = app()->user;
-        return $user->is_admin || ($exemption->status === 'new' && $user->is($exemption->owner));
+        return $exemption->status === 'new' && $user->is($exemption->owner);
     }
 
     public function destroy(LdapUser $ldapUser, Exemption $exemption)
     {
         $user = app()->user;
-        return $user->is_admin || ($exemption->status === 'new' && $user->is($exemption->owner));
+        return $exemption->status === 'new' && $user->is($exemption->owner);
     }
 }

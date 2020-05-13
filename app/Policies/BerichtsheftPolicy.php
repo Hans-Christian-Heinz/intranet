@@ -13,24 +13,24 @@ class BerichtsheftPolicy
     public function show(LdapUser $ldapUser, Berichtsheft $berichtsheft)
     {
         $user = app()->user;
-        return $user->is_admin || $user->is($berichtsheft->owner);
+        return $user->is($berichtsheft->owner);
     }
 
     public function update(LdapUser $ldapUser, Berichtsheft $berichtsheft)
     {
         $user = app()->user;
-        return $user->is_admin || $user->is($berichtsheft->owner);
+        return $user->is($berichtsheft->owner);
     }
 
     public function edit(LdapUser $ldapUser, Berichtsheft $berichtsheft)
     {
         $user = app()->user;
-        return $user->is_admin || $user->is($berichtsheft->owner);
+        return $user->is($berichtsheft->owner);
     }
 
     public function destroy(LdapUser $ldapUser, Berichtsheft $berichtsheft)
     {
         $user = app()->user;
-        return $user->is_admin || $user->is($berichtsheft->owner);
+        return $user->is($berichtsheft->owner);
     }
 }
