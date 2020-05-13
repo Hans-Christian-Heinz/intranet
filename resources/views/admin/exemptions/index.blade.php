@@ -7,7 +7,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    @if ($newExemptions->where('status', 'new')->count())
+                    @if ($newExemptions->count())
                         <div class="d-flex pb-3">
                             <h3 class="mr-auto">neue Freistellungen</h3>
                         </div>
