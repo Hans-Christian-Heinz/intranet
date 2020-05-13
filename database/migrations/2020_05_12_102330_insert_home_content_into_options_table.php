@@ -13,7 +13,7 @@ class InsertHomeContentIntoOptionsTable extends Migration
     public function up()
     {
         DB::table('options')->insert([
-            'key' => 'rules',
+            'key' => 'home_content',
             'value' => '<h1>Home</h1><p>Lorem ipsum dolor sit amet.</p>',
         ]);
     }
