@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
@@ -15,6 +16,7 @@ class InsertHomeContentIntoOptionsTable extends Migration
         DB::table('options')->insert([
             'key' => 'home_content',
             'value' => '<h1>Home</h1><p>Lorem ipsum dolor sit amet.</p>',
+            'created_at' => Carbon::now(),
         ]);
     }
 

@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
@@ -15,6 +16,8 @@ class InsertRulesIntoOptionsTable extends Migration
         DB::table('options')->insert([
             'key' => 'rules',
             'value' => '<p>Lorem ipsum dolor sit amet.</p>',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
     }
 
