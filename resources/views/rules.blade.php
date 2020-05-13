@@ -32,7 +32,7 @@
                                     <div class="form-group ml-auto">
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input @error('accept-rules') is-invalid @enderror"
-                                                id="accept-rules" name="accept-rules" required>
+                                                id="accept-rules" name="accept-rules" required oninput="toggleButton()">
                                             <label class="custom-control-label" for="accept-rules">
                                                 Ich habe die Werkstattregeln durchgelesen und akzeptiere sie.
                                             </label>
@@ -42,7 +42,7 @@
                                           </div>
                                     </div>
                                     <div class="form-group ml-5">
-                                        <button type="submit" class="btn btn-primary">Absenden</button>
+                                        <button type="submit" class="btn btn-outline-secondary disabled" id="accept-submit">Absenden</button>
                                     </div>
                                 </form>
                                 @endif
@@ -53,4 +53,21 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script>
+        let checkbox = document.getElementById('accept-rules');
+        let submitButton = document.getElementById('accept-submit');
+
+        function toggleButton() {
+            if (checkbox.checked) {
+                submitButton.classList.remove('btn-outline-secondary', 'disabled');
+                submitButton.classList.add('btn-primary')
+            } else {
+                submitButton.classList.remove('btn-primary');
+                submitButton.classList.add('btn-outline-secondary', 'disabled');
+            }
+        }
+    </script>
 @endsection
