@@ -23,6 +23,11 @@ class UserServiceProvider extends ServiceProvider
             if (!$user) {
                 $user = new User();
                 $user->ldap_username = $username;
+
+                $isAdmin = User::count() < env('LDAP_ADMIN_THRESHOLD', 1);
+                # ddd(env('LDAP_ADMIN_THRESHOLD', 1), User::count(), $isAdmin);
+                $user->is_admin = $isAdmin;
+
                 $user->save();
             }
 
