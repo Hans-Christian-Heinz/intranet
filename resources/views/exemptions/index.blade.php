@@ -21,7 +21,7 @@
                                     <th class="text-center">Zeitraum</th>
                                     <th class="text-center">Begründung</th>
                                     <th class="text-center" style="width: 10%;">Status</th>
-                                    <th class="text-center">Optionen</th>
+                                    <th class="text-center" style="width: 11%;">Optionen</th>
                                 </tr>
                             </thead>
                             <tbody>
