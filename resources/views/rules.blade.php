@@ -22,7 +22,7 @@
 
                             <div>
                                 @if($hasAcceptedRules)
-                                    <p class="text-secondary my-auto">
+                                    <p class="text-center text-secondary my-auto">
                                         Sie haben die Werkstattregeln am <b>{{ $acceptedRulesAt->format('d.m.Y') }}</b> akzeptiert.
                                     </p>
                                 @else
@@ -41,7 +41,7 @@
                                         @enderror
                                           </div>
                                     </div>
-                                    <div class="form-group ml-5">
+                                    <div class="form-group ml-5 mr-auto">
                                         <button type="submit" class="btn btn-outline-secondary disabled" id="accept-submit">Absenden</button>
                                     </div>
                                 </form>
