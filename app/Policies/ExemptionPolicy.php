@@ -19,7 +19,7 @@ class ExemptionPolicy
     public function update(LdapUser $ldapUser, Exemption $exemption)
     {
         $user = app()->user;
-        return $exemption->status === 'new' && $user->is($exemption->owner)
+        return $exemption->status === 'new' && $user->is($exemption->owner);
     }
 
     public function edit(LdapUser $ldapUser, Exemption $exemption)
