@@ -16,6 +16,7 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('ldap_username')->unique();
+            $table->string('full_name');
             $table->boolean("is_admin")->default(false);
             $table->timestamp("accepted_rules_at")->nullable();
             $table->timestamps();
