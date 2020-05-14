@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use App\Exemption;
 use Illuminate\Http\Request;
 
 class AdminExemptionController extends Controller
 {
-     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $newExemptions = Exemption::where('status', 'new')->orderBy('start')->get();
@@ -19,6 +15,47 @@ class AdminExemptionController extends Controller
         $statuses = ['new' => 'Neu', 'approved' => 'Genehmigt', 'rejected' => 'Abgelehnt'];
 
         return view('admin.exemptions.index', compact('newExemptions', 'pastExemptions', 'statuses'));
+    }
+
+    public function show(Exemption $exemption)
+    {
+        $title = 'Freistellungsantrag';
+
+        $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+        $fontDirs = $defaultConfig['fontDir'];
+
+        $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+        $fontData = $defaultFontConfig['fontdata'];
+
+        $mpdf = new \Mpdf\Mpdf([
+            'mode' => 'utf-8',
+            'format' => 'A4',
+
+            'margin_left' => 20,
+            'margin_right' => 20,
+            'margin_top' => 20,
+            'margin_bottom' => 20,
+
+            'fontDir' => array_merge($fontDirs, [base_path() . '/resources/fonts']),
+            'fontdata' => $fontData + [
+                'opensans' => [
+                    'R' => 'OpenSans-Regular.ttf',
+                    'B' => 'OpenSans-Bold.ttf'
+                ]
+            ],
+            'default_font_size' => 12,
+            'default_font' => 'opensans',
+
+            'tempDir' => sys_get_temp_dir(),
+        ]);
+
+        $mpdf->SetTitle($title);
+
+        $applicant = User::find($exemption->user_id)->full_name;
+
+        $mpdf->WriteHTML(view('pdf.exemption', compact('exemption', 'applicant'))->render());
+
+        return $mpdf->Output($title . '.pdf', 'I');
     }
 
     public function edit(Exemption $exemption)
@@ -29,8 +66,8 @@ class AdminExemptionController extends Controller
     public function update(Exemption $exemption)
     {
         $attributes = request()->validate([
-            'start' => 'required',
-            'end' => 'required',
+            'start' => 'required|date|after_or_equal:now',
+            'end' => 'required|date|after_or_equal:start',
             'reason' => 'required',
             'status' => 'required|in:new,approved,rejected'
         ]);
@@ -41,7 +78,7 @@ class AdminExemptionController extends Controller
 
         $exemption->update($attributes);
 
-        return redirect()->route('admin.exemptions.index')->with('status', 'Die Freistellung wurde erfolgreich aktualisiert.');
+        return redirect()->route('admin.exemptions.edit', $exemption)->with('status', 'Die Freistellung wurde erfolgreich aktualisiert.');
     }
 
     public function destroy(Exemption $exemption)

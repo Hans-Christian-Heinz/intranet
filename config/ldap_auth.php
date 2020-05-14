@@ -289,6 +289,7 @@ return [
         // 'field_in_local_user_model' => 'attribute_in_ldap_server',
         env('AUTH_USER_KEY_FIELD', null) => env('LDAP_USER_SEARCH_ATTRIBUTE', null),
         'name' => 'cn',
+        'email' => 'mail',
     ],
 
     /*

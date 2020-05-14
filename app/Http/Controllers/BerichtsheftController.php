@@ -68,7 +68,7 @@ class BerichtsheftController extends Controller
     {
         $this->authorize('show', $berichtsheft);
 
-        $name = 'Berichtsheft ' . $berichtsheft->week->format('Y-\WW');
+        $title = 'Berichtsheft ' . $berichtsheft->week->format('Y-\WW');
 
         $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
         $fontDirs = $defaultConfig['fontDir'];
@@ -95,14 +95,14 @@ class BerichtsheftController extends Controller
             'default_font_size' => 12,
             'default_font' => 'opensans',
 
-            'tempDir' => sys_get_temp_dir()
+            'tempDir' => sys_get_temp_dir(),
         ]);
 
-        $mpdf->SetTitle($name);
+        $mpdf->SetTitle($title);
 
         $mpdf->WriteHTML(view('pdf.berichtsheft', compact('berichtsheft'))->render());
 
-        return $mpdf->Output($name . '.pdf', 'I');
+        return $mpdf->Output($title . '.pdf', 'I');
     }
 
     /**
