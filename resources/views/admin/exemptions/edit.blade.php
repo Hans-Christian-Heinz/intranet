@@ -16,25 +16,35 @@
                                 <div class="row">
                                     <div class="form-group col-md-6">
                                         <label for="start" class="font-weight-bold">Beginn:</label>
-                                        <input type="text" class="form-control @error('start') is-invalid @enderror" name="start" id="start" placeholder="YYYY-MM-DD (HH:MM)" pattern="\d{4}-\d{2}-\d{2}( \d{1,2}:\d{2})?"
-                                            value="{{ $exemption->start->format('H:i') == '00:00' ? $exemption->start->format('Y-m-d') : $exemption->start->format('Y-m-d H:i') }}">
-                                        @error('start')
-                                            <p class="invalid-feedback">{{ $message }}</p>
-                                        @enderror
+                                        <div class="input-group">
+                                            <input type="date" name="start-date" class="form-control @error('start-date') is-invalid @enderror"
+                                                placeholder="YYYY-MM-DD" value="{{ $exemption->start->format('Y-m-d') }}" required>
+                                            <input type="time" name="start-time" class="form-control @error('start-time') is-invalid @enderror" placeholder="HH:MM (optional)"
+                                                value="{{ $exemption->start->format('H:i') !== '00:00' ? $exemption->start->format('H:i') : '' }}">
+
+                                            @error("start-date") <p class="invalid-feedback">{{ $message }}</p> @enderror
+                                            @error("start-time") <p class="invalid-feedback">{{ $message }}</p> @enderror
+                                        </div>
                                     </div>
+
                                     <div class="form-group col-md-6">
                                         <label for="end" class="font-weight-bold">Ende:</label>
-                                        <input type="text" class="form-control @error('end') is-invalid @enderror" name="end" id="end" placeholder="YYYY-MM-DD (HH:MM)" pattern="\d{4}-\d{2}-\d{2}( \d{1,2}:\d{2})?"
-                                            value="{{ $exemption->end->format('H:i') == '00:00' ? $exemption->end->format('Y-m-d') : $exemption->end->format('Y-m-d H:i') }}">
-                                        @error('end')
-                                            <p class="invalid-feedback">{{ $message }}</p>
-                                        @enderror
+                                        <div class="input-group">
+                                            <input type="date" name="end-date" class="form-control @error('end-date') is-invalid @enderror"
+                                                placeholder="YYYY-MM-DD" value="{{ $exemption->end->format('Y-m-d') }}" required>
+                                            <input type="time" name="end-time" class="form-control @error('end-time') is-invalid @enderror" placeholder="HH:MM (optional)"
+                                                value="{{ $exemption->end->format('H:i') !== '00:00' ? $exemption->end->format('H:i') : '' }}">
+
+                                            @error("end-date") <p class="invalid-feedback">{{ $message }}</p> @enderror
+                                            @error("end-time") <p class="invalid-feedback">{{ $message }}</p> @enderror
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="reason" class="font-weight-bold">Begründung:</label>
-                                    <textarea class="form-control @error('reason') is-invalid @enderror" name="reason" id="reason" cols="30" rows="2" placeholder="Begründung">{{ $exemption->reason }}</textarea>
+                                    <textarea class="form-control @error('reason') is-invalid @enderror" name="reason" id="reason" cols="30"
+                                        rows="2" placeholder="Begründung">{{ $exemption->reason }}</textarea>
                                     @error('reason')
                                         <p class="invalid-feedback">{{ $message }}</p>
                                     @enderror

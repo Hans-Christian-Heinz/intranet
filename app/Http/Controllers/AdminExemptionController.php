@@ -66,11 +66,21 @@ class AdminExemptionController extends Controller
     public function update(Exemption $exemption)
     {
         $attributes = request()->validate([
-            'start' => 'required|date|after_or_equal:now',
-            'end' => 'required|date|after_or_equal:start',
+            'start-date' => 'required|date_format:Y-m-d|after_or_equal:now',
+            'start-time' => 'nullable|date_format:H:i',
+            'end-date' => 'required|date_format:Y-m-d|after_or_equal:start-date',
+            'end-time' => 'nullable|date_format:H:i',
             'reason' => 'required',
-            'status' => 'required|in:new,approved,rejected'
+            'status' => 'required|in:new,approved,rejected',
         ]);
+
+        $attributes['start'] = array_key_exists('start-time', $attributes)
+            ? $attributes['start-date'] . ' ' . $attributes['start-time']
+            : $attributes['start-date'];
+
+        $attributes['end'] = array_key_exists('end-time', $attributes)
+            ? $attributes['end-date'] . ' ' . $attributes['end-time']
+            : $attributes['end-date'];
 
         $attributes['admin_id'] = app()->user->id;
 

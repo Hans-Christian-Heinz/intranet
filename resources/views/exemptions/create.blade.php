@@ -15,19 +15,28 @@
                                 <div class="row">
                                     <div class="form-group col-md-6">
                                         <label for="start" class="font-weight-bold">Beginn:</label>
-                                        <input type="datetime-local" class="form-control @error('start') is-invalid @enderror" name="start" id="start"
-                                            placeholder="YYYY-MM-DD (HH:MM)" pattern="\d{4}-\d{2}-\d{2}( \d{1,2}:\d{2})?" value="{{ old("start") }}">
-                                        @error("start")
-                                            <p class="invalid-feedback">{{ $message }}</p>
-                                        @enderror
+                                        <div class="input-group">
+                                            <input type="date" name="start-date" class="form-control @error('start-date') is-invalid @enderror"
+                                                placeholder="YYYY-MM-DD" required>
+                                            <input type="time" name="start-time" class="form-control @error('start-time') is-invalid @enderror"
+                                                placeholder="HH:MM (optional)">
+
+                                            @error("start-date") <p class="invalid-feedback">{{ $message }}</p> @enderror
+                                            @error("start-time") <p class="invalid-feedback">{{ $message }}</p> @enderror
+                                        </div>
                                     </div>
+
                                     <div class="form-group col-md-6">
                                         <label for="end" class="font-weight-bold">Ende:</label>
-                                        <input type="datetime-local" class="form-control @error('end') is-invalid @enderror" name="end" id="end"
-                                            placeholder="YYYY-MM-DD (HH:MM)" pattern="\d{4}-\d{2}-\d{2}( \d{1,2}:\d{2})?" value="{{ old("end") }}">
-                                        @error("end")
-                                            <p class="invalid-feedback">{{ $message }}</p>
-                                        @enderror
+                                        <div class="input-group">
+                                            <input type="date" name="end-date" class="form-control @error('end-date') is-invalid @enderror"
+                                                placeholder="YYYY-MM-DD" required>
+                                            <input type="time" name="end-time" class="form-control @error('end-time') is-invalid @enderror"
+                                                placeholder="HH:MM (optional)">
+
+                                            @error("end-date") <p class="invalid-feedback">{{ $message }}</p> @enderror
+                                            @error("end-time") <p class="invalid-feedback">{{ $message }}</p> @enderror
+                                        </div>
                                     </div>
                                 </div>
 
@@ -38,6 +47,7 @@
                                         <p class="invalid-feedback">{{ $message }}</p>
                                     @enderror
                                 </div>
+
                                 <div class="form-group">
                                     <input type="submit" class="btn btn-primary" value="Freistellung beantragen">
                                 </div>

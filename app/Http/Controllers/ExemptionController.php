@@ -39,27 +39,26 @@ class ExemptionController extends Controller
     public function store(Request $request)
     {
         $attributes = request()->validate([
-            'start' => 'required|date|after_or_equal:now',
-            'end' => 'required|date|after_or_equal:start',
+            'start-date' => 'required|date_format:Y-m-d|after_or_equal:now',
+            'start-time' => 'nullable|date_format:H:i',
+            'end-date' => 'required|date_format:Y-m-d|after_or_equal:start-date',
+            'end-time' => 'nullable|date_format:H:i',
             'reason' => 'required',
         ]);
+
+        $attributes['start'] = array_key_exists('start-time', $attributes)
+            ? $attributes['start-date'] . ' ' . $attributes['start-time']
+            : $attributes['start-date'];
+
+        $attributes['end'] = array_key_exists('end-time', $attributes)
+            ? $attributes['end-date'] . ' ' . $attributes['end-time']
+            : $attributes['end-date'];
 
         $attributes['status'] = 'new';
 
         $berichtsheft = app()->user->exemptions()->create($attributes);
 
         return redirect()->route('exemptions.index')->with('status', 'Der Freistellungsantrag wurde erfolgreich hinzugefügt.');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Exemption  $exemption
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Exemption $exemption)
-    {
-        //
     }
 
     /**
@@ -87,10 +86,20 @@ class ExemptionController extends Controller
         $this->authorize('update', $exemption);
 
         $attributes = request()->validate([
-            'start' => 'required|date|after_or_equal:now',
-            'end' => 'required|date|after_or_equal:start',
+            'start-date' => 'required|date_format:Y-m-d|after_or_equal:now',
+            'start-time' => 'nullable|date_format:H:i',
+            'end-date' => 'required|date_format:Y-m-d|after_or_equal:start-date',
+            'end-time' => 'nullable|date_format:H:i',
             'reason' => 'required',
         ]);
+
+        $attributes['start'] = array_key_exists('start-time', $attributes)
+            ? $attributes['start-date'] . ' ' . $attributes['start-time']
+            : $attributes['start-date'];
+
+        $attributes['end'] = array_key_exists('end-time', $attributes)
+            ? $attributes['end-date'] . ' ' . $attributes['end-time']
+            : $attributes['end-date'];
 
         $exemption->update($attributes);
 
