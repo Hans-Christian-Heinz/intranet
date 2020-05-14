@@ -14,7 +14,7 @@
                                 @method('PATCH')
 
                                 <div class="row">
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-4">
                                         <label for="start" class="font-weight-bold">Beginn:</label>
                                         <div class="input-group">
                                             <input type="date" name="start-date" class="form-control @error('start-date') is-invalid @enderror"
@@ -27,7 +27,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-4">
                                         <label for="end" class="font-weight-bold">Ende:</label>
                                         <div class="input-group">
                                             <input type="date" name="end-date" class="form-control @error('end-date') is-invalid @enderror"
@@ -39,6 +39,8 @@
                                             @error("end-time") <p class="invalid-feedback">{{ $message }}</p> @enderror
                                         </div>
                                     </div>
+
+                                    <div class="col-md-4"></div>
                                 </div>
 
                                 <div class="form-group">
