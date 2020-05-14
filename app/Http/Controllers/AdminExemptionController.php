@@ -72,8 +72,6 @@ class AdminExemptionController extends Controller
             'status' => 'required|in:new,approved,rejected'
         ]);
 
-        # $attributes["start"] = Carbon::create($attributes["start"])->timestamp;
-        # $attributes["end"] = Carbon::create($attributes["end"])->timestamp;
         $attributes['admin_id'] = app()->user->id;
 
         $exemption->update($attributes);

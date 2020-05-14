@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Exemption;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ExemptionController extends Controller
@@ -44,9 +43,6 @@ class ExemptionController extends Controller
             'end' => 'required|date|after_or_equal:start',
             'reason' => 'required',
         ]);
-
-        # $attributes['start'] = Carbon::create($attributes['start'])->timestamp;
-        # $attributes['end'] = Carbon::create($attributes['end'])->timestamp;
 
         $attributes['status'] = 'new';
 
@@ -95,9 +91,6 @@ class ExemptionController extends Controller
             'end' => 'required|date|after_or_equal:start',
             'reason' => 'required',
         ]);
-
-        # $attributes['start'] = Carbon::create($attributes['start'])->timestamp;
-        # $attributes['end'] = Carbon::create($attributes['end'])->timestamp;
 
         $exemption->update($attributes);
 
