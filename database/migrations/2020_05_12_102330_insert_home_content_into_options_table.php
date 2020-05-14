@@ -15,7 +15,7 @@ class InsertHomeContentIntoOptionsTable extends Migration
     {
         DB::table('options')->insert([
             'key' => 'home_content',
-            'value' => '<h1>Home</h1><p>Lorem ipsum dolor sit amet.</p>',
+            'value' => file_get_contents('resources/home.html'),
             'created_at' => Carbon::now(),
         ]);
     }
