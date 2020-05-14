@@ -28,8 +28,17 @@
                                         <td class="text-center">{{ $exemption->id }}</td>
                                         <td class="text-center">{{ $exemption->owner->ldap_username }}</td>
                                         <td>
-                                            {{ $exemption->start->format('d. M Y H:i') }} –<br>
-                                            {{$exemption->end->format('d. M Y H:i') }}
+                                            @if ($exemption->start->format('H:i') === '00:00')
+                                                {{ $exemption->start->format('d. M Y') }}
+                                            @else
+                                                {{ $exemption->start->format('d. M Y H:i') }}
+                                            @endif
+                                            –<br>
+                                            @if ($exemption->end->format('H:i') === '00:00')
+                                                {{$exemption->end->format('d. M Y') }}
+                                            @else
+                                                {{$exemption->end->format('d. M Y H:i') }}
+                                            @endif
                                         </td>
                                         <td>{{ $exemption->reason }}</td>
                                         <td class="text-center">{{ $statuses[$exemption->status] }}</td>
@@ -75,8 +84,17 @@
                                             <td class="text-center">{{ $exemption->id }}</td>
                                             <td class="text-center">{{ $exemption->owner->ldap_username }}</td>
                                             <td>
-                                                {{ $exemption->start->format('d. M Y H:i') }} –<br>
-                                                {{$exemption->end->format('d. M Y H:i') }}
+                                                @if ($exemption->start->format('H:i') === '00:00')
+                                                    {{ $exemption->start->format('d. M Y') }}
+                                                @else
+                                                    {{ $exemption->start->format('d. M Y H:i') }}
+                                                @endif
+                                                –<br>
+                                                @if ($exemption->end->format('H:i') === '00:00')
+                                                    {{$exemption->end->format('d. M Y') }}
+                                                @else
+                                                    {{$exemption->end->format('d. M Y H:i') }}
+                                                @endif
                                             </td>
                                             <td>{{ $exemption->reason }}</td>
                                             <td class="text-center">

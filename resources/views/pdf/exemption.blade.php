@@ -27,9 +27,29 @@
     <body>
         <h1>Antrag auf Freistellung</h1>
         <p>
-            Ich, <strong>{{ $applicant }}</strong>,<br><br>
-            beantrage Freistellung von der Arbeitszeit/vom Unterricht<br><br>
-            vom <strong>{{ $exemption->start->format('d.m.Y H:i') }}</strong> bis <strong>{{ $exemption->end->format('d.m.Y H:i') }}</strong><br><br>
+            Ich, <strong>{{ $applicant }}</strong>,
+            <br><br>
+            beantrage Freistellung von der Arbeitszeit/vom Unterricht
+            <br><br>
+            vom
+            <strong>
+                @if ($exemption->start->format('H:i') === '00:00')
+                    {{ $exemption->start->format('d. M Y') }}
+                @else
+                    {{ $exemption->start->format('d. M Y H:i') }}
+                @endif
+            </strong>
+
+            bis
+            <strong>
+                @if ($exemption->end->format('H:i') === '00:00')
+                    {{$exemption->end->format('d. M Y') }}
+                @else
+                    {{$exemption->end->format('d. M Y H:i') }}
+                @endif
+            </strong>
+
+            <br><br>
             Grund: {{ $exemption->reason }}
         </p>
 
