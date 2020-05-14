@@ -17,6 +17,7 @@ class CreateUsersTable extends Migration
             $table->bigIncrements('id');
             $table->string('ldap_username')->unique();
             $table->string('full_name');
+            $table->string('email')->unique();
             $table->boolean("is_admin")->default(false);
             $table->timestamp("accepted_rules_at")->nullable();
             $table->timestamps();
