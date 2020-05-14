@@ -16,14 +16,16 @@
                                 <div class="row">
                                     <div class="form-group col-md-6">
                                         <label for="start" class="font-weight-bold">Beginn:</label>
-                                        <input type="datetime-local" class="form-control @error('start') is-invalid @enderror" name="start" id="start" placeholder="YYYY-MM-DD HH:MM" value="{{ $exemption->start }}">
+                                        <input type="datetime-local" class="form-control @error('start') is-invalid @enderror" name="start" id="start" placeholder="YYYY-MM-DD (HH:MM)"
+                                            value="{{ $exemption->start->format('H:i') == '00:00' ? $exemption->start->format('Y-m-d') : $exemption->start->format('Y-m-d H:i') }}">
                                         @error('start')
                                             <p class="invalid-feedback">{{ $message }}</p>
                                         @enderror
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="end" class="font-weight-bold">Ende:</label>
-                                        <input type="datetime-local" class="form-control @error('end') is-invalid @enderror" name="end" id="end" placeholder="YYYY-MM-DD HH:MM" value="{{ $exemption->end }}">
+                                        <input type="datetime-local" class="form-control @error('end') is-invalid @enderror" name="end" id="end" placeholder="YYYY-MM-DD (HH:MM)"
+                                            value="{{ $exemption->end->format('H:i') == '00:00' ? $exemption->end->format('Y-m-d') : $exemption->end->format('Y-m-d H:i') }}">
                                         @error('end')
                                             <p class="invalid-feedback">{{ $message }}</p>
                                         @enderror

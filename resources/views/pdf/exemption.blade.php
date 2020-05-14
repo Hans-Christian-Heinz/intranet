@@ -26,6 +26,9 @@
     </head>
     <body>
         <h1>Antrag auf Freistellung</h1>
+
+        <br>
+
         <p>
             Ich, <strong>{{ $applicant }}</strong>,
             <br><br>
