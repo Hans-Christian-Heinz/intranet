@@ -15,7 +15,7 @@ class InsertRulesIntoOptionsTable extends Migration
     {
         DB::table('options')->insert([
             'key' => 'rules',
-            'value' => '<p>Lorem ipsum dolor sit amet.</p>',
+            'value' => file_get_contents('resources/rules.html'),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
