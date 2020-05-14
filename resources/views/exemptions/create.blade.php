@@ -38,8 +38,6 @@
                                             @error("end-time") <p class="invalid-feedback">{{ $message }}</p> @enderror
                                         </div>
                                     </div>
-
-                                    <div class="col-md-4"></div>
                                 </div>
 
                                 <div class="form-group">
