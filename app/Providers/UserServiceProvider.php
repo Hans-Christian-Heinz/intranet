@@ -27,7 +27,6 @@ class UserServiceProvider extends ServiceProvider
                 $user->full_name = $fullName;
 
                 $isAdmin = User::count() < env('LDAP_ADMIN_THRESHOLD', 1);
-                # ddd(env('LDAP_ADMIN_THRESHOLD', 1), User::count(), $isAdmin);
                 $user->is_admin = $isAdmin;
 
                 $user->save();
