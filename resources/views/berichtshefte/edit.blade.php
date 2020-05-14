@@ -15,14 +15,14 @@
 
                                 <div class="row">
                                     <div class="form-group col-md-10">
-                                        <label for="week">Kalenderwoche</label>
+                                        <label for="week"><strong>Kalenderwoche:</strong></label>
                                         <input type="week" class="form-control @error('week') is-invalid @enderror" name="week" id="week" value="{{ $berichtsheft->week->format("Y-\WW") }}">
                                         @error("week")
                                             <p class="invalid-feedback">{{ $message }}</p>
                                         @enderror
                                     </div>
                                     <div class="form-group col-md-2">
-                                        <label for="grade">Lehrjahr</label>
+                                        <label for="grade"><strong>Lehrjahr:</strong></label>
                                         <select class="form-control @error('grade') is-invalid @enderror" name="grade" id="grade">
                                             @for ($i = 1; $i <= 3; $i++)
                                                 <option value="{{ $i }}" @if ($berichtsheft->grade == $i) selected @endif>{{ $i }}</option>
