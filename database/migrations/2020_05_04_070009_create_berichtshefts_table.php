@@ -34,6 +34,6 @@ class CreateBerichtsheftsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('berichtshefts');
+        Schema::dropIfExists('berichtshefte');
     }
 }
