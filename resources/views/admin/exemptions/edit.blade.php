@@ -44,7 +44,7 @@
                                 <div class="form-group">
                                     <label for="reason" class="font-weight-bold">Begründung:</label>
                                     <textarea class="form-control @error('reason') is-invalid @enderror" name="reason" id="reason" cols="30"
-                                        rows="2" placeholder="Begründung">{{ $exemption->reason }}</textarea>
+                                        rows="2" placeholder="Begründung" required>{{ $exemption->reason }}</textarea>
                                     @error('reason')
                                         <p class="invalid-feedback">{{ $message }}</p>
                                     @enderror
@@ -52,10 +52,10 @@
 
                                 <div class="form-group">
                                     <label for="status" class="font-weight-bold">Status:</label>
-                                    <select class="custom-select" name="status" id="status">
-                                        <option value="new" @if($exemption->status === 'new'){{'selected'}}@endif>&lt;Status auswählen&gt;</option>
-                                        <option value="approved" @if($exemption->status === 'approved'){{'selected'}}@endif>Genehmigt</option>
-                                        <option value="rejected" @if($exemption->status === 'rejected'){{'selected'}}@endif>Abgelehnt</option>
+                                    <select class="custom-select @error('status') is-invalid @enderror" name="status" id="status" required>
+                                        <option value="new" @if($exemption->status === 'new') selected @endif>&lt;Status auswählen&gt;</option>
+                                        <option value="approved" @if($exemption->status === 'approved') selected @endif>Genehmigt</option>
+                                        <option value="rejected" @if($exemption->status === 'rejected') selected @endif>Abgelehnt</option>
                                       </select>
                                     @error('status')
                                         <p class="invalid-feedback">{{ $message }}</p>
