@@ -13,7 +13,9 @@
                 @auth
                     @if (app()->user->isAdmin())
                     <li class="nav-item">
-                        <a href="{{ route("admin.index") }}" class="nav-link text-danger">Administration</a>
+                        <a href="{{ route("admin.index") }}" class="nav-link text-danger">
+                            <span class="fa fa-cog mr-2" aria-hidden="true"></span>Zur Administration
+                        </a>
                     </li>
                     @endif
                 @endauth
