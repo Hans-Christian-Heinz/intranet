@@ -36,9 +36,9 @@
                                             @endif
                                             –<br>
                                             @if ($exemption->end->format('H:i') === '00:00')
-                                                {{$exemption->end->format('d. M Y') }}
+                                                {{ $exemption->end->format('d. M Y') }}
                                             @else
-                                                {{$exemption->end->format('d. M Y H:i') }}
+                                                {{ $exemption->end->format('d. M Y H:i') }}
                                             @endif
                                         </td>
                                         <td>{{ $exemption->reason }}</td>
@@ -62,7 +62,9 @@
                             <div class="card-body text-center p-5">
                                 <h3>Noch keine Freistellungen vorhanden</h3>
                                 <p>Sie können hier eine neue Freistellung beantragen</p>
-                                <a href="{{ route("exemptions.create") }}" class="btn btn-outline-primary"><span class="fas fa-plus mr-2"></span>Freistellung beantragen</a>
+                                <a href="{{ route("exemptions.create") }}" class="btn btn-outline-primary">
+                                    <span class="fas fa-plus mr-2"></span>Freistellung beantragen
+                                </a>
                             </div>
                         </div>
                     @endif
