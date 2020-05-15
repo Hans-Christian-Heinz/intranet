@@ -30,16 +30,26 @@
                                     <td class="d-flex">
                                         @if ($user->is_admin)
                                             <span class="text-danger mr-auto">Admin</span>
-                                            <a href="{{ route('admin.users.demote', $user) }}">
-                                                <span class="fa fa-user-times text-secondary font-weight-bold" aria-hidden="true"
-                                                    data-toggle="tooltip" data-placement="right" title="Zu normalem Nutzer machen"></span>
-                                            </a>
+                                            <form action="{{ route('admin.users.demote', $user) }}" method="POST">
+                                                @csrf
+                                                @method('PATCH')
+
+                                                <button type="submit" class="btn btn-sm btn-outline-dark"
+                                                    data-toggle="tooltip" data-placement="right" title="Zu normalem Nutzer machen">
+                                                    <span class="fa fa-user-times font-weight-bold" aria-hidden="true">
+                                                </button>
+                                            </form>
                                         @else
                                             <span class="text-muted mr-auto">Benutzer</span>
-                                            <a href="{{ route('admin.users.promote', $user) }}">
-                                                <span class="fa fa-user-plus text-primary font-weight-bold" aria-hidden="true"
-                                                    data-toggle="tooltip" data-placement="right" title="Zu Admin machen"></span>
-                                            </a>
+                                            <form action="{{ route('admin.users.promote', $user) }}" method="POST">
+                                                @csrf
+                                                @method('PATCH')
+
+                                                <button type="submit" class="btn btn-sm btn-outline-primary"
+                                                    data-toggle="tooltip" data-placement="right" title="Zu Admin machen">
+                                                    <span class="fa fa-user-plus font-weight-bold" aria-hidden="true">
+                                                </button>
+                                            </form>
                                         @endif
                                     </td>
                                 </tr>
