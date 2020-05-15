@@ -52,8 +52,9 @@ class AdminExemptionController extends Controller
         $mpdf->SetTitle($title);
 
         $applicant = User::find($exemption->user_id)->full_name;
+        $approver = User::find($exemption->admin_id)->full_name;
 
-        $mpdf->WriteHTML(view('pdf.exemption', compact('exemption', 'applicant'))->render());
+        $mpdf->WriteHTML(view('pdf.exemption', compact('exemption', 'applicant', 'approver'))->render());
 
         return $mpdf->Output($title . '.pdf', 'I');
     }

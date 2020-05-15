@@ -16,7 +16,7 @@
                                 <tr>
                                     <th class="text-center text-strong" style="width: 2%;">#</th>
                                     <th class="text-center" style="width: 15%;">Benutzer</th>
-                                    <th class="text-center" style="width: 15%">Zeitraum</th>
+                                    <th class="text-center" style="width: 12%">Zeitraum</th>
                                     <th class="text-center">Begründung</th>
                                     <th class="text-center" style="width: 10%;">Status</th>
                                     <th class="text-center" style="width: 12%">Optionen</th>
@@ -29,15 +29,15 @@
                                         <td class="text-center">{{ $exemption->owner->ldap_username }}</td>
                                         <td>
                                             @if ($exemption->start->format('H:i') === '00:00')
-                                                {{ $exemption->start->format('d. M Y') }}
+                                                {{ $exemption->start->format('d.m.Y') }}
                                             @else
-                                                {{ $exemption->start->format('d. M Y H:i') }}
+                                                {{ $exemption->start->format('d.m.Y H:i') }}
                                             @endif
                                             –<br>
                                             @if ($exemption->end->format('H:i') === '00:00')
-                                                {{$exemption->end->format('d. M Y') }}
+                                                {{$exemption->end->format('d.m.Y') }}
                                             @else
-                                                {{$exemption->end->format('d. M Y H:i') }}
+                                                {{$exemption->end->format('d.m.Y H:i') }}
                                             @endif
                                         </td>
                                         <td>{{ $exemption->reason }}</td>
@@ -72,7 +72,7 @@
                                     <tr>
                                         <th class="text-center text-strong" style="width: 2%;">#</th>
                                         <th class="text-center" style="width: 15%;">Benutzer</th>
-                                        <th class="text-center" style="width: 15%">Zeitraum</th>
+                                        <th class="text-center" style="width: 12%">Zeitraum</th>
                                         <th class="text-center">Begründung</th>
                                         <th class="text-center" style="width: 10%;">Status</th>
                                         <th class="text-center" style="width: 12%">Optionen</th>
@@ -85,15 +85,15 @@
                                             <td class="text-center">{{ $exemption->owner->ldap_username }}</td>
                                             <td>
                                                 @if ($exemption->start->format('H:i') === '00:00')
-                                                    {{ $exemption->start->format('d. M Y') }}
+                                                    {{ $exemption->start->format('d.m.Y') }}
                                                 @else
-                                                    {{ $exemption->start->format('d. M Y H:i') }}
+                                                    {{ $exemption->start->format('d.m.Y H:i') }}
                                                 @endif
                                                 –<br>
                                                 @if ($exemption->end->format('H:i') === '00:00')
-                                                    {{$exemption->end->format('d. M Y') }}
+                                                    {{$exemption->end->format('d.m.Y') }}
                                                 @else
-                                                    {{$exemption->end->format('d. M Y H:i') }}
+                                                    {{$exemption->end->format('d.m.Y H:i') }}
                                                 @endif
                                             </td>
                                             <td>{{ $exemption->reason }}</td>

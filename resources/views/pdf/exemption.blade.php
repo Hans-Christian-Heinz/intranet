@@ -22,6 +22,12 @@
             .signature_extra {
                 font-size: 9pt;
             }
+
+            img {
+                margin-left: 50%;
+                margin-top: 5rem;
+            }
+
         </style>
     </head>
     <body>
@@ -37,23 +43,25 @@
             vom
             <strong>
                 @if ($exemption->start->format('H:i') === '00:00')
-                    {{ $exemption->start->format('d. M Y') }}
+                    {{ $exemption->start->format('d.m.Y') }}
                 @else
-                    {{ $exemption->start->format('d. M Y H:i') }}
+                    {{ $exemption->start->format('d.m.Y H:i') }}
                 @endif
             </strong>
 
             bis
             <strong>
                 @if ($exemption->end->format('H:i') === '00:00')
-                    {{$exemption->end->format('d. M Y') }}
+                    {{$exemption->end->format('d.m.Y') }}
                 @else
-                    {{$exemption->end->format('d. M Y H:i') }}
+                    {{$exemption->end->format('d.m.Y H:i') }}
                 @endif
             </strong>
 
             <br><br>
             Grund: {{ $exemption->reason }}
+            <br><br>
+            Genehmigt von <strong>{{ $approver }}</strong> am <strong>{{ now()->format('d.m.Y') }}</strong>.
         </p>
 
         <table style="width: 100%; margin-top: 35px;">
@@ -95,6 +103,6 @@
             &#x2610; Werkstatt/Schule<br>
         </p>
 
-        <img src="{{ asset("/img/bbw_logo.png") }}" style="margin-left: 50%;">
+        <img src="{{ asset("/img/bbw_logo.png") }}">
     </body>
 </html>
