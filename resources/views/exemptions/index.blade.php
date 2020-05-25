@@ -18,7 +18,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-center text-strong" style="width: 2%;">#</th>
-                                    <th class="text-center" style="width: 12%;">Zeitraum</th>
+                                    <th class="text-center" style="width: 15%;">Zeitraum</th>
                                     <th class="text-center">Begründung</th>
                                     <th class="text-center" style="width: 10%;">Status</th>
                                     <th class="text-center" style="width: 11%;">Optionen</th>
