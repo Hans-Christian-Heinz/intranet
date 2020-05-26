@@ -67,7 +67,7 @@ class AdminExemptionController extends Controller
     public function update(Exemption $exemption)
     {
         $attributes = request()->validate([
-            'start-date' => 'required|date_format:Y-m-d|after_or_equal:now',
+            'start-date' => 'required|date_format:Y-m-d',
             'start-time' => 'nullable|date_format:H:i',
             'end-date' => 'required|date_format:Y-m-d|after_or_equal:start-date',
             'end-time' => 'nullable|date_format:H:i',
