@@ -16,7 +16,7 @@
                                 <th class="text-center text-strong" style="width: 2%;">#</th>
                                 <th class="text-center">Nutzername</th>
                                 <th class="text-center">Klarname</th>
-                                <th class="text-center">E-Mail-Adresse</th>
+                                <th class="text-center" style="width: 15%;">Regeln akzeptiert</th>
                                 <th class="text-center" style="width: 12%;">Rechte</th>
                             </tr>
                         </thead>
@@ -26,7 +26,14 @@
                                     <td>{{ $user->id }}</td>
                                     <td>{{ $user->ldap_username }}</td>
                                     <td>{{ $user->full_name }}</td>
-                                    <td>{{ $user->email }}</td>
+                                    <td>
+                                        @if ($user->hasAcceptedRules())
+                                            <span class="fa fa-check text-success mr-5"></span>
+                                            {{ $user->accepted_rules_at->format('d.m.Y')}}
+                                        @else
+                                            <span class="fa fa-times text-danger"></span>
+                                        @endif
+                                    </td>
                                     <td class="d-flex">
                                         @if ($user->is_admin)
                                             <span class="text-danger mr-auto">Admin</span>
