@@ -54,7 +54,7 @@
                                         <p class="invalid-feedback">{{ $message }}</p>
                                     @enderror
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group mb-0">
                                     <input type="submit" class="btn btn-primary" value="Berichtsheft hinzufügen">
                                 </div>
                             </form>

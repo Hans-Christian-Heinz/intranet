@@ -55,7 +55,7 @@
                                         <p class="invalid-feedback">{{ $message }}</p>
                                     @enderror
                                 </div>
-                                <div class="form-group d-flex">
+                                <div class="form-group d-flex mb-0">
                                     <div class="mr-auto">
                                         <button type="submit" class="btn btn-primary">
                                             <span class="fa fa-floppy-o mr-2"></span>Änderungen speichern

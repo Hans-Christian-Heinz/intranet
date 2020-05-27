@@ -48,7 +48,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group mb-0">
                                     <input type="submit" class="btn btn-primary" value="Freistellung beantragen">
                                 </div>
                             </form>

@@ -50,7 +50,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group mb-0">
                                     <a href="{{ route('exemptions.index') }}" class="btn btn-outline-secondary">
                                         <span class="fa fa-times mr-2"></span>Abbrechen
                                     </a>
