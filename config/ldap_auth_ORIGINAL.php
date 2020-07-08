@@ -169,8 +169,7 @@ return [
             |
             */
 
-            //'username_column' => 'email',
-            'username_column' => 'ldap_username',
+            'username_column' => 'email',
 
         ],
 
@@ -248,8 +247,7 @@ return [
         |
         */
 
-        //'column' => 'password',
-        'column' => null,
+        'column' => 'password',
 
     ],
 
@@ -288,9 +286,6 @@ return [
     */
 
     'sync_attributes' => [
-
-        //App\Handlers\LdapAttributeHandler::class,
-
         // 'field_in_local_user_model' => 'attribute_in_ldap_server',
         env('AUTH_USER_KEY_FIELD', null) => env('LDAP_USER_SEARCH_ATTRIBUTE', null),
         'name' => 'cn',

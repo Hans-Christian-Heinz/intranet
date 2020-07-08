@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Adldap\Laravel\Facades\Adldap;
 use Illuminate\Support\ServiceProvider;
 use App\User;
 
@@ -28,7 +29,17 @@ class UserServiceProvider extends ServiceProvider
                 $user->full_name = $fullName;
                 $user->email = $email;
 
-                $isAdmin = User::count() < env('LDAP_ADMIN_THRESHOLD', 1);
+                //Determine, if a user is an administrator.
+                //Originally: first two users in the database were admins.
+                //$isAdmin = User::count() < env('LDAP_ADMIN_THRESHOLD', 1);
+                $isAdmin = false;
+                $groups = Adldap::search()->findByDn(sprintf(env('LDAP_USER_FULL_DN_FMT'), $username))->getMemberOf();
+                foreach ($groups as $group) {
+                    if (strpos($group, 'cn=admins') == 0) {
+                        $isAdmin = true;
+                        break;
+                    }
+                }
                 $user->is_admin = $isAdmin;
 
                 $user->save();
