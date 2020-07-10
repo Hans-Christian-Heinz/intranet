@@ -202,9 +202,9 @@ return [
 
         'windows' => [
 
-            'locate_users_by' => 'samaccountname',
+            'locate_users_by' => 'uid',
 
-            'server_key' => 'AUTH_USER',
+            'server_key' => 'PHP_AUTH_USER',
 
         ],
 

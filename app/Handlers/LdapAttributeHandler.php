@@ -26,12 +26,22 @@ class LdapAttributeHandler
     public function handle(LdapUser $ldapUser, EloquentUser $eloquentUser)
     {
         $username = env('AUTH_USER_KEY_FIELD', 'username');
-        $eloquentUser->$username = $ldapUser->getFirstAttribute(env('LDAP_USER_SEARCH_ATTRIBUTE', 'uid'));
-        //$eloquentUser->username = $ldapUser->getAttribute(env('LDAP_USER_SEARCH_ATTRIBUTE', 'uid'));
-        $eloquentUser->ldap_username = $ldapUser->getFirstAttribute(env('LDAP_USER_SEARCH_ATTRIBUTE', 'uid'));
+        $db_username = env('DB_USER_KEY_FIELD', 'ldap_username');
+        //$eloquentUser->$username = $ldapUser->getFirstAttribute(env('LDAP_USER_SEARCH_ATTRIBUTE', 'uid'));
+        $eloquentUser->username = $ldapUser->getFirstAttribute(env('LDAP_USER_SEARCH_ATTRIBUTE', 'uid'));
+        $eloquentUser->$db_username = $ldapUser->getFirstAttribute(env('LDAP_USER_SEARCH_ATTRIBUTE', 'uid'));
+        //$eloquentUser->ldap_username = $ldapUser->getFirstAttribute(env('LDAP_USER_SEARCH_ATTRIBUTE', 'uid'));
         $eloquentUser->name = $ldapUser->getCommonName();
         //$eloquentUser->email = $ldapUser->getAttribute('mail');
         $eloquentUser->email = $ldapUser->getEmail();
         //$eloquentUser->groups = json_encode($ldapUser->getMemberOf());
+        $is_admin = false;
+        foreach ($ldapUser->getMemberOf() as $group) {
+            if (strpos($group, 'cn=admins') == 0) {
+                $is_admin = true;
+                break;
+            }
+        }
+        $eloquentUser->is_admin = $is_admin;
     }
 }

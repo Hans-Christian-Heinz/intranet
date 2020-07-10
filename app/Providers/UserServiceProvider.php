@@ -20,6 +20,20 @@ class UserServiceProvider extends ServiceProvider
             $username = $app->auth->user()->username;
             $fullName = $app->auth->user()->name;
             $email = $app->auth->user()->email;
+            //sso guard: isAdmin wird lieg bereits vor; manuelles Einloggen (web guard): isAdmin liegt nicht vor
+            if (isset($app->auth->user()->isAdmin)) {
+                $isAdmin = $app->auth->user()->isAdmin;
+            }
+            else {
+                $isAdmin = false;
+                $groups = Adldap::search()->findByDn(sprintf(env('LDAP_USER_FULL_DN_FMT'), $username))->getMemberOf();
+                foreach ($groups as $group) {
+                    if (strpos($group, 'cn=admins') === 0) {
+                        $isAdmin = true;
+                        break;
+                    }
+                }
+            }
 
             $user = User::firstWhere('ldap_username', $username);
 
@@ -29,17 +43,6 @@ class UserServiceProvider extends ServiceProvider
                 $user->full_name = $fullName;
                 $user->email = $email;
 
-                //Determine, if a user is an administrator.
-                //Originally: first two users in the database were admins.
-                //$isAdmin = User::count() < env('LDAP_ADMIN_THRESHOLD', 1);
-                $isAdmin = false;
-                $groups = Adldap::search()->findByDn(sprintf(env('LDAP_USER_FULL_DN_FMT'), $username))->getMemberOf();
-                foreach ($groups as $group) {
-                    if (strpos($group, 'cn=admins') == 0) {
-                        $isAdmin = true;
-                        break;
-                    }
-                }
                 $user->is_admin = $isAdmin;
 
                 $user->save();
@@ -51,6 +54,11 @@ class UserServiceProvider extends ServiceProvider
 
                 if ($user->email !== $email) {
                     $user->email = $email;
+                    $user->save();
+                }
+
+                if ($user->is_admin != $isAdmin) {
+                    $user->is_admin = $isAdmin;
                     $user->save();
                 }
             }

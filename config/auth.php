@@ -14,7 +14,8 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        //'guard' => 'web',
+        'guard' => 'sso',
         'passwords' => 'users',
     ],
 
@@ -40,6 +41,11 @@ return [
             'driver' => 'session',
             'provider' => 'ldap',
         ],
+
+        'sso' => [
+            'driver' => 'sso',
+            'provider' => 'ldap',
+        ]
 
         /* 'api' => [
             'driver' => 'token',
