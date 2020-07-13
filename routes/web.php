@@ -38,6 +38,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/exemptions/{exemption}/edit', 'ExemptionController@edit')->name('exemptions.edit');
     Route::patch('/exemptions/{exemption}', 'ExemptionController@update')->name('exemptions.update');
     Route::delete('/exemptions/{berichtsheft}', 'ExemptionController@destroy')->name('exemptions.destroy');
+
+    //Routen für das Abschlussprojekt
+    Route::get('/abschlussprojekt', 'ProjektController@index')->name('abschlussprojekt.index');
+    Route::post('abschlussprojekt/create', 'ProjektController@create')->name('abschlussprojekt.create');
 });
 
 Route::group(['middleware' => 'admin'], function () {
