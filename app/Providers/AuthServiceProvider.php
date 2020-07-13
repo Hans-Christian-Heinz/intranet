@@ -29,6 +29,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+        //custom auth_guard for single sign on
         Auth::viaRequest('sso', function ($request) {
             $username = $request->server(env('SERVER_USERNAME_FIELD', 'REMOTE_USER'));
 
@@ -53,10 +54,9 @@ class AuthServiceProvider extends ServiceProvider
                 ]);
             }
             else {
-                if (Auth::guard('web')->check()) {
-                    return Auth::guard('web')->user();
-                }
-                return null;
+                //Wenn die Kerberos-Anmeldung nicht funktioniert oder sonst manuelle Anmeldung erwünscht ist, verwende
+                //auth-guard web.
+                return Auth::guard('web')->user();
             }
         });
     }

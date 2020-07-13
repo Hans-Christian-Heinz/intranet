@@ -50,7 +50,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/admin/exemptions/{exemption}/edit', 'AdminExemptionController@edit')->name('admin.exemptions.edit');
     Route::get('/admin/exemptions/{exemption}', 'AdminExemptionController@show')->name('admin.exemptions.show');
     Route::patch('/admin/exemptions/{exemption}', 'AdminExemptionController@update')->name('admin.exemptions.update');
-    Route::delete('/admin/exemptions/{berichtsheft}', 'AdminExemptionController@destroy')->name('admin.exemptions.destroy');
+    Route::delete('/admin/exemptions/{exemption}', 'AdminExemptionController@destroy')->name('admin.exemptions.destroy');
 
     Route::get('/admin/users', 'AdminUserController@index')->name('admin.users.index');
     Route::patch('/admin/users/{user}/promote', 'AdminUserController@promote')->name('admin.users.promote');

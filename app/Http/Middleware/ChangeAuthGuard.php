@@ -15,7 +15,7 @@ class ChangeAuthGuard
      */
     public function handle($request, Closure $next)
     {
-        //nach ausloggen soll manuelles einloggen möglich und nötig sein
+        //nach Ausloggen soll manuelles Einloggen möglich und nötig sein
         auth()->setDefaultDriver('web');
         session()->put('auth_guard', 'web');
 
