@@ -15,6 +15,16 @@ class UserServiceProvider extends ServiceProvider
      */
     public function register()
     {
+
+    }
+
+    /**
+     * Bootstrap services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
         $this->app->singleton('user', function ($app) {
 
             $username = $app->auth->user()->username;
@@ -65,15 +75,5 @@ class UserServiceProvider extends ServiceProvider
 
             return $user;
         });
-    }
-
-    /**
-     * Bootstrap services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        //
     }
 }

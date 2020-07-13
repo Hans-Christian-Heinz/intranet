@@ -31,8 +31,10 @@ class AuthServiceProvider extends ServiceProvider
 
         Auth::viaRequest('sso', function ($request) {
             $username = $request->server(env('SERVER_USERNAME_FIELD', 'REMOTE_USER'));
-            $username = substr($username, 0, strpos($username, env('KERBEROS_DOMAIN', '')));
-            if ($username) {
+
+            if (session()->get('auth_guard', 'sso') === 'sso' && $username) {
+
+                $username = substr($username, 0, strpos($username, env('KERBEROS_DOMAIN', '')));
                 $adldap_user = Adldap::search()->findByDn(sprintf(env('LDAP_USER_FULL_DN_FMT'), $username));
                 $isAdmin = false;
                 foreach ($adldap_user->getMemberOf() as $group) {
@@ -51,6 +53,9 @@ class AuthServiceProvider extends ServiceProvider
                 ]);
             }
             else {
+                if (Auth::guard('web')->check()) {
+                    return Auth::guard('web')->user();
+                }
                 return null;
             }
         });
