@@ -18,8 +18,8 @@ class CreateProjectsTable extends Migration
             $table->unsignedBigInteger("user_id");
             $table->unsignedBigInteger("supervisor_id")->nullable();
             $table->string('topic');
-            $table->dateTime('start');
-            $table->dateTime('end');
+            $table->dateTime('start')->nullable();
+            $table->dateTime('end')->nullable();
             $table->timestamps();
 
             $table->foreign("user_id")->references("id")->on("users")->onDelete("cascade");

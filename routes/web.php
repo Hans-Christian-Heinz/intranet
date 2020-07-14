@@ -40,8 +40,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/exemptions/{berichtsheft}', 'ExemptionController@destroy')->name('exemptions.destroy');
 
     //Routen für das Abschlussprojekt
-    Route::get('/abschlussprojekt', 'ProjektController@index')->name('abschlussprojekt.index');
-    Route::post('abschlussprojekt/create', 'ProjektController@create')->name('abschlussprojekt.create');
+    Route::group([
+        'prefix' => 'abschlussprojekt',
+        'as' => 'abschlussprojekt.',
+    ], function() {
+        Route::get('/', 'ProjectController@index')->name('index');
+        Route::post('/create', 'ProjectController@create')->name('create');
+        Route::patch('{project}/update', 'ProjectController@update')->name('update');
+    });
 });
 
 Route::group(['middleware' => 'admin'], function () {
