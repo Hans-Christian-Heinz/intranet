@@ -17,7 +17,6 @@ class CreateProposalsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('project_id');
             $table->unsignedBigInteger('changed_by')->nullable();
-            $table->dateTime('version');
             $table->timestamps();
 
             $table->foreign("project_id")->references("id")->on("projects")->onDelete("cascade");

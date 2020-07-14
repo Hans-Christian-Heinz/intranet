@@ -19,7 +19,6 @@ class CreateDocumentationsTable extends Migration
             $table->unsignedBigInteger('changed_by')->nullable();
             $table->string('shortTitle')->nullable();
             $table->string('longTitle')->nullable();
-            $table->dateTime('version');
             $table->timestamps();
 
             $table->foreign("project_id")->references("id")->on("projects")->onDelete("cascade");

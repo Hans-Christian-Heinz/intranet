@@ -31,7 +31,15 @@ class Project extends Model
         return $this->hasOne(Proposal::class);
     }
 
+    public function proposalHistory() {
+        return $this->hasMany(Proposal::class);
+    }
+
     public function documentation() {
         return $this->hasOne(Documentation::class);
+    }
+
+    public function documentationHistory() {
+        return $this->hasMany(Documentation::class);
     }
 }

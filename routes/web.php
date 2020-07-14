@@ -47,6 +47,15 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/', 'ProjectController@index')->name('index');
         Route::post('/create', 'ProjectController@create')->name('create');
         Route::patch('{project}/update', 'ProjectController@update')->name('update');
+
+        //Routen für den Projektantrag
+        Route::group([
+            'prefix' => '/{project}/antrag',
+            'as' => 'antrag.',
+        ], function() {
+            Route::get('/', 'ProposalController@index')->name('index');
+            Route::get('/create', 'ProposalController@create')->name('create');
+        });
     });
 });
 

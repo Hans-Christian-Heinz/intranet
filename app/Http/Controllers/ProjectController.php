@@ -19,7 +19,7 @@ class ProjectController extends Controller
         ]);
 
         app()->user->project()->create($values);
-        return redirect(route('abschlussprojekt.index'));
+        return redirect(route('abschlussprojekt.index'))->with('status', 'Das Thema wurde erfolgreich gewählt.');
     }
 
     public function update(Request $request, Project $project) {
@@ -32,7 +32,7 @@ class ProjectController extends Controller
         ]);
 
         $project->update($values);
-        return redirect(route('abschlussprojekt.index'));
+        return redirect(route('abschlussprojekt.index'))->with('status', 'Das Thema wurde erfolgreich geändert.');
 
     }
 }
