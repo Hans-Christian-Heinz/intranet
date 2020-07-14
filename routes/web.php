@@ -54,7 +54,9 @@ Route::group(['middleware' => 'auth'], function () {
             'as' => 'antrag.',
         ], function() {
             Route::get('/', 'ProposalController@index')->name('index');
+            //TODO: sollte keine get Route sein.
             Route::get('/create', 'ProposalController@create')->name('create');
+            Route::post('/', 'ProposalController@store')->name('store');
         });
     });
 });
