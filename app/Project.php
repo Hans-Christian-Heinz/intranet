@@ -21,4 +21,17 @@ class Project extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function supervisor()
+    {
+        return $this->belongsTo(User::class, 'supervisor_id', 'id');
+    }
+
+    public function proposal() {
+        return $this->hasOne(Proposal::class);
+    }
+
+    public function documentation() {
+        return $this->hasOne(Documentation::class);
+    }
 }

@@ -19,6 +19,7 @@ class CreateSectionsTable extends Migration
             $table->unsignedBigInteger('documentation_id')->nullable();
             $table->string('name');
             $table->string('heading');
+            $table->text('text')->nullable();
             $table->unsignedSmallInteger('sequence');
             $table->boolean("is_locked")->default(false);
             $table->timestamps();

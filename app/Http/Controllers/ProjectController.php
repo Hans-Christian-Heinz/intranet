@@ -23,6 +23,8 @@ class ProjectController extends Controller
     }
 
     public function update(Request $request, Project $project) {
+        $this->authorize('update', $project);
+
         $values = $request->validate([
             'topic' => 'string|required|max:255',
             'start' => 'nullable|date|after:today',

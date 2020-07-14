@@ -60,4 +60,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Project::class);
     }
+
+    public function supervisedProjects()
+    {
+        return $this->hasMany(Project::class, 'supervisor_id', 'id');
+    }
 }
