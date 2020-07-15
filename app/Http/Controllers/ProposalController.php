@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreProposalRequest;
 use App\Phase;
 use App\Project;
 use App\Proposal;
@@ -45,14 +46,7 @@ class ProposalController extends Controller
      * @param Project $project
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function store(Request $request, Project $project) {
-        // TODO validation; Fehlermeldung, die angibt, in welchem Abschnitt ein Fehler vorliegt
-        // TODO validieren des Phasentext
-        $request->validate([
-            'start' => 'required|date|after:today',
-            'end' => 'required|date|after:start',
-        ]);
-
+    public function store(StoreProposalRequest $request, Project $project) {
         $sectionsOld = $project->proposal->sections;
 
         $proposal = new Proposal();
@@ -60,14 +54,6 @@ class ProposalController extends Controller
         $proposal->project()->associate($project);
         $proposal->save();
         foreach($sectionsOld as $old) {
-            /*$section = $old->replicate();
-            $name = $old->name;
-            $section->text = $request->$name;
-            $proposal->sections()->save($section);
-            //ggf Unterabschnitte
-            if ($old->sections->isNotEmpty()) {
-
-            }*/
             $this->saveSection($request, $proposal, $old);
         }
 

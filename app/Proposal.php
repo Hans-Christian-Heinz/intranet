@@ -12,16 +12,18 @@ class Proposal extends Model
         ['name' => 'deadline', 'heading' => 'Termin', 'sequence' => 1, 'tpl' => 'deadline_section',],
         ['name' => 'description', 'heading' => 'Beschreibung', 'sequence' => 2,],
         ['name' => 'environment', 'heading' => 'Umfeld', 'sequence' => 3,],
-        ['name' => 'phases', 'heading' => 'Phasen', 'sequence' => 4, 'tpl' => 'phases_parent_section', 'sections' => [
-            ['name' => 'planung', 'heading' => 'Planung und Analyse', 'sequence' => 0, 'tpl' => 'phases_text_section',],
-            ['name' => 'entwurf', 'heading' => 'Entwurf', 'sequence' => 0, 'tpl' => 'phases_text_section',],
-            ['name' => 'implementierung', 'heading' => 'Implementierung', 'sequence' => 0, 'tpl' => 'phases_text_section',],
-            ['name' => 'test', 'heading' => 'Test', 'sequence' => 0, 'tpl' => 'phases_text_section',],
-            ['name' => 'abnahme', 'heading' => 'Abnahme und Dokumentation', 'sequence' => 0, 'tpl' => 'phases_text_section',],
-        ],],
+        ['name' => 'phases', 'heading' => 'Phasen', 'sequence' => 4, 'tpl' => 'phases_parent_section', 'sections' => self::PHASES,],
         ['name' => 'documentation', 'heading' => 'Dokumentation', 'sequence' => 5,],
         ['name' => 'attachments', 'heading' => 'Anlagen', 'sequence' => 6,],
         ['name' => 'presantation', 'heading' => 'Präsentationsmittel', 'sequence' => 7,],
+    ];
+
+    const PHASES = [
+        ['name' => 'planung', 'heading' => 'Planung und Analyse', 'sequence' => 0, 'tpl' => 'phases_text_section',],
+        ['name' => 'entwurf', 'heading' => 'Entwurf', 'sequence' => 0, 'tpl' => 'phases_text_section',],
+        ['name' => 'implementierung', 'heading' => 'Implementierung', 'sequence' => 0, 'tpl' => 'phases_text_section',],
+        ['name' => 'test', 'heading' => 'Test', 'sequence' => 0, 'tpl' => 'phases_text_section',],
+        ['name' => 'abnahme', 'heading' => 'Abnahme und Dokumentation', 'sequence' => 0, 'tpl' => 'phases_text_section',],
     ];
 
     /**

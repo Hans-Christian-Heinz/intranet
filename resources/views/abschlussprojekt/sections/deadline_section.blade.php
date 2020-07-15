@@ -7,8 +7,7 @@
         <td>
             <input type="date" id="start" class="form-control @error('start') is-invalid @enderror" required
                    name="start" form="{{ $form }}" @isset($proposal->start) value="{{ $proposal->start->format('Y-m-d') }}" @endisset/>
-        </td>
-        <td>
+
             @error("start") <p class="invalid-feedback">{{ $message }}</p> @enderror
         </td>
     </tr>
@@ -19,8 +18,7 @@
         <td>
             <input type="date" id="end" class="form-control @error('end') is-invalid @enderror" required
                    name="end" form="{{ $form }}" @isset($proposal->end) value="{{ $proposal->end->format('Y-m-d') }}" @endisset/>
-        </td>
-        <td>
+            
             @error("end") <p class="invalid-feedback">{{ $message }}</p> @enderror
         </td>
     </tr>
