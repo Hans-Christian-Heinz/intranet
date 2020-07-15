@@ -1,4 +1,4 @@
 {{-- Ein Abschnitt, der durch ein Textfeld beschrieben wird --}}
 
-<textarea id="{{ $section->name }}_text" name="{{ $section->name }}" placeholder="{{ $section->heading }}"
-          class="form-control mt-2" form="{{ $form }}">{{ $section->text }}</textarea>
+<textarea id="{{ $s->name }}_text" name="{{ $s->name }}" placeholder="{{ $s->heading }}"
+          class="form-control mt-2" form="{{ $form }}">{{ $s->text }}</textarea>

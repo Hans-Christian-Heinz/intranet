@@ -17,6 +17,16 @@ class Project extends Model
         'end',
     ];
 
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'start',
+        'end',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -28,7 +38,7 @@ class Project extends Model
     }
 
     public function proposal() {
-        return $this->hasOne(Proposal::class);
+        return $this->belongsTo(Proposal::class);
     }
 
     public function proposalHistory() {
@@ -36,7 +46,7 @@ class Project extends Model
     }
 
     public function documentation() {
-        return $this->hasOne(Documentation::class);
+        return $this->belongsTo(Documentation::class);
     }
 
     public function documentationHistory() {

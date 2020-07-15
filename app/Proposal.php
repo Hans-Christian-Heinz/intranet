@@ -9,10 +9,16 @@ class Proposal extends Model
     // Die Abschnitte eines Projektantrags
     const SECTIONS = [
         ['name' => 'topic', 'heading' => 'Thema', 'sequence' => 0,],
-        ['name' => 'deadline', 'heading' => 'Termin', 'sequence' => 1,],
+        ['name' => 'deadline', 'heading' => 'Termin', 'sequence' => 1, 'tpl' => 'deadline_section',],
         ['name' => 'description', 'heading' => 'Beschreibung', 'sequence' => 2,],
         ['name' => 'environment', 'heading' => 'Umfeld', 'sequence' => 3,],
-        ['name' => 'phases', 'heading' => 'Phasen', 'sequence' => 4,],
+        ['name' => 'phases', 'heading' => 'Phasen', 'sequence' => 4, 'tpl' => 'phases_parent_section', 'sections' => [
+            ['name' => 'planung', 'heading' => 'Planung und Analyse', 'sequence' => 0, 'tpl' => 'phases_text_section',],
+            ['name' => 'entwurf', 'heading' => 'Entwurf', 'sequence' => 0, 'tpl' => 'phases_text_section',],
+            ['name' => 'implementierung', 'heading' => 'Implementierung', 'sequence' => 0, 'tpl' => 'phases_text_section',],
+            ['name' => 'test', 'heading' => 'Test', 'sequence' => 0, 'tpl' => 'phases_text_section',],
+            ['name' => 'abnahme', 'heading' => 'Abnahme und Dokumentation', 'sequence' => 0, 'tpl' => 'phases_text_section',],
+        ],],
         ['name' => 'documentation', 'heading' => 'Dokumentation', 'sequence' => 5,],
         ['name' => 'attachments', 'heading' => 'Anlagen', 'sequence' => 6,],
         ['name' => 'presantation', 'heading' => 'Präsentationsmittel', 'sequence' => 7,],
@@ -26,15 +32,24 @@ class Proposal extends Model
     protected $with = ['sections'];
 
     /**
-     * create the standard sections of a project-proposal
+     * create the standard sections of a document (proposal or documentation)
      */
     public function makeSections() {
-        $sections = [];
         foreach (self::SECTIONS as $sect) {
-            array_push($sections, new Section($sect));
+            $s = new Section($sect);
+            $this->sections()->save($s);
+            if ($s->sections) {
+                $s->makeSections(array_key_exists('sections', $sect) ? $sect['sections'] : []);
+            }
         }
+    }
 
-        $this->sections()->saveMany($sections);
+    public function getStartAttribute() {
+        return $this->project->start;
+    }
+
+    public function getEndAttribute() {
+        return $this->project->end;
     }
 
     public function project() {
