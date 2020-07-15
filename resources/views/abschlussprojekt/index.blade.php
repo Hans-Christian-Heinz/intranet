@@ -35,7 +35,8 @@
                             <tr>
                                 <td colspan="2">Projektdokumentation</td>
                                 <td>
-                                    <a @isset($project) href="#" @else href="#chooseTopic" data-toggle="modal" @endisset class="btn btn-sm btn-secondary">
+                                    <a @isset($project) href="{{ route('abschlussprojekt.dokumentation.index', $project) }}"
+                                       @else href="#chooseTopic" data-toggle="modal" @endisset class="btn btn-sm btn-secondary">
                                         <span class="fa fa-pencil-square-o mr-1" aria-hidden="true"></span>Bearbeiten
                                     </a>
                                 </td>

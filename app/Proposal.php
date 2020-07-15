@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Traits\HasSections;
 use Illuminate\Database\Eloquent\Model;
 
 class Proposal extends Model
@@ -26,6 +27,8 @@ class Proposal extends Model
         ['name' => 'abnahme', 'heading' => 'Abnahme und Dokumentation', 'sequence' => 0, 'tpl' => 'phases_text_section',],
     ];
 
+    use HasSections;
+
     /**
      * The relationships that should always be loaded.
      *
@@ -36,7 +39,7 @@ class Proposal extends Model
     /**
      * create the standard sections of a document (proposal or documentation)
      */
-    public function makeSections() {
+    /*public function makeSections() {
         foreach (self::SECTIONS as $sect) {
             $s = new Section($sect);
             $this->sections()->save($s);
@@ -44,7 +47,7 @@ class Proposal extends Model
                 $s->makeSections(array_key_exists('sections', $sect) ? $sect['sections'] : []);
             }
         }
-    }
+    }todo*/
 
     public function getStartAttribute() {
         return $this->project->start;

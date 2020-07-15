@@ -58,6 +58,17 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/create', 'ProposalController@create')->name('create');
             Route::post('/', 'ProposalController@store')->name('store');
         });
+
+        //Routen für die Projektdokumentation
+        Route::group([
+            'prefix' => '/{project}/dokumentation',
+            'as' => 'dokumentation.',
+        ], function() {
+            Route::get('/', 'DocumentationController@index')->name('index');
+            //TODO: sollte keine get Route sein.
+            Route::get('/create', 'DocumentationController@create')->name('create');
+            Route::post('/', 'DocumentationController@store')->name('store');
+        });
     });
 });
 

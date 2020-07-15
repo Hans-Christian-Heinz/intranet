@@ -16,9 +16,6 @@ class StoreProposalRequest extends FormRequest
      */
     public function authorize()
     {
-        //TODO
-        /*$project = Project::find($this->route('$project'));
-        return app()->user->isAdmin() || app()->user->is($project->user);*/
         return true;
     }
 

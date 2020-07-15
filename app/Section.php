@@ -2,10 +2,13 @@
 
 namespace App;
 
+use App\Traits\HasSections;
 use Illuminate\Database\Eloquent\Model;
 
 class Section extends Model
 {
+    use HasSections;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -25,19 +28,6 @@ class Section extends Model
      * @var array
      */
     protected $with = ['sections'];
-
-    /**
-     * create the standard sections of a section
-     */
-    public function makeSections(array $sectionValues) {
-        foreach ($sectionValues as $sect) {
-            $s = new Section($sect);
-            $this->sections()->save($s);
-            if ($s->tpl === 'parent_section') {
-                $s->makeSections($sect['sections'] ? $sect['sections'] : []);
-            }
-        }
-    }
 
     public function proposal() {
         return $this->belongsTo(Proposal::class);

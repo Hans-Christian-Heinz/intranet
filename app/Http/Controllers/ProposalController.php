@@ -6,10 +6,13 @@ use App\Http\Requests\StoreProposalRequest;
 use App\Phase;
 use App\Project;
 use App\Proposal;
+use App\Traits\SavesSections;
 use Illuminate\Http\Request;
 
 class ProposalController extends Controller
 {
+    use SavesSections;
+
     public function index(Project $project) {
         if (! $project->proposal) {
             return redirect(route('abschlussprojekt.antrag.create', $project));
@@ -32,21 +35,23 @@ class ProposalController extends Controller
         $proposal->save();
         $project->proposal()->associate($proposal);
         $project->save();
-        $proposal->makeSections();
+        $proposal->makeSections(Proposal::SECTIONS);
 
         return view('abschlussprojekt.antrag.index', [
             'proposal' => $proposal,
-        ]);
+        ])->with('status', 'Der Antrag wurde erfolgreich angelegt.');
     }
 
     /**
      * Beachte: beim Ändern eines Dokuments wird eine neue Instanz erzeugt; die alte Instanz (der alte Datensatz) bleibt unverändert.
      *
-     * @param Request $request
+     * @param StoreProposalRequest $request
      * @param Project $project
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function store(StoreProposalRequest $request, Project $project) {
+        $this->authorize('store', $project->proposal);
+
         $sectionsOld = $project->proposal->sections;
 
         $proposal = new Proposal();
@@ -69,25 +74,6 @@ class ProposalController extends Controller
 
         return view('abschlussprojekt.antrag.index', [
             'proposal' => $proposal,
-        ]);
-    }
-
-    /**
-     * Hilfsmethode zum Speichern eines Abschnitts.
-     * Beachte: Beim Speichern wird ein neuer Eintrag in der Datenbank angelegt; der alte Eintrag bleibt unverändert.
-     *
-     * @param Request $request
-     * @param $parent
-     * @param $old
-     */
-    private function saveSection(Request $request, $parent, $old) {
-        $section = $old->replicate();
-        $name = $old->name;
-        $section->text = $request->$name;
-        $parent->sections()->save($section);
-        //ggf Unterabschnitte
-        foreach ($old->sections as $child) {
-            $this->saveSection($request, $section, $child);
-        }
+        ])->with('status', 'Der Antrag wurde erfolgreich gespeichert.');
     }
 }
