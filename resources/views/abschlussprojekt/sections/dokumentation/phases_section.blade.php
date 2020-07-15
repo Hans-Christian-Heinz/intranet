@@ -5,10 +5,10 @@
         <th>Projektphase</th>
         <th>Geplante Zeit</th>
     </tr>
-    @foreach($documentation->project->getPhasesDuration() as $heading => $duration)
+    @foreach($documentation->project->getPhasesDuration() as $phase)
         <tr>
-            <td>{{ $heading }}</td>
-            <td>{{ $duration }} h</td>
+            <td>{{ $phase['heading'] }}</td>
+            <td>{{ $phase['duration'] }} h</td>
         </tr>
     @endforeach
 </table>

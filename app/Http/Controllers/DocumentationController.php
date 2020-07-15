@@ -61,6 +61,11 @@ class DocumentationController extends Controller
         $documentation->update([
             'shortTitle' => $request->shortTitle,
             'longTitle' => $request->longTitle,
+            'planung' => $request->planung,
+            'entwurf' => $request->entwurf,
+            'implementierung' => $request->implementierung,
+            'test' => $request->test,
+            'abnahme' => $request->abnahme,
         ]);
 
         //$documentation->save();

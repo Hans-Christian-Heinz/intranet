@@ -34,6 +34,12 @@ class StoreDocumentationRequest extends FormRequest
         $rules['hardware'] = $kostenstellenRule;
         $rules['software'] = $kostenstellenRule;
         $rules['personal'] = $kostenstellenRule;
+        //Soll-Ist-Vergleich: tatsächlich verwendete Zeit
+        $rules['planung'] = 'int|min:0';
+        $rules['entwurf'] = 'int|min:0';
+        $rules['implementierung'] = 'int|min:0';
+        $rules['test'] = 'int|min:0';
+        $rules['abnahme'] = 'int|min:0';
         //Der Rest ist optionaler Text: es wird keine Validierung benötigt.
 
         return $rules;

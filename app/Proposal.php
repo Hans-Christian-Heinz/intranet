@@ -38,7 +38,7 @@ class Proposal extends Model
 
     /**
      * Gebe für jede Phase ihre Dauer an (Summe der Dauer aller Unterphasen)
-     * Format: [Phasenname => Dauer, ...]
+     * Format: [Phasenname => ['heading' => heading, 'duration' => Dauer,], ...]
      *
      * @param bool $withSum Soll die Dauer aller Phasen ebenfalls angegeben werden?
      * @return array
@@ -47,16 +47,16 @@ class Proposal extends Model
         $phases = $this->getPhases();
         $res = [];
         $fullDuration = 0;
-        foreach ($phases as $heading => $phase) {
+        foreach ($phases as $name => $phase) {
             $duration = 0;
-            foreach ($phase as $data) {
+            foreach ($phase['phasen'] as $data) {
                 $duration += intval($data['duration']);
             }
-            $res[$heading] = $duration;
+            $res[$name] = ['heading' => $phase['heading'], 'duration' => $duration];
             $fullDuration += $duration;
         }
         if ($withSum) {
-            $res['Gesamt'] = $fullDuration;
+            $res['gesamt'] = ['heading' => 'Gesamt', 'duration' => $fullDuration];
         }
 
         return $res;
@@ -72,7 +72,7 @@ class Proposal extends Model
         $phasesSection = $this->findSection('phases');
         if ($phasesSection) {
             foreach ($phasesSection->sections as $phase) {
-                $res[$phase->heading] = $phase->text;
+                $res[$phase->name] = ['heading' => $phase->heading, 'text' => $phase->text];
             }
         }
 
@@ -81,22 +81,22 @@ class Proposal extends Model
 
     /**
      * Formatiere die Phasen: In der Datenbank sind die Phasen als Text gespeichert (Phase1 : 2; Phase2 : 1; ...)
-     * Gewünschtes Format: ['name' => 'Phase1', 'duration' => 2,], [....
+     * Gewünschtes Format: [name => ['heading' => heading, 'phasen' => ['name' => 'bsp', 'duration' => 1]]]
      *
      * @param array $phases
      * @return array
      */
     private function formatPhases(array $phases) {
         $res = [];
-        foreach ($phases as $header => $phase) {
-            $res[$header] = [];
-            $temp = explode(';', $phase);
+        foreach ($phases as $name => $phase) {
+            $res[$name] = ['heading' => $phase['heading'], 'phasen' => [],];
+            $temp = explode(';', $phase['text']);
             foreach($temp as $t) {
                 if (empty(trim($t))) {
                     continue;
                 }
                 $temporary = explode(':', $t);
-                array_push($res[$header], [
+                array_push($res[$name]['phasen'], [
                     'name' => trim($temporary[0]),
                     'duration' => trim($temporary[1]),
                 ]);

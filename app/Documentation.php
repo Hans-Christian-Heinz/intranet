@@ -62,7 +62,7 @@ class Documentation extends Model
         ['name' => 'dokumentation', 'heading' => 'Dokumentation', 'sequence' => 8,],
         //Fazit
         ['name' => 'fazit', 'heading' => 'Fazit', 'sequence' => 9, 'tpl' => 'parent_section', 'sections' => [
-            ['name' => 'soll_ist_vgl', 'heading' => 'Soll-Ist-Vergleich', 'sequence' => 0,],
+            ['name' => 'soll_ist_vgl', 'heading' => 'Soll-Ist-Vergleich', 'sequence' => 0, 'tpl' => 'dokumentation.vgl_section'],
             ['name' => 'lessons', 'heading' => 'Lessons Learned', 'sequence' => 1,],
             ['name' => 'ausblick', 'heading' => 'Ausblick', 'sequence' => 2,],
         ],],
@@ -80,6 +80,11 @@ class Documentation extends Model
     protected $fillable = [
         'shortTitle',
         'longTitle',
+        'planung',
+        'entwurf',
+        'implementierung',
+        'test',
+        'abnahme',
     ];
 
     /**
@@ -88,6 +93,26 @@ class Documentation extends Model
      * @var array
      */
     protected $with = ['sections'];
+
+    /**
+     * @param bool $withSum
+     * @return mixed
+     */
+    public function getPhasesDifference($withSum = true) {
+        $durations = $this->project->getPhasesDuration($withSum);
+        foreach ($durations as $name => &$phase) {
+            $phase['difference'] = $this->$name - $phase['duration'];
+        }
+
+        return $durations;
+    }
+
+    /**
+     * @return int
+     */
+    public function getGesamtAttribute() {
+        return $this->planung + $this->entwurf + $this->implementierung + $this->test + $this-> abnahme;
+    }
 
     /**
      * Gebe für jede Kostenstellenkategorie ihre Kosten an (Summe der Kosten aller Kostenstellen in der Kategorie)
