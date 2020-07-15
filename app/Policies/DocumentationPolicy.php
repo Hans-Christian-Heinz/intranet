@@ -3,16 +3,16 @@
 namespace App\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
-use App\Proposal;
+use App\Documentation;
 use JotaEleSalinas\AdminlessLdap\LdapUser;
 
-class ProposalPolicy
+class DocumentationPolicy
 {
     use HandlesAuthorization;
 
-    public function store(LdapUser $ldapUser, Proposal $proposal)
+    public function store(LdapUser $ldapUser, Documentation $documentation)
     {
         $user = app()->user;
-        return $user->is($proposal->project->user) || $user->is_admin;
+        return $user->is($documentation->project->user) || $user->is_admin;
     }
 }

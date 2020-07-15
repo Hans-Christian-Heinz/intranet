@@ -37,9 +37,7 @@ class ProposalController extends Controller
         $project->save();
         $proposal->makeSections(Proposal::SECTIONS);
 
-        return view('abschlussprojekt.antrag.index', [
-            'proposal' => $proposal,
-        ])->with('status', 'Der Antrag wurde erfolgreich angelegt.');
+        return redirect(route('abschlussprojekt.antrag.index', $project))->with('status', 'Der Antrag wurde erfolgreich angeleget.');
     }
 
     /**
@@ -72,8 +70,6 @@ class ProposalController extends Controller
             'end' => $request->end,
         ]);
 
-        return view('abschlussprojekt.antrag.index', [
-            'proposal' => $proposal,
-        ])->with('status', 'Der Antrag wurde erfolgreich gespeichert.');
+        return redirect(route('abschlussprojekt.antrag.index', $project))->with('status', 'Der Antrag wurde erfolgreich gespeichert.');
     }
 }

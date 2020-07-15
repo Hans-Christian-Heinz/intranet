@@ -10,7 +10,7 @@ class Documentation extends Model
     // Die Standardabschnitte einer Projektdokumentation
     const SECTIONS = [
         //Titel
-        ['name' => 'title', 'heading' => 'Titel', 'sequence' => 0,],
+        ['name' => 'title', 'heading' => 'Titel', 'sequence' => 0, 'tpl' => 'dokumentation.title_section',],
         //Einleitung
         ['name' => 'intro', 'heading' => 'Einleitung', 'sequence' => 1, 'tpl' => 'parent_section', 'sections' => [
             ['name' => 'umfeld', 'heading' => 'Projektumfeld', 'sequence' => 0,],
@@ -21,7 +21,7 @@ class Documentation extends Model
         ],],
         //Projektplanung
         ['name' => 'planung', 'heading' => 'Projektplanung', 'sequence' => 2, 'tpl' => 'parent_section', 'sections' => [
-            ['name' => 'phasen', 'heading' => 'Projektphasen', 'sequence' => 0,],
+            ['name' => 'phasen', 'heading' => 'Projektphasen', 'sequence' => 0, 'tpl' => 'dokumentation.phases_section',],
             ['name' => 'abweichungen', 'heading' => 'Abweischnungen vom Projektantrag', 'sequence' => 1,],
             ['name' => 'ressourcen', 'heading' => 'Ressourcenplanung', 'sequence' => 2, 'tpl' => 'parent_section', 'sections' => [
                 ['name' => 'hardware', 'heading' => 'Hardware', 'sequence' => 0,],

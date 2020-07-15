@@ -15,7 +15,7 @@
 <div class="tab-content" id="{{ $s->name }}TabContent">
     @foreach($s->sections as $section)
         <div class="tab-pane mt-2" id="{{ $section->name }}" role="tabpanel" aria-labelledby="{{ $section->name }}_tab">
-            @include('abschlussprojekt.sections.' . $section->tpl, ['form' => 'formAntrag', 's' => $section,])
+            @include('abschlussprojekt.sections.' . $section->tpl, ['form' => $form, 's' => $section,])
         </div>
     @endforeach
 </div>
