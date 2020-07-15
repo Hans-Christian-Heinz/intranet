@@ -35,7 +35,12 @@ class Project extends Model
      * @return array
      */
     public function getPhasesDuration($withSum = true) {
-        return $this->proposal->getPhasesDuration($withSum);
+        if ($this->proposal) {
+            return $this->proposal->getPhasesDuration($withSum);
+        }
+        else {
+            return [];
+        }
     }
 
     /**

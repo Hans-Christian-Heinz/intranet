@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\KostenstellenRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreDocumentationRequest extends FormRequest
@@ -23,10 +24,17 @@ class StoreDocumentationRequest extends FormRequest
      */
     public function rules()
     {
+        $kostenstellenRule = new KostenstellenRule();
+
         //todo
         $rules = [];
-        $rules['shorTitle'] = 'nullable|string|max:30';
+        $rules['shortTitle'] = 'nullable|string|max:30';
         $rules['longTitle'] = 'nullable|string|max:100';
+        //Abschnitt Ressourcenplanung: Gehe dabon aus, dass die Abschnitte nicht umbenannt werden
+        $rules['hardware'] = $kostenstellenRule;
+        $rules['software'] = $kostenstellenRule;
+        $rules['personal'] = $kostenstellenRule;
+        //Der Rest ist optionaler Text: es wird keine Validierung benötigt.
 
         return $rules;
     }
