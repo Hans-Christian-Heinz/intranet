@@ -37,17 +37,74 @@ class Proposal extends Model
     protected $with = ['sections'];
 
     /**
-     * create the standard sections of a document (proposal or documentation)
+     * Gebe für jede Phase ihre Dauer an (Summe der Dauer aller Unterphasen)
+     * Format: [Phasenname => Dauer, ...]
+     *
+     * @param bool $withSum Soll die Dauer aller Phasen ebenfalls angegeben werden?
+     * @return array
      */
-    /*public function makeSections() {
-        foreach (self::SECTIONS as $sect) {
-            $s = new Section($sect);
-            $this->sections()->save($s);
-            if ($s->sections) {
-                $s->makeSections(array_key_exists('sections', $sect) ? $sect['sections'] : []);
+    public function getPhasesDuration($withSum = true) {
+        $phases = $this->getPhases();
+        $res = [];
+        $fullDuration = 0;
+        foreach ($phases as $heading => $phase) {
+            $duration = 0;
+            foreach ($phase as $data) {
+                $duration += intval($data['duration']);
+            }
+            $res[$heading] = $duration;
+            $fullDuration += $duration;
+        }
+        if ($withSum) {
+            $res['Gesamt'] = $fullDuration;
+        }
+
+        return $res;
+    }
+
+    /**
+     * Gebe die Phasen des Projekts (Zeitplanung in der Planungsphase) als Array aus.
+     *
+     * @return array
+     */
+    public function getPhases() {
+        $res = [];
+        $phasesSection = $this->findSection('phases');
+        if ($phasesSection) {
+            foreach ($phasesSection->sections as $phase) {
+                $res[$phase->heading] = $phase->text;
             }
         }
-    }todo*/
+
+        return $this->formatPhases($res);
+    }
+
+    /**
+     * Formatiere die Phasen: In der Datenbank sind die Phasen als Text gespeichert (Phase1 : 2; Phase2 : 1; ...)
+     * Gewünschtes Format: ['name' => 'Phase1', 'duration' => 2,], [....
+     *
+     * @param array $phases
+     * @return array
+     */
+    private function formatPhases(array $phases) {
+        $res = [];
+        foreach ($phases as $header => $phase) {
+            $res[$header] = [];
+            $temp = explode(';', $phase);
+            foreach($temp as $t) {
+                if (empty(trim($t))) {
+                    continue;
+                }
+                $temporary = explode(':', $t);
+                array_push($res[$header], [
+                    'name' => trim($temporary[0]),
+                    'duration' => trim($temporary[1]),
+                ]);
+            }
+        }
+
+        return $res;
+    }
 
     public function getStartAttribute() {
         return $this->project->start;

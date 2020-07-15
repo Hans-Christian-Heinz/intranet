@@ -5,14 +5,10 @@
         <th>Projektphase</th>
         <th>Geplante Zeit</th>
     </tr>
-    @foreach(\App\Proposal::PHASES as $phase)
+    @foreach($documentation->project->getPhasesDuration() as $heading => $duration)
         <tr>
-            <td>{{ $phase['heading'] }}</td>
-            <td>TODO h</td>
+            <td>{{ $heading }}</td>
+            <td>{{ $duration }} h</td>
         </tr>
     @endforeach
-    <tr>
-        <td><b>Gesamt</b></td>
-        <td><b>TODO h</b></td>
-    </tr>
 </table>

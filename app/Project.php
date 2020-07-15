@@ -27,6 +27,31 @@ class Project extends Model
         'end',
     ];
 
+    /**
+     * Gebe für jede Phase ihre Dauer an (Summe der Dauer aller Unterphasen)
+     * Format: [Phasenname => Dauer, ...]
+     *
+     * @param bool $withSum Soll die Dauer aller Phasen ebenfalls angegeben werden?
+     * @return array
+     */
+    public function getPhasesDuration($withSum = true) {
+        return $this->proposal->getPhasesDuration($withSum);
+    }
+
+    /**
+     * Gebe die Phasen des Projekts (Zeitplanung in der Planungsphase) als Array aus.
+     *
+     * @return array
+     */
+    public function getPhases() {
+        if ($this->proposal) {
+            return $this->proposal->getPhases();
+        }
+        else {
+            return [];
+        }
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
