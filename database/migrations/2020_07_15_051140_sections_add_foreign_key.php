@@ -28,7 +28,7 @@ class SectionsAddForeignKey extends Migration
     public function down()
     {
         Schema::table('sections', function (Blueprint $table) {
-            $table->dropForeign('section_id');
+            $table->dropForeign(['section_id']);
             $table->dropColumn('section_id');
         });
     }
