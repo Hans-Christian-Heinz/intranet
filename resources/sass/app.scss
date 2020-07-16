@@ -15,3 +15,25 @@ body {
 #rules > ol > li::marker {
     font-size: 1.575rem;
 }
+
+ul.scrollnav {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    max-height: 6em;
+    max-width: 75em;
+    flex-wrap: nowrap;
+
+    li.nav-item {
+        max-height: 5em;
+        min-width: 190px;
+
+        .nav-link {
+            color: black;
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        .nav-link:not(.active) {
+            background-color: white;
+            color: black;
+        }
+    }
+}

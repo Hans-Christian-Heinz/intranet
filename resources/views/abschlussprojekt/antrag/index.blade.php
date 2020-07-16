@@ -11,7 +11,7 @@
                         <h3 class="mr-auto">Projektantrag</h3>
                     </div>
                     {{-- Navigationsleiste --}}
-                    <ul class="nav nav-tabs" id="antragTab" role="tablist">
+                    <ul class="nav nav-tabs scrollnav" id="antragTab" role="tablist">
                         @foreach($proposal->sections as $section)
                             <li class="nav-item border border-dark">
                                 <a class="nav-link" aria-selected="false" role="tab" id="{{ $section->name }}_tab"

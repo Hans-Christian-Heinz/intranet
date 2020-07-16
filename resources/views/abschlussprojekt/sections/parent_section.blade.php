@@ -1,7 +1,7 @@
 {{-- Für einen Abschnitt, der Unterabschnitte hat. --}}
 
 {{-- Navigationsleiste --}}
-<ul class="nav nav-tabs" id="{{ $s->name }}Tab" role="tablist">
+<ul class="nav nav-tabs scrollnav" id="{{ $s->name }}Tab" role="tablist">
     @foreach($s->sections as $section)
         <li class="nav-item border border-dark">
             <a class="nav-link" aria-selected="false" role="tab" id="{{ $section->name }}_tab"
