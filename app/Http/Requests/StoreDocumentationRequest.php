@@ -28,8 +28,6 @@ class StoreDocumentationRequest extends FormRequest
 
         //todo
         $rules = [];
-        $rules['shortTitle'] = 'nullable|string|max:30';
-        $rules['longTitle'] = 'nullable|string|max:100';
         //Abschnitt Ressourcenplanung: Gehe dabon aus, dass die Abschnitte nicht umbenannt werden
         $rules['hardware'] = $kostenstellenRule;
         $rules['software'] = $kostenstellenRule;

@@ -9,14 +9,14 @@
         <th>Tatsächlich</th>
         <th>Differenz</th>
     </tr>
-    @foreach($documentation->getPhasesDifference(true) as $name => $phase)
+    @foreach($documentation->getPhasesDifference() as $name => $phase)
         @if($name !== 'gesamt')
             <tr>
                 <td>{{ $phase['heading'] }}</td>
                 <td>{{ $phase['duration'] }} h</td>
                 <td>
                     <input type="number" style="width: 4rem;" step="1" min="0" form="{{ $form }}" id="{{ $name }}_input" name="{{ $name }}"
-                           class="form-control @error($name) is-invalid @enderror" value="{{ $documentation->$name }}"/>
+                           class="form-control @error($name) is-invalid @enderror" value="{{ intval($documentation->zeiplanung[$name]) }}"/>
                     @error($name) <p class="invalid-feedback">{{ $message }}</p> @enderror
                     <label for="{{ $name }}_input">h</label>
                 </td>
@@ -32,3 +32,4 @@
         @endif
     @endforeach
 </table>
+

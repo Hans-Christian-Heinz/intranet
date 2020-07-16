@@ -6,37 +6,28 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'topic',
-        'start',
-        'end',
-    ];
 
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = [
-        'start',
-        'end',
-    ];
+    public function getTopicAttribute() {
+        if ($this->proposal) {
+            return $this->proposal->topic;
+        }
+        else {
+            return "Das Thema wird im Projektantrag ausgewählt.";
+        }
+    }
 
     /**
      * Gebe für jede Phase ihre Dauer an (Summe der Dauer aller Unterphasen)
      * Format: [Phasenname => ['heading' => heading, 'duration' => Dauer,], ...]
      *
+     * @param Version $version
      * @param bool $withSum Soll die Dauer aller Phasen ebenfalls angegeben werden?
      * @return array
      */
     public function getPhasesDuration($withSum = true) {
         if ($this->proposal) {
-            return $this->proposal->getPhasesDuration($withSum);
+            $version = $this->proposal->latestVersion();
+            return $this->proposal->getPhasesDuration($version, $withSum);
         }
         else {
             return [];
@@ -50,7 +41,8 @@ class Project extends Model
      */
     public function getPhases() {
         if ($this->proposal) {
-            return $this->proposal->getPhases();
+            $version = $this->proposal->latestVersion();
+            return $this->proposal->getPhases($version);
         }
         else {
             return [];
@@ -71,15 +63,7 @@ class Project extends Model
         return $this->belongsTo(Proposal::class);
     }
 
-    public function proposalHistory() {
-        return $this->hasMany(Proposal::class);
-    }
-
     public function documentation() {
         return $this->belongsTo(Documentation::class);
-    }
-
-    public function documentationHistory() {
-        return $this->hasMany(Documentation::class);
     }
 }

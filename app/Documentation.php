@@ -20,9 +20,9 @@ class Documentation extends Model
             ['name' => 'abgrenzung', 'heading' => 'Projektabgrenzung', 'sequence' => 4,],
         ],],
         //Projektplanung
-        ['name' => 'planung', 'heading' => 'Projektplanung', 'sequence' => 2, 'tpl' => 'parent_section', 'sections' => [
+        ['name' => 'projekt_planung', 'heading' => 'Projektplanung', 'sequence' => 2, 'tpl' => 'parent_section', 'sections' => [
             ['name' => 'phasen', 'heading' => 'Projektphasen', 'sequence' => 0, 'tpl' => 'dokumentation.phases_section',],
-            ['name' => 'abweichungen', 'heading' => 'Abweischnungen vom Projektantrag', 'sequence' => 1,],
+            ['name' => 'abweichungen', 'heading' => 'Abweichnungen vom Projektantrag', 'sequence' => 1,],
             ['name' => 'ressourcen', 'heading' => 'Ressourcenplanung', 'sequence' => 2, 'tpl' => 'dokumentation.ressourcen_parent_section', 'sections' => [
                 ['name' => 'hardware', 'heading' => 'Hardware', 'sequence' => 0, 'tpl' => 'dokumentation.ressourcen_text_section',],
                 ['name' => 'software', 'heading' => 'Software', 'sequence' => 1, 'tpl' => 'dokumentation.ressourcen_text_section',],
@@ -40,7 +40,7 @@ class Documentation extends Model
             ['name' => 'quality', 'heading' => 'Qualitätsanforderungen', 'sequence' => 4,],
         ],],
         //Entwurfphase
-        ['name' => 'entwurf', 'heading' => 'Entwurfphase', 'sequence' => 4, 'tpl' => 'parent_section', 'sections' => [
+        ['name' => 'entwurf_phase', 'heading' => 'Entwurfphase', 'sequence' => 4, 'tpl' => 'parent_section', 'sections' => [
             ['name' => 'plattform', 'heading' => 'Zielplattform', 'sequence' => 0,],
             ['name' => 'architektur', 'heading' => 'Architekturdesign', 'sequence' => 1,],
             ['name' => 'user_interface', 'heading' => 'Entwurf der Benutzeroberfläche', 'sequence' => 2,],
@@ -55,7 +55,7 @@ class Documentation extends Model
             ['name' => 'impl_geschaeftslogik', 'heading' => 'Implementierung der Geschäftslogik', 'sequence' => 2,],
         ],],
         //Abnahmephase
-        ['name' => 'abnahme', 'heading' => 'Abnahmephase', 'sequence' => 6,],
+        ['name' => 'abnahme_phase', 'heading' => 'Abnahmephase', 'sequence' => 6,],
         //Einführungsphase
         ['name' => 'einfuehrung', 'heading' => 'Einführungsphase', 'sequence' => 7,],
         //Dokumentation
@@ -108,21 +108,15 @@ class Documentation extends Model
     }
 
     /**
-     * @return int
-     */
-    public function getGesamtAttribute() {
-        return $this->planung + $this->entwurf + $this->implementierung + $this->test + $this-> abnahme;
-    }
-
-    /**
      * Gebe für jede Kostenstellenkategorie ihre Kosten an (Summe der Kosten aller Kostenstellen in der Kategorie)
      * Format: [kategorie => Preis, ...]
      *
+     * @param Version $version
      * @param bool $withSum Sollen die Gesamtkosten aller Kategorien ebenfalls angegeben werden?
      * @return array
      */
-    public function getKostenstellenGesamt($withSum = true) {
-        $kategorien = $this->getKostenstellen();
+    public function getKostenstellenGesamt(Version $version, $withSum = true) {
+        $kategorien = $this->getKostenstellen($version);
         $res = [];
         $fullCosts = 0.0;
         foreach ($kategorien as $heading => $kostenstellen) {
@@ -144,11 +138,12 @@ class Documentation extends Model
     /**
      * Gebe die Kostenstellen der Ressourcenplanung als Array aus.
      *
+     * @param Version $version
      * @return array
      */
-    public function getKostenstellen() {
+    public function getKostenstellen(Version $version) {
         $res = [];
-        $ressourcenSection = $this->findSection('ressourcen');
+        $ressourcenSection = $this->findSection('ressourcen', $version);
         if ($ressourcenSection) {
             foreach ($ressourcenSection->sections as $subsection) {
                 if ($subsection->name == 'gesamt') {
@@ -189,15 +184,49 @@ class Documentation extends Model
         return $res;
     }
 
+    public function getShortTitleAttribute() {
+        $title = $this->findCurrentSection('title');
+        if ($title && $title->text) {
+            $temp = explode('||', $title->text);
+            return $temp[0];
+        }
+        else {
+            return '';
+        }
+    }
+
+    public function getLongTitleAttribute() {
+        $title = $this->findCurrentSection('title');
+        if ($title && $title->text) {
+            $temp = explode('||', $title->text);
+            return $temp[1];
+        }
+        else {
+            return '';
+        }
+    }
+
+    public function getZeitplanungAttribute() {
+        $vgl = $this->findCurrentSection('soll_ist_vgl');
+        $keys = ['planung', 'entwurf', 'implementierung', 'test', 'abnahme',];
+        if ($vgl && $vgl->text) {
+            $temp = explode('##TEXTEND##', $vgl->text);
+            return array_combine($keys, explode(';', $temp[1]));
+        }
+        else {
+            return array_combine($keys, [0,0,0,0,0,]);
+        }
+    }
+
     public function project() {
         return $this->belongsTo(Project::class);
     }
 
-    public function changedBy() {
-        return $this->belongsTo(User::class, 'changed_by', 'id');
-    }
-
     public function sections() {
         return $this->hasMany(Section::class, 'documentation_id', 'id');
+    }
+
+    public function versions() {
+        return $this->hasMany(Version::class);
     }
 }

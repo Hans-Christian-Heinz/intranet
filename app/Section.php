@@ -44,4 +44,8 @@ class Section extends Model
     public function sections() {
         return $this->hasMany(Section::class, 'section_id', 'id');
     }
+
+    public function versions() {
+        return $this->belongsToMany(Version::class, 'sections_versions')->withTimestamps();
+    }
 }

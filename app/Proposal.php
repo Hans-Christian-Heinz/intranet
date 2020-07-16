@@ -21,10 +21,10 @@ class Proposal extends Model
 
     const PHASES = [
         ['name' => 'planung', 'heading' => 'Planung und Analyse', 'sequence' => 0, 'tpl' => 'antrag.phases_text_section',],
-        ['name' => 'entwurf', 'heading' => 'Entwurf', 'sequence' => 0, 'tpl' => 'antrag.phases_text_section',],
-        ['name' => 'implementierung', 'heading' => 'Implementierung', 'sequence' => 0, 'tpl' => 'antrag.phases_text_section',],
-        ['name' => 'test', 'heading' => 'Test', 'sequence' => 0, 'tpl' => 'antrag.phases_text_section',],
-        ['name' => 'abnahme', 'heading' => 'Abnahme und Dokumentation', 'sequence' => 0, 'tpl' => 'antrag.phases_text_section',],
+        ['name' => 'entwurf', 'heading' => 'Entwurf', 'sequence' => 1, 'tpl' => 'antrag.phases_text_section',],
+        ['name' => 'implementierung', 'heading' => 'Implementierung', 'sequence' => 2, 'tpl' => 'antrag.phases_text_section',],
+        ['name' => 'test', 'heading' => 'Test', 'sequence' => 3, 'tpl' => 'antrag.phases_text_section',],
+        ['name' => 'abnahme', 'heading' => 'Abnahme und Dokumentation', 'sequence' => 4, 'tpl' => 'antrag.phases_text_section',],
     ];
 
     use HasSections;
@@ -40,11 +40,12 @@ class Proposal extends Model
      * Gebe für jede Phase ihre Dauer an (Summe der Dauer aller Unterphasen)
      * Format: [Phasenname => ['heading' => heading, 'duration' => Dauer,], ...]
      *
+     * @param Version $version
      * @param bool $withSum Soll die Dauer aller Phasen ebenfalls angegeben werden?
      * @return array
      */
-    public function getPhasesDuration($withSum = true) {
-        $phases = $this->getPhases();
+    public function getPhasesDuration(Version $version, $withSum = true) {
+        $phases = $this->getPhases($version);
         $res = [];
         $fullDuration = 0;
         foreach ($phases as $name => $phase) {
@@ -65,11 +66,12 @@ class Proposal extends Model
     /**
      * Gebe die Phasen des Projekts (Zeitplanung in der Planungsphase) als Array aus.
      *
+     * @param Version $version
      * @return array
      */
-    public function getPhases() {
+    public function getPhases(Version $version) {
         $res = [];
-        $phasesSection = $this->findSection('phases');
+        $phasesSection = $this->findSection('phases', $version);
         if ($phasesSection) {
             foreach ($phasesSection->sections as $phase) {
                 $res[$phase->name] = ['heading' => $phase->heading, 'text' => $phase->text];
@@ -106,23 +108,47 @@ class Proposal extends Model
         return $res;
     }
 
+    public function getTopicAttribute() {
+        $section = $this->findCurrentSection('topic');
+        if ($section == false || ! $section->text) {
+            return "Es ist ein Fehler aufgetreten: Der Abschnitt Thema liegt in dem Projektantrag nicht vor.";
+        }
+        else {
+            return $section->text;
+        }
+    }
+
     public function getStartAttribute() {
-        return $this->project->start;
+        $deadline = $this->findCurrentSection('deadline');
+        if ($deadline && $deadline->text) {
+            $temp = explode('||', $deadline->text);
+            return $temp[0];
+        }
+        else {
+            return '';
+        }
     }
 
     public function getEndAttribute() {
-        return $this->project->end;
+        $deadline = $this->findCurrentSection('deadline');
+        if ($deadline && $deadline->text) {
+            $temp = explode('||', $deadline->text);
+            return $temp[1];
+        }
+        else {
+            return '';
+        }
     }
 
     public function project() {
         return $this->belongsTo(Project::class);
     }
 
-    public function changedBy() {
-        return $this->belongsTo(User::class, 'changed_by', 'id');
-    }
-
     public function sections() {
         return $this->hasMany(Section::class, 'proposal_id', 'id');
+    }
+
+    public function versions() {
+        return $this->hasMany(Version::class);
     }
 }

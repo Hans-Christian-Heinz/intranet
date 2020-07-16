@@ -5,7 +5,7 @@
         <th>Beschreibung</th>
         <th>Kosten</th>
     </tr>
-    @foreach($documentation->getKostenstellenGesamt() as $kategorie => $kosten)
+    @foreach($documentation->getKostenstellenGesamt($version) as $kategorie => $kosten)
         <tr>
             <td>{{ $kategorie }}</td>
             <td>{{ $kosten }} €</td>

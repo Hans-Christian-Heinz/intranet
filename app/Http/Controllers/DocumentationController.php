@@ -6,6 +6,7 @@ use App\Documentation;
 use App\Http\Requests\StoreDocumentationRequest;
 use App\Project;
 use App\Traits\SavesSections;
+use App\Version;
 use Illuminate\Http\Request;
 
 class DocumentationController extends Controller
@@ -18,6 +19,7 @@ class DocumentationController extends Controller
         }
         return view('abschlussprojekt.dokumentation.index', [
             'documentation' => $project->documentation,
+            'version' => $project->documentation->latestVersion(),
         ]);
     }
 
@@ -25,15 +27,18 @@ class DocumentationController extends Controller
      * Erstelle eine neue Dokumentation für das übergebene Projekt
      *
      * @param Project $project
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function create(Project $project) {
         $documentation = new Documentation();
-        $documentation->changedBy()->associate(app()->user);
         $documentation->project()->associate($project);
         $documentation->save();
         $project->documentation()->associate($documentation);
         $project->save();
-        $documentation->makeSections(Documentation::SECTIONS);
+        $version = new Version();
+        $version->user()->associate(app()->user);
+        $documentation->versions()->save($version);
+        $documentation->makeSections(Documentation::SECTIONS, $version);
 
         return redirect(route('abschlussprojekt.dokumentation.index', $project))->with('status', 'Die Dokumentation wurde erfolgreich angeleget.');
     }
@@ -44,33 +49,22 @@ class DocumentationController extends Controller
      * @param StoreDocumentationRequest $request
      * @param Project $project
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(StoreDocumentationRequest $request, Project $project) {
         $this->authorize('store', $project->documentation);
 
-        $sectionsOld = $project->documentation->sections;
+        $documentation = $project->documentation;
+        $versionOld = $documentation->latestVersion();
+        $sectionsOld = $documentation->getCurrentSections();
 
-        $documentation = new Documentation();
-        $documentation->changedBy()->associate(app()->user);
-        $documentation->project()->associate($project);
-        $documentation->save();
+        $versionNew = new Version();
+        $versionNew->user()->associate(app()->user);
+        $versionNew->documentation()->associate($documentation);
+        $versionNew->save();
         foreach($sectionsOld as $old) {
-            $this->saveSection($request, $documentation, $old);
+            $this->saveSection($request, $documentation, $versionNew, $versionOld, $old);
         }
-
-        $documentation->update([
-            'shortTitle' => $request->shortTitle,
-            'longTitle' => $request->longTitle,
-            'planung' => $request->planung,
-            'entwurf' => $request->entwurf,
-            'implementierung' => $request->implementierung,
-            'test' => $request->test,
-            'abnahme' => $request->abnahme,
-        ]);
-
-        //$documentation->save();
-        $project->documentation()->associate($documentation);
-        $project->save();
 
         return redirect(route('abschlussprojekt.dokumentation.index', $project))->with('status', 'Die Dokumentation wurde erfolgreich gespeichert.');
     }

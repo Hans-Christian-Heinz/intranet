@@ -46,7 +46,8 @@ Route::group(['middleware' => 'auth'], function () {
     ], function() {
         Route::get('/', 'ProjectController@index')->name('index');
         Route::post('/create', 'ProjectController@create')->name('create');
-        Route::patch('{project}/update', 'ProjectController@update')->name('update');
+        //todo
+        //Route::patch('{project}/update', 'ProjectController@update')->name('update');
 
         //Routen für den Projektantrag
         Route::group([
