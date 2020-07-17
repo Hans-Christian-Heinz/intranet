@@ -15,4 +15,10 @@ class ProposalPolicy
         $user = app()->user;
         return $user->is($proposal->project->user) || $user->is_admin;
     }
+
+    public function history(LdapUser $ldapUser, Proposal $proposal)
+    {
+        $user = app()->user;
+        return $user->is($proposal->project->user) || $user->is_admin;
+    }
 }

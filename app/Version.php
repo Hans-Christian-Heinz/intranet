@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Version extends Model
 {
+    protected $with = [
+        'sections',
+    ];
+
     public function proposal() {
         return $this->belongsTo(Proposal::class);
     }

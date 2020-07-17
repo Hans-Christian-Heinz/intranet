@@ -68,4 +68,68 @@ class DocumentationController extends Controller
 
         return redirect(route('abschlussprojekt.dokumentation.index', $project))->with('status', 'Die Dokumentation wurde erfolgreich gespeichert.');
     }
+
+    /**
+     * Anzeigen aller Versionen der Dokumentation in einer Tabelle
+     *
+     * @param Project $project
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function history(Project $project) {
+        $documentation = $project->documentation;
+        $this->authorize('history', $documentation);
+
+        $versions = $documentation->versions()->with('user')->orderBy('updated_at', 'DESC')->get();
+        return view('abschlussprojekt.dokumentation.history', [
+            'documentation' => $documentation,
+            'versions' => $versions,
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param Project $project
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function vergleich(Request $request, Project $project) {
+        $documentation = $project->documentation;
+        $this->authorize('history', $documentation);
+
+        //Es müssen genau zwei Versionen ausgewählt werden
+        $request->validate([
+            'vergleichen' => 'required|array|size:2',
+        ]);
+
+        $versionen = [];
+        foreach ($request->vergleichen as $v_id) {
+            array_push($versionen, Version::with('user')->find($v_id));
+        }
+
+        //Suche nach Unterschieden: Suche nach Section-Instanzen, die zu einer der beiden Versionen gehören, nicht zu beiden
+        //Suche in beiden Richtungen nach Unterschieden, falls zwei Versionen verschiedene Abschnitte haben
+        $diff_sect = collect([]);
+        foreach ($documentation->getAllSections($versionen[0])->diff($documentation->getAllSections($versionen[1])) as $sect) {
+            $diff_sect->push($sect->name);
+            while(! is_null($sect->section)) {
+                $sect = $sect->section;
+                $diff_sect->push($sect->name);
+            }
+        }
+        foreach ($documentation->getAllSections($versionen[1])->diff($documentation->getAllSections($versionen[0])) as $sect) {
+            $diff_sect->push($sect->name);
+            while(! is_null($sect->section)) {
+                $sect = $sect->section;
+                $diff_sect->push($sect->name);
+            }
+        }
+        $diff_sect = $diff_sect->unique();
+
+        return view('abschlussprojekt.dokumentation.vergleich', [
+            'documentation' => $documentation,
+            'versionen' => $versionen,
+            'diff_sect' => $diff_sect,
+        ]);
+    }
 }

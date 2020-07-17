@@ -39,6 +39,6 @@ class Phase
      */
     public static function create($text) {
         $values = explode(':', $text);
-        return new Phase($values[0], $values[1]);
+        return new Phase(trim($values[0]), trim($values[1]));
     }
 }

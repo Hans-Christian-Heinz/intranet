@@ -10,25 +10,14 @@
                     <div class="d-flex pb-3">
                         <h3 class="mr-auto">Projektantrag</h3>
                     </div>
-                    {{-- Navigationsleiste --}}
-                    <ul class="nav nav-tabs scrollnav" id="antragTab" role="tablist">
-                        @foreach($proposal->getSections($version) as $section)
-                            <li class="nav-item border border-dark">
-                                <a class="nav-link" aria-selected="false" role="tab" id="{{ $section->name }}_tab"
-                                   data-toggle="tab" aria-controls="{{ $section->name }}" href="#{{ $section->name }}">
-                                    {{ $section->heading }}
-                                </a>
-                            </li>
-                        @endforeach
-                    </ul>
-                    {{-- Tabinhalt --}}
-                    <div class="tab-content" id="antragTabContent">
-                        @foreach($proposal->getSections($version) as $section)
-                            <div class="tab-pane mt-2" id="{{ $section->name }}" role="tabpanel" aria-labelledby="{{ $section->name }}_tab">
-                                @include('abschlussprojekt.sections.' . $section->tpl, ['form' => 'formAntrag', 's' => $section,])
-                            </div>
-                        @endforeach
-                    </div>
+                    @include('abschlussprojekt.antrag.navigationsleiste', ['v_name' => ''])
+                    @include('abschlussprojekt.antrag.tabinhalt', ['v_name' => ''])
+                </div>
+                {{-- Link zum Veränderungsverlauf --}}
+                <div class="mr-auto p-3">
+                    <a href="{{ route('abschlussprojekt.antrag.history', $proposal->project) }}" class="btn btn-secondary">
+                        Veränderungsverlauf
+                    </a>
                 </div>
                 {{-- Formular zum Speichern --}}
                 <form class="form ml-auto p-3" action="{{ route('abschlussprojekt.antrag.store', $proposal->project) }}" method="post" id="formAntrag">

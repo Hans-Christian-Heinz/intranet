@@ -35,7 +35,9 @@ class Proposal extends Model
      *
      * @var array
      */
-    protected $with = ['sections'];
+    protected $with = [
+        //'sections',
+    ];
 
     /**
      * Gebe für jede Phase ihre Dauer an (Summe der Dauer aller Unterphasen)

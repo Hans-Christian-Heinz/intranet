@@ -6,6 +6,7 @@ namespace App\Traits;
 use App\Section;
 use App\Version;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * Anträge, Dokumentationen und Abschnitte gehen gleich mit Abschnitten um.
@@ -47,7 +48,7 @@ trait HasSections
      * Erhalte alle Abschnitte, die zu diesem Objekt und der übergebenen Version gehören.
      *
      * @param Version $version
-     * @return Section[]
+     * @return Collection
      */
     public function getSections(Version $version) {
         return $this->sections()->whereHas('versions', function(Builder $query) use ($version) {
@@ -58,7 +59,7 @@ trait HasSections
     /**
      * Erhalte alle Abschnitte, die zu diesem Objekt und der akteullsten Version gehören
      *
-     * @return Section[]
+     * @return Collection
      */
     public function getCurrentSections() {
         return $this->getSections($this->latestVersion());
@@ -96,5 +97,21 @@ trait HasSections
      */
     public function findCurrentSection($name) {
         return $this->findSection($name, $this->latestVersion());
+    }
+
+    /**
+     * Erhalte alle Abschnitte, die zu diesem Objekt und der übergebenen Version gehören, inklusive der Unterabschnitte (rekursiv).
+     *
+     * @param Version $version
+     * @return Collection
+     */
+    public function getAllSections(Version $version) {
+        $res = $this->getSections($version);
+        foreach ($this->getSections($version) as $sect) {
+            //rekursiv
+            $res = $res->merge($sect->getAllSections($version));
+        }
+
+        return $res;
     }
 }

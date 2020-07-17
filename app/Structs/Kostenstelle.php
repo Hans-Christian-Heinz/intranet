@@ -46,6 +46,6 @@ class Kostenstelle
     public static function create($text) {
         $values = explode(':', $text);
         $prize = floatval(str_replace(',', '.', $values[2]));
-        return new Kostenstelle($values[0], $values[1], $prize);
+        return new Kostenstelle(trim($values[0]), trim($values[1]), $prize);
     }
 }

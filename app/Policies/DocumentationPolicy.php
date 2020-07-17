@@ -15,4 +15,10 @@ class DocumentationPolicy
         $user = app()->user;
         return $user->is($documentation->project->user) || $user->is_admin;
     }
+
+    public function history(LdapUser $ldapUser, Documentation $documentation)
+    {
+        $user = app()->user;
+        return $user->is($documentation->project->user) || $user->is_admin;
+    }
 }

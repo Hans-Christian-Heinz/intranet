@@ -38,7 +38,7 @@
                     <li class="nav-item {{ (request()->is('rules')) ? 'active' : '' }}">
                         <a href="{{ route("rules.index") }}" class="nav-link">Werkstattregeln</a>
                     </li>
-                    <li class="nav-item {{ (request()->is('abschlussprojekt')) ? 'active' : '' }}">
+                    <li class="nav-item {{ (request()->is('abschlussprojekt*')) ? 'active' : '' }}">
                         <a href="{{ route("abschlussprojekt.index") }}" class="nav-link">Abschlussprojekt</a>
                     </li>
                     <li class="nav-item dropdown">

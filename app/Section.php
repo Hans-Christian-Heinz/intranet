@@ -27,7 +27,9 @@ class Section extends Model
      *
      * @var array
      */
-    protected $with = ['sections'];
+    protected $with = [
+        //'sections',
+    ];
 
     public function proposal() {
         return $this->belongsTo(Proposal::class);
@@ -37,7 +39,7 @@ class Section extends Model
         return $this->belongsTo(Documentation::class);
     }
 
-    public function parentSection() {
+    public function section() {
         return $this->belongsTo(Section::class, 'section_id', 'id');
     }
 

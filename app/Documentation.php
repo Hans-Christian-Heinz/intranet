@@ -93,7 +93,9 @@ class Documentation extends Model
      *
      * @var array
      */
-    protected $with = ['sections'];
+    protected $with = [
+        //'sections'
+    ];
 
     /**
      * @param bool $withSum
@@ -163,7 +165,6 @@ class Documentation extends Model
             }
         }
 
-        //return $this->formatKostenstellen($res);
         return $res;
     }
 

@@ -58,6 +58,8 @@ Route::group(['middleware' => 'auth'], function () {
             //TODO: sollte keine get Route sein.
             Route::get('/create', 'ProposalController@create')->name('create');
             Route::post('/', 'ProposalController@store')->name('store');
+            Route::get('/history', 'ProposalController@history')->name('history');
+            Route::post('/vergleich', 'ProposalController@vergleich')->name('vergleich');
         });
 
         //Routen für die Projektdokumentation
@@ -69,6 +71,8 @@ Route::group(['middleware' => 'auth'], function () {
             //TODO: sollte keine get Route sein.
             Route::get('/create', 'DocumentationController@create')->name('create');
             Route::post('/', 'DocumentationController@store')->name('store');
+            Route::get('/history', 'DocumentationController@history')->name('history');
+            Route::post('/vergleich', 'DocumentationController@vergleich')->name('vergleich');
         });
     });
 });

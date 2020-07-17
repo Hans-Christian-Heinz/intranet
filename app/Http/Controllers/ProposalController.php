@@ -7,9 +7,7 @@ use App\Project;
 use App\Proposal;
 use App\Traits\SavesSections;
 use App\Version;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use function foo\func;
 
 class ProposalController extends Controller
 {
@@ -73,38 +71,67 @@ class ProposalController extends Controller
         return redirect(route('abschlussprojekt.antrag.index', $project))->with('status', 'Der Antrag wurde erfolgreich gespeichert.');
     }
 
-    /*
-     * Beachte: beim Ändern eines Dokuments wird eine neue Instanz erzeugt; die alte Instanz (der alte Datensatz) bleibt unverändert.
-     * Beachte: In Zukunf wird eine neue Version-Instanz angelegt, mit der alle unveränderten Abschnitte assoziiert werden;
-     * nur veränderte Abschnitte werden neu angelegt.
+    /**
+     * Anzeigen aller Versionen des Antrags in einer Tabelle
      *
-     * @param StoreProposalRequest $request
      * @param Project $project
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     *
-    public function storeOld(StoreProposalRequest $request, Project $project) {
-        $this->authorize('store', $project->proposal);
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function history(Project $project) {
+        $proposal = $project->proposal;
+        $this->authorize('history', $proposal);
 
-        $sectionsOld = $project->proposal->sections;
+        $versions = $proposal->versions()->with('user')->orderBy('updated_at', 'DESC')->get();
+        return view('abschlussprojekt.antrag.history', [
+            'proposal' => $proposal,
+            'versions' => $versions,
+        ]);
+    }
 
-        $proposal = new Proposal();
-        $proposal->changedBy()->associate(app()->user);
-        $proposal->project()->associate($project);
-        $proposal->save();
-        foreach($sectionsOld as $old) {
-            $this->saveSection($request, $proposal, $old);
-        }
+    /**
+     * @param Request $request
+     * @param Project $project
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function vergleich(Request $request, Project $project) {
+        $proposal = $project->proposal;
+        $this->authorize('history', $proposal);
 
-        //$proposal->save();
-        $project->proposal()->associate($proposal);
-        //$project->save();
-
-        //save changes to the project itself
-        $project->update([
-            'start' => $request->start,
-            'end' => $request->end,
+        //Es müssen genau zwei Versionen ausgewählt werden
+        $request->validate([
+            'vergleichen' => 'required|array|size:2',
         ]);
 
-        return redirect(route('abschlussprojekt.antrag.index', $project))->with('status', 'Der Antrag wurde erfolgreich gespeichert.');
-    }*/
+        $versionen = [];
+        foreach ($request->vergleichen as $v_id) {
+            array_push($versionen, Version::with('user')->find($v_id));
+        }
+
+        //Suche nach Unterschieden: Suche nach Section-Instanzen, die zu einer der beiden Versionen gehören, nicht zu beiden
+        //Suche in beiden Richtungen nach Unterschieden, falls zwei Versionen verschiedene Abschnitte haben
+        $diff_sect = collect([]);
+        foreach ($proposal->getAllSections($versionen[0])->diff($proposal->getAllSections($versionen[1])) as $sect) {
+            $diff_sect->push($sect->name);
+            while(! is_null($sect->section)) {
+                $sect = $sect->section;
+                $diff_sect->push($sect->name);
+            }
+        }
+        foreach ($proposal->getAllSections($versionen[1])->diff($proposal->getAllSections($versionen[0])) as $sect) {
+            $diff_sect->push($sect->name);
+            while(! is_null($sect->section)) {
+                $sect = $sect->section;
+                $diff_sect->push($sect->name);
+            }
+        }
+        $diff_sect = $diff_sect->unique();
+
+        return view('abschlussprojekt.antrag.vergleich', [
+            'proposal' => $proposal,
+            'versionen' => $versionen,
+            'diff_sect' => $diff_sect,
+        ]);
+    }
 }
