@@ -11,7 +11,7 @@
                         <h3 class="mr-auto">Projektdokumentation</h3>
                     </div>
                     @include('abschlussprojekt.dokumentation.navigationsleiste', ['v_name' => '',])
-                    @include('abschlussprojekt.dokumentation.tabinhalt', ['v_name' => '',])
+                    @include('abschlussprojekt.dokumentation.tabinhalt', ['v_name' => '', 'disable' => false])
                 </div>
                 {{-- Link zum Veränderungsverlauf --}}
                 <div class="mr-auto p-3">

@@ -10,8 +10,8 @@
                     <div class="d-flex pb-3">
                         <h3 class="mr-auto">Projektantrag</h3>
                     </div>
-                    @include('abschlussprojekt.antrag.navigationsleiste', ['v_name' => ''])
-                    @include('abschlussprojekt.antrag.tabinhalt', ['v_name' => ''])
+                    @include('abschlussprojekt.antrag.navigationsleiste', ['v_name' => '',])
+                    @include('abschlussprojekt.antrag.tabinhalt', ['v_name' => '', 'disable' => false])
                 </div>
                 {{-- Link zum Veränderungsverlauf --}}
                 <div class="mr-auto p-3">

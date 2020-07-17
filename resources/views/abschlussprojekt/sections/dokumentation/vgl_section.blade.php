@@ -2,7 +2,7 @@
 
 @php($zeitplanung = $documentation->getZeitplanung($version))
 
-<textarea id="{{ $s->name }}_text" name="{{ $s->name }}" placeholder="{{ $s->heading }}"
+<textarea id="{{ $s->name }}_text" name="{{ $s->name }}" placeholder="{{ $s->heading }}" @if($disable) disabled @endif
           class="form-control mt-2 @error($s->name) is-invalid @enderror" form="{{ $form }}">{{ $zeitplanung['text'] }}</textarea>
 
 @error($s->name) <p class="invalid-feedback">{{ $message }}</p> @enderror
@@ -21,6 +21,7 @@
                 <td>{{ $phase['duration'] }} h</td>
                 <td>
                     <input type="number" style="width: 4rem;" step="1" min="0" form="{{ $form }}" id="{{ $name }}_input" name="{{ $name }}"
+                           @if($disable) disabled @endif
                            class="form-control @error($name) is-invalid @enderror" value="{{ intval($zeitplanung[$name]) }}"/>
                     @error($name) <p class="invalid-feedback">{{ $message }}</p> @enderror
                     <label for="{{ $name }}_input">h</label>
