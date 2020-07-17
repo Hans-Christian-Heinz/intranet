@@ -1,6 +1,11 @@
 {{-- Formularteil für den Soll-Ist-Vergleich --}}
 
-@include('abschlussprojekt.sections.text_section')
+@php($zeitplanung = $documentation->zeitplanung)
+
+<textarea id="{{ $s->name }}_text" name="{{ $s->name }}" placeholder="{{ $s->heading }}"
+          class="form-control mt-2 @error($s->name) is-invalid @enderror" form="{{ $form }}">{{ $zeitplanung['text'] }}</textarea>
+
+@error($s->name) <p class="invalid-feedback">{{ $message }}</p> @enderror
 
 <table class="table table-striped my-4">
     <tr>
@@ -16,7 +21,7 @@
                 <td>{{ $phase['duration'] }} h</td>
                 <td>
                     <input type="number" style="width: 4rem;" step="1" min="0" form="{{ $form }}" id="{{ $name }}_input" name="{{ $name }}"
-                           class="form-control @error($name) is-invalid @enderror" value="{{ intval($documentation->zeiplanung[$name]) }}"/>
+                           class="form-control @error($name) is-invalid @enderror" value="{{ intval($zeitplanung[$name]) }}"/>
                     @error($name) <p class="invalid-feedback">{{ $message }}</p> @enderror
                     <label for="{{ $name }}_input">h</label>
                 </td>
@@ -26,7 +31,7 @@
             <tr>
                 <td><b>{{ $phase['heading'] }}</b></td>
                 <td><b>{{ $phase['duration'] }}</b></td>
-                <td><b>{{ $documentation->$name }}</b></td>
+                <td><b>{{ $zeitplanung[$name] }}</b></td>
                 <td><b>{{ $phase['difference'] }}</b></td>
             </tr>
         @endif

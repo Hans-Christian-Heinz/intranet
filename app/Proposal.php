@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Structs\Phase;
 use App\Traits\HasSections;
 use Illuminate\Database\Eloquent\Model;
 
@@ -48,12 +49,12 @@ class Proposal extends Model
         $phases = $this->getPhases($version);
         $res = [];
         $fullDuration = 0;
-        foreach ($phases as $name => $phase) {
+        foreach ($phases as $name => $data) {
             $duration = 0;
-            foreach ($phase['phasen'] as $data) {
-                $duration += intval($data['duration']);
+            foreach ($data['phasen'] as $phase) {
+                $duration += $phase->duration;
             }
-            $res[$name] = ['heading' => $phase['heading'], 'duration' => $duration];
+            $res[$name] = ['heading' => $data['heading'], 'duration' => $duration];
             $fullDuration += $duration;
         }
         if ($withSum) {
@@ -65,6 +66,7 @@ class Proposal extends Model
 
     /**
      * Gebe die Phasen des Projekts (Zeitplanung in der Planungsphase) als Array aus.
+     * Format des Ergebnisses: [$name => ['heading' => $heading, 'phasen' => Phase[]], ['heading' => $heading, 'phasen' => Phase[]], ...]
      *
      * @param Version $version
      * @return array
@@ -83,7 +85,7 @@ class Proposal extends Model
 
     /**
      * Formatiere die Phasen: In der Datenbank sind die Phasen als Text gespeichert (Phase1 : 2; Phase2 : 1; ...)
-     * Gewünschtes Format: [name => ['heading' => heading, 'phasen' => ['name' => 'bsp', 'duration' => 1]]]
+     * Gewünschtes Format: [$name => ['heading' => $heading, 'phasen' => Phase[]], ['heading' => $heading, 'phasen' => Phase[]], ...]
      *
      * @param array $phases
      * @return array
@@ -97,11 +99,12 @@ class Proposal extends Model
                 if (empty(trim($t))) {
                     continue;
                 }
-                $temporary = explode(':', $t);
+                /*$temporary = explode(':', $t);
                 array_push($res[$name]['phasen'], [
                     'name' => trim($temporary[0]),
                     'duration' => trim($temporary[1]),
-                ]);
+                ]);*/
+                array_push($res[$name]['phasen'], Phase::create($t));
             }
         }
 

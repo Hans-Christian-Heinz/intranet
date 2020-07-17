@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Structs\Kostenstelle;
 use App\Traits\HasSections;
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,7 +28,7 @@ class Documentation extends Model
                 ['name' => 'hardware', 'heading' => 'Hardware', 'sequence' => 0, 'tpl' => 'dokumentation.ressourcen_text_section',],
                 ['name' => 'software', 'heading' => 'Software', 'sequence' => 1, 'tpl' => 'dokumentation.ressourcen_text_section',],
                 ['name' => 'personal', 'heading' => 'Personal', 'sequence' => 2, 'tpl' => 'dokumentation.ressourcen_text_section',],
-                ['name' => 'gesamt', 'heading' => 'Gesamtkoosten', 'sequence' => 3, 'tpl' => 'dokumentation.ressourcen_gesamt_section',],
+                ['name' => 'gesamt', 'heading' => 'Gesamtkosten', 'sequence' => 3, 'tpl' => 'dokumentation.ressourcen_gesamt_section',],
             ],],
             ['name' => 'entwicklungsprozess', 'heading' => 'Entwicklungsprozess', 'sequence' => 3,],
         ],],
@@ -100,8 +101,9 @@ class Documentation extends Model
      */
     public function getPhasesDifference($withSum = true) {
         $durations = $this->project->getPhasesDuration($withSum);
+        $zeitplanung = $this->zeitplanung;
         foreach ($durations as $name => &$phase) {
-            $phase['difference'] = $this->$name - $phase['duration'];
+            $phase['difference'] = $zeitplanung[$name] - $phase['duration'];
         }
 
         return $durations;
@@ -123,7 +125,7 @@ class Documentation extends Model
             $kosten = 0.0;
             foreach ($kostenstellen as $data) {
                 //str_replace ist nötig, da floatval keine Kommata erkennt.
-                $kosten += floatval(str_replace(',', '.', $data['price']));
+                $kosten += $data->prize;
             }
             $res[$heading] = number_format($kosten, 2);
             $fullCosts += $kosten;
@@ -137,6 +139,7 @@ class Documentation extends Model
 
     /**
      * Gebe die Kostenstellen der Ressourcenplanung als Array aus.
+     * Format des Egebnis: [$heading => Kostenstelle[]]
      *
      * @param Version $version
      * @return array
@@ -149,38 +152,18 @@ class Documentation extends Model
                 if ($subsection->name == 'gesamt') {
                     continue;
                 }
-                $res[$subsection->heading] = $subsection->text;
-            }
-        }
-
-        return $this->formatKostenstellen($res);
-    }
-
-    /**
-     * Formatiere die Kostenstellen: In der Datenbank sind die Kostenstellen als Text gespeichert (KS1 : Beschr : 2,49; KS2 : : 1; ...)
-     * Gewünschtes Format: ['name' => 'KS1', 'description' => 'Beschr', 'price' => 2,], [....
-     *
-     * @param array $kostenstellen
-     * @return array
-     */
-    private function formatKostenstellen(array $kostenstellen) {
-        $res = [];
-        foreach ($kostenstellen as $header => $kostenstelle) {
-            $res[$header] = [];
-            $temp = explode(';', $kostenstelle);
-            foreach($temp as $t) {
-                if (empty(trim($t))) {
-                    continue;
+                $res[$subsection->heading] = [];
+                $text = $subsection->text;
+                foreach (explode(';', $text) as $data) {
+                    if (empty(trim($data))) {
+                        continue;
+                    }
+                    array_push($res[$subsection->heading], Kostenstelle::create($data));
                 }
-                $temporary = explode(':', $t);
-                array_push($res[$header], [
-                    'name' => trim($temporary[0]),
-                    'description' => trim($temporary[1]),
-                    'price' => trim($temporary[2]),
-                ]);
             }
         }
 
+        //return $this->formatKostenstellen($res);
         return $res;
     }
 
@@ -206,15 +189,32 @@ class Documentation extends Model
         }
     }
 
+    /**
+     * Return value: array-keys text, planung, entwurf, implementierung, test, abnahme, gesamt
+     *
+     * @return array
+     */
     public function getZeitplanungAttribute() {
         $vgl = $this->findCurrentSection('soll_ist_vgl');
         $keys = ['planung', 'entwurf', 'implementierung', 'test', 'abnahme',];
         if ($vgl && $vgl->text) {
             $temp = explode('##TEXTEND##', $vgl->text);
-            return array_combine($keys, explode(';', $temp[1]));
+            $times = array_slice(explode(';', $temp[1]),0,5);
+            $res = array_combine($keys, $times);
+            $gesamt = 0;
+            foreach($times as $time) {
+                $gesamt += intval($time);
+            }
+            //array_push($res, ['text' => $temp[0]]);
+            $res['text'] = $temp[0];
+            $res['gesamt'] = $gesamt;
+            return $res;
         }
         else {
-            return array_combine($keys, [0,0,0,0,0,]);
+            $res = array_combine($keys, [0,0,0,0,0,]);
+            //array_push($res, ['text' => '']);
+            $res['text'] = '';
+            return $res;
         }
     }
 

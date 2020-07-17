@@ -72,7 +72,7 @@ trait SavesSections
                 $temp = explode('||', $oldSection->text);
                 return $request->shortTitle == $temp[0] && $request->longTitle == $temp[1];
             case 'soll_ist_vgl':
-                $help = ['planung', 'entwurf', 'implementierung', 'test', 'abnahme'];
+                $help = ['planung', 'entwurf', 'implementierung', 'test', 'abnahme',];
                 if (! $oldSection->text) {
                     $res = is_null($request->$name);
                     foreach ($help as $h) {
@@ -80,11 +80,12 @@ trait SavesSections
                     }
                     return $res;
                 }
-                $temp = explode('##ENDTEXT##', $oldSection->text);
+                $temp = explode('##TEXTEND##', $oldSection->text);
                 $res = $request->$name == $temp[0];
                 $durations = explode(';', $temp[1]);
                 for ($i = 0; $i < count($help); $i++) {
-                    $res = $res && $res->$help[$i] == $durations[$i];
+                    $key = $help[$i];
+                    $res = $res && $request->$key == $durations[$i];
                 }
                 return $res;
             default:
