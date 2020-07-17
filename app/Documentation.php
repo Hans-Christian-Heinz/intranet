@@ -168,8 +168,8 @@ class Documentation extends Model
         return $res;
     }
 
-    public function getShortTitleAttribute() {
-        $title = $this->findCurrentSection('title');
+    public function getShortTitle(Version $version) {
+        $title = $this->findSection('title', $version);
         if ($title && $title->text) {
             $temp = explode('||', $title->text);
             return $temp[0];
@@ -179,8 +179,8 @@ class Documentation extends Model
         }
     }
 
-    public function getLongTitleAttribute() {
-        $title = $this->findCurrentSection('title');
+    public function getLongTitle(Version $version) {
+        $title = $this->findSection('title', $version);
         if ($title && $title->text) {
             $temp = explode('||', $title->text);
             return $temp[1];
@@ -190,13 +190,16 @@ class Documentation extends Model
         }
     }
 
-    /**
-     * Return value: array-keys text, planung, entwurf, implementierung, test, abnahme, gesamt
-     *
-     * @return array
-     */
-    public function getZeitplanungAttribute() {
-        $vgl = $this->findCurrentSection('soll_ist_vgl');
+    public function getShortTitleAttribute() {
+        return $this->getShortTitle($this->latestVersion());
+    }
+
+    public function getLongTitleAttribute() {
+        return $this->getLongTitle($this->latestVersion());
+    }
+
+    public function getZeitplanung(Version $version) {
+        $vgl = $this->findSection('soll_ist_vgl', $version);
         $keys = ['planung', 'entwurf', 'implementierung', 'test', 'abnahme',];
         if ($vgl && $vgl->text) {
             $temp = explode('##TEXTEND##', $vgl->text);
@@ -215,8 +218,18 @@ class Documentation extends Model
             $res = array_combine($keys, [0,0,0,0,0,]);
             //array_push($res, ['text' => '']);
             $res['text'] = '';
+            $res['gesamt'] = 0;
             return $res;
         }
+    }
+
+    /**
+     * Return value: array-keys text, planung, entwurf, implementierung, test, abnahme, gesamt
+     *
+     * @return array
+     */
+    public function getZeitplanungAttribute() {
+        return $this->getZeitplanung($this->latestVersion());
     }
 
     public function project() {

@@ -123,8 +123,8 @@ class Proposal extends Model
         }
     }
 
-    public function getStartAttribute() {
-        $deadline = $this->findCurrentSection('deadline');
+    public function getStart(Version $version) {
+        $deadline = $this->findSection('deadline', $version);
         if ($deadline && $deadline->text) {
             $temp = explode('||', $deadline->text);
             return $temp[0];
@@ -134,8 +134,8 @@ class Proposal extends Model
         }
     }
 
-    public function getEndAttribute() {
-        $deadline = $this->findCurrentSection('deadline');
+    public function getEnd(Version $version) {
+        $deadline = $this->findSection('deadline', $version);
         if ($deadline && $deadline->text) {
             $temp = explode('||', $deadline->text);
             return $temp[1];
@@ -143,6 +143,14 @@ class Proposal extends Model
         else {
             return '';
         }
+    }
+
+    public function getStartAttribute() {
+        return $this->getStart($this->latestVersion());
+    }
+
+    public function getEndAttribute() {
+        return $this->getEnd($this->latestVersion());
     }
 
     public function project() {

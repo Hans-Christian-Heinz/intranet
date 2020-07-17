@@ -1,6 +1,6 @@
 {{-- Formularteil für den Soll-Ist-Vergleich --}}
 
-@php($zeitplanung = $documentation->zeitplanung)
+@php($zeitplanung = $documentation->getZeitplanung($version))
 
 <textarea id="{{ $s->name }}_text" name="{{ $s->name }}" placeholder="{{ $s->heading }}"
           class="form-control mt-2 @error($s->name) is-invalid @enderror" form="{{ $form }}">{{ $zeitplanung['text'] }}</textarea>
