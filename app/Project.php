@@ -63,6 +63,24 @@ class Project extends Model
         }
     }
 
+    public function getStartAttribute() {
+        if ($this->proposal) {
+            return $this->proposal->start;
+        }
+        else {
+            return '';
+        }
+    }
+
+    public function getEndAttribute() {
+        if ($this->proposal) {
+            return $this->proposal->end;
+        }
+        else {
+            return '';
+        }
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

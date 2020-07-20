@@ -22,7 +22,7 @@ class Documentation extends Model
         ],],
         //Projektplanung
         ['name' => 'projekt_planung', 'heading' => 'Projektplanung', 'sequence' => 2, 'tpl' => 'parent_section', 'sections' => [
-            ['name' => 'phasen', 'heading' => 'Projektphasen', 'sequence' => 0, 'tpl' => 'dokumentation.phases_section',],
+            ['name' => 'doku_phasen', 'heading' => 'Projektphasen', 'sequence' => 0, 'tpl' => 'dokumentation.phases_section',],
             ['name' => 'abweichungen', 'heading' => 'Abweichnungen vom Projektantrag', 'sequence' => 1,],
             ['name' => 'ressourcen', 'heading' => 'Ressourcenplanung', 'sequence' => 2, 'tpl' => 'dokumentation.ressourcen_parent_section', 'sections' => [
                 ['name' => 'hardware', 'heading' => 'Hardware', 'sequence' => 0, 'tpl' => 'dokumentation.ressourcen_text_section',],
@@ -79,13 +79,7 @@ class Documentation extends Model
      * @var array
      */
     protected $fillable = [
-        'shortTitle',
-        'longTitle',
-        'planung',
-        'entwurf',
-        'implementierung',
-        'test',
-        'abnahme',
+        //
     ];
 
     /**

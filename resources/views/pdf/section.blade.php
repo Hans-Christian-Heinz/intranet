@@ -21,17 +21,22 @@
         @break
 @endswitch
 
-@if($version->sections()->where('sections.section_id', $section->id)->count() == 0)
-    <p class="abschnitt">{!! nl2br(e($section->getContent())) !!}</p>
-@endif
 
 @if($section->name == 'phases')
     @include('pdf.antrag.phases_table')
-@endif
-
-@unless($section->name == 'phases')
+@elseif($section->name == 'doku_phasen')
+    @include('pdf.dokumentation.phases_table')
+@elseif($section->tpl == 'dokumentation.ressourcen_text_section')
+    @include('pdf.dokumentation.kostenstellen_table')
+@elseif($section->tpl == 'dokumentation.ressourcen_gesamt_section')
+    @include('pdf.dokumentation.kostenstellen_gesamt_table')
+@elseif($section->name == 'soll_ist_vgl')
+    @include('pdf.dokumentation.soll_ist_vgl')
+@elseif($version->sections()->where('sections.section_id', $section->id)->count() == 0)
+    <p class="abschnitt">{!! nl2br(e($section->getContent())) !!}</p>
+@else
     @foreach($version->sections()->where('sections.section_id', $section->id)->orderBy('sequence')->get() as $child)
-        <tocentry content="{{ $section->heading }}" level="{{ $tiefe }}"/>
+        <tocentry content="{{ $child->heading }}" level="{{ $tiefe }}"/>
         @include('pdf.section', ['section' => $child, 'tiefe' => $tiefe + 1,])
     @endforeach
-@endunless
+@endif

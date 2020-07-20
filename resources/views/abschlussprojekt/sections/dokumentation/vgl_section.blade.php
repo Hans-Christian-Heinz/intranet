@@ -10,7 +10,7 @@
 <table class="table table-striped my-4">
     <tr>
         <th>Projektphase</th>
-        <th>Geplante</th>
+        <th>Geplant</th>
         <th>Tatsächlich</th>
         <th>Differenz</th>
     </tr>

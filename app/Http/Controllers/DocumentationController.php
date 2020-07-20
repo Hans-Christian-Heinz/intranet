@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Documentation;
+use App\Http\Requests\PdfRequest;
 use App\Http\Requests\StoreDocumentationRequest;
 use App\Project;
 use App\Traits\SavesSections;
@@ -196,9 +197,73 @@ class DocumentationController extends Controller
         }
     }
 
+    /**
+     * @param PdfRequest $request
+     * @param Project $project
+     * @return string
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Mpdf\MpdfException
+     */
     public function pdf(PdfRequest $request, Project $project) {
         $documentation = $project->documentation;
+        $version = $documentation->latestVersion();
         $this->authorize('pdf', $documentation);
 
+        $title = 'Projektdokumentation ' . $project->user->full_name;
+
+        $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+        $fontDirs = $defaultConfig['fontDir'];
+
+        $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+        $fontData = $defaultFontConfig['fontdata'];
+
+        $mpdf = new \Mpdf\Mpdf([
+            'mode' => 'utf-8',
+            'format' => 'A4',
+
+            'margin_left' => 20,
+            'margin_right' => 20,
+            'margin_top' => 20,
+            'margin_bottom' => 20,
+
+            'fontDir' => array_merge($fontDirs, [base_path() . '/resources/fonts']),
+            'fontdata' => $fontData + [
+                    'opensans' => [
+                        'R' => 'OpenSans-Regular.ttf',
+                        'B' => 'OpenSans-Bold.ttf'
+                    ]
+                ],
+            'default_font_size' => $request->textgroesse,
+            'default_font' => 'opensans',
+
+            'tempDir' => sys_get_temp_dir(),
+        ]);
+
+        $mpdf->SetHTMLHeader('
+<div style="text-align: right; font-weight: bold;">' .
+    $documentation->shortTitle . '<br/>' . $documentation->longTitle .
+'</div>');
+
+        $mpdf->setHTMLFooter('
+<table style="width: 100%">
+    <tr>
+        <td>' . $project->user->full_name . '</td>
+        <td style="text-align: right">{PAGENO}/{nbpg}</td>
+    </tr>
+</table>');
+
+        $mpdf->SetTitle($title);
+
+        $mpdf->WriteHTML(view('pdf.dokumentation', [
+            'project' => $documentation->project()->with('user')->with('supervisor')->first(),
+            'documentation' => $documentation,
+            'format' => $request->all(),
+            'version' => $version,
+            'kostenstellen' => $documentation->getKostenstellen($version),
+            'kostenstellen_gesamt' => $documentation->getKostenstellenGesamt($version),
+            'zeitplanung' => $documentation->zeitplanung,
+        ])->render());
+
+        return $mpdf->Output($title . '.pdf', 'I');
     }
 }

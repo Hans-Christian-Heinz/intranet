@@ -250,15 +250,6 @@ class ProposalController extends Controller
 
         $mpdf->SetTitle($title);
 
-        /*$mpdf->h2toc = array(
-            'H1' => 0,
-            'H2' => 1,
-            'H3' => 2,
-            'H4' => 3,
-            'H5' => 4,
-            'H6' => 5,
-        );*/
-
         $mpdf->WriteHTML(view('pdf.antrag', [
             'project' => $proposal->project()->with('user')->with('supervisor')->first(),
             'proposal' => $proposal,
@@ -267,11 +258,5 @@ class ProposalController extends Controller
         ])->render());
 
         return $mpdf->Output($title . '.pdf', 'I');
-        /*return view('pdf.antrag', [
-            'project' => $proposal->project()->with('user')->with('supervisor')->first(),
-            'proposal' => $proposal,
-            'format' => $request->all(),
-            'version' => $proposal->latestVersion(),
-        ]);*/
     }
 }
