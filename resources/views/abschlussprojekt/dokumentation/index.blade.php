@@ -23,7 +23,7 @@
                 <form class="form form-inline ml-auto p-3" action="{{ route('abschlussprojekt.dokumentation.store', $documentation->project) }}" method="post" id="formDokumentation">
                     @csrf
                     {{-- Link zum Erstellen eines PDF-Dokuments --}}
-                    <a class="btn btn-secondary mx-2" data-toggle="modal" id="formatPdfModal" href="#formatPdf">PDF ertellen</a>
+                    <a class="btn btn-secondary mx-2" data-toggle="modal" id="formatPdfModal" href="#formatPdf">PDF erstellen</a>
                     <input class="btn btn-primary mx-2" type="submit" form="formDokumentation" id="speichern" value="Speichern"/>
                 </form>
             </div>

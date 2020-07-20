@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Structs\Phase;
 use App\Traits\HasSections;
 use Illuminate\Database\Eloquent\Model;
 
@@ -30,6 +31,49 @@ class Section extends Model
     protected $with = [
         //'sections',
     ];
+
+    /**
+     * Gibt den Inhalt des Abschnitts (für das HTML bzw. PDF Dokument) aus. Formatiert ggf den Inhalt.
+     *
+     * @return string
+     */
+    public function getContent() {
+        switch ($this->name) {
+            case 'deadline':
+                if ($this->text) {
+                    $help = explode('||', $this->text);
+                    return 'Beginn: ' . $help[0] . "\n" . 'Ende: ' . $help[1];
+                }
+                else {
+                    return '';
+                }
+            default:
+                return $this->text;
+        }
+    }
+
+    /**
+     * Gebe die Unterphasen einer Phase als Array aus.
+     * Beachte: Es wird davon ausgegeangen, dass diese Methode nur auf einem passenden Abschnitt aufgerufen wird.
+     *
+     * @return array
+     */
+    public function getPhases() {
+        $phases = [];
+        $gesamtDauer = 0;
+        foreach(explode(';', $this->text) as $help) {
+            if (empty(trim($help))) {
+                continue;
+            }
+            $tmp = Phase::create($help);
+            $gesamtDauer += $tmp->duration;
+            array_push($phases, $tmp);
+        }
+
+        $phases['gesamt'] = new Phase('Gesamt', $gesamtDauer);
+
+        return $phases;
+    }
 
     public function proposal() {
         return $this->belongsTo(Proposal::class);

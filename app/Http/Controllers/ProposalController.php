@@ -202,10 +202,76 @@ class ProposalController extends Controller
     /**
      * @param PdfRequest $request
      * @param Project $project
+     * @return string
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Mpdf\MpdfException
      */
     public function pdf(PdfRequest $request, Project $project) {
         $proposal = $project->proposal;
         $this->authorize('pdf', $proposal);
+
+        $title = 'Projektantrag ' . $project->user->full_name;
+
+        $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+        $fontDirs = $defaultConfig['fontDir'];
+
+        $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+        $fontData = $defaultFontConfig['fontdata'];
+
+        $mpdf = new \Mpdf\Mpdf([
+            'mode' => 'utf-8',
+            'format' => 'A4',
+
+            'margin_left' => 20,
+            'margin_right' => 20,
+            'margin_top' => 20,
+            'margin_bottom' => 20,
+
+            'fontDir' => array_merge($fontDirs, [base_path() . '/resources/fonts']),
+            'fontdata' => $fontData + [
+                    'opensans' => [
+                        'R' => 'OpenSans-Regular.ttf',
+                        'B' => 'OpenSans-Bold.ttf'
+                    ]
+                ],
+            'default_font_size' => $request->textgroesse,
+            'default_font' => 'opensans',
+
+            'tempDir' => sys_get_temp_dir(),
+        ]);
+
+        $mpdf->setHTMLFooter('
+<table style="width: 100%">
+    <tr>
+        <td>' . $project->user->full_name . '</td>
+        <td style="text-align: right">{PAGENO}/{nbpg}</td>
+    </tr>
+</table>');
+
+        $mpdf->SetTitle($title);
+
+        /*$mpdf->h2toc = array(
+            'H1' => 0,
+            'H2' => 1,
+            'H3' => 2,
+            'H4' => 3,
+            'H5' => 4,
+            'H6' => 5,
+        );*/
+
+        $mpdf->WriteHTML(view('pdf.antrag', [
+            'project' => $proposal->project()->with('user')->with('supervisor')->first(),
+            'proposal' => $proposal,
+            'format' => $request->all(),
+            'version' => $proposal->latestVersion(),
+        ])->render());
+
+        return $mpdf->Output($title . '.pdf', 'I');
+        /*return view('pdf.antrag', [
+            'project' => $proposal->project()->with('user')->with('supervisor')->first(),
+            'proposal' => $proposal,
+            'format' => $request->all(),
+            'version' => $proposal->latestVersion(),
+        ]);*/
     }
 }
