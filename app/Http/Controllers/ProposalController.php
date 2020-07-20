@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PdfRequest;
 use App\Http\Requests\StoreProposalRequest;
 use App\Project;
 use App\Proposal;
@@ -196,5 +197,15 @@ class ProposalController extends Controller
             return redirect(route('abschlussprojekt.antrag.index', $project))
                 ->with('status', 'Die Version wurde erfolgreich gelöscht.');
         }
+    }
+
+    /**
+     * @param PdfRequest $request
+     * @param Project $project
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function pdf(PdfRequest $request, Project $project) {
+        $proposal = $project->proposal;
+        $this->authorize('pdf', $proposal);
     }
 }

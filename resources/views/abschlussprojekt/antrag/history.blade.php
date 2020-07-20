@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-md-12 bg-white">
                     <div class="d-flex pb-3">
-                        <h3 class="mr-auto">Projektantrag: Änderungsverlauf</h3>
+                        <h3 class="mr-auto">Projektantrag: Veränderungsverlauf</h3>
                     </div>
                     {{-- Tabelle der Versionen --}}
                     <table class="table table-striped">

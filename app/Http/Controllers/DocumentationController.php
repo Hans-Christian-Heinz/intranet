@@ -195,4 +195,10 @@ class DocumentationController extends Controller
                 ->with('status', 'Die Version wurde erfolgreich gelöscht.');
         }
     }
+
+    public function pdf(PdfRequest $request, Project $project) {
+        $documentation = $project->documentation;
+        $this->authorize('pdf', $documentation);
+
+    }
 }

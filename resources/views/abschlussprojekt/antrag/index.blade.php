@@ -20,11 +20,15 @@
                     </a>
                 </div>
                 {{-- Formular zum Speichern --}}
-                <form class="form ml-auto p-3" action="{{ route('abschlussprojekt.antrag.store', $proposal->project) }}" method="post" id="formAntrag">
+                <form class="form form-inline ml-auto p-3" action="{{ route('abschlussprojekt.antrag.store', $proposal->project) }}" method="post" id="formAntrag">
                     @csrf
-                    <input class="btn btn-primary" type="submit" form="formAntrag" id="speichern" value="Speichern"/>
+                    {{-- Link zum Erstellen eines PDF-Dokuments --}}
+                    <a class="btn btn-secondary mx-2" data-toggle="modal" id="formatPdfModal" href="#formatPdf">PDF ertellen</a>
+                    <input class="btn btn-primary mx-2" type="submit" form="formAntrag" id="speichern" value="Speichern"/>
                 </form>
             </div>
         </div>
     </div>
+
+    @include('abschlussprojekt.formatPdfModal', ['route' => 'abschlussprojekt.antrag.pdf', 'project' => $proposal->project,])
 @endsection

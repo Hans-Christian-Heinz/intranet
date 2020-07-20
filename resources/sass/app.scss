@@ -16,6 +16,29 @@ body {
     font-size: 1.575rem;
 }
 
+/*
+ * Textarten (Vorschau beim Auswählen der Textart für ein PDF-Dokument
+ */
+.courier {
+    font-family: courier, serif;
+}
+
+.helvetica {
+    font-family: helvetica, serif;
+}
+
+.times {
+    font-family: "Times New Roman", Times, serif;
+}
+
+.b {
+    font-weight: bold;
+}
+
+.i {
+    font-style: italic;
+}
+
 ul.scrollnav {
     overflow-x: scroll;
     overflow-y: hidden;
