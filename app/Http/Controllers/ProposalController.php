@@ -134,4 +134,32 @@ class ProposalController extends Controller
             'diff_sect' => $diff_sect,
         ]);
     }
+
+    /**
+     * Übernehme eine per Formular übergebene Vesion als die aktuelle Version eines Projektantrags.
+     *
+     * @param Request $request
+     * @param Project $project
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function useVersion(Request $request, Project $project) {
+        $proposal = $project->proposal;
+        $this->authorize('history', $proposal);
+
+        $request->validate([
+            'id' => 'required|int|min:1',
+        ]);
+
+        $version = Version::find($request->id);
+        if (! $version || ! $proposal->is($version->proposal)) {
+            return redirect(route('abschlussprojekt.antrag.index', $project))
+                ->with('danger', 'Die Version konnte nicht übernommen werden.');
+        }
+        else {
+            $version->touch();
+            return redirect(route('abschlussprojekt.antrag.index', $project))
+                ->with('status', 'Die Version wurde erfolgreich übernommen.');
+        }
+    }
 }

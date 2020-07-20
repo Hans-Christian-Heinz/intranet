@@ -23,6 +23,12 @@
                              'version' => $versionen[0],
                              'disable' => true,
                          ])
+                        {{-- Formular zum Speichern von Version 0 als aktuelle Version --}}
+                        <form class="form text-right p-3" action="{{ route('abschlussprojekt.dokumentation.use_version', $documentation->project) }}" method="post">
+                            @csrf
+                            <input type="hidden" name="id" value="{{ $versionen[0]->id }}"/>
+                            <input class="btn btn-primary" type="submit" id="speichern" value="Version übernehmen"/>
+                        </form>
                     </div>
                     <div class="border-top border-dark pt-3">
                         <h4>Version: {{ $versionen[1]->updated_at }}, geändert von {{ $versionen[1]->user->full_name }}</h4>
@@ -37,6 +43,12 @@
                              'version' => $versionen[1],
                              'disable' => true,
                          ])
+                        {{-- Formular zum Speichern von Version 1 als aktuelle Version --}}
+                        <form class="form text-right p-3" action="{{ route('abschlussprojekt.dokumentation.use_version', $documentation->project) }}" method="post">
+                            @csrf
+                            <input type="hidden" name="id" value="{{ $versionen[1]->id }}"/>
+                            <input class="btn btn-primary" type="submit" id="speichern" value="Version übernehmen"/>
+                        </form>
                     </div>
                 </div>
             </div>

@@ -60,6 +60,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/', 'ProposalController@store')->name('store');
             Route::get('/history', 'ProposalController@history')->name('history');
             Route::post('/vergleich', 'ProposalController@vergleich')->name('vergleich');
+            Route::post('/use_version', 'ProposalController@useVersion')->name('use_version');
         });
 
         //Routen für die Projektdokumentation
@@ -73,6 +74,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/', 'DocumentationController@store')->name('store');
             Route::get('/history', 'DocumentationController@history')->name('history');
             Route::post('/vergleich', 'DocumentationController@vergleich')->name('vergleich');
+            Route::post('/use_version', 'DocumentationController@useVersion')->name('use_version');
         });
     });
 });

@@ -132,4 +132,32 @@ class DocumentationController extends Controller
             'diff_sect' => $diff_sect,
         ]);
     }
+
+    /**
+     * Übernehme eine per Formular übergebene Vesion als die aktuelle Version einer Projektdokumentation.
+     *
+     * @param Request $request
+     * @param Project $project
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function useVersion(Request $request, Project $project) {
+        $documentation = $project->documentation;
+        $this->authorize('history', $documentation);
+
+        $request->validate([
+            'id' => 'required|int|min:1',
+        ]);
+
+        $version = Version::find($request->id);
+        if (! $version || ! $documentation->is($version->documentation)) {
+            return redirect(route('abschlussprojekt.dokumentation.index', $project))
+                ->with('danger', 'Die Version konnte nicht übernommen werden.');
+        }
+        else {
+            $version->touch();
+            return redirect(route('abschlussprojekt.dokumentation.index', $project))
+                ->with('status', 'Die Version wurde erfolgreich übernommen.');
+        }
+    }
 }
