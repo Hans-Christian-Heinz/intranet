@@ -24,8 +24,6 @@
                                     @error("vergleichen") <span class="text-danger">{{ $message }}</span> @enderror
                                 </form>
                             </th>
-                            <th>Wiederherstellen</th>
-                            <th>Löschen</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -38,8 +36,6 @@
                                         <input type="checkbox" value="{{ $version->id }}" name="vergleichen[]" form="formVergleichen"/>
                                     </div>
                                 </td>
-                                <td>TODO</td>
-                                <td>TODO</td>
                             </tr>
                         @endforeach
                         </tbody>

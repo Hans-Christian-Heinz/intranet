@@ -162,4 +162,39 @@ class ProposalController extends Controller
                 ->with('status', 'Die Version wurde erfolgreich übernommen.');
         }
     }
+
+    /**
+     * Lösche eine Version des Dokuments und alle Abschnitte, die nur zu der zu löschenden Version gehören
+     *
+     * @param Request $request
+     * @param Project $project
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function deleteVersion(Request $request, Project $project) {
+        $proposal = $project->proposal;
+        $this->authorize('history', $proposal);
+
+        $request->validate([
+            'id' => 'required|int|min:1',
+        ]);
+
+        if ($proposal->versions()->count() < 2) {
+            return redirect(route('abschlussprojekt.antrag.index', $project))
+                ->with('danger', 'Das Dokument hat nur eine Version. Sie kann nicht gelöscht werden.');
+        }
+
+        $version = Version::find($request->id);
+        if (! $version || ! $proposal->is($version->proposal)) {
+            return redirect(route('abschlussprojekt.antrag.index', $project))
+                ->with('danger', 'Die Version konnte nicht gelöscht werden.');
+        }
+        else {
+            //In der delete-Methode von Version werden, wenn nötig, Abschnitte gelöscht.
+            $version->delete();
+
+            return redirect(route('abschlussprojekt.antrag.index', $project))
+                ->with('status', 'Die Version wurde erfolgreich gelöscht.');
+        }
+    }
 }

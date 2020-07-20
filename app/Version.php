@@ -10,6 +10,18 @@ class Version extends Model
         'sections',
     ];
 
+    public function delete() {
+        //Überprüfe für alle dieser Version zugeordneten Abschnitte, ob sie einer anderen Version zugeordnet sind.
+        //Wenn nicht: Lösche sie.
+        foreach ($this->sections as $section) {
+            if ($section->versions()->count() <= 1) {
+                $section->delete();
+            }
+        }
+
+        return parent::delete();
+    }
+
     public function proposal() {
         return $this->belongsTo(Proposal::class);
     }
