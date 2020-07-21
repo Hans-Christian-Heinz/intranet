@@ -30,17 +30,20 @@ class UserServiceProvider extends ServiceProvider
             $username = $app->auth->user()->username;
             $fullName = $app->auth->user()->name;
             $email = $app->auth->user()->email;
-            //sso guard: isAdmin wird lieg bereits vor; manuelles Einloggen (web guard): isAdmin liegt nicht vor
-            if (isset($app->auth->user()->isAdmin)) {
-                $isAdmin = $app->auth->user()->isAdmin;
+            //sso guard: isAdmin liegt bereits vor; manuelles Einloggen (web guard): isAdmin liegt nicht vor
+            if (isset($app->auth->user()->fachrichtung)) {
+                $fachrichtung = $app->auth->user()->fachrichtung;
             }
             else {
-                $isAdmin = false;
+                $fachrichtung = 'Anwendungsentwicklung';
                 $groups = Adldap::search()->findByDn(sprintf(env('LDAP_USER_FULL_DN_FMT'), $username))->getMemberOf();
                 foreach ($groups as $group) {
                     if (strpos($group, 'cn=admins') === 0) {
-                        $isAdmin = true;
+                        $fachrichtung = 'Ausbilder';
                         break;
+                    }
+                    if (strpos($group, 'cn=systemintegration') === 0) {
+                        $fachrichtung = 'Systemintegration';
                     }
                 }
             }
@@ -53,7 +56,7 @@ class UserServiceProvider extends ServiceProvider
                 $user->full_name = $fullName;
                 $user->email = $email;
 
-                $user->is_admin = $isAdmin;
+                $user->fachrichtung = $fachrichtung;
 
                 $user->save();
             } else {
@@ -67,8 +70,8 @@ class UserServiceProvider extends ServiceProvider
                     $user->save();
                 }
 
-                if ($user->is_admin != $isAdmin) {
-                    $user->is_admin = $isAdmin;
+                if ($user->fachrichtung != $fachrichtung) {
+                    $user->fachrichtung = $fachrichtung;
                     $user->save();
                 }
             }

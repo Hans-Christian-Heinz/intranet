@@ -9,7 +9,7 @@
     <p>
         <b>Ausbildungsberuf</b>
         <br/>
-        Fachinformatiker/in, {{ $fachrichtung ?? 'PLACEHOLDER' }};
+        Fachinformatiker/in, {{ $project->user->fachrichtung }};
         <br/>
         <br/>
         Auszubildender: {{ $project->user->full_name }}

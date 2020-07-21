@@ -6,7 +6,7 @@
     <p>
         <b>Abschlussprüfung TODO</b>
         <br/>
-        Fachinformatiker/in, {{ $fachrichtung ?? 'PLACEHOLDER' }};
+        Fachinformatiker/in, {{ $project->user->fachrichtung }};
         <br/><br/>
         <span style="font-size: {{ $format['textgroesse'] + 2 }}pt">Dokumentation zur betrieblichen Projektarbeit</span>
         <br/><br/>

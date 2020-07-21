@@ -37,11 +37,14 @@ class AuthServiceProvider extends ServiceProvider
 
                 $username = substr($username, 0, strpos($username, env('KERBEROS_DOMAIN', '')));
                 $adldap_user = Adldap::search()->findByDn(sprintf(env('LDAP_USER_FULL_DN_FMT'), $username));
-                $isAdmin = false;
+                $fachrichtung = 'Anwendungsentwicklung';
                 foreach ($adldap_user->getMemberOf() as $group) {
                     if (strpos($group, 'cn=admins') === 0) {
-                        $isAdmin = true;
+                        $fachrichtung = 'Ausbilder';
                         break;
+                    }
+                    if (strpos($group, 'cn=systemintegration') === 0) {
+                        $fachrichtung = 'Systemintegration';
                     }
                 }
 
@@ -50,7 +53,7 @@ class AuthServiceProvider extends ServiceProvider
                     'username' => $adldap_user->getFirstAttribute(env('LDAP_USER_SEARCH_ATTRIBUTE', 'uid')),
                     'name' => $adldap_user->getCommonName(),
                     'email' => $adldap_user->getEmail(),
-                    'isAdmin' => $isAdmin,
+                    'fachrichtung' => $fachrichtung,
                 ]);
             }
             else {

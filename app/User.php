@@ -31,7 +31,11 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return (bool) $this->is_admin;
+        return $this->fachrichtung == 'Ausbilder';
+    }
+
+    public function getIsAdminAttribute() {
+        return $this->fachrichtung == 'Ausbilder';
     }
 
     public function acceptRules()
