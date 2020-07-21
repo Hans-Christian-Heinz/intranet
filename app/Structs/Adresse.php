@@ -28,6 +28,6 @@ class Adresse
 
     public function __toString()
     {
-        return $this->strasse . ' ' . $this->hausnr . '<br/>' . $this->plz . ' ' . $this->ort;
+        return $this->strasse . ' ' . $this->hausnr . "\n" . $this->plz . ' ' . $this->ort;
     }
 }

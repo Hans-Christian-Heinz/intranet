@@ -18,6 +18,14 @@ Route::post('login', 'Auth\LoginController@login');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::group(['middleware' => 'auth'], function () {
+    //Routen für die Benutzerverwaltung
+    Route::group([
+        'prefix' => 'user',
+        'as' => 'user.',
+    ], function() {
+        Route::post('/address', 'UserController@address')->name('address');
+    });
+
     // Routen für Berichtsheft:
     Route::get('/berichtshefte', 'BerichtsheftController@index')->name('berichtshefte.index');
     Route::get('/berichtshefte/create', 'BerichtsheftController@create')->name('berichtshefte.create');

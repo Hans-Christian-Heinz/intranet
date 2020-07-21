@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Structs\Adresse;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -18,6 +19,10 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'accepted_rules_at',
+        'ort',
+        'plz',
+        'hausnr',
+        'strasse',
     ];
 
     /**
@@ -36,6 +41,10 @@ class User extends Authenticatable
 
     public function getIsAdminAttribute() {
         return $this->fachrichtung == 'Ausbilder';
+    }
+
+    public function getAddress() {
+        return new Adresse($this->strasse, $this->hausnr, $this->plz, $this->ort);
     }
 
     public function acceptRules()

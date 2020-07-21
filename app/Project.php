@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
@@ -70,6 +71,23 @@ class Project extends Model
         }
         else {
             return '';
+        }
+    }
+
+    public function getJahreszeitAttribute() {
+        $end = $this->end;
+        if ($end) {
+            $help = Carbon::create($this->end);
+            $m = (int) $help->format('m');
+            if (4 <= $m && $m <= 9) {
+                return 'Sommer ' . $help->format('Y');
+            }
+            else {
+                return 'Winter ' . $help->format('Y');
+            }
+        }
+        else {
+            return 'ACHTUNG: Im Projektantrag liegt kein Datum vor.';
         }
     }
 

@@ -4,7 +4,7 @@
     <img src="{{ asset("/img/ihk_logo.png") }}">
 
     <p>
-        <b>Abschlussprüfung TODO</b>
+        <b>Abschlussprüfung {{ $project->jahreszeit }}</b>
         <br/>
         Fachinformatiker/in, {{ $project->user->fachrichtung }};
         <br/><br/>
@@ -17,11 +17,11 @@
         <br/>
         Abgabedatum: Winnenden, den {{ \Carbon\Carbon::create($project->end)->format('d.m.Y') }}
         <br/><br/><br/>
-        <b>Prüfungsbewerber</b>
+        <b>Prüfungsbewerber:</b>
         <br/>
         {{ $project->user->full_name }}
         <br/>
-        TODO: address
+        {!! nl2br(e($project->user->getAddress())) !!}
         <br/><br/>
         <b>Ausbildungsbetrieb:</b>
         <br/>
