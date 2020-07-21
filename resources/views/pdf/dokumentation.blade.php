@@ -6,25 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <style>
-        .courier {
-            font-family: courier, serif;
-        }
-        .helvetica {
-            font-family: helvetica, serif;
-        }
-        .times {
-            font-family: "Times New Roman", Times, serif;
-        }
-        .b {
-            font-weight: bold;
-        }
-        .i {
-            font-style: italic;
+        body {
+            font-size: {{ $format['textgroesse'] }}pt;
+            @switch($format['textart'])
+                @case('courier')
+                    font-family: courier, serif;
+                    @break
+                @case('helvetica')
+                    font-family: helvetica, serif;
+                    @break
+                @case('times')
+                    font-family: "Times New Roman", Times, serif;
+                    @break
+                @case('dejausans')
+                    font-family: "DejaVu Sans", sans-serif;
+                    @break
+            @endswitch
         }
         div#titelseite {
             page-break-after: right;
             text-align: center;
-            padding: 25% 0;
+            padding: 10% 0;
         }
         div#titelseite p {
             color: {{ $format['textfarbe'] }};;
@@ -39,11 +41,12 @@
         table {
             width: 100%;
             margin-bottom: 1rem;
-            border: solid black 1px;
+            border: 1px solid black;
             page-break-inside: avoid;;
+            border-collapse: collapse;
         }
         td, th {
-            border: solid black 1px;
+            border: 1px solid black;
             padding: 0.5em;
         }
         tr.bgHeader {
@@ -65,8 +68,12 @@
         }
     </style>
 </head>
-<body class="{{ $format['textart'] }}">
+<body>
+<sethtmlpageheader name="header" value="on"/>
+
 @include('pdf.dokumentation.titelseite')
+
+<sethtmlpagefooter name="footer" value="on"/>
 
 <tocpagebreak links="on" toc-prehtml="&lt;h3 class=&quot;heading&quot;&gt;Inhaltsverzeichnis&lt;/h3&gt;"></tocpagebreak>
 
@@ -75,8 +82,18 @@
         @continue
     @endif
 
+    {{-- Eidesstattliche Erklärung soll vor dem Anhang kommen --}}
+    @if($loop->last && $section->name == 'anhang')
+        @include('pdf.dokumentation.eidesstattliche_erklaerung')
+    @endif
+
     <tocentry content="{{ $section->heading }}" level="0"/>
     @include('pdf.section', ['tiefe' => 1,])
+
+    {{-- Eidesstattliche Erklärung muss auch vorkommen, wenn kein Anhang vorliegt (oder der Anahng nicht am Ende steht) --}}
+    @if($loop->last && $section->name != 'anhang')
+        @include('pdf.dokumentation.eidesstattliche_erklaerung')
+    @endif
 @endforeach
 </body>
 </html>

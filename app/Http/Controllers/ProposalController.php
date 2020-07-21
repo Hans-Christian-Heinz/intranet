@@ -240,11 +240,11 @@ class ProposalController extends Controller
             'tempDir' => sys_get_temp_dir(),
         ]);
 
-        $mpdf->setHTMLFooter('
-<table style="width: 100%">
-    <tr>
-        <td>' . $project->user->full_name . '</td>
-        <td style="text-align: right">{PAGENO}/{nbpg}</td>
+        $mpdf->DefHTMLFooterByName('footer',
+'<table style="width: 100%; border: none; border-top: 1px solid black;">
+    <tr style="border: none;">
+        <td style="border: none;">' . $project->user->full_name . '</td>
+        <td style="border:none; text-align: right;">{PAGENO}/{nbpg}</td>
     </tr>
 </table>');
 

@@ -8,17 +8,9 @@ class Project extends Model
 {
     const FONTS = [
         'Courier' => 'courier',
-        //'Courier Bold' => 'courierB',
-        //'Courier Bold Italic' => 'courierBI',
-        //'Courier Italic' => 'courierI',
         'Helvetica' => 'helvetica',
-        //'Helvetica Bold' => 'helveticaB',
-        //'Helvetica Bold Italic' => 'helveticaBI',
-        //'Helvetica Italic' => 'helveticaI',
         'Times New Roman' => 'times',
-        //'Times New Roman Bold' => 'timesB',
-        //'Times New Roman Bold Italic' => 'timesBI',
-        //'Times New Roman Italic' => 'timesI',
+        'DejaVu Sans' => 'dejavusans',
     ];
 
     public function getTopicAttribute() {

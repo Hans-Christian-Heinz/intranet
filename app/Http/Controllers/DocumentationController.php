@@ -226,6 +226,9 @@ class DocumentationController extends Controller
             'margin_top' => 20,
             'margin_bottom' => 20,
 
+            'setAutoTopMargin' => 'stretch',
+            'autoMarginPadding' => 5,
+
             'fontDir' => array_merge($fontDirs, [base_path() . '/resources/fonts']),
             'fontdata' => $fontData + [
                     'opensans' => [
@@ -239,16 +242,16 @@ class DocumentationController extends Controller
             'tempDir' => sys_get_temp_dir(),
         ]);
 
-        $mpdf->SetHTMLHeader('
-<div style="text-align: right; font-weight: bold;">' .
-    $documentation->shortTitle . '<br/>' . $documentation->longTitle .
+        $mpdf->DefHTMLHeaderByName('header',
+'<div style="border-bottom: 1px solid black;"><b>' .
+    $documentation->shortTitle . '</b><br/>' . $documentation->longTitle .
 '</div>');
 
-        $mpdf->setHTMLFooter('
-<table style="width: 100%">
-    <tr>
-        <td>' . $project->user->full_name . '</td>
-        <td style="text-align: right">{PAGENO}/{nbpg}</td>
+        $mpdf->DefHTMLFooterByName('footer',
+            '<table style="width: 100%; border: none; border-top: 1px solid black;">
+    <tr style="border: none;">
+        <td style="border: none;">' . $project->user->full_name . '</td>
+        <td style="border:none; text-align: right;">{PAGENO}/{nbpg}</td>
     </tr>
 </table>');
 

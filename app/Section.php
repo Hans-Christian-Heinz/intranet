@@ -4,6 +4,7 @@ namespace App;
 
 use App\Structs\Phase;
 use App\Traits\HasSections;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Section extends Model
@@ -42,7 +43,8 @@ class Section extends Model
             case 'deadline':
                 if ($this->text) {
                     $help = explode('||', $this->text);
-                    return 'Beginn: ' . $help[0] . "\n" . 'Ende: ' . $help[1];
+                    return 'Beginn: ' . Carbon::create($help[0])->format('d.m.Y') . "\n"
+                        . 'Ende: ' . Carbon::create($help[1])->format('d.m.Y');
                 }
                 else {
                     return '';

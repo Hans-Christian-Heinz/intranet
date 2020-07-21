@@ -1,5 +1,8 @@
 {{-- Titelseite eines Projektantrags --}}
 
+<img src="{{ asset("/img/ihk_logo.png") }}">
+<span style="font-size: 25px;">Region Stuttgart</span>
+
 <div id="titelseite">
     <h1 class="heading">Projektantrag</h1>
     <br/>
