@@ -205,6 +205,7 @@ class DocumentationController extends Controller
      *
      * @param AddImageRequest $request
      * @param Project $project
+     * @return \Illuminate\Http\RedirectResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function addImage(AddImageRequest $request, Project $project) {
@@ -238,6 +239,44 @@ class DocumentationController extends Controller
         $section->images()->save($img);
 
         return redirect()->back()->with('status', 'Dem Abschnitt wurde erfolgreich ein Bild zugeordnet.');
+    }
+
+    public function detachImage(Request $request, Project $project) {
+        $documentation = $project->documentation;
+        $this->authorize('addImage', $documentation);
+
+        $request->validate([
+            'img_id' => 'required|int|min:1',
+            'section_id' => 'required|int|min:1',
+        ]);
+
+        //Lege zunächst eine neue Version an
+        $versionOld = $documentation->latestVersion();
+        $version = $versionOld->replicate();
+        $version->save();
+
+        //Kopiere nun den Abschnitt, von dem ein Bild zu entfernen ist
+        //Entferne den Original-Abschnitt von der neuen Version und füge die Kopie hinzu
+        $sectionOld = Section::find($request->section_id);
+        $section = $sectionOld->replicate();
+        $sectionsHelp = $versionOld->sections->reject(function ($value, $key) use ($request) {
+            return $value->id == $request->section_id;
+        });
+        $version->sections()->saveMany($sectionsHelp);
+        $version->sections()->save($section);
+
+        //Füge dem neuen Abschnitt nun alle Bilder bis auf das zu entfernende hinzu.
+        $toDelete = Image::find($request->img_id);
+        $imagesHelp = $sectionOld->images->reject(function ($value, $key) use ($toDelete) {
+            //Passe die Reihenfolge an
+            if ($value->sequence > $toDelete->sequence) {
+                $value->sequence = $value->sequence - 1;
+            }
+            return $value->id == $toDelete->id;
+        });
+        $section->images()->saveMany($imagesHelp);
+
+        return redirect()->back()->with('status', 'Das Bild wurde erfolgreich von diesem Abschnitt entfernt.');
     }
 
     /**

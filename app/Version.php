@@ -15,6 +15,13 @@ class Version extends Model
         //Wenn nicht: Lösche sie.
         foreach ($this->sections as $section) {
             if ($section->versions()->count() <= 1) {
+                //Überprüfe für die Bilder eines Abschnitts, ob sie einem anderen Abschnitt zugeordnet sind.
+                //Wenn nciht: Lösche sie.
+                foreach ($section->images as $image) {
+                    if ($image->sections()->count() <= 1) {
+                        $image->delete();
+                    }
+                }
                 $section->delete();
             }
         }

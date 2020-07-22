@@ -97,6 +97,7 @@ Route::group(['middleware' => 'auth'], function () {
                 'as' => 'images.'
             ], function() {
                 Route::post('/', 'DocumentationController@addImage')->name('create');
+                Route::delete('/', 'DocumentationController@detachImage')->name('detach');
             });
 
             Route::fallback(function($project) {
@@ -135,6 +136,10 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/admin/users', 'AdminUserController@index')->name('admin.users.index');
     Route::patch('/admin/users/{user}/promote', 'AdminUserController@promote')->name('admin.users.promote');
     Route::patch('/admin/users/{user}/demote', 'AdminUserController@demote')->name('admin.users.demote');
+
+    Route::fallback(function() {
+        return redirect(route('admin.index'));
+    });
 });
 
 Route::fallback(function() {
