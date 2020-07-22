@@ -9,7 +9,6 @@ class Image extends Model
     protected $fillable = [
         'footnote',
         'path',
-        'sequence',
         'width',
         'height',
     ];

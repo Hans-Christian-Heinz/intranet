@@ -17,7 +17,7 @@ class CreateImagesTable extends Migration
             $table->id();
             $table->string('path');
             $table->string('footnote')->nullable();
-            $table->unsignedSmallInteger('sequence');
+            //$table->unsignedSmallInteger('sequence');
             $table->unsignedSmallInteger('height');
             $table->unsignedSmallInteger('width');
             $table->timestamps();

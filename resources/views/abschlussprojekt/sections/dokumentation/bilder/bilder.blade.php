@@ -5,7 +5,7 @@
 @endif
 
 <table class="table table-striped">
-    @foreach($s->images as $image)
+    @foreach($s->images->sortBy('sequence') as $image)
         <tr>
             <td>
                 <img height="{{ $image->height }}" width="{{ $image->width }}" src="{{ asset('storage/' . $image->path) }}"

@@ -226,21 +226,35 @@ class DocumentationController extends Controller
         });
         $version->sections()->saveMany($sectionsHelp);
         $version->sections()->save($section);
-        $section->images()->saveMany($sectionOld->images);
+        //Ich habe mit saveMany mit dem Pivot immer Probelme bekommen;deshalb wird jetzt jeder Datensatz individuell gespeichert
+        /*$section->images()->saveMany($sectionOld->images->transform(function ($item, $key) {
+            $item->sequence = $item->pivot->sequence;
+            return $item;
+        }));*/
+        foreach ($sectionOld->images as $image) {
+            $section->images()->save($image, ['sequence' => $image->pivot->sequence,]);
+        }
 
         //Erstelle nun einen neuen Datensatz für images und ordne ihn dem neuen Abschnitt hinzu
         $img = new Image([
             'footnote' => $request->footnote,
             'path' => $request->path,
-            'sequence' => $section->images()->count(),
             'height' => 200,
             'width' => 300,
         ]);
-        $section->images()->save($img);
+        $section->images()->save($img, ['sequence' => $section->images()->count(),]);
 
         return redirect()->back()->with('status', 'Dem Abschnitt wurde erfolgreich ein Bild zugeordnet.');
     }
 
+    /**
+     * Entferne eine Image-Instanz von einem Abschnitt
+     *
+     * @param Request $request
+     * @param Project $project
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function detachImage(Request $request, Project $project) {
         $documentation = $project->documentation;
         $this->authorize('addImage', $documentation);
@@ -266,15 +280,27 @@ class DocumentationController extends Controller
         $version->sections()->save($section);
 
         //Füge dem neuen Abschnitt nun alle Bilder bis auf das zu entfernende hinzu.
-        $toDelete = Image::find($request->img_id);
-        $imagesHelp = $sectionOld->images->reject(function ($value, $key) use ($toDelete) {
+        $toDelete = $sectionOld->images()->find($request->img_id);
+        /*$imagesHelp = $sectionOld->images->reject(function ($value, $key) use ($toDelete) {
             //Passe die Reihenfolge an
             if ($value->sequence > $toDelete->sequence) {
                 $value->sequence = $value->sequence - 1;
             }
             return $value->id == $toDelete->id;
         });
-        $section->images()->saveMany($imagesHelp);
+        $section->images()->saveMany($imagesHelp);*/
+        foreach ($sectionOld->images as $image) {
+            if($image->is($toDelete)) {
+                continue;
+            }
+            //Passe ggf die Reihenfolge an
+            if ($image->pivot->sequence > $toDelete->pivot->sequence) {
+                $section->images()->save($image, ['sequence' => $image->pivot->sequence - 1,]);
+            }
+            else {
+                $section->images()->save($image, ['sequence' => $image->pivot->sequence,]);
+            }
+        }
 
         return redirect()->back()->with('status', 'Das Bild wurde erfolgreich von diesem Abschnitt entfernt.');
     }
