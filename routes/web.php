@@ -71,6 +71,10 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/use_version', 'ProposalController@useVersion')->name('use_version');
             Route::delete('delete_version', 'ProposalController@deleteVersion')->name('delete_version');
             Route::post('pdf', 'ProposalController@pdf')->name('pdf');
+
+            Route::fallback(function($project) {
+                return redirect(route('abschlussprojekt.antrag.index', $project));
+            });
         });
 
         //Routen für die Projektdokumentation
@@ -94,6 +98,10 @@ Route::group(['middleware' => 'auth'], function () {
             ], function() {
                 Route::post('/', 'DocumentationController@addImage')->name('create');
             });
+
+            Route::fallback(function($project) {
+                return redirect(route('abschlussprojekt.dokumentation.index', $project));
+            });
         });
 
         //Routen für das Verwalten von Bilddateien für die Dokumentation
@@ -104,6 +112,10 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/', 'ImageController@index')->name('index');
             Route::post('/upload', 'ImageController@upload')->name('upload');
             Route::delete('/', 'ImageController@delete')->name('delete');
+        });
+
+        Route::fallback(function() {
+            return redirect(route('abschlussprojekt.index'));
         });
     });
 });
@@ -123,4 +135,8 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/admin/users', 'AdminUserController@index')->name('admin.users.index');
     Route::patch('/admin/users/{user}/promote', 'AdminUserController@promote')->name('admin.users.promote');
     Route::patch('/admin/users/{user}/demote', 'AdminUserController@demote')->name('admin.users.demote');
+});
+
+Route::fallback(function() {
+    return redirect(route('home'));
 });

@@ -15,15 +15,12 @@ class CreateImagesTable extends Migration
     {
         Schema::create('images', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('section_id');
             $table->string('path');
             $table->string('footnote')->nullable();
             $table->unsignedSmallInteger('sequence');
             $table->unsignedSmallInteger('height');
             $table->unsignedSmallInteger('width');
             $table->timestamps();
-
-            $table->foreign('section_id')->references('id')->on('sections')->onDelete('cascade');
         });
     }
 

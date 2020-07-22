@@ -225,14 +225,15 @@ class DocumentationController extends Controller
         });
         $version->sections()->saveMany($sectionsHelp);
         $version->sections()->save($section);
+        $section->images()->saveMany($sectionOld->images);
 
         //Erstelle nun einen neuen Datensatz für images und ordne ihn dem neuen Abschnitt hinzu
         $img = new Image([
             'footnote' => $request->footnote,
             'path' => $request->path,
             'sequence' => $section->images()->count(),
-            'height' => 100,
-            'width' => 100,
+            'height' => 200,
+            'width' => 300,
         ]);
         $section->images()->save($img);
 

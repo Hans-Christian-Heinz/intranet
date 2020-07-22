@@ -28,7 +28,7 @@
                         <td>
                             <select form="addImageForm" class="form-control @error('img_section') is-invalid @enderror" name="img_section"
                                     id="img_section" required>
-                                @foreach($version->sections as $section)
+                                @foreach($version->sections->sortBy('heading') as $section)
                                     {{-- Stelle sicher, dass nur Abschnitte ohne Unterabschnitt und mit Fließtext ausgewählt werden können --}}
                                     @if($version->sections()->where('sections.section_id', $section->id)->count() == 0 &&
                                         ($section->tpl == 'text_section' || $section->tpl == 'dokumentation.vgl_section'))

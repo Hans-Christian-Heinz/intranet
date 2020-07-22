@@ -15,6 +15,6 @@ class Image extends Model
     ];
 
     public function section() {
-        return $this->belongsTo(Section::class);
+        return $this->belongsToMany(Section::class, 'images_sections');
     }
 }
