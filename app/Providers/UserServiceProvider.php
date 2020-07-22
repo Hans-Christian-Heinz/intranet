@@ -30,7 +30,7 @@ class UserServiceProvider extends ServiceProvider
             $username = $app->auth->user()->username;
             $fullName = $app->auth->user()->name;
             $email = $app->auth->user()->email;
-            //sso guard: isAdmin liegt bereits vor; manuelles Einloggen (web guard): isAdmin liegt nicht vor
+            //sso guard: fachrichtung liegt bereits vor; manuelles Einloggen (web guard): fachrichtung liegt nicht vor
             if (isset($app->auth->user()->fachrichtung)) {
                 $fachrichtung = $app->auth->user()->fachrichtung;
             }

@@ -43,7 +43,7 @@
                             <tr>
                                 <td colspan="2">Bilder</td>
                                 <td>
-                                    <a @isset($project) href="#"
+                                    <a @isset($project) href="{{ route('abschlussprojekt.bilder.index', $project) }}"
                                        @else href="{{ route('abschlussprojekt.create') }}" @endisset class="btn btn-sm btn-secondary">
                                         <span class="fa fa-pencil-square-o mr-1" aria-hidden="true"></span>Bearbeiten
                                     </a>

@@ -88,6 +88,16 @@ Route::group(['middleware' => 'auth'], function () {
             Route::delete('delete_version', 'DocumentationController@deleteVersion')->name('delete_version');
             Route::post('pdf', 'DocumentationController@pdf')->name('pdf');
         });
+
+        //Routen für das Verwalten von Bilddateien für die Dokumentation
+        Route::group([
+            'prefix' => '/{project}/bilder',
+            'as' => 'bilder.',
+        ], function () {
+            Route::get('/', 'ImageController@index')->name('index');
+            Route::post('/upload', 'ImageController@upload')->name('upload');
+            Route::delete('/', 'ImageController@delete')->name('delete');
+        });
     });
 });
 
