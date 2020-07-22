@@ -2,22 +2,22 @@
 
 namespace App\Rules;
 
-use App\User;
+use App\Section;
+use App\Version;
 use Illuminate\Contracts\Validation\Rule;
-use Illuminate\Support\Facades\Storage;
 
-class DeleteImageRule implements Rule
+class ImageSectionRule implements Rule
 {
-    private $username;
+    private $version;
 
     /**
      * Create a new rule instance.
      *
-     * @param User $user
+     * @param Version $version
      */
-    public function __construct(User $user)
+    public function __construct(Version $version)
     {
-        $this->username = $user->ldap_username;
+        $this->version = $version;
     }
 
     /**
@@ -29,15 +29,15 @@ class DeleteImageRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        if (strpos($value, 'images/' . $this->username) !== 0) {
+        $section = Section::find($value);
+        if (!$section || ($section->tpl != 'text_section' && $section->tpl != 'dokumentation.vgl_section')) {
             return false;
         }
-        if (Storage::disk('public')->exists($value)) {
-            return true;
-        }
-        else {
+        if (! $this->version->sections->contains($section)) {
             return false;
         }
+
+        return true;
     }
 
     /**
@@ -47,6 +47,6 @@ class DeleteImageRule implements Rule
      */
     public function message()
     {
-        return 'Sie können nur Bilder, die existieren und Ihrem Benutzerprofil zugeordnet sind, löschen.';
+        return 'Dem ausgewählten Abschnitt kann kein Bild zugeordnet werden.';
     }
 }

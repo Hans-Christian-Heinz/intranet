@@ -2,12 +2,12 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\DeleteImageRule;
 use App\Rules\ImageExistsRule;
+use App\Rules\ImageSectionRule;
 use App\Rules\OwnsImageRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class DeleteImageRequest extends FormRequest
+class AddImageRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,11 +26,25 @@ class DeleteImageRequest extends FormRequest
      */
     public function rules()
     {
+        $project = $this->route()->parameter('project');
+        $version = $project->documentation->latestVersion();
         $rules = [];
-        $rules['datei'] = [
+
+        $rules['footnote'] = [
+            'nullable',
+            'string',
+            'max:255',
+        ];
+        $rules['path'] = [
             'required',
             new ImageExistsRule(),
-            new OwnsImageRule(app()->user),
+            new OwnsImageRule($project->user),
+        ];
+        $rules['img_section'] = [
+            'required',
+            'int',
+            'min:1',
+            new ImageSectionRule($version),
         ];
 
         return $rules;

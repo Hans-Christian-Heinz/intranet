@@ -22,6 +22,8 @@
                 {{-- Formular zum Speichern --}}
                 <form class="form form-inline ml-auto p-3" action="{{ route('abschlussprojekt.dokumentation.store', $documentation->project) }}" method="post" id="formDokumentation">
                     @csrf
+                    {{-- Link zum Hinzufügen von Bildern zur Dokumentation --}}
+                    <a class="btn btn-secondary mx-2" data-toggle="modal" id="addImageModal" href="#addImage">Bild hinzufügen</a>
                     {{-- Link zum Erstellen eines PDF-Dokuments --}}
                     <a class="btn btn-secondary mx-2" data-toggle="modal" id="formatPdfModal" href="#formatPdf">PDF erstellen</a>
                     <input class="btn btn-primary mx-2" type="submit" form="formDokumentation" id="speichern" value="Speichern"/>
@@ -30,5 +32,6 @@
         </div>
     </div>
 
+    @include('abschlussprojekt.dokumentation.addImageModal')
     @include('abschlussprojekt.formatPdfModal', ['route' => 'abschlussprojekt.dokumentation.pdf', 'project' => $documentation->project,])
 @endsection

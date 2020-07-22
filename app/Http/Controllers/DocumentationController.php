@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Documentation;
+use App\Http\Requests\AddImageRequest;
 use App\Http\Requests\PdfRequest;
 use App\Http\Requests\StoreDocumentationRequest;
+use App\Image;
 use App\Project;
+use App\Section;
 use App\Traits\SavesSections;
 use App\Version;
 use Illuminate\Http\Request;
@@ -195,6 +198,45 @@ class DocumentationController extends Controller
             return redirect(route('abschlussprojekt.dokumentation.index', $project))
                 ->with('status', 'Die Version wurde erfolgreich gelöscht.');
         }
+    }
+
+    /**
+     * FÜge einem Abschnitt der Dokumentation ein Bild hinzu.
+     *
+     * @param AddImageRequest $request
+     * @param Project $project
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function addImage(AddImageRequest $request, Project $project) {
+        $this->authorize('addImage', $project->documentation);
+
+        //Lege zunächst eine neue Version an
+        $documentation = $project->documentation;
+        $versionOld = $documentation->latestVersion();
+        $version = $versionOld->replicate();
+        $version->save();
+
+        //Kopiere nun den Abschnitt, dem ein Bild hinzuzufügen ist
+        //Entferne den Original-Abschnitt von der neuen Version und füge die Kopie hinzu
+        $sectionOld = Section::find($request->img_section);
+        $section = $sectionOld->replicate();
+        $sectionsHelp = $versionOld->sections->reject(function ($value, $key) use ($request) {
+            return $value->id == $request->img_section;
+        });
+        $version->sections()->saveMany($sectionsHelp);
+        $version->sections()->save($section);
+
+        //Erstelle nun einen neuen Datensatz für images und ordne ihn dem neuen Abschnitt hinzu
+        $img = new Image([
+            'footnote' => $request->footnote,
+            'path' => $request->path,
+            'sequence' => $section->images()->count(),
+            'height' => 100,
+            'width' => 100,
+        ]);
+        $section->images()->save($img);
+
+        return redirect()->back()->with('status', 'Dem Abschnitt wurde erfolgreich ein Bild zugeordnet.');
     }
 
     /**

@@ -30,6 +30,7 @@ class Section extends Model
      * @var array
      */
     protected $with = [
+        'images',
         //'sections',
     ];
 
@@ -95,5 +96,9 @@ class Section extends Model
 
     public function versions() {
         return $this->belongsToMany(Version::class, 'sections_versions')->withTimestamps();
+    }
+
+    public function images() {
+        return $this->hasMany(Image::class);
     }
 }

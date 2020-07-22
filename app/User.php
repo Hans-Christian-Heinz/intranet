@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
@@ -33,6 +34,24 @@ class User extends Authenticatable
     protected $casts = [
         'accepted_rules_at' => 'datetime',
     ];
+
+    /**
+     * Gebe alle Bilder aus dem Ordner storage/app/public/username zurück.
+     *
+     * @return array
+     */
+    public function getImageFiles() {
+        $dir_path = 'images/' . $this->ldap_username;
+        if(! Storage::disk('public')->exists($dir_path)) {
+            $image_files = [];
+            Storage::disk('public')->makeDirectory($dir_path);
+        }
+        else {
+            $image_files = Storage::disk('public')->files($dir_path);
+        }
+
+        return $image_files;
+    }
 
     public function isAdmin()
     {

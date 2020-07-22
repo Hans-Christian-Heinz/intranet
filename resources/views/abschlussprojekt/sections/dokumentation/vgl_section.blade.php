@@ -5,6 +5,7 @@
 <textarea id="{{ $s->name }}_text" name="{{ $s->name }}" placeholder="{{ $s->heading }}" @if($disable) disabled @endif
           class="form-control mt-2 @error($s->name) is-invalid @enderror" form="{{ $form }}">{{ $zeitplanung['text'] }}</textarea>
 
+@include('abschlussprojekt.sections.image_disclaimer')
 @error($s->name) <p class="invalid-feedback">{{ $message }}</p> @enderror
 
 <table class="table table-striped my-4">

@@ -16,14 +16,7 @@ class ImageController extends Controller
      */
     public function index(Project $project) {
         $user = app()->user;
-        $dir_path = 'images/' . $user->ldap_username;
-        if(! Storage::disk('public')->exists($dir_path)) {
-            $image_files = [];
-            Storage::disk('public')->makeDirectory($dir_path);
-        }
-        else {
-            $image_files = Storage::disk('public')->files($dir_path, '');
-        }
+        $image_files = $user->getImageFiles();
 
         $image_files = CollectionHelper::paginate(collect($image_files), 5);
 
@@ -39,6 +32,7 @@ class ImageController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function upload(Request $request, Project $project) {
+        //TODO Validate Filesize (Regel; max:x, wobei x die Dateigröße in kilo-Bytes ist
         $request->validate([
             'bilddatei' => 'required|image',
         ]);
