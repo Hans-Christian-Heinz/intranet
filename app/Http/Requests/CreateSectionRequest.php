@@ -44,7 +44,7 @@ class CreateSectionRequest extends FormRequest
         $rules['section_id'] = [
             'required',
             'int',
-            'min:1',
+            'min:0',
         ];
 
         return $rules;

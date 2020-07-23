@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Documentation;
 use App\Http\Requests\CreateSectionRequest;
 use App\Http\Requests\EditSectionRequest;
 use App\Project;
@@ -20,6 +21,9 @@ class SectionController extends Controller
     public function create(CreateSectionRequest $request, Project $project) {
         $documentation = $project->documentation;
         $versionOld = $documentation->latestVersion();
+        if ($request->section_id == 0) {
+            return $this->createDocumentationSection($request, $documentation, $versionOld);
+        }
         $sectionOld = $versionOld->sections->where('id', $request->section_id)->shift();
         $this->authorize('create', $sectionOld);
 
@@ -54,8 +58,43 @@ class SectionController extends Controller
             'heading' => $request->heading,
             'tpl' => $request->tpl,
         ]);
-        $version->sections()->save($subsection, ['sequence' => $section->sections()->count()]);
+        $version->sections()->save($subsection, ['sequence' => $section->getSections($versionOld)->count()]);
         $section->sections()->save($subsection);
+
+        return redirect()->back()->with('status', 'Es wurde erfolgreich ein neuer Abschnitt erstellt.');
+    }
+
+    /**
+     * Hilfsmethode, um einen Abschnitt, der direkt der Dokumentation zugeordnet ist, zu erstellen.
+     *
+     * @param CreateSectionRequest $request
+     * @param Documentation $documentation
+     * @param Version $versionOld
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    private function createDocumentationSection(CreateSectionRequest $request, Documentation $documentation, Version $versionOld) {
+        if (! (app()->user->isAdmin() || $documentation->getUser()->is(app()->user))) {
+            return redirect()->back()->with('danger', 'Sie sind nicht berechtigt, einen neuen Abschnitt für diese Dokumentation zu erstellen.');
+        }
+
+        //Erstelle zunächst eine neue Version
+        $version = new Version();
+        $version->user()->associate(app()->user);
+        $documentation->versions()->save($version);
+
+        //Füge der neuen Version alle alten Abschnitte hinzu
+        foreach($versionOld->sections as $help) {
+            $version->sections()->save($help, ['sequence' => $help->pivot->sequence,]);
+        }
+
+        //Nun: Erstelle den neuen Abschnitt und füge ihn dm Elternabschnitt und der neuen Version hinzu
+        $subsection = new Section([
+            'name' => $request->name,
+            'heading' => $request->heading,
+            'tpl' => $request->tpl,
+        ]);
+        $version->sections()->save($subsection, ['sequence' => $documentation->getSections($versionOld)->count()]);
+        $documentation->sections()->save($subsection);
 
         return redirect()->back()->with('status', 'Es wurde erfolgreich ein neuer Abschnitt erstellt.');
     }
