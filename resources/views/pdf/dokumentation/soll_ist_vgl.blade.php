@@ -1,6 +1,6 @@
 {{----}}
 
-<p class="abschnitt">{!! nl2br(e($zeitplanung['text'])) !!}</p>
+@include('pdf.section_text', ['section_text' => $zeitplanung['text'],])
 
 <table>
     <tr class="bgHeader">

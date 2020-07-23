@@ -81,7 +81,7 @@
     @endforeach
 
     <tocentry content="Hinweis!" level="0"/>
-    <h1 class="heading">Hinweis!</h1>
+    <h1 class="heading" style="page-break-before: right">Hinweis!</h1>
     <p class="abschnitt">Ich bestätige, dass der Projektantrag dem Ausbildungsbetrieb vorgelegt und vom Ausbildenden genehmigt wurde. Der
         Projektantrag enthält keine Betriebsgeheimnisse. Soweit diese für die Antragsstellung notwendig sind, wurden nach
         Rücksprache mit dem Ausbildenden die entsprechenden Stellen unkenntlich gemacht.

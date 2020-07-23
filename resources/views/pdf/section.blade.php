@@ -24,6 +24,8 @@
 
 @if($section->name == 'phases')
     @include('pdf.antrag.phases_table')
+@elseif($section->name == 'deadline')
+    @include('pdf.antrag.deadline')
 @elseif($section->name == 'doku_phasen')
     @include('pdf.dokumentation.phases_table')
 @elseif($section->tpl == 'dokumentation.ressourcen_text_section')
@@ -33,7 +35,7 @@
 @elseif($section->name == 'soll_ist_vgl')
     @include('pdf.dokumentation.soll_ist_vgl')
 @elseif($version->sections()->where('sections.section_id', $section->id)->count() == 0)
-    <p class="abschnitt">{!! nl2br(e($section->getContent())) !!}</p>
+    @include('pdf.section_text', ['section_text' => $section->text,])
 @else
     @foreach($version->sections()->where('sections.section_id', $section->id)->orderBy('sequence')->get() as $child)
         <tocentry content="{{ $child->heading }}" level="{{ $tiefe }}"/>

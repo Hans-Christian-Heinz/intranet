@@ -37,6 +37,9 @@ trait SavesSections
             $section = $oldSection->replicate();
             $section->text = $this->getSectionText($request, $name);
             $parent->sections()->save($section);
+            foreach ($oldSection->images as $image) {
+                $section->images()->save($image, ['sequence' => $image->pivot->sequence]);
+            }
         }
         else {
             $section = $oldSection;

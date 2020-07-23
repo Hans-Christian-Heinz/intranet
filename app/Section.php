@@ -35,27 +35,6 @@ class Section extends Model
     ];
 
     /**
-     * Gibt den Inhalt des Abschnitts (für das HTML bzw. PDF Dokument) aus. Formatiert ggf den Inhalt.
-     *
-     * @return string
-     */
-    public function getContent() {
-        switch ($this->name) {
-            case 'deadline':
-                if ($this->text) {
-                    $help = explode('||', $this->text);
-                    return 'Beginn: ' . Carbon::create($help[0])->format('d.m.Y') . "\n"
-                        . 'Ende: ' . Carbon::create($help[1])->format('d.m.Y');
-                }
-                else {
-                    return '';
-                }
-            default:
-                return $this->text;
-        }
-    }
-
-    /**
      * Gebe die Unterphasen einer Phase als Array aus.
      * Beachte: Es wird davon ausgegeangen, dass diese Methode nur auf einem passenden Abschnitt aufgerufen wird.
      *
