@@ -8,7 +8,6 @@ use App\Http\Requests\PdfRequest;
 use App\Http\Requests\StoreDocumentationRequest;
 use App\Image;
 use App\Project;
-use App\Section;
 use App\Traits\SavesSections;
 use App\Version;
 use Illuminate\Http\Request;

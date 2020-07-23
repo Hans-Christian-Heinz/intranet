@@ -58,4 +58,42 @@ class SectionController extends Controller
 
         return redirect()->back()->with('status', 'Es wurde erfolgreich ein neuer Abschnitt erstellt.');
     }
+
+    public function delete(Project $project, Section $section) {
+        $this->authorize('delete', $section);
+
+        $documentation = $project->documentation;
+        $versionOld = $documentation->latestVersion();
+        //Erstelle zunächst eine neue Version
+        $version = new Version();
+        $version->user()->associate(app()->user);
+        $documentation->versions()->save($version);
+
+
+        //$sections sind nun genau die Abschnitte, die nicht zu dem zu löschenden gehören und nicht der zu löschende sind.
+        $sections = $versionOld->sections->reject(function ($value, $key) use ($section) {
+            $s = $value;
+            while(isset($s->section)) {
+                if ($s->section->is($section)) {
+                    return true;
+                }
+                $s = $s->section;
+            }
+            return $value->is($section);
+        });
+
+        $sequence = 0;
+        foreach ($sections as $s) {
+            //Falls der Abschnitt $s auf der gleichen Ebene ist wie der zu löschende muss ggf. die Position angepasst werden
+            if ($s->getParent()->is($section->getParent())) {
+                $version->sections()->save($s, ['sequence' => $sequence]);
+                $sequence++;
+            }
+            else {
+                $version->sections()->save($s, ['sequence' => $s->pivot->sequence]);
+            }
+        }
+
+        return redirect()->back()->with('status', 'Der Abschnitt wurde erfolgreich gelöscht.');
+    }
 }
