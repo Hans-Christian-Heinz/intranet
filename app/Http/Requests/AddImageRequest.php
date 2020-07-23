@@ -40,7 +40,7 @@ class AddImageRequest extends FormRequest
             new ImageExistsRule(),
             new OwnsImageRule($project->user),
         ];
-        $rules['img_section'] = [
+        $rules['section_id'] = [
             'required',
             'int',
             'min:1',

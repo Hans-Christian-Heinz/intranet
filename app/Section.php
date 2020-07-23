@@ -20,7 +20,6 @@ class Section extends Model
         'name',
         'heading',
         'text',
-        'sequence',
         'tpl'
     ];
 
@@ -74,7 +73,9 @@ class Section extends Model
     }
 
     public function versions() {
-        return $this->belongsToMany(Version::class, 'sections_versions')->withTimestamps();
+        return $this->belongsToMany(Version::class, 'sections_versions')
+            ->withTimestamps()
+            ->withPivot('sequence');
     }
 
     public function images() {

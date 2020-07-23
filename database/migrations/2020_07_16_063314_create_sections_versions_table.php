@@ -17,6 +17,7 @@ class CreateSectionsVersionsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('version_id');
             $table->unsignedBigInteger('section_id');
+            $table->unsignedSmallInteger('sequence');
             $table->timestamps();
 
             $table->foreign('section_id')->references('id')->on('sections')->onDelete('cascade');

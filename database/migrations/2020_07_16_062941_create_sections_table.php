@@ -21,7 +21,6 @@ class CreateSectionsTable extends Migration
             $table->string('name');
             $table->string('heading');
             $table->text('text')->nullable();
-            $table->unsignedSmallInteger('sequence');
             $table->string('tpl')->default('text_section');
             $table->boolean("is_locked")->default(false);
             $table->timestamps();

@@ -44,7 +44,7 @@ trait SavesSections
         else {
             $section = $oldSection;
         }
-        $version->sections()->attach($section);
+        $version->sections()->save($section, ['sequence' => $oldSection->pivot->sequence]);
 
         foreach($oldSection->getSections($versionOld) as $child) {
             $this->saveSection($request, $section, $version, $versionOld, $child);
@@ -124,12 +124,13 @@ trait SavesSections
     /**
      * Hilfsmethode zum Speichern eines Abschnitts.
      * Beachte: Beim Speichern wird ein neuer Eintrag in der Datenbank angelegt; der alte Eintrag bleibt unverändert.
+     * Alte Version der Methode, bevor Tabelle versionen vorhanden war.
      *
      * @param Request $request
      * @param Documentation|Proposal|Section $parent
      * @param $old
      */
-    private function saveSectionOld(Request $request, $parent, $old) {
+    /*private function saveSectionOld(Request $request, $parent, $old) {
         $section = $old->replicate();
         $name = $old->name;
         $section->text = $request->$name;
@@ -138,5 +139,5 @@ trait SavesSections
         foreach ($old->sections as $child) {
             $this->saveSection($request, $section, $child);
         }
-    }
+    }*/
 }

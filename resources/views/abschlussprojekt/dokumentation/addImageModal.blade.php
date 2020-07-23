@@ -26,7 +26,7 @@
                     <tr>
                         <td><label for="img_section">Abschnitt wählen:</label></td>
                         <td>
-                            <select form="addImageForm" class="form-control @error('img_section') is-invalid @enderror" name="img_section"
+                            <select form="addImageForm" class="form-control @error('img_section') is-invalid @enderror" name="section_id"
                                     id="img_section" required>
                                 @foreach($version->sections->sortBy('heading') as $section)
                                     {{-- Stelle sicher, dass nur Abschnitte ohne Unterabschnitt und mit Fließtext ausgewählt werden können --}}

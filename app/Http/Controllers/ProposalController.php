@@ -41,7 +41,6 @@ class ProposalController extends Controller
         $proposal->versions()->save($version);
         $proposal->makeSections(Proposal::SECTIONS, $version);
 
-
         return redirect(route('abschlussprojekt.antrag.index', $project))->with('status', 'Der Antrag wurde erfolgreich angeleget.');
     }
 
@@ -59,7 +58,9 @@ class ProposalController extends Controller
 
         $proposal = $project->proposal;
         $versionOld = $proposal->latestVersion();
-        $sectionsOld = $proposal->getCurrentSections();
+        $sectionsOld = $versionOld->sections->filter(function ($value, $key) use ($proposal) {
+            return $value->proposal_id == $proposal->id;
+        });
 
         $versionNew = new Version();
         $versionNew->user()->associate(app()->user);
@@ -152,7 +153,7 @@ class ProposalController extends Controller
             'id' => 'required|int|min:1',
         ]);
 
-        $version = Version::find($request->id);
+        $version = Version::with('proposal')->find($request->id);
         if (! $version || ! $proposal->is($version->proposal)) {
             return redirect(route('abschlussprojekt.antrag.index', $project))
                 ->with('danger', 'Die Version konnte nicht übernommen werden.');

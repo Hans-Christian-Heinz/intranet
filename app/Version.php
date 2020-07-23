@@ -42,6 +42,9 @@ class Version extends Model
     }
 
     public function sections() {
-        return $this->belongsToMany(Section::class, 'sections_versions')->withTimestamps();
+        return $this->belongsToMany(Section::class, 'sections_versions')
+            ->withTimestamps()
+            ->withPivot('sequence')
+            ->orderBy('pivot_sequence');
     }
 }

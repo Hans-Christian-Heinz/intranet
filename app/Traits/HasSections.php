@@ -3,6 +3,8 @@
 
 namespace App\Traits;
 
+use App\Documentation;
+use App\Proposal;
 use App\Section;
 use App\Version;
 use Illuminate\Database\Eloquent\Builder;
@@ -37,7 +39,7 @@ trait HasSections
         foreach ($sectionValues as $sect) {
             $s = new Section($sect);
             $this->sections()->save($s);
-            $version->sections()->attach($s);
+            $version->sections()->save($s, ['sequence' => $sect['sequence']]);
             if ($s->sections) {
                 $s->makeSections(array_key_exists('sections', $sect) ? $sect['sections'] : [], $version);
             }
@@ -51,9 +53,19 @@ trait HasSections
      * @return Collection
      */
     public function getSections(Version $version) {
-        return $this->sections()->whereHas('versions', function(Builder $query) use ($version) {
+        if ($this instanceof Section) {
+            return $version->sections->where('section_id', $this->id);
+        }
+        if ($this instanceof Proposal) {
+            return $version->sections->where('proposal_id', $this->id);
+        }
+        if ($this instanceof Documentation) {
+            return $version->sections->where('documentation_id', $this->id);
+        }
+
+        /*return $this->sections()->whereHas('versions', function(Builder $query) use ($version) {
             $query->where('versions.id', $version->id);
-        })->orderBy('sequence')->get();
+        })->orderBy('sequence')->get();*/
     }
 
     /**
