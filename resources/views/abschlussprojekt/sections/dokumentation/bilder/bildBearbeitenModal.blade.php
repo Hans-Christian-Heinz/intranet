@@ -22,7 +22,7 @@
                     <tr>
                         <td><label for="sequence{{ $image->id }}">Position:</label></td>
                         <td>
-                            <input type="number" id="sequence{{ $image->id }}" name="sequence" min="0" max="{{ $s->images->count() }}"
+                            <input type="number" id="sequence{{ $image->id }}" name="sequence" min="0" max="{{ $s->images->count() - 1 }}"
                                    class="form-control @error('sequence') is-invalid @enderror" form="changeImageForm{{ $image->id }}"
                                    value="{{ $image->pivot->sequence }}"/>
                             @error('sequence') <p class="invalid-feedback">{{ $message }}</p> @enderror

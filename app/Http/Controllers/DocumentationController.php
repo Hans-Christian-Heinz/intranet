@@ -12,6 +12,8 @@ use App\Section;
 use App\Traits\SavesSections;
 use App\Version;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class DocumentationController extends Controller
 {
@@ -232,11 +234,12 @@ class DocumentationController extends Controller
         }
 
         //Erstelle nun einen neuen Datensatz für images und ordne ihn dem neuen Abschnitt hinzu
+        $imageSize = getimagesize(asset('storage/' . $request->path));
         $img = new Image([
             'footnote' => $request->footnote,
             'path' => $request->path,
-            'height' => 200,
-            'width' => 300,
+            'width' => $imageSize[0],
+            'height' => $imageSize[1],
         ]);
         $section->images()->save($img, ['sequence' => $section->images()->count(),]);
 
