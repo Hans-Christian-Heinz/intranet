@@ -38,7 +38,6 @@
                             <option value="{{ $tpl }}" @if($tpl == 'text_section') selected @endif>{{ $tpl }}</option>
                         @endforeach
                     </select>
-                    <span class="fehler"><?= isset($fehler['tpl']) ? $fehler['tpl'] : '' ?></span>
                 </div>
             </div>
             <div class="modal-footer">

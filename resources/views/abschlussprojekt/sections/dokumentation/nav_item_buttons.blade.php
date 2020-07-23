@@ -12,8 +12,9 @@
     {{-- Löschen des Abschnitts (Unicode: Wastebinn --}}
     <a href="#deleteSection{{ $section->id }}" data-toggle="modal" style="line-height: 0.7rem" class="btn btn-secondary float-right">&#128465</a>
     {{-- Bearbeiten des Abschnitts (Unicode: Bleistift) --}}
-    <a href="#" data-toggle="modal" style="line-height: 0.7rem" class="btn btn-secondary float-right">&#x270E</a>
+    <a href="#editSection{{ $section->id }}" data-toggle="modal" style="line-height: 0.7rem" class="btn btn-secondary float-right">&#x270E</a>
 </li>
 
 @include('abschlussprojekt.sections.dokumentation.addSectionModal')
 @include('abschlussprojekt.sections.dokumentation.deleteSectionModal')
+@include('abschlussprojekt.sections.dokumentation.editSectionModal')

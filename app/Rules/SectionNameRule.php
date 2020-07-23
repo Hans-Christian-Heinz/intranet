@@ -3,6 +3,7 @@
 namespace App\Rules;
 
 use App\Documentation;
+use App\Section;
 use App\Version;
 use Illuminate\Contracts\Validation\Rule;
 
@@ -12,15 +13,22 @@ class SectionNameRule implements Rule
      * @var Version
      */
     private $version;
+    /**
+     * Wenn ein Abschnitt bearbeitet wird, ist der eigene Name die Ausnahme.
+     * @var string|null
+     */
+    private $exception;
 
     /**
      * Create a new rule instance.
      *
      * @param Version $version
+     * @param string|null $exception
      */
-    public function __construct(Version $version)
+    public function __construct(Version $version, $exception = null)
     {
         $this->version = $version;
+        $this->exception = $exception;
     }
 
     /**
@@ -32,6 +40,9 @@ class SectionNameRule implements Rule
      */
     public function passes($attribute, $value)
     {
+        if ($this->exception == $value) {
+            return true;
+        }
         return $this->version->sections->where('name', $value)->isEmpty();
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateSectionRequest;
+use App\Http\Requests\EditSectionRequest;
 use App\Project;
 use App\Section;
 use App\Version;
@@ -59,6 +60,12 @@ class SectionController extends Controller
         return redirect()->back()->with('status', 'Es wurde erfolgreich ein neuer Abschnitt erstellt.');
     }
 
+    /**
+     * @param Project $project
+     * @param Section $section
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function delete(Project $project, Section $section) {
         $this->authorize('delete', $section);
 
@@ -95,5 +102,60 @@ class SectionController extends Controller
         }
 
         return redirect()->back()->with('status', 'Der Abschnitt wurde erfolgreich gelöscht.');
+    }
+
+    /**
+     * @param EditSectionRequest $request
+     * @param Project $project
+     * @param Section $section
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function edit(EditSectionRequest $request, Project $project, Section $section) {
+        $this->authorize('edit', $section);
+
+        $documentation = $project->documentation;
+        $versionOld = $documentation->latestVersion();
+        //Erstelle zunächst eine neue Version
+        $version = new Version();
+        $version->user()->associate(app()->user);
+        $documentation->versions()->save($version);
+
+
+        //$sections sind nun genau die Abschnitte, die nicht der zu bearbeitende sind.
+        $sections = $versionOld->sections->reject(function ($value, $key) use ($section) {
+            return $value->is($section);
+        });
+
+        //Erstelle eine neue Section-Instanz; sie wird in der neuen Version die zu bearbeitende ersetzen
+        $sectionNew = new Section([
+            'name' => $request->name,
+            'heading' => $request->heading,
+            'tpl' => $request->tpl,
+            'text' => $section->text,
+        ]);
+
+        $sectionNew->sections()->saveMany($section->sections);
+        $section->getParent()->sections()->save($sectionNew);
+        //Hilfsvariable zum Anpassen der Reihenfolge:
+        $reihenfolge = 0;
+        foreach($sections as $s) {
+            //Reihenfolge anpassen: Stelle sicher, dass die Reihenfolge (sequence) bei 0 startet und sich immer um genau 1 erhöht.
+            //Beachte: Die Abschnitte sind bereits geordnet; es muss nur die Position übersprungen werden, an der
+            //der bearbeitete Abschnitt einzufügen ist.
+            if ($s->getParent()->is($section->getParent())) {
+                if ($reihenfolge == $request->sequence) {
+                    $reihenfolge++;
+                }
+                $version->sections()->save($s, ['sequence' => $reihenfolge,]);
+                $reihenfolge++;
+            }
+            else {
+                $version->sections()->save($s, ['sequence' => $s->pivot->sequence,]);
+            }
+        }
+        $version->sections()->save($sectionNew, ['sequence' => $request->sequence,]);
+
+        return redirect()->back()->with('status', 'Der Abshcnitt wurde erfolgreich bearbeitet.');
     }
 }

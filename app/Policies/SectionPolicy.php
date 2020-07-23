@@ -19,4 +19,9 @@ class SectionPolicy
         $user = app()->user;
         return $user->isAdmin() || $user->is($section->getUser());
     }
+
+    public function edit(LdapUser $ldap_user, Section $section) {
+        $user = app()->user;
+        return $user->isAdmin() || $user->is($section->getUser());
+    }
 }

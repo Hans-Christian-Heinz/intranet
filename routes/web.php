@@ -98,6 +98,7 @@ Route::group(['middleware' => 'auth'], function () {
             ], function() {
                 Route::post('/', 'SectionController@create')->name('create');
                 Route::delete('/{section}', 'SectionController@delete')->name('delete');
+                Route::post('/{section}/edit', 'SectionController@edit')->name('edit');
             });
             //Routen für die Bilder der Dokumentation
             Route::group([
