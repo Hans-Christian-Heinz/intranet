@@ -19,7 +19,7 @@
         @endisset
         {{-- Falls noch Bilder auszugeben sind --}}
         @if($loop->last)
-            @for($j = $i + 1; $j < $section->images->count(); $i++)
+            @for($j = $i + 1; $j < $section->images->count(); $j++)
                 <br/>
                 <div style="page-break-inside: avoid">
                     <img src="{{ asset('storage/' . $section->images[$j]->path) }}" height="{{ $section->images[$j]->height }}"

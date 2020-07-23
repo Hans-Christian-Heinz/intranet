@@ -153,6 +153,17 @@ class Proposal extends Model
         return $this->getEnd($this->latestVersion());
     }
 
+    /**
+     * @return User|null
+     */
+    public function getUser() {
+        if ($this->project) {
+            return $this->project->user;
+        }
+
+        return null;
+    }
+
     public function project() {
         return $this->belongsTo(Project::class);
     }

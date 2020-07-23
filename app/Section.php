@@ -4,11 +4,24 @@ namespace App;
 
 use App\Structs\Phase;
 use App\Traits\HasSections;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Section extends Model
 {
+    const TEMPLATES = [
+        'text_section',
+        'parent_section',
+        'antrag.deadline_section',
+        'antrag.phases_parent_section',
+        'antrag.phases_text_section',
+        'dokumentation.phases_section',
+        'dokumentation.ressourcen_gesamt_section',
+        'dokumentation.ressourcen_parent_section',
+        'dokumentation.ressourcen_text_section',
+        'dokumentation.title_section',
+        'dokumentation.vgl_section',
+    ];
+
     use HasSections;
 
     /**
@@ -54,6 +67,34 @@ class Section extends Model
         $phases['gesamt'] = new Phase('Gesamt', $gesamtDauer);
 
         return $phases;
+    }
+
+    /**
+     * @return User|null
+     */
+    public function getUser() {
+        if ($this->getParent()) {
+            return $this->getParent()->getUser();
+        }
+
+        return null;
+    }
+
+    /**
+     * @return Section|Documentation|Proposal|null
+     */
+    public function getParent() {
+        if ($this->section) {
+            return $this->section;
+        }
+        if ($this->documentation) {
+            return $this->documentation;
+        }
+        if ($this->proposal) {
+            return $this->proposal;
+        }
+
+        return null;
     }
 
     public function proposal() {

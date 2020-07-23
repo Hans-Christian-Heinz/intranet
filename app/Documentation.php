@@ -226,6 +226,17 @@ class Documentation extends Model
         return $this->getZeitplanung($this->latestVersion());
     }
 
+    /**
+     * @return User|null
+     */
+    public function getUser() {
+        if ($this->project) {
+            return $this->project->user;
+        }
+
+        return null;
+    }
+
     public function project() {
         return $this->belongsTo(Project::class);
     }

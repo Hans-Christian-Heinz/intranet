@@ -5,6 +5,8 @@ namespace App\Traits;
 
 
 use App\Documentation;
+use App\Http\Requests\AddImageRequest;
+use App\Http\Requests\CreateSectionRequest;
 use App\Proposal;
 use App\Section;
 use App\Version;
