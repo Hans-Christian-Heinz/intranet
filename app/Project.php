@@ -14,6 +14,11 @@ class Project extends Model
         'DejaVu Sans' => 'dejavusans',
     ];
 
+    protected $with = [
+        'documentation',
+        'proposal',
+    ];
+
     public function getTopicAttribute() {
         if ($this->proposal) {
             return $this->proposal->topic;

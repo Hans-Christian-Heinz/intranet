@@ -98,6 +98,7 @@ Route::group(['middleware' => 'auth'], function () {
             ], function() {
                 Route::post('/', 'DocumentationController@addImage')->name('create');
                 Route::delete('/', 'DocumentationController@detachImage')->name('detach');
+                Route::post('/update', 'DocumentationController@updateImage')->name('update');
             });
 
             Route::fallback(function($project) {

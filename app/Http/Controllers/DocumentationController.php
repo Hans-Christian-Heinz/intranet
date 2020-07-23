@@ -227,10 +227,6 @@ class DocumentationController extends Controller
         $version->sections()->saveMany($sectionsHelp);
         $version->sections()->save($section);
         //Ich habe mit saveMany mit dem Pivot immer Probelme bekommen;deshalb wird jetzt jeder Datensatz individuell gespeichert
-        /*$section->images()->saveMany($sectionOld->images->transform(function ($item, $key) {
-            $item->sequence = $item->pivot->sequence;
-            return $item;
-        }));*/
         foreach ($sectionOld->images as $image) {
             $section->images()->save($image, ['sequence' => $image->pivot->sequence,]);
         }
@@ -281,14 +277,6 @@ class DocumentationController extends Controller
 
         //Füge dem neuen Abschnitt nun alle Bilder bis auf das zu entfernende hinzu.
         $toDelete = $sectionOld->images()->find($request->img_id);
-        /*$imagesHelp = $sectionOld->images->reject(function ($value, $key) use ($toDelete) {
-            //Passe die Reihenfolge an
-            if ($value->sequence > $toDelete->sequence) {
-                $value->sequence = $value->sequence - 1;
-            }
-            return $value->id == $toDelete->id;
-        });
-        $section->images()->saveMany($imagesHelp);*/
         foreach ($sectionOld->images as $image) {
             if($image->is($toDelete)) {
                 continue;
@@ -303,6 +291,92 @@ class DocumentationController extends Controller
         }
 
         return redirect()->back()->with('status', 'Das Bild wurde erfolgreich von diesem Abschnitt entfernt.');
+    }
+
+    /**
+     * Bearbeite eine Bild-Instanz
+     *
+     * @param Request $request
+     * @param Project $project
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function updateImage(Request $request, Project $project) {
+        $documentation = $project->documentation;
+        $this->authorize('addImage', $documentation);
+
+        //Maximale sequence / position / reihenfolge wird später überprüft
+        $request->validate([
+            'img_id' => 'required|int|min:1',
+            'section_id' => 'required|int|min:1',
+            'footnote' => 'nullable|string|max:255',
+            'sequence' => 'required|int|min:0',
+            'width' => 'required|int|min:100|max:1000',
+            'height' => 'required|int|min:100|max:1000',
+        ]);
+
+        //Lege zunächst eine neue Version an
+        $versionOld = $documentation->latestVersion();
+        $version = $versionOld->replicate();
+        $version->save();
+
+        //Kopiere nun den Abschnitt, dem ein Bild hinzuzufügen ist
+        //Entferne den Original-Abschnitt von der neuen Version und füge die Kopie hinzu
+        $sectionOld = Section::find($request->section_id);
+        $section = $sectionOld->replicate();
+        $sectionsHelp = $versionOld->sections->reject(function ($value, $key) use ($request) {
+            return $value->id == $request->section_id;
+        });
+        $version->sections()->saveMany($sectionsHelp);
+        $version->sections()->save($section);
+
+        //Validiere die Position (sequence)
+        if ($request->sequence >= $sectionOld->images->count()) {
+            $sequence = $sectionOld->images->count() - 1;
+        }
+        else {
+            $sequence = $request->sequence;
+        }
+
+        //Kopiere nun das zu verändernde Bild und verändere es
+        $imageOld = $sectionOld->images()->find($request->img_id);
+        $image = $imageOld->replicate();
+        $image->footnote = $request->footnote;
+        $image->height = $request->height;
+        $image->width = $request->width;
+
+        //Beachte: Die Bilder werden automatisch beim Auslesen nach sequence geordnet
+        foreach ($sectionOld->images as $i) {
+            if ($i->is($imageOld)) {
+                continue;
+            }
+            $section->images()->save($i, ['sequence' => $i->pivot->sequence,]);
+        }
+        $section->images()->save($image, ['sequence' => $imageOld->pivot->sequence]);
+
+        //Nun ist noch die Reihenfolge von $image anzupassen (auf $sequence)
+        //Das Bild wird nach hinten verschoben
+        if ($sequence > $image->pivot->sequence) {
+            //Die Bilder zwischen alter und neuer Reihenfolge müssen um 1 nach vorne / oben verschoben werden
+            $section->images->filter(function ($value, $key) use ($sequence, $image, $section) {
+                if ($value->pivot->sequence <= $sequence && $value->pivot->sequence > $image->pivot->sequence) {
+                    $section->images()->updateExistingPivot($value, ['sequence' => $value->pivot->sequence - 1]);
+                }
+            });
+            $section->images()->updateExistingPivot($image, ['sequence' => $sequence]);
+        }
+        //Das Bild wird nach vorn verschoben
+        elseif ($sequence < $image->pivot->sequence) {
+            //Die Bilder zwischen alter und neuer Reihenfolge müssen um 1 nach hinten / unten verschoben werden
+            $section->images->filter(function ($value, $key) use ($sequence, $image, $section) {
+                if ($value->pivot->sequence >= $sequence && $value->pivot->sequence < $image->pivot->sequence) {
+                    $section->images()->updateExistingPivot($value, ['sequence' => $value->pivot->sequence + 1]);
+                }
+            });
+            $section->images()->updateExistingPivot($image, ['sequence' => $sequence]);
+        }
+
+        return redirect()->back()->with('status', 'Das Bild wurde erfolgreich bearbeitet.');
     }
 
     /**

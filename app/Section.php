@@ -99,6 +99,8 @@ class Section extends Model
     }
 
     public function images() {
-        return $this->belongsToMany(Image::class, 'images_sections')->withPivot('sequence');
+        return $this->belongsToMany(Image::class, 'images_sections')
+            ->withPivot('sequence')
+            ->orderBy('pivot_sequence');
     }
 }
