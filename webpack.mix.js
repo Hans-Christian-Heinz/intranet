@@ -15,4 +15,7 @@ mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/tinymce.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css')
     .copy('node_modules/tinymce/skins', 'public/css/tinymce/skins')
-    .sass('vendor/forkawesome/fork-awesome/scss/fork-awesome.scss', 'public/css');
+    .sass('vendor/forkawesome/fork-awesome/scss/fork-awesome.scss', 'public/css')
+    .scripts([
+        'resources/js/tabControl.js',
+    ], 'public/js/benutzerfreundlichkeit.js');
