@@ -147,6 +147,40 @@ Route::group(['middleware' => 'admin'], function () {
     Route::patch('/admin/users/{user}/promote', 'AdminUserController@promote')->name('admin.users.promote');
     Route::patch('/admin/users/{user}/demote', 'AdminUserController@demote')->name('admin.users.demote');
 
+    //Routen für das Abschlussprojekt auf Ausbilderseite
+    Route::group([
+        'prefix' => '/admin/abschlussprojekt',
+        'as' => 'admin.abschlussprojekt.',
+    ], function() {
+        Route::get('/', 'AdminProjectController@index')->name('index');
+
+        Route::group([
+            'prefix' => '/{project}/antrag',
+            'as' => 'antrag.',
+        ], function() {
+            Route::get('/', 'ProposalController@index')->name('index');
+            Route::get('/history', 'ProposalController@history')->name('history');
+            Route::post('/vergleich', 'ProposalController@vergleich')->name('vergleich');
+            Route::post('/use_version', 'ProposalController@useVersion')->name('use_version');
+            Route::delete('delete_version', 'ProposalController@deleteVersion')->name('delete_version');
+        });
+
+        Route::group([
+            'prefix' => '/{project}/dokumentation',
+            'as' => 'dokumentation.',
+        ], function() {
+            Route::get('/', 'DocumentationController@index')->name('index');
+            Route::get('/history', 'DocumentationController@history')->name('history');
+            Route::post('/vergleich', 'DocumentationController@vergleich')->name('vergleich');
+            Route::post('/use_version', 'DocumentationController@useVersion')->name('use_version');
+            Route::delete('delete_version', 'DocumentationController@deleteVersion')->name('delete_version');
+        });
+
+        Route::fallback(function() {
+            return redirect(route('admin.abschlussprojekt.index'));
+        });
+    });
+
     Route::fallback(function() {
         return redirect(route('admin.index'));
     });

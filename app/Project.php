@@ -17,6 +17,7 @@ class Project extends Model
     protected $with = [
         'documentation',
         'proposal',
+        'user',
     ];
 
     public function getTopicAttribute() {
@@ -82,7 +83,7 @@ class Project extends Model
     public function getJahreszeitAttribute() {
         $end = $this->end;
         if ($end) {
-            $help = Carbon::create($this->end);
+            $help = Carbon::create($end);
             $m = (int) $help->format('m');
             if (4 <= $m && $m <= 9) {
                 return 'Sommer ' . $help->format('Y');
@@ -93,6 +94,16 @@ class Project extends Model
         }
         else {
             return 'ACHTUNG: Im Projektantrag liegt kein Datum vor.';
+        }
+    }
+
+    public function getPruefungsJahrAttribute() {
+        $end = $this->end;
+        if ($end) {
+            return Carbon::create($end)->format('Y');
+        }
+        else {
+            return 0;
         }
     }
 

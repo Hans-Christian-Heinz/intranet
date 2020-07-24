@@ -75,6 +75,16 @@ ul.scrollnav {
     }
 }
 
+.nav-pills .nav-item .nav-link:not(.active) {
+    background-color: white;
+    color: black;
+}
+
+.nav-pills .nav-item .nav-link {
+    color: white;
+    background-color: #6c757d;
+}
+
 #addImage .modal-dialog, .section-modal .modal-dialog {
     width: 60%;
     max-width: 60%;

@@ -8,16 +8,22 @@
             <div class="row">
                 <div class="col-md-12 bg-white">
                     <div class="d-flex pb-3">
-                        <h3 class="mr-auto">Projektantrag</h3>
+                        <h3 class="mr-auto">Projektantrag {{ $proposal->project->user->full_name }}</h3>
                     </div>
                     @include('abschlussprojekt.antrag.navigationsleiste', ['v_name' => '',])
                     @include('abschlussprojekt.antrag.tabinhalt', ['v_name' => '', 'disable' => false])
                 </div>
                 {{-- Link zum Veränderungsverlauf --}}
                 <div class="mr-auto p-3">
-                    <a href="{{ route('abschlussprojekt.antrag.history', $proposal->project) }}" class="btn btn-secondary">
-                        Veränderungsverlauf
-                    </a>
+                    @if(request()->is('admin*'))
+                        <a href="{{ route('admin.abschlussprojekt.antrag.history', $proposal->project) }}" class="btn btn-secondary">
+                            Veränderungsverlauf
+                        </a>
+                    @else
+                        <a href="{{ route('abschlussprojekt.antrag.history', $proposal->project) }}" class="btn btn-secondary">
+                            Veränderungsverlauf
+                        </a>
+                    @endif
                 </div>
                 {{-- Formular zum Speichern --}}
                 <form class="form form-inline ml-auto p-3" action="{{ route('abschlussprojekt.antrag.store', $proposal->project) }}" method="post" id="formAntrag">

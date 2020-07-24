@@ -51,7 +51,7 @@ class DocumentationController extends Controller
      *
      * @param StoreDocumentationRequest $request
      * @param Project $project
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Http\RedirectResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(StoreDocumentationRequest $request, Project $project) {
@@ -69,7 +69,8 @@ class DocumentationController extends Controller
             $this->saveSection($request, $documentation, $versionNew, $versionOld, $old);
         }
 
-        return redirect(route('abschlussprojekt.dokumentation.index', $project))->with('status', 'Die Dokumentation wurde erfolgreich gespeichert.');
+        //return redirect(route('abschlussprojekt.dokumentation.index', $project))->with('status', 'Die Dokumentation wurde erfolgreich gespeichert.');
+        return redirect()->back()->with('status', 'Die Dokumentation wurde erfolgreich gespeichert.');
     }
 
     /**
@@ -153,14 +154,21 @@ class DocumentationController extends Controller
         ]);
 
         $version = Version::with('documentation')->find($request->id);
+
+        if (request()->is('admin*')) {
+            $route = 'admin.abschlussprojekt.dokumentation.index';
+        }
+        else {
+            $route = 'abschlussprojekt.dokumentation.index';
+        }
         if (! $version || ! $documentation->is($version->documentation)) {
-            return redirect(route('abschlussprojekt.dokumentation.index', $project))
+            return redirect(route($route, $project))
                 ->with('danger', 'Die Version konnte nicht übernommen werden.');
         }
         else {
             $version->touch();
-            return redirect(route('abschlussprojekt.dokumentation.index', $project))
-                ->with('status', 'Die Version wurde erfolgreich übernommen.');
+            return redirect(route($route, $project))
+                    ->with('status', 'Die Version wurde erfolgreich übernommen.');
         }
     }
 
@@ -180,21 +188,27 @@ class DocumentationController extends Controller
             'id' => 'required|int|min:1',
         ]);
 
+        if (request()->is('admin*')) {
+            $route = 'admin.abschlussprojekt.dokumentation.index';
+        }
+        else {
+            $route = 'abschlussprojekt.dokumentation.index';
+        }
         if ($documentation->versions()->count() < 2) {
-            return redirect(route('abschlussprojekt.dokumentation.index', $project))
+            return redirect(route($route, $project))
                 ->with('danger', 'Das Dokument hat nur eine Version. Sie kann nicht gelöscht werden.');
         }
 
         $version = Version::find($request->id);
         if (! $version || ! $documentation->is($version->documentation)) {
-            return redirect(route('abschlussprojekt.dokumentation.index', $project))
+            return redirect(route($route, $project))
                 ->with('danger', 'Die Version konnte nicht gelöscht werden.');
         }
         else {
             //In der delete-Methode von Version werden, wenn nötig, Abschnitte gelöscht.
             $version->delete();
 
-            return redirect(route('abschlussprojekt.dokumentation.index', $project))
+            return redirect(route($route, $project))
                 ->with('status', 'Die Version wurde erfolgreich gelöscht.');
         }
     }

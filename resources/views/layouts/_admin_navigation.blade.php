@@ -37,6 +37,9 @@
                 <li class="nav-item {{ (request()->is("admin/rules*")) ? 'active' : '' }}">
                     <a href="{{ route("admin.rules.edit") }}" class="nav-link">Werkstattregeln</a>
                 </li>
+                <li class="nav-item {{ request()->is("admin/abschlussprojekt*") ? 'active' : '' }}">
+                    <a href="{{ route('admin.abschlussprojekt.index') }}" class="nav-link">Abschlussprojekt</a>
+                </li>
                 <li class="nav-item {{ (request()->is("admin/users*")) ? 'active' : '' }}">
                     <a href="{{ route("admin.users.index") }}" class="nav-link">Benutzer</a>
                 </li>

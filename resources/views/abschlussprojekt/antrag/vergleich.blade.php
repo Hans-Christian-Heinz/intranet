@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-md-12 bg-white">
                     <div class="d-flex pb-3">
-                        <h3 class="mr-auto">Projektantrag: Vergleiche Versionen</h3>
+                        <h3 class="mr-auto">Projektantrag {{ $proposal->project->user->full_name }}: Vergleiche Versionen</h3>
                     </div>
                     <div class="border-bottom border-dark py-3">
                         @include('abschlussprojekt.antrag.vgl_help', ['version' => $versionen[0], 'v_name' => 'v0',])

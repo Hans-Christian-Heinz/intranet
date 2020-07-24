@@ -13,7 +13,12 @@
         <a class="btn btn-outline-danger" href="#deleteVersion{{ $v_name }}" data-toggle="modal">Version löschen</a>
     </div>
     {{-- Formular zum Speichern der Version als aktuelle Version --}}
-    <form class="form col-6 text-right p-3" action="{{ route('abschlussprojekt.antrag.use_version', $proposal->project) }}" method="post">
+    <form class="form col-6 text-right p-3" method="post"
+          @if(request()->is('admin*'))
+            action="{{ route('admin.abschlussprojekt.antrag.use_version', $proposal->project) }}"
+          @else
+            action="{{ route('abschlussprojekt.antrag.use_version', $proposal->project) }}"
+          @endif>
         @csrf
         <input type="hidden" name="id" value="{{ $version->id }}"/>
         <input class="btn btn-primary" type="submit" value="Version übernehmen"/>
@@ -35,7 +40,12 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-link text-secondary" data-dismiss="modal">Abbrechen</button>
 
-                <form class="form" action="{{ route('abschlussprojekt.antrag.delete_version', $proposal->project) }}" method="POST">
+                <form class="form" method="POST"
+                      @if(request()->is('admin*'))
+                        action="{{ route('admin.abschlussprojekt.antrag.delete_version', $proposal->project) }}"
+                      @else
+                        action="{{ route('abschlussprojekt.antrag.delete_version', $proposal->project) }}"
+                      @endif>
                     @csrf
                     @method('DELETE')
                     <input type="hidden" name="id" value="{{ $version->id }}"/>

@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-md-12 bg-white">
                     <div class="d-flex pb-3">
-                        <h3 class="mr-auto">Projektantrag: Veränderungsverlauf</h3>
+                        <h3 class="mr-auto">Projektantrag {{ $proposal->project->user->full_name }}: Veränderungsverlauf</h3>
                     </div>
                     {{-- Tabelle der Versionen --}}
                     <table class="table table-striped">
@@ -18,7 +18,11 @@
                                 <th>Geändert von</th>
                                 <th>
                                     <form id="formVergleichen" method="post" class="form text-center"
-                                          action="{{ route('abschlussprojekt.antrag.vergleich', $proposal->project) }}">
+                                          @if(request()->is('admin*'))
+                                            action="{{ route('admin.abschlussprojekt.antrag.vergleich', $proposal->project) }}"
+                                          @else
+                                            action="{{ route('abschlussprojekt.antrag.vergleich', $proposal->project) }}"
+                                          @endif>
                                         @csrf
                                         <input type="submit" class="btn btn-secondary" name="help" value="Vergleichen"/>
                                         @error("vergleichen") <span class="text-danger">{{ $message }}</span> @enderror

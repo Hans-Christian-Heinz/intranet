@@ -50,7 +50,7 @@ class ProposalController extends Controller
      *
      * @param StoreProposalRequest $request
      * @param Project $project
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Http\RedirectResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(StoreProposalRequest $request, Project $project) {
@@ -70,7 +70,8 @@ class ProposalController extends Controller
             $this->saveSection($request, $proposal, $versionNew, $versionOld, $old);
         }
 
-        return redirect(route('abschlussprojekt.antrag.index', $project))->with('status', 'Der Antrag wurde erfolgreich gespeichert.');
+        //return redirect(route('abschlussprojekt.antrag.index', $project))->with('status', 'Der Antrag wurde erfolgreich gespeichert.');
+        return redirect()->back()->with('status', 'Der Antrag wurde erfolgreich gespeichert.');
     }
 
     /**
@@ -154,13 +155,20 @@ class ProposalController extends Controller
         ]);
 
         $version = Version::with('proposal')->find($request->id);
+
+        if (request()->is('admin*')) {
+            $route = 'admin.abschlussprojekt.antrag.index';
+        }
+        else {
+            $route = 'abschlussprojekt.antrag.index';
+        }
         if (! $version || ! $proposal->is($version->proposal)) {
-            return redirect(route('abschlussprojekt.antrag.index', $project))
+            return redirect(route($route, $project))
                 ->with('danger', 'Die Version konnte nicht übernommen werden.');
         }
         else {
             $version->touch();
-            return redirect(route('abschlussprojekt.antrag.index', $project))
+            return redirect(route($route, $project))
                 ->with('status', 'Die Version wurde erfolgreich übernommen.');
         }
     }
@@ -181,21 +189,27 @@ class ProposalController extends Controller
             'id' => 'required|int|min:1',
         ]);
 
+        if (request()->is('admin*')) {
+            $route = 'admin.abschlussprojekt.antrag.index';
+        }
+        else {
+            $route = 'abschlussprojekt.antrag.index';
+        }
         if ($proposal->versions()->count() < 2) {
-            return redirect(route('abschlussprojekt.antrag.index', $project))
+            return redirect(route($route, $project))
                 ->with('danger', 'Das Dokument hat nur eine Version. Sie kann nicht gelöscht werden.');
         }
 
         $version = Version::find($request->id);
         if (! $version || ! $proposal->is($version->proposal)) {
-            return redirect(route('abschlussprojekt.antrag.index', $project))
+            return redirect(route($route, $project))
                 ->with('danger', 'Die Version konnte nicht gelöscht werden.');
         }
         else {
             //In der delete-Methode von Version werden, wenn nötig, Abschnitte gelöscht.
             $version->delete();
 
-            return redirect(route('abschlussprojekt.antrag.index', $project))
+            return redirect(route($route, $project))
                 ->with('status', 'Die Version wurde erfolgreich gelöscht.');
         }
     }
