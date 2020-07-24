@@ -32,7 +32,9 @@
                                     {{-- Stelle sicher, dass nur Abschnitte ohne Unterabschnitt und mit Fließtext ausgewählt werden können --}}
                                     @if($version->sections()->where('sections.section_id', $section->id)->count() == 0 &&
                                         ($section->tpl == 'text_section' || $section->tpl == 'dokumentation.vgl_section'))
-                                        <option value="{{ $section->id }}">{{ $section->heading }}</option>
+                                        <option id="section_image_{{ $section->name }}" value="{{ $section->id }}">
+                                            {{ $section->heading }}
+                                        </option>
                                     @endif
                                 @endforeach
                             </select>
@@ -47,13 +49,13 @@
                                     Bild
                                 </button>
                                 <div class="dropdown-menu  @error('img') is-invalid @enderror" aria-labelledby="dropdownImageButton">
-                                    @foreach(app()->user->getImageFiles() as $file)
+                                    @foreach(app()->user->getImageFiles() as $i => $file)
                                         <div class="dropdown-item radio-group">
                                             <input type="radio" name="path" form="addImageForm" value="{{ $file }}"
-                                                   class="radioImage" required id="radio_{{ $file }}"/>
-                                            <label for="radio_{{ $file }}">
+                                                   class="radioImage" required id="radio_{{ $i }}"/>
+                                            <label for="radio_{{ $i }}">
                                                 <img src="{{ asset('storage/' . $file) }}" height="150" width="240"
-                                                     alt="Im gespeicherten Dateipfad liegt keine Bilddatei."/>
+                                                     alt="Im gespeicherten Dateipfad liegt keine Bilddatei." id="img_{{ $i }}"/>
                                             </label>
                                         </div>
                                     @endforeach
