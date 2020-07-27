@@ -22,11 +22,30 @@ class Version extends Model
                         $image->delete();
                     }
                 }
+                //Überprüfe, ob ein Abschnitt des selben Namens in einer anderen Version des Dokuments existiert
+                //Falls nicht: Lösche alle Kommentare des Dokuments, die zum Abschnitt mit diesem Namen gehören
+                if (! is_null($this->getDocument())) {
+                    $doc = $this->getDocument();
+                    if ($doc->sections()->where('name', $section->name)->count() === 1) {
+                        $doc->comments()->where('section_name', $section->name)->delete();
+                    }
+                }
+
                 $section->delete();
             }
         }
 
         return parent::delete();
+    }
+
+    public function getDocument() {
+        if (! is_null($this->proposal)) {
+            return $this->proposal;
+        }
+        if (! is_null($this->documentation)) {
+            return $this->documentation;
+        }
+        return null;
     }
 
     public function proposal() {

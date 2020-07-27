@@ -89,3 +89,13 @@ ul.scrollnav {
     width: 60%;
     max-width: 60%;
 }
+
+span.comment{
+    font-size: 0.8rem;
+}
+input[type="submit"].comment {
+    border: 0;
+    color: #007bff;
+    background-color: #ffffff;
+    font-size: 0.6rem
+}

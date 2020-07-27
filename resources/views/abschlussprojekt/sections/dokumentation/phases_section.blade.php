@@ -12,3 +12,8 @@
         </tr>
     @endforeach
 </table>
+
+@if(request()->is('*antrag') || request()->is('*antrag'))
+    @include('abschlussprojekt.sections.kommentar',
+        ['comments' => $version->getDocument()->comments->where('section_name', $s->name),])
+@endif

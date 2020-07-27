@@ -8,11 +8,14 @@
     </a>
 
     {{-- Hinzufügen eines Unterabsachnitts --}}
-    <a href="#addSection{{ $section->id }}" data-toggle="modal" style="line-height: 0.7rem" class="btn btn-secondary"><b>+</b></a>
+    <a @if($disable) href="#" @else href="#addSection{{ $section->id }}" @endif data-toggle="modal"
+       style="line-height: 0.7rem" class="btn btn-secondary"><b>+</b></a>
     {{-- Löschen des Abschnitts (Unicode: Wastebinn --}}
-    <a href="#deleteSection{{ $section->id }}" data-toggle="modal" style="line-height: 0.7rem" class="btn btn-secondary float-right">&#128465</a>
+    <a @if($disable) href="#" @else href="#deleteSection{{ $section->id }}" @endif data-toggle="modal"
+       style="line-height: 0.7rem" class="btn btn-secondary float-right">&#128465</a>
     {{-- Bearbeiten des Abschnitts (Unicode: Bleistift) --}}
-    <a href="#editSection{{ $section->id }}" data-toggle="modal" style="line-height: 0.7rem" class="btn btn-secondary float-right">&#x270E</a>
+    <a @if($disable) href="#" @else href="#editSection{{ $section->id }}" @endif data-toggle="modal"
+       style="line-height: 0.7rem" class="btn btn-secondary float-right">&#x270E</a>
 </li>
 
 @include('abschlussprojekt.sections.dokumentation.addSectionModal')

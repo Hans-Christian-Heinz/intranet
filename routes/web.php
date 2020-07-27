@@ -56,8 +56,7 @@ Route::group(['middleware' => 'auth'], function () {
     ], function() {
         Route::get('/', 'ProjectController@index')->name('index');
         Route::post('/create', 'ProjectController@create')->name('create');
-        //todo
-        //Route::patch('{project}/update', 'ProjectController@update')->name('update');
+        Route::delete('/comment/{comment}', 'CommentController@delete')->name('delete_comment');
 
         //Routen für den Projektantrag
         Route::group([
@@ -76,6 +75,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::delete('delete_version', 'ProposalController@deleteVersion')->name('delete_version');
             Route::delete('/clear_history', 'ProposalController@clearHistory')->name('clear_history');
             Route::post('pdf', 'ProposalController@pdf')->name('pdf');
+            Route::post('/{proposal}/comment', 'CommentController@addToProposal')->name('comment');
 
             Route::fallback(function($project) {
                 return redirect(route('abschlussprojekt.antrag.index', $project));
@@ -99,6 +99,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::delete('delete_version', 'DocumentationController@deleteVersion')->name('delete_version');
             Route::delete('/clear_history', 'DocumentationController@clearHistory')->name('clear_history');
             Route::post('pdf', 'DocumentationController@pdf')->name('pdf');
+            Route::post('/{documentation}/comment', 'CommentController@addToDocumentation')->name('comment');
             //Routen für die Abschnitte der Dokumentation
             Route::group([
                 'prefix' => '/abschnitte',

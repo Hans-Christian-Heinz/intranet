@@ -25,7 +25,7 @@ class SectionController extends Controller
             return $this->createDocumentationSection($request, $documentation, $versionOld);
         }
         $sectionOld = $versionOld->sections->where('id', $request->section_id)->shift();
-        $this->authorize('create', $sectionOld);
+        $this->authorize('delete', $sectionOld);
 
         //Erstelle zunächst eine neue Version
         $version = new Version();
@@ -151,7 +151,7 @@ class SectionController extends Controller
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(EditSectionRequest $request, Project $project, Section $section) {
-        $this->authorize('edit', $section);
+        $this->authorize('delete', $section);
 
         $documentation = $project->documentation;
         $versionOld = $documentation->latestVersion();

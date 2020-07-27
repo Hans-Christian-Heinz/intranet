@@ -13,3 +13,8 @@
            class="form-control col-lg-10 @error('longTitle') is-invalid @enderror" value="{{ $documentation->getLongTitle($version) }}"/>
     @error('longTitle') <p class="invalid-feedback">{{ $message }}</p> @enderror
 </div>
+
+@if(request()->is('*antrag') || request()->is('*antrag'))
+    @include('abschlussprojekt.sections.kommentar',
+        ['comments' => $version->getDocument()->comments->where('section_name', $s->name),])
+@endif

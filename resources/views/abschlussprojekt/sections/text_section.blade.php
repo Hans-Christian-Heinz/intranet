@@ -6,3 +6,8 @@
 @error($s->name) <p class="invalid-feedback">{{ $message }}</p> @enderror
 
 @include('abschlussprojekt.sections.dokumentation.bilder.bilder')
+
+@if(request()->is('*antrag') || request()->is('*dokumentation'))
+    @include('abschlussprojekt.sections.kommentar',
+        ['comments' => $version->getDocument()->comments->where('section_name', $s->name),])
+@endif

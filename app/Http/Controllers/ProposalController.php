@@ -16,13 +16,14 @@ class ProposalController extends Controller
     use SavesSections, ControllsDocuments;
 
     public function index(Project $project) {
-        if (! $project->proposal) {
+        $proposal = $project->proposal()->with('comments')->first();
+        if (! $proposal) {
             return redirect(route('abschlussprojekt.antrag.create', $project));
         }
         return view('abschlussprojekt.antrag.index', [
-            'proposal' => $project->proposal,
-            'version' => $project->proposal->latestVersion(),
-            'disable' => app()->user->isNot($project->proposal->lockedBy),
+            'proposal' => $proposal,
+            'version' => $proposal->latestVersion(),
+            'disable' => app()->user->isNot($proposal->lockedBy),
         ]);
     }
 

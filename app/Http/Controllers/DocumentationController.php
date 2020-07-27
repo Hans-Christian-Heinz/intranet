@@ -18,13 +18,14 @@ class DocumentationController extends Controller
     use SavesSections, ControllsDocuments;
 
     public function index(Project $project) {
-        if (! $project->documentation) {
+        $documentation = $project->documentation()->with('comments')->first();
+        if (! $documentation) {
             return redirect(route('abschlussprojekt.dokumentation.create', $project));
         }
         return view('abschlussprojekt.dokumentation.index', [
-            'documentation' => $project->documentation,
-            'version' => $project->documentation->latestVersion(),
-            'disable' => app()->user->isNot($project->documentation->lockedBy),
+            'documentation' => $documentation,
+            'version' => $documentation->latestVersion(),
+            'disable' => app()->user->isNot($documentation->lockedBy),
         ]);
     }
 

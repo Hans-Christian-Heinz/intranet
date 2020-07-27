@@ -21,7 +21,7 @@
                                       @if(request()->is('admin*'))
                                         action="{{ route('admin.abschlussprojekt.dokumentation.vergleich', $documentation->project) }}"
                                       @else
-                                        action="{{ route('abschlussprojekt.antrag.vergleich', $documentation->project) }}"
+                                        action="{{ route('abschlussprojekt.dokumentation.vergleich', $documentation->project) }}"
                                       @endif>
                                     @csrf
                                     <input type="submit" class="btn btn-secondary" name="help" value="Vergleichen"/>

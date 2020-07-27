@@ -179,4 +179,8 @@ class Proposal extends Model
     public function lockedBy() {
         return $this->belongsTo(User::class, 'locked_by', 'id');
     }
+
+    public function comments() {
+        return $this->hasMany(Comment::class);
+    }
 }

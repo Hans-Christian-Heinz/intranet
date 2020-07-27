@@ -2,7 +2,7 @@
 
 <h4>Version: {{ $version->updated_at }}, geändert von {{ $version->user->full_name }}</h4>
 {{-- Navigationsleiste der Version --}}
-@include('abschlussprojekt.dokumentation.navigationsleiste')
+@include('abschlussprojekt.dokumentation.navigationsleiste', ['disable' => true,])
 {{-- Tabinhalt der Version --}}
 @include('abschlussprojekt.dokumentation.tabinhalt', [
     'disable' => true,
