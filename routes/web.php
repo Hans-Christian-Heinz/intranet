@@ -11,6 +11,8 @@
 |
 */
 
+use App\Project;
+
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
@@ -153,12 +155,20 @@ Route::group(['middleware' => 'admin'], function () {
         'as' => 'admin.abschlussprojekt.',
     ], function() {
         Route::get('/', 'AdminProjectController@index')->name('index');
+        Route::patch('/{project}', function (Project $project) {
+            $project->supervisor()->associate(app()->user);
+            $project->save();
+
+            return redirect()->back()->with('status', 'Sie wurden zu dem Projekt als Betreuer eingetragen.');
+        })->name('betreuer');
 
         Route::group([
             'prefix' => '/{project}/antrag',
             'as' => 'antrag.',
         ], function() {
             Route::get('/', 'ProposalController@index')->name('index');
+            //TODO: sollte keine get Route sein.
+            Route::get('/create', 'ProposalController@create')->name('create');
             Route::get('/history', 'ProposalController@history')->name('history');
             Route::post('/vergleich', 'ProposalController@vergleich')->name('vergleich');
             Route::post('/use_version', 'ProposalController@useVersion')->name('use_version');
@@ -170,6 +180,8 @@ Route::group(['middleware' => 'admin'], function () {
             'as' => 'dokumentation.',
         ], function() {
             Route::get('/', 'DocumentationController@index')->name('index');
+            //TODO: sollte keine get Route sein.
+            Route::get('/create', 'DocumentationController@create')->name('create');
             Route::get('/history', 'DocumentationController@history')->name('history');
             Route::post('/vergleich', 'DocumentationController@vergleich')->name('vergleich');
             Route::post('/use_version', 'DocumentationController@useVersion')->name('use_version');

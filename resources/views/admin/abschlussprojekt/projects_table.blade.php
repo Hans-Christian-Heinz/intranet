@@ -23,7 +23,14 @@
                 <td>{{ $project->user->full_name }}</td>
                 <td>{{ $project->user->fachrichtung }}</td>
                 <td>{{ $project->topic }}</td>
-                <td>{{ $project->supervisor ? $project->supervisor->full_name : 'Nicht zugewiesen' }}</td>
+                <td>
+                    {{ $project->supervisor ? $project->supervisor->full_name : 'Nicht zugewiesen' }}
+                    <form action="{{ route('admin.abschlussprojekt.betreuer', $project) }}" method="post">
+                        @csrf
+                        @method('patch')
+                        <input type="submit" class="btn btn-outline-primary" value="Mir zuweisen"/>
+                    </form>
+                </td>
                 <td>
                     <a class="btn btn-secondary" href="{{ route('admin.abschlussprojekt.antrag.index', ['project' => $project]) }}">
                         Antrag

@@ -43,7 +43,13 @@ class DocumentationController extends Controller
         $documentation->versions()->save($version);
         $documentation->makeSections(Documentation::SECTIONS, $version);
 
-        return redirect(route('abschlussprojekt.dokumentation.index', $project))->with('status', 'Die Dokumentation wurde erfolgreich angeleget.');
+        if (request()->is('admin*')) {
+            $route = 'admin.abschlussprojekt.dokumentation.index';
+        }
+        else {
+            $route = 'abschlussprojekt.dokumentation.index';
+        }
+        return redirect(route($route, $project))->with('status', 'Die Dokumentation wurde erfolgreich angeleget.');
     }
 
     /**

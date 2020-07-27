@@ -41,7 +41,13 @@ class ProposalController extends Controller
         $proposal->versions()->save($version);
         $proposal->makeSections(Proposal::SECTIONS, $version);
 
-        return redirect(route('abschlussprojekt.antrag.index', $project))->with('status', 'Der Antrag wurde erfolgreich angeleget.');
+        if (request()->is('admin*')) {
+            $route = 'admin.abschlussprojekt.antrag.index';
+        }
+        else {
+            $route = 'abschlussprojekt.antrag.index';
+        }
+        return redirect(route($route, $project))->with('status', 'Der Antrag wurde erfolgreich angeleget.');
     }
 
     /**
