@@ -225,6 +225,24 @@ class ProposalController extends Controller
         }
     }
 
+    /**
+     * @param Project $project
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function clearHistory(Project $project) {
+        $proposal = $project->proposal;
+        $this->authorize('store', $proposal);
+
+        $versions = $proposal->versions()->without('sections')->orderby('updated_at', 'DESC')->get();
+        $versions->shift();
+        foreach($versions as $v) {
+            $v->delete();
+        }
+
+        return redirect()->back()->with('status', 'Der Änderungsverlauf wurde erfolgreich gelöscht.');
+    }
+
     public function lock(Project $project, Proposal $proposal) {
         $this->authorize('lock', $proposal);
         return $this->lockDocument($proposal);

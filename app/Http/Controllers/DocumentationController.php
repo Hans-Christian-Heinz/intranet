@@ -224,6 +224,24 @@ class DocumentationController extends Controller
         }
     }
 
+    /**
+     * @param Project $project
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function clearHistory(Project $project) {
+        $documentation = $project->documentation;
+        $this->authorize('store', $documentation);
+
+        $versions = $documentation->versions()->without('sections')->orderby('updated_at', 'DESC')->get();
+        $versions->shift();
+        foreach($versions as $v) {
+            $v->delete();
+        }
+
+        return redirect()->back()->with('status', 'Der Änderungsverlauf wurde erfolgreich gelöscht.');
+    }
+
     public function lock(Project $project, Documentation $documentation) {
         $this->authorize('lock', $documentation);
         return $this->lockDocument($documentation);

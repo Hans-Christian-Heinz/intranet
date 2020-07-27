@@ -74,6 +74,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/vergleich', 'ProposalController@vergleich')->name('vergleich');
             Route::post('/use_version', 'ProposalController@useVersion')->name('use_version');
             Route::delete('delete_version', 'ProposalController@deleteVersion')->name('delete_version');
+            Route::delete('/clear_history', 'ProposalController@clearHistory')->name('clear_history');
             Route::post('pdf', 'ProposalController@pdf')->name('pdf');
 
             Route::fallback(function($project) {
@@ -96,6 +97,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/vergleich', 'DocumentationController@vergleich')->name('vergleich');
             Route::post('/use_version', 'DocumentationController@useVersion')->name('use_version');
             Route::delete('delete_version', 'DocumentationController@deleteVersion')->name('delete_version');
+            Route::delete('/clear_history', 'DocumentationController@clearHistory')->name('clear_history');
             Route::post('pdf', 'DocumentationController@pdf')->name('pdf');
             //Routen für die Abschnitte der Dokumentation
             Route::group([

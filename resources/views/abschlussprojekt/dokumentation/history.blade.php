@@ -44,6 +44,9 @@
                         @endforeach
                         </tbody>
                     </table>
+                    <a class="btn btn-outline-danger float-right" data-toggle="modal" href="#clearHistoryModal">Verlauf löschen</a>
+                    @include('abschlussprojekt.clearHistory',
+                        ['route' => 'abschlussprojekt.dokumentation.clear_history', 'project' => $documentation->project,])
                 </div>
             </div>
         </div>
