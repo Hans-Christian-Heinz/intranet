@@ -78,6 +78,9 @@ class ProposalController extends Controller
             $this->saveSection($request, $proposal, $versionNew, $versionOld, $old);
         }
 
+        //update timestamps:
+        $proposal->touch();
+
         //return redirect(route('abschlussprojekt.antrag.index', $project))->with('status', 'Der Antrag wurde erfolgreich gespeichert.');
         return redirect()->back()->with('status', 'Der Antrag wurde erfolgreich gespeichert.');
     }

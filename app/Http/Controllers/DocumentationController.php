@@ -77,6 +77,9 @@ class DocumentationController extends Controller
             $this->saveSection($request, $documentation, $versionNew, $versionOld, $old);
         }
 
+        //update timestamps:
+        $documentation->touch();
+
         //return redirect(route('abschlussprojekt.dokumentation.index', $project))->with('status', 'Die Dokumentation wurde erfolgreich gespeichert.');
         return redirect()->back()->with('status', 'Die Dokumentation wurde erfolgreich gespeichert.');
     }

@@ -2,6 +2,10 @@
 
 namespace App\Console;
 
+use App\Console\Commands\ClearDocumentLocks;
+use App\Documentation;
+use App\Proposal;
+use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -25,6 +29,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        //Alle 30 Minuten: Alle Dokumente, die nicht innerhalb der letzten 30 Minuten geändert wurden, werden freigegeben.
+        $schedule->command(ClearDocumentLocks::class)->everyThirtyMinutes();
     }
 
     /**
