@@ -36,20 +36,21 @@
                         <a href="{{ route("exemptions.index") }}" class="nav-link">Freistellungen</a>
                     </li>
                     <li class="nav-item {{ (request()->is('rules')) ? 'active' : '' }}">
-                        <a href="{{ route("rules.index") }}" class="nav-link">Werkstattregeln</a>
+                        <a href="{{ route("rules.index") }}"
+                           class="nav-link @if(is_null(app()->user->accepted_rules_at)) text-danger @endif">Werkstattregeln</a>
                     </li>
                     <li class="nav-item {{ (request()->is('abschlussprojekt*')) ? 'active' : '' }}">
                         <a href="{{ route("abschlussprojekt.index") }}" class="nav-link">Abschlussprojekt</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            {{ Auth::user()->name }} <span class="notifications">{{ app()->user->notifications_count }}</span> <span class="caret"></span>
+                            {{ Auth::user()->name }} <span class="notifications">{{ app()->user->notifications()->count() }}</span> <span class="caret"></span>
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="#addressModal" data-toggle="modal">Adresse verwalten</a>
                             <a class="dropdown-item" href="{{ route('user.nachrichten') }}">
-                                Benachrichtigungen <span class="notifications">{{ app()->user->notifications_count }}</span>
+                                Benachrichtigungen <span class="notifications">{{ app()->user->notifications()->count() }}</span>
                             </a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{ route('logout') }}"

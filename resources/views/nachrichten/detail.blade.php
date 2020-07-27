@@ -10,21 +10,23 @@
                     <div class="d-flex pb-3">
                         <h3 class="mr-auto">Benachrichtigungen</h3>
                     </div>
-                    <table class="table table-striped table-bordered table-hover mb-2">
-                        <thead>
-                        <tr>
-                            <th>Von {{ $message->data['absender'] }}</th>
-                            <th>{{ app()->user->full_name }}</th>
-                            <th>{{ $message->data['betreff'] }}</th>
-                            <th>{{ \Carbon\Carbon::instance($message->created_at)->format('d.m.Y H:i:s') }}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td colspan="4">{{ $message->data['inhalt'] }}</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-responsive mb-2">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Von {{ $message->data['absender'] }}</th>
+                                <th>{{ app()->user->full_name }}</th>
+                                <th>{{ $message->data['betreff'] }}</th>
+                                <th>{{ \Carbon\Carbon::instance($message->created_at)->format('d.m.Y H:i:s') }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td colspan="4">{{ $message->data['inhalt'] }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <form class="form form-inline ml-auto p-3" action="{{ route('user.nachrichten.delete', compact('message')) }}"
                       method="post">

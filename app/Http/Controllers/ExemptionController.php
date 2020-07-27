@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Exemption;
+use App\Notifications\CustomNotification;
+use App\User;
 use Illuminate\Http\Request;
 
 class ExemptionController extends Controller
@@ -56,7 +58,13 @@ class ExemptionController extends Controller
 
         $attributes['status'] = 'new';
 
-        $berichtsheft = app()->user->exemptions()->create($attributes);
+        app()->user->exemptions()->create($attributes);
+
+        //Sende eine Nachricht an alle Ausbilder
+        foreach(User::where('fachrichtung', 'Ausbilder')->get() as $admin) {
+            $admin->notify(new CustomNotification(app()->user->full_name, 'Freistellungsantrag gestellt',
+                'Der Absender hat einen neuen Freistellungsantrag gestellt.'));
+        }
 
         return redirect()->route('exemptions.index')->with('status', 'Der Freistellungsantrag wurde erfolgreich hinzugefügt.');
     }
@@ -103,6 +111,12 @@ class ExemptionController extends Controller
 
         $exemption->update($attributes);
 
+        //Sende eine Nachricht an alle Ausbilder
+        foreach(User::where('fachrichtung', 'Ausbilder')->get() as $admin) {
+            $admin->notify(new CustomNotification(app()->user->full_name, 'Freistellungsantrag geändert',
+                'Der Absender hat einen bestehenden Freistellungsantrag geändert.'));
+        }
+
         return redirect()->route('exemptions.index')->with('status', 'Der Freistellungsantrag wurde erfolgreich aktualisiert.');
     }
 
@@ -117,6 +131,12 @@ class ExemptionController extends Controller
         $this->authorize('destroy', $exemption);
 
         $exemption->delete();
+
+        //Sende eine Nachricht an alle Ausbilder
+        foreach(User::where('fachrichtung', 'Ausbilder')->get() as $admin) {
+            $admin->notify(new CustomNotification(app()->user->full_name, 'Freistellungsantrag gelöscht',
+                'Der Absender hat einen bestehenden Freistellungsantrag gelöscht.'));
+        }
 
         return redirect()->route('exemptions.index')->with('status', 'Der Freistellungsantrag wurde erfolgreich gelöscht.');
     }

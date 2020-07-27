@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Notifications\CustomNotification;
 use App\User;
 use App\Exemption;
 use Illuminate\Http\Request;
@@ -87,12 +88,28 @@ class AdminExemptionController extends Controller
 
         $exemption->update($attributes);
 
+        $user = $exemption->owner;
+        switch($attributes['status']) {
+            case 'approved':
+                $user->notify(new CustomNotification(app()->user->full_name, 'Freistellung genehmigt',
+                    'Der Absender hat einen Ihrer Freistellungsanträge genehmigt.'));
+                break;
+            case 'rejected':
+                $user->notify(new CustomNotification(app()->user->full_name, 'Freistellung abgelehnt',
+                    'Der Absender hat einen Ihrer Freistellungsanträge abgelehnt.'));
+                break;
+        }
+
         return redirect()->route('admin.exemptions.edit', $exemption)->with('status', 'Die Freistellung wurde erfolgreich aktualisiert.');
     }
 
     public function destroy(Exemption $exemption)
     {
+        $user = $exemption->owner;
         $exemption->delete();
+
+        $user->notify(new CustomNotification(app()->user->full_name, 'Freistellungsantrag gelöscht',
+            'Der Absender hat einen Ihrer Freistellungsanträge gelöscht.'));
 
         return redirect()->route('admin.exemptions.index')->with('status', 'Der Freistellungsantrag wurde erfolgreich gelöscht.');
     }

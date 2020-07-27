@@ -55,14 +55,11 @@ class UserServiceProvider extends ServiceProvider
                 $user->ldap_username = $username;
                 $user->full_name = $fullName;
                 $user->email = $email;
-                $user->notifications_count = 0;
 
                 $user->fachrichtung = $fachrichtung;
 
                 $user->save();
             } else {
-                $user->notifications_count = $user->notifications()->count();
-
                 if ($user->full_name !== $fullName) {
                     $user->full_name = $fullName;
                     $user->save();
