@@ -67,6 +67,8 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/', 'ProposalController@index')->name('index');
             //TODO: sollte keine get Route sein.
             Route::get('/create', 'ProposalController@create')->name('create');
+            Route::patch('/{proposal}/lock', 'ProposalController@lock')->name('lock');
+            Route::patch('/{proposal}/release', 'ProposalController@release')->name('release');
             Route::post('/', 'ProposalController@store')->name('store');
             Route::get('/history', 'ProposalController@history')->name('history');
             Route::post('/vergleich', 'ProposalController@vergleich')->name('vergleich');
@@ -87,6 +89,8 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/', 'DocumentationController@index')->name('index');
             //TODO: sollte keine get Route sein.
             Route::get('/create', 'DocumentationController@create')->name('create');
+            Route::patch('/{documentation}/lock', 'DocumentationController@lock')->name('lock');
+            Route::patch('/{documentation}/release', 'DocumentationController@release')->name('release');
             Route::post('/', 'DocumentationController@store')->name('store');
             Route::get('/history', 'DocumentationController@history')->name('history');
             Route::post('/vergleich', 'DocumentationController@vergleich')->name('vergleich');

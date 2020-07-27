@@ -8,13 +8,14 @@ use App\Http\Requests\PdfRequest;
 use App\Http\Requests\StoreDocumentationRequest;
 use App\Image;
 use App\Project;
+use App\Traits\ControllsDocuments;
 use App\Traits\SavesSections;
 use App\Version;
 use Illuminate\Http\Request;
 
 class DocumentationController extends Controller
 {
-    use SavesSections;
+    use SavesSections, ControllsDocuments;
 
     public function index(Project $project) {
         if (! $project->documentation) {
@@ -23,6 +24,7 @@ class DocumentationController extends Controller
         return view('abschlussprojekt.dokumentation.index', [
             'documentation' => $project->documentation,
             'version' => $project->documentation->latestVersion(),
+            'disable' => app()->user->isNot($project->documentation->lockedBy),
         ]);
     }
 
@@ -90,7 +92,7 @@ class DocumentationController extends Controller
         $documentation = $project->documentation;
         $this->authorize('history', $documentation);
 
-        $versions = $documentation->versions()->with('user')->orderBy('updated_at', 'DESC')->get();
+        $versions = $documentation->versions()->with('user')->without('sections')->orderBy('updated_at', 'DESC')->get();
         return view('abschlussprojekt.dokumentation.history', [
             'documentation' => $documentation,
             'versions' => $versions,
@@ -153,7 +155,7 @@ class DocumentationController extends Controller
      */
     public function useVersion(Request $request, Project $project) {
         $documentation = $project->documentation;
-        $this->authorize('history', $documentation);
+        $this->authorize('store', $documentation);
 
         $request->validate([
             'id' => 'required|int|min:1',
@@ -188,7 +190,7 @@ class DocumentationController extends Controller
      */
     public function deleteVersion(Request $request, Project $project) {
         $documentation = $project->documentation;
-        $this->authorize('history', $documentation);
+        $this->authorize('store', $documentation);
 
         $request->validate([
             'id' => 'required|int|min:1',
@@ -217,6 +219,16 @@ class DocumentationController extends Controller
             return redirect(route($route, $project))
                 ->with('status', 'Die Version wurde erfolgreich gelöscht.');
         }
+    }
+
+    public function lock(Project $project, Documentation $documentation) {
+        $this->authorize('lock', $documentation);
+        return $this->lockDocument($documentation);
+    }
+
+    public function release(Project $project, Documentation $documentation) {
+        $this->authorize('lock', $documentation);
+        return $this->releaseDocument($documentation);
     }
 
     /**

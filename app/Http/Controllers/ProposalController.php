@@ -6,13 +6,14 @@ use App\Http\Requests\PdfRequest;
 use App\Http\Requests\StoreProposalRequest;
 use App\Project;
 use App\Proposal;
+use App\Traits\ControllsDocuments;
 use App\Traits\SavesSections;
 use App\Version;
 use Illuminate\Http\Request;
 
 class ProposalController extends Controller
 {
-    use SavesSections;
+    use SavesSections, ControllsDocuments;
 
     public function index(Project $project) {
         if (! $project->proposal) {
@@ -21,6 +22,7 @@ class ProposalController extends Controller
         return view('abschlussprojekt.antrag.index', [
             'proposal' => $project->proposal,
             'version' => $project->proposal->latestVersion(),
+            'disable' => app()->user->isNot($project->proposal->lockedBy),
         ]);
     }
 
@@ -91,7 +93,7 @@ class ProposalController extends Controller
         $proposal = $project->proposal;
         $this->authorize('history', $proposal);
 
-        $versions = $proposal->versions()->with('user')->orderBy('updated_at', 'DESC')->get();
+        $versions = $proposal->versions()->with('user')->without('sections')->orderBy('updated_at', 'DESC')->get();
         return view('abschlussprojekt.antrag.history', [
             'proposal' => $proposal,
             'versions' => $versions,
@@ -154,7 +156,7 @@ class ProposalController extends Controller
      */
     public function useVersion(Request $request, Project $project) {
         $proposal = $project->proposal;
-        $this->authorize('history', $proposal);
+        $this->authorize('store', $proposal);
 
         $request->validate([
             'id' => 'required|int|min:1',
@@ -189,7 +191,7 @@ class ProposalController extends Controller
      */
     public function deleteVersion(Request $request, Project $project) {
         $proposal = $project->proposal;
-        $this->authorize('history', $proposal);
+        $this->authorize('store', $proposal);
 
         $request->validate([
             'id' => 'required|int|min:1',
@@ -218,6 +220,16 @@ class ProposalController extends Controller
             return redirect(route($route, $project))
                 ->with('status', 'Die Version wurde erfolgreich gelöscht.');
         }
+    }
+
+    public function lock(Project $project, Proposal $proposal) {
+        $this->authorize('lock', $proposal);
+        return $this->lockDocument($proposal);
+    }
+
+    public function release(Project $project, Proposal $proposal) {
+        $this->authorize('lock', $proposal);
+        return $this->releaseDocument($proposal);
     }
 
     /**

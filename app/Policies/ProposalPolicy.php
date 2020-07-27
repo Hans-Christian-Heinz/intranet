@@ -13,10 +13,17 @@ class ProposalPolicy
     public function store(LdapUser $ldapUser, Proposal $proposal)
     {
         $user = app()->user;
-        return $user->is($proposal->project->user) || $user->is_admin;
+        $res = app()->user->is($proposal->lockedBy);
+        return ($user->is($proposal->project->user) || $user->is_admin) && $res;
     }
 
     public function history(LdapUser $ldapUser, Proposal $proposal)
+    {
+        $user = app()->user;
+        return $user->is($proposal->project->user) || $user->is_admin;
+    }
+
+    public function lock(LdapUser $ldapUser, Proposal $proposal)
     {
         $user = app()->user;
         return $user->is($proposal->project->user) || $user->is_admin;

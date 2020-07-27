@@ -10,8 +10,13 @@
                     <div class="d-flex pb-3">
                         <h3 class="mr-auto">Projektdokumentation {{ $documentation->project->user->full_name }}</h3>
                     </div>
+                    @include('abschlussprojekt.lock_document', [
+                        'document' => $documentation,
+                        'route_prefix' => 'abschlussprojekt.dokumentation',
+                        'route_param' => 'documentation',
+                    ])
                     @include('abschlussprojekt.dokumentation.navigationsleiste', ['v_name' => '',])
-                    @include('abschlussprojekt.dokumentation.tabinhalt', ['v_name' => '', 'disable' => false])
+                    @include('abschlussprojekt.dokumentation.tabinhalt', ['v_name' => '', 'disable' => $disable])
                 </div>
                 {{-- Link zum Veränderungsverlauf --}}
                 <div class="mr-auto p-3">
@@ -32,7 +37,8 @@
                     <a class="btn btn-secondary mx-2" data-toggle="modal" id="addImageModal" href="#addImage">Bild hinzufügen</a>
                     {{-- Link zum Erstellen eines PDF-Dokuments --}}
                     <a class="btn btn-secondary mx-2" data-toggle="modal" id="formatPdfModal" href="#formatPdf">PDF erstellen</a>
-                    <input class="btn btn-primary mx-2" type="submit" form="formDokumentation" id="speichern" value="Speichern"/>
+                    <input class="btn btn-primary mx-2" type="submit" form="formDokumentation" id="speichern"
+                           value="Speichern" @if($disable) disabled @endif/>
                 </form>
             </div>
         </div>

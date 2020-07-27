@@ -175,4 +175,8 @@ class Proposal extends Model
     public function versions() {
         return $this->hasMany(Version::class);
     }
+
+    public function lockedBy() {
+        return $this->belongsTo(User::class, 'locked_by', 'id');
+    }
 }

@@ -10,8 +10,13 @@
                     <div class="d-flex pb-3">
                         <h3 class="mr-auto">Projektantrag {{ $proposal->project->user->full_name }}</h3>
                     </div>
+                    @include('abschlussprojekt.lock_document', [
+                        'document' => $proposal,
+                        'route_prefix' => 'abschlussprojekt.antrag',
+                        'route_param' => 'proposal',
+                    ])
                     @include('abschlussprojekt.antrag.navigationsleiste', ['v_name' => '',])
-                    @include('abschlussprojekt.antrag.tabinhalt', ['v_name' => '', 'disable' => false])
+                    @include('abschlussprojekt.antrag.tabinhalt', ['v_name' => '', 'disable' => $disable])
                 </div>
                 {{-- Link zum Veränderungsverlauf --}}
                 <div class="mr-auto p-3">
@@ -30,7 +35,8 @@
                     @csrf
                     {{-- Link zum Erstellen eines PDF-Dokuments --}}
                     <a class="btn btn-secondary mx-2" data-toggle="modal" id="formatPdfModal" href="#formatPdf">PDF erstellen</a>
-                    <input class="btn btn-primary mx-2" type="submit" form="formAntrag" id="speichern" value="Speichern"/>
+                    <input class="btn btn-primary mx-2" type="submit" form="formAntrag" id="speichern"
+                           value="Speichern" @if($disable) disabled @endif/>
                 </form>
             </div>
         </div>

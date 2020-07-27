@@ -13,10 +13,17 @@ class DocumentationPolicy
     public function store(LdapUser $ldapUser, Documentation $documentation)
     {
         $user = app()->user;
-        return $user->is($documentation->project->user) || $user->is_admin;
+        $res = app()->user->is($documentation->lockedBy);
+        return ($user->is($documentation->project->user) || $user->is_admin) && $res;
     }
 
     public function history(LdapUser $ldapUser, Documentation $documentation)
+    {
+        $user = app()->user;
+        return $user->is($documentation->project->user) || $user->is_admin;
+    }
+
+    public function lock(LdapUser $ldapUser, Documentation $documentation)
     {
         $user = app()->user;
         return $user->is($documentation->project->user) || $user->is_admin;
