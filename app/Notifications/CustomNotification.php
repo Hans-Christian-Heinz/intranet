@@ -7,28 +7,34 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class DocumentChangedNotification extends Notification
+class CustomNotification extends Notification
 {
     use Queueable;
 
     /**
      * @var string
      */
-    private $changedBy;
+    private $absender;
     /**
      * @var string
      */
-    private $documentType;
+    private $betreff;
+    /**
+     * @var string
+     */
+    private $inhalt;
 
     /**
-     * DocumentChangedNotification constructor.
-     * @param string $changedBy
-     * @param string $documentType
+     * CustomNotification constructor.
+     * @param string $absender
+     * @param string $betreff
+     * @param string $inhalt
      */
-    public function __construct(string $changedBy, string $documentType)
+    public function __construct(string $absender, string $betreff, string $inhalt)
     {
-        $this->changedBy = $changedBy;
-        $this->documentType = $documentType;
+        $this->absender = $absender;
+        $this->betreff = $betreff;
+        $this->inhalt = $inhalt;
     }
 
     /**
@@ -51,8 +57,9 @@ class DocumentChangedNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'changedBy' => $this->changedBy,
-            'documentType' => $this->documentType,
+            'absender' => $this->absender,
+            'betreff' => $this->betreff,
+            'inhalt' => $this->inhalt,
         ];
     }
 }

@@ -7,7 +7,7 @@ use App\Http\Requests\AddImageRequest;
 use App\Http\Requests\PdfRequest;
 use App\Http\Requests\StoreDocumentationRequest;
 use App\Image;
-use App\Notifications\DocumentChangedNotification;
+use App\Notifications\CustomNotification;
 use App\Project;
 use App\Traits\ControllsDocuments;
 use App\Traits\SavesSections;
@@ -83,7 +83,8 @@ class DocumentationController extends Controller
         $documentation->touch();
 
         if (app()->user->isNot($documentation->user)) {
-            $project->user->notify(new DocumentChangedNotification(app()->user->full_name, 'Dokumentation'));
+            $project->user->notify(new CustomNotification(app()->user->full_name, 'Änderungen an der Projektdokumentation',
+                'An Ihrer Projektdokumentation wurden vom Absender Änderungen vorgenommen.'));
         }
 
         //return redirect(route('abschlussprojekt.dokumentation.index', $project))->with('status', 'Die Dokumentation wurde erfolgreich gespeichert.');
@@ -365,7 +366,8 @@ class DocumentationController extends Controller
         $section->images()->save($img, ['sequence' => $section->images()->count(),]);
 
         if (app()->user->isNot($documentation->user)) {
-            $project->user->notify(new DocumentChangedNotification(app()->user->full_name, 'Dokumentation'));
+            $project->user->notify(new CustomNotification(app()->user->full_name, 'Änderungen an der Projektdokumentation',
+                'An Ihrer Projektdokumentation wurden vom Absender Änderungen vorgenommen.'));
         }
 
         return redirect()->back()->with('status', 'Dem Abschnitt wurde erfolgreich ein Bild zugeordnet.');
@@ -409,7 +411,8 @@ class DocumentationController extends Controller
         }
 
         if (app()->user->isNot($documentation->user)) {
-            $project->user->notify(new DocumentChangedNotification(app()->user->full_name, 'Dokumentation'));
+            $project->user->notify(new CustomNotification(app()->user->full_name, 'Änderungen an der Projektdokumentation',
+                'An Ihrer Projektdokumentation wurden vom Absender Änderungen vorgenommen.'));
         }
 
         return redirect()->back()->with('status', 'Das Bild wurde erfolgreich von diesem Abschnitt entfernt.');
@@ -489,7 +492,8 @@ class DocumentationController extends Controller
         }
 
         if (app()->user->isNot($documentation->user)) {
-            $project->user->notify(new DocumentChangedNotification(app()->user->full_name, 'Dokumentation'));
+            $project->user->notify(new CustomNotification(app()->user->full_name, 'Änderungen an der Projektdokumentation',
+                'An Ihrer Projektdokumentation wurden vom Absender Änderungen vorgenommen.'));
         }
 
         return redirect()->back()->with('status', 'Das Bild wurde erfolgreich bearbeitet.');

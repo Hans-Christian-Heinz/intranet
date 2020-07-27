@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Notifications\DatabaseNotification;
 
 class UserController extends Controller
 {
@@ -24,5 +25,26 @@ class UserController extends Controller
         ]);
 
         return redirect()->back()->with('status', 'Ihre Adresse wurde erfolgreich aktualisiert.');
+    }
+
+    public function nachrichten() {
+        $user = app()->user;
+        $nachrichten = $user->notifications;
+
+        return view('nachrichten.index', compact('nachrichten'));
+    }
+
+    public function showMessage(DatabaseNotification $message) {
+        $message->markAsRead();
+        return view('nachrichten.detail', compact('message'));
+    }
+
+    public function deleteMessage(DatabaseNotification $message) {
+        try {
+            $message->delete();
+            return redirect(route('user.nachrichten'))->with('status', 'Die Nachricht wurde erfolgreich gelöscht.');
+        } catch (\Exception $e) {
+            return redirect(route('user.nachrichten'))->with('status', 'Beim Löschen der Nachricht ist ein Fehler aufgetreten.');
+        }
     }
 }

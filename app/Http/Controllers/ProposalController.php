@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PdfRequest;
 use App\Http\Requests\StoreProposalRequest;
-use App\Notifications\DocumentChangedNotification;
+use App\Notifications\CustomNotification;
 use App\Project;
 use App\Proposal;
 use App\Traits\ControllsDocuments;
@@ -84,7 +84,8 @@ class ProposalController extends Controller
         $proposal->touch();
 
         if (app()->user->isNot($proposal->user)) {
-            $project->user->notify(new DocumentChangedNotification(app()->user->full_name, 'Antrag'));
+            $project->user->notify(new CustomNotification(app()->user->full_name, 'Änderungen am Projektantrag',
+                'An Ihrem Projektantrag wurden vom Absender Änderungen vorgenommen.'));
         }
 
         //return redirect(route('abschlussprojekt.antrag.index', $project))->with('status', 'Der Antrag wurde erfolgreich gespeichert.');
