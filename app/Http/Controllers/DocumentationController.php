@@ -7,6 +7,7 @@ use App\Http\Requests\AddImageRequest;
 use App\Http\Requests\PdfRequest;
 use App\Http\Requests\StoreDocumentationRequest;
 use App\Image;
+use App\Notifications\DocumentChangedNotification;
 use App\Project;
 use App\Traits\ControllsDocuments;
 use App\Traits\SavesSections;
@@ -80,6 +81,10 @@ class DocumentationController extends Controller
 
         //update timestamps:
         $documentation->touch();
+
+        if (app()->user->isNot($documentation->user)) {
+            $project->user->notify(new DocumentChangedNotification(app()->user->full_name, 'Dokumentation'));
+        }
 
         //return redirect(route('abschlussprojekt.dokumentation.index', $project))->with('status', 'Die Dokumentation wurde erfolgreich gespeichert.');
         return redirect()->back()->with('status', 'Die Dokumentation wurde erfolgreich gespeichert.');
@@ -359,6 +364,10 @@ class DocumentationController extends Controller
         ]);
         $section->images()->save($img, ['sequence' => $section->images()->count(),]);
 
+        if (app()->user->isNot($documentation->user)) {
+            $project->user->notify(new DocumentChangedNotification(app()->user->full_name, 'Dokumentation'));
+        }
+
         return redirect()->back()->with('status', 'Dem Abschnitt wurde erfolgreich ein Bild zugeordnet.');
     }
 
@@ -397,6 +406,10 @@ class DocumentationController extends Controller
             else {
                 $section->images()->save($image, ['sequence' => $image->pivot->sequence,]);
             }
+        }
+
+        if (app()->user->isNot($documentation->user)) {
+            $project->user->notify(new DocumentChangedNotification(app()->user->full_name, 'Dokumentation'));
         }
 
         return redirect()->back()->with('status', 'Das Bild wurde erfolgreich von diesem Abschnitt entfernt.');
@@ -473,6 +486,10 @@ class DocumentationController extends Controller
                 }
             });
             $section->images()->updateExistingPivot($image, ['sequence' => $sequence]);
+        }
+
+        if (app()->user->isNot($documentation->user)) {
+            $project->user->notify(new DocumentChangedNotification(app()->user->full_name, 'Dokumentation'));
         }
 
         return redirect()->back()->with('status', 'Das Bild wurde erfolgreich bearbeitet.');

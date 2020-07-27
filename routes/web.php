@@ -47,7 +47,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/exemptions', 'ExemptionController@store')->name('exemptions.store');
     Route::get('/exemptions/{exemption}/edit', 'ExemptionController@edit')->name('exemptions.edit');
     Route::patch('/exemptions/{exemption}', 'ExemptionController@update')->name('exemptions.update');
-    Route::delete('/exemptions/{berichtsheft}', 'ExemptionController@destroy')->name('exemptions.destroy');
+    Route::delete('/exemptions/{exemption}', 'ExemptionController@destroy')->name('exemptions.destroy');
 
     //Routen für das Abschlussprojekt
     Route::group([

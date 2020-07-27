@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Documentation;
 use App\Http\Requests\CreateSectionRequest;
 use App\Http\Requests\EditSectionRequest;
+use App\Notifications\DocumentChangedNotification;
 use App\Project;
 use App\Section;
 use App\Version;
@@ -60,6 +61,10 @@ class SectionController extends Controller
         ]);
         $version->sections()->save($subsection, ['sequence' => $section->getSections($versionOld)->count()]);
         $section->sections()->save($subsection);
+
+        if (app()->user->isNot($documentation->user)) {
+            $project->user->notify(new DocumentChangedNotification(app()->user->full_name, 'Dokumentation'));
+        }
 
         return redirect()->back()->with('status', 'Es wurde erfolgreich ein neuer Abschnitt erstellt.');
     }
@@ -140,6 +145,10 @@ class SectionController extends Controller
             }
         }
 
+        if (app()->user->isNot($documentation->user)) {
+            $project->user->notify(new DocumentChangedNotification(app()->user->full_name, 'Dokumentation'));
+        }
+
         return redirect()->back()->with('status', 'Der Abschnitt wurde erfolgreich gelöscht.');
     }
 
@@ -194,6 +203,10 @@ class SectionController extends Controller
             }
         }
         $version->sections()->save($sectionNew, ['sequence' => $request->sequence,]);
+
+        if (app()->user->isNot($documentation->user)) {
+            $project->user->notify(new DocumentChangedNotification(app()->user->full_name, 'Dokumentation'));
+        }
 
         return redirect()->back()->with('status', 'Der Abshcnitt wurde erfolgreich bearbeitet.');
     }
