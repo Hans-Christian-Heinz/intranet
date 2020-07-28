@@ -13,7 +13,7 @@ class CreateVersionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('versions', function (Blueprint $table) {
+        Schema::create('versionen', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('proposal_id')->nullable();
             $table->unsignedBigInteger('documentation_id')->nullable();
@@ -33,6 +33,6 @@ class CreateVersionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('versions');
+        Schema::dropIfExists('versionen');
     }
 }

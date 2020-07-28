@@ -127,6 +127,18 @@ Route::group(['middleware' => 'auth'], function () {
             });
         });
 
+        //Routen für das Verwalten von Versionen
+        Route::group([
+            'prefix' => '/{project}/{doc_type}/verlauf',
+            'as' => 'versionen.',
+        ], function() {
+            Route::get('/', 'VersionController@index')->name('index');
+            Route::post('/vergleich', 'VersionController@vergleich')->name('vergleich');
+            Route::post('/use_version', 'VersionController@useVersion')->name('use_version');
+            Route::delete('delete_version', 'VersionController@deleteVersion')->name('delete_version');
+            Route::delete('/clear_history', 'VersionController@clearHistory')->name('clear_history');
+        });
+
         //Routen für das Verwalten von Bilddateien für die Dokumentation
         Route::group([
             'prefix' => '/{project}/bilder',
@@ -196,6 +208,18 @@ Route::group(['middleware' => 'admin'], function () {
             Route::post('/vergleich', 'DocumentationController@vergleich')->name('vergleich');
             Route::post('/use_version', 'DocumentationController@useVersion')->name('use_version');
             Route::delete('delete_version', 'DocumentationController@deleteVersion')->name('delete_version');
+        });
+
+        //Routen für das Verwalten von Versionen
+        Route::group([
+            'prefix' => '/{project}/{doc_type}/verlauf',
+            'as' => 'versionen.',
+        ], function() {
+            Route::get('/', 'VersionController@index')->name('index');
+            Route::post('/vergleich', 'VersionController@vergleich')->name('vergleich');
+            Route::post('/use_version', 'VersionController@useVersion')->name('use_version');
+            Route::delete('delete_version', 'VersionController@deleteVersion')->name('delete_version');
+            Route::delete('/clear_history', 'VersionController@clearHistory')->name('clear_history');
         });
 
         Route::fallback(function() {

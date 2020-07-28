@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Collection;
 /**
  * Anträge, Dokumentationen und Abschnitte gehen gleich mit Abschnitten um.
  * Beachte: Jede Klasse, die diesen Trait verwendet, muss eine one-to-many Beziehung zu sections namens sections haben.
- * Beachte: Jede Klasse, die diesen Trait verwendet, muss eine Beziehung zu sections namens versions haben.
+ * Beachte: Jede Klasse, die diesen Trait verwendet, muss eine Beziehung zu sections namens versionen haben.
  *
  * Trait HasSections
  * @package App\Traits
@@ -63,8 +63,8 @@ trait HasSections
             return $version->sections->where('documentation_id', $this->id);
         }
 
-        /*return $this->sections()->whereHas('versions', function(Builder $query) use ($version) {
-            $query->where('versions.id', $version->id);
+        /*return $this->sections()->whereHas('versionen', function(Builder $query) use ($version) {
+            $query->where('versionen.id', $version->id);
         })->orderBy('sequence')->get();*/
     }
 

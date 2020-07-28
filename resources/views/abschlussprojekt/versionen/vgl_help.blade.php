@@ -1,12 +1,23 @@
 {{----}}
 
 <h4>Version: {{ $version->updated_at }}, geändert von {{ $version->user->full_name }}</h4>
-{{-- Navigationsleiste der Version --}}
-@include('abschlussprojekt.antrag.navigationsleiste', ['disable' => true,])
-{{-- Tabinhalt Version 0 --}}
-@include('abschlussprojekt.antrag.tabinhalt', [
-    'disable' => true,
- ])
+@if($doc_type == 'antrag')
+    {{-- Navigationsleiste der Version --}}
+    @include('abschlussprojekt.antrag.navigationsleiste', ['disable' => true, 'proposal' => $document,])
+    {{-- Tabinhalt Version 0 --}}
+    @include('abschlussprojekt.antrag.tabinhalt', [
+        'disable' => true,
+        'proposal' => $document,
+     ])
+@else
+    {{-- Navigationsleiste der Version --}}
+    @include('abschlussprojekt.dokumentation.navigationsleiste', ['disable' => true, 'documentation' => $document])
+    {{-- Tabinhalt Version 0 --}}
+    @include('abschlussprojekt.dokumentation.tabinhalt', [
+        'disable' => true,
+        'documentation' => $document,
+     ])
+@endif
 <div class="row">
     {{-- Link zum Löschen der Version --}}
     <div class="col-6 text-left p-3">
@@ -15,13 +26,13 @@
     {{-- Formular zum Speichern der Version als aktuelle Version --}}
     <form class="form col-6 text-right p-3" method="post"
           @if(request()->is('admin*'))
-            action="{{ route('admin.abschlussprojekt.antrag.use_version', $proposal->project) }}"
+            action="{{ route('admin.abschlussprojekt.versionen.use_version', ['project' => $document->project, 'doc_type' => $doc_type,]) }}"
           @else
-            action="{{ route('abschlussprojekt.antrag.use_version', $proposal->project) }}"
+            action="{{ route('abschlussprojekt.versionen.use_version', ['project' => $document->project, 'doc_type' => $doc_type,]) }}"
           @endif>
         @csrf
         <input type="hidden" name="id" value="{{ $version->id }}"/>
-        <input class="btn btn-primary" @if($proposal->vc_locked) disabled @endif type="submit" value="Version übernehmen"/>
+        <input class="btn btn-primary" @if($document->vc_locked) disabled @endif type="submit" value="Version übernehmen"/>
     </form>
 </div>
 
@@ -42,14 +53,14 @@
 
                 <form class="form" method="POST"
                       @if(request()->is('admin*'))
-                        action="{{ route('admin.abschlussprojekt.antrag.delete_version', $proposal->project) }}"
+                        action="{{ route('admin.abschlussprojekt.versionen.delete_version', ['project' => $document->project, 'doc_type' => $doc_type,]) }}"
                       @else
-                        action="{{ route('abschlussprojekt.antrag.delete_version', $proposal->project) }}"
+                        action="{{ route('abschlussprojekt.versionen.delete_version', ['project' => $document->project, 'doc_type' => $doc_type,]) }}"
                       @endif>
                     @csrf
                     @method('DELETE')
                     <input type="hidden" name="id" value="{{ $version->id }}"/>
-                    <button type="submit" class="btn btn-danger" @if($proposal->vc_locked && $version->is($proposal->latestVersion())) disabled @endif>
+                    <button type="submit" class="btn btn-danger" @if($document->vc_locked && $version->is($document->latestVersion())) disabled @endif>
                         Löschen
                     </button>
                 </form>

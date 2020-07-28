@@ -21,7 +21,7 @@
           @endif>
         @csrf
         <input type="hidden" name="id" value="{{ $version->id }}"/>
-        <input class="btn btn-primary" type="submit" id="speichern" value="Version übernehmen"/>
+        <input class="btn btn-primary" @if($documentation->vc_locked) disabled @endif type="submit" id="speichern" value="Version übernehmen"/>
     </form>
 </div>
 
@@ -49,7 +49,10 @@
                     @csrf
                     @method('DELETE')
                     <input type="hidden" name="id" value="{{ $version->id }}"/>
-                    <button type="submit" class="btn btn-danger">Löschen</button>
+                    <button type="submit" class="btn btn-danger"
+                            @if($documentation->vc_locked && $version->is($documentation->latestVersion())) disabled @endif>
+                        Löschen
+                    </button>
                 </form>
             </div>
         </div>

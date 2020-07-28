@@ -21,6 +21,17 @@
                 {{-- Link zum Veränderungsverlauf --}}
                 <div class="mr-auto p-3">
                     @if(request()->is('admin*'))
+                        <a href="{{ route('admin.abschlussprojekt.versionen.index', ['project' => $proposal->project, 'doc_type' => 'antrag',]) }}"
+                           class="btn btn-secondary">
+                            Veränderungsverlauf neu
+                        </a>
+                    @else
+                        <a href="{{ route('abschlussprojekt.versionen.index', ['project' => $proposal->project, 'doc_type' => 'antrag',]) }}"
+                           class="btn btn-secondary">
+                            Veränderungsverlauf neu
+                        </a>
+                    @endif
+                    @if(request()->is('admin*'))
                         <a href="{{ route('admin.abschlussprojekt.antrag.history', $proposal->project) }}" class="btn btn-secondary">
                             Veränderungsverlauf
                         </a>

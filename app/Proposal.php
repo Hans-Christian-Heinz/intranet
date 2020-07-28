@@ -39,6 +39,10 @@ class Proposal extends Model
         //'sections',
     ];
 
+    protected $fillable = [
+        'vc_locked',
+    ];
+
     /**
      * Gebe für jede Phase ihre Dauer an (Summe der Dauer aller Unterphasen)
      * Format: [Phasenname => ['heading' => heading, 'duration' => Dauer,], ...]

@@ -79,7 +79,7 @@ class Documentation extends Model
      * @var array
      */
     protected $fillable = [
-        //
+        'vc_locked',
     ];
 
     /**
