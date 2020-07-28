@@ -61,6 +61,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/create', 'ProjectController@create')->name('create');
         Route::delete('/comment/{comment}', 'CommentController@delete')->name('delete_comment');
 
+        Route::post('/abschnitte/{section}/sperren', 'SectionController@lock')->name('sections.lock');
+
         //Routen für den Projektantrag
         Route::group([
             'prefix' => '/{project}/antrag',

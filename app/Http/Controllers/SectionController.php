@@ -213,4 +213,38 @@ class SectionController extends Controller
 
         return redirect()->back()->with('status', 'Der Abshcnitt wurde erfolgreich bearbeitet.');
     }
+
+    /**
+     * Sperre einen Abschnitt oder gebe einen gesperrten Abschnitt frei.
+     * Ausbilder können einen Abschnitt als endgültig festlegen.
+     *
+     * @param Project $project
+     * @param Section $section
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function lock(Project $project, Section $section) {
+        $this->authorize('lock', $section);
+
+        $document = $section->getUltimateParent();
+        if ($section->is_locked) {
+            $section->lock(false);
+            //Gehe alle Abschnitte der Dokumentation durch; wenn keine gesperrt sind, lasse Änderungen durch den Veränderungsverlauf zu.
+            //Beachte nur die aktuellste Version, da ein gesperrter Abschnitt in der aktuellsten Version vorhanden sein muss.
+            if ($document->sections()->where('is_locked', 1)->count() == 0) {
+                $document->vc_locked = false;
+                $document->save();
+            }
+
+            return redirect()->back()->with('status', 'Der Abschnitt wurde erfolgreich freigegeben. Er darf wieder geändert werden.');
+        }
+        else {
+            $section->lock(true);
+            $document->vc_locked = true;
+            $section->save();
+            $document->save();
+
+            return redirect()->back()->with('status', 'Der Abschnitt wurde erfolgreich gesperrt. Er darf nicht mehr geändert werden.');
+        }
+    }
 }

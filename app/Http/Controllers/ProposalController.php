@@ -92,6 +92,16 @@ class ProposalController extends Controller
         return redirect()->back()->with('status', 'Der Antrag wurde erfolgreich gespeichert.');
     }
 
+    public function lock(Project $project, Proposal $proposal) {
+        $this->authorize('lock', $proposal);
+        return $this->lockDocument($proposal);
+    }
+
+    public function release(Project $project, Proposal $proposal) {
+        $this->authorize('lock', $proposal);
+        return $this->releaseDocument($proposal);
+    }
+
     /**
      * @param PdfRequest $request
      * @param Project $project

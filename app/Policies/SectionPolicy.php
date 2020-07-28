@@ -34,4 +34,9 @@ class SectionPolicy
         $user = app()->user;
         return $user->isAdmin() || $user->is($section->getUser());
     }
+
+    public function lock(LdapUser $ldap_user, Section $section) {
+        $user = app()->user;
+        return $user->isAdmin() && $section instanceof Section && (! is_null($section->documentation) || !is_null($section->proposal));
+    }
 }

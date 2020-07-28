@@ -33,7 +33,7 @@ class Section extends Model
         'name',
         'heading',
         'text',
-        'tpl'
+        'tpl',
     ];
 
     /**
@@ -45,6 +45,18 @@ class Section extends Model
         'images',
         //'sections',
     ];
+
+    /**
+     * Sperre oder entsperre den Abschnitt und alle Unterabschnitte
+     * @param bool $lock
+     */
+    public function lock(bool $lock) {
+        $this->is_locked = $lock;
+        $this->save();
+        foreach ($this->sections as $section) {
+            $section->lock($lock);
+        }
+    }
 
     /**
      * Gebe die Unterphasen einer Phase als Array aus.
@@ -95,6 +107,18 @@ class Section extends Model
         }
 
         return null;
+    }
+
+    /**
+     * @return Documentation|Proposal|null
+     */
+    public function getUltimateParent() {
+        if ($this->getParent() instanceof Section) {
+            return $this->section->getUltimateParent();
+        }
+        else {
+            return $this->getParent();
+        }
     }
 
     public function proposal() {

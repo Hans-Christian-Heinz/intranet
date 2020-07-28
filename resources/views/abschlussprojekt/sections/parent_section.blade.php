@@ -3,18 +3,7 @@
 {{-- Navigationsleiste --}}
 <ul class="nav nav-tabs scrollnav" id="{{ $s->name }}Tab" role="tablist">
     @foreach($s->getSections($version) as $section)
-        @if(request()->is('*dokumentation'))
-            @include('abschlussprojekt.sections.dokumentation.nav_item_buttons')
-        @else
-            <li class="nav-item border border-dark">
-                {{-- Beim Vergleich zweier Versionen werden Unterschiede hervorgehoben --}}
-                <a class="nav-link @if($loop->first) active @endif @if(isset($diff_sect) && $diff_sect->contains($section->name)) hervorheben @endif"
-                   aria-selected="false" role="tab" id="{{ $v_name . $section->name }}_tab" data-toggle="tab"
-                   aria-controls="{{ $v_name . $section->name }}" href="#{{ $v_name . $section->name }}">
-                    {{ $section->heading }}
-                </a>
-            </li>
-        @endif
+        @include('abschlussprojekt.sections.nav_item_buttons')
     @endforeach
 </ul>
 {{-- Tabinhalt --}}
@@ -22,7 +11,7 @@
     @foreach($s->getSections($version) as $section)
         <div class="tab-pane @if($loop->first) active show @endif mt-2" id="{{ $v_name . $section->name }}"
              role="tabpanel" aria-labelledby="{{ $v_name . $section->name }}_tab">
-            @include('abschlussprojekt.sections.' . $section->tpl, ['form' => $form, 's' => $section,])
+            @include('abschlussprojekt.sections.' . $section->tpl, ['form' => $form, 's' => $section, 'disable' => $disable || $section->is_locked,])
         </div>
     @endforeach
 </div>

@@ -14,7 +14,7 @@ class AddVcLockedProposals extends Migration
     public function up()
     {
         Schema::table('proposals', function (Blueprint $table) {
-            $table->boolean('cv_locked')->default(false);
+            $table->boolean('vc_locked')->default(false);
         });
     }
 
