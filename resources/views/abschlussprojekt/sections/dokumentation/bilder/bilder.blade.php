@@ -15,12 +15,12 @@
             </td>
             <td>
                 @if(request()->is('*dokumentation'))
-                    <a data-toggle="modal" class="btn btn-secondary" href="#bildBearbeiten{{ $image->id }}">Bild bearbeiten</a>
+                    <a data-toggle="modal" class="btn btn-secondary" @if($s->is_locked) href="#" @else href="#bildBearbeiten{{ $image->id }}" @endif>Bild bearbeiten</a>
                 @endif
             </td>
             <td>
                 @if(request()->is('*dokumentation'))
-                    <a data-toggle="modal" class="btn btn-outline-danger" href="#bildEntfernen{{ $image->id }}">Bild entfernen</a>
+                    <a data-toggle="modal" class="btn btn-outline-danger" @if($s->is_locked) href="#" @else href="#bildEntfernen{{ $image->id }}" @endif>Bild entfernen</a>
                 @endif
             </td>
         </tr>

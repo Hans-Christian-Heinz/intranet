@@ -1,7 +1,7 @@
 {{-- Navigationsleiste --}}
 <ul class="nav nav-tabs scrollnav" id="{{ $v_name }}documentationTab" role="tablist">
     @foreach($documentation->getSections($version) as $section)
-        @include('abschlussprojekt.sections.nav_item_buttons')
+        @include('abschlussprojekt.sections.nav_item_buttons', ['disable' => $disable || $section->is_locked,])
     @endforeach
     @if(request()->is('*dokumentation'))
         {{-- Schaltfäche, um der Dokumentation einen neuen Abschnitt hinzuzufügen --}}

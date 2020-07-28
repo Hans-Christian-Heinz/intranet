@@ -31,7 +31,8 @@
                                 @foreach($version->sections->sortBy('heading') as $section)
                                     {{-- Stelle sicher, dass nur Abschnitte ohne Unterabschnitt und mit Fließtext ausgewählt werden können --}}
                                     @if($version->sections()->where('sections.section_id', $section->id)->count() == 0 &&
-                                        ($section->tpl == 'text_section' || $section->tpl == 'dokumentation.vgl_section'))
+                                        ($section->tpl == 'text_section' || $section->tpl == 'dokumentation.vgl_section')
+                                        && ! $section->is_locked)
                                         <option id="section_image_{{ $section->name }}" value="{{ $section->id }}">
                                             {{ $section->heading }}
                                         </option>

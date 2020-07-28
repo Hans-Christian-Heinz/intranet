@@ -56,7 +56,7 @@
                     @csrf
                     <input type="hidden" name="img_id" value="{{ $image->id }}"/>
                     <input type="hidden" name="section_id" value="{{ $s->id }}"/>
-                    <button type="submit" class="btn btn-primary">Bild speichern</button>
+                    <button type="submit" @if($s->is_locked) disabled @endif class="btn btn-primary">Bild speichern</button>
                 </form>
             </div>
         </div>

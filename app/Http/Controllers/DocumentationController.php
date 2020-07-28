@@ -194,6 +194,11 @@ class DocumentationController extends Controller
         $data = $this->copySection($request, $documentation);
         $sectionOld = $data['sectionOld'];
         $section = $data['section'];
+        if ($sectionOld->is_locked) {
+            $documentation->latestVersion()->delete();
+            return redirect()->back()->with('danger', 'Der Abschnitt ' . $sectionOld->heading
+                . ' ist gesperrt und darf nicht mehr verändert werden. Alle Änderungen wurden verworfen.');
+        }
 
         //Ich habe mit saveMany mit dem Pivot immer Probelme bekommen;deshalb wird jetzt jeder Datensatz individuell gespeichert
         foreach ($sectionOld->images as $image) {
@@ -239,6 +244,11 @@ class DocumentationController extends Controller
         $data = $this->copySection($request, $documentation);
         $sectionOld = $data['sectionOld'];
         $section = $data['section'];
+        if ($sectionOld->is_locked) {
+            $documentation->latestVersion()->delete();
+            return redirect()->back()->with('danger', 'Der Abschnitt ' . $sectionOld->heading
+                . ' ist gesperrt und darf nicht mehr verändert werden. Alle Änderungen wurden verworfen.');
+        }
 
         //Füge dem neuen Abschnitt nun alle Bilder bis auf das zu entfernende hinzu.
         $toDelete = $sectionOld->images()->find($request->img_id);
@@ -289,6 +299,11 @@ class DocumentationController extends Controller
         $data = $this->copySection($request, $documentation);
         $sectionOld = $data['sectionOld'];
         $section = $data['section'];
+        if ($sectionOld->is_locked) {
+            $documentation->latestVersion()->delete();
+            return redirect()->back()->with('danger', 'Der Abschnitt ' . $sectionOld->heading
+                . ' ist gesperrt und darf nicht mehr verändert werden. Alle Änderungen wurden verworfen.');
+        }
 
         //Validiere die Position (sequence)
         if ($request->sequence >= $sectionOld->images->count()) {
@@ -361,9 +376,9 @@ class DocumentationController extends Controller
 
         //Kopiere nun den Abschnitt, von dem ein Bild zu entfernen ist
         //Entferne den Original-Abschnitt von der neuen Version und füge die Kopie hinzu
-        $sectionOld = $versionOld->sections->where('id', $request->section_id)->shift();
+        $sectionOld = $versionOld->sections->where('id', $request->section_id)->first();
         $section = $sectionOld->replicate();
-        $sectionsHelp = $versionOld->sections->reject(function ($value, $key) use ($request) {
+        $sectionsHelp = $versionOld->sections->reject(function ($value) use ($request) {
             return $value->id == $request->section_id;
         });
         foreach($sectionsHelp as $help) {
