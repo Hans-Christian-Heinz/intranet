@@ -2,18 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Documentation;
 use App\Project;
-use App\Proposal;
 use App\Version;
 use Illuminate\Http\Request;
 
 class VersionController extends Controller
 {
+    /**
+     * Gebe alle Versionen des Dokuments in einer Liste aus.
+     *
+     * @param Project $project
+     * @param string $doc_type
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function index(Project $project, string $doc_type) {
         $document = $this->getDocument($project, $doc_type);
-        //TODO authorize
-        //$this->authorize('history', $proposal);
+
+        $this->authorize('vergleich', $document->versions()->without('sections')->first());
 
         if (is_null($document)) {
             return redirect(route('abschlussprojekt.index'))->with('danger', 'Es wurde kein gültiges Dokument gewählt.');
@@ -23,10 +29,17 @@ class VersionController extends Controller
         return view('abschlussprojekt.versionen.index', compact('document', 'versions', 'doc_type'));
     }
 
+    /**
+     * Vergleiche 2 Versionen eines Dokuments
+     *
+     * @param Request $request
+     * @param Project $project
+     * @param string $doc_type
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function vergleich(Request $request, Project $project, string $doc_type) {
         $document = $this->getDocument($project, $doc_type);
-        //todo authorize
-        //$this->authorize('history', $proposal);
 
         //Es müssen genau zwei Versionen ausgewählt werden
         $request->validate([
@@ -37,6 +50,7 @@ class VersionController extends Controller
         foreach ($request->vergleichen as $v_id) {
             array_push($versionen, Version::with('user')->find($v_id));
         }
+        $this->authorize('vergleich', $versionen[0]);
 
         //Suche nach Unterschieden: Suche nach Section-Instanzen, die zu einer der beiden Versionen gehören, nicht zu beiden
         //Suche in beiden Richtungen nach Unterschieden, falls zwei Versionen verschiedene Abschnitte haben
@@ -60,16 +74,24 @@ class VersionController extends Controller
         return view('abschlussprojekt.versionen.vergleich', compact('document', 'versionen', 'diff_sect', 'doc_type'));
     }
 
+    /**
+     * Definiere eine Version eines Dokuments als die aktuelle Version
+     *
+     * @param Request $request
+     * @param Project $project
+     * @param string $doc_type
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function useVersion(Request $request, Project $project, string $doc_type) {
         $document = $this->getDocument($project, $doc_type);
-        //todo authorize
-        //$this->authorize('store', $proposal);
 
         $request->validate([
             'id' => 'required|int|min:1',
         ]);
 
         $version = Version::with(['proposal', 'documentation'])->without('sections')->find($request->id);
+        $this->authorize('use', $version);
 
         if (request()->is('admin*')) {
             $route = 'admin.abschlussprojekt.' . $doc_type . '.index';
@@ -95,10 +117,17 @@ class VersionController extends Controller
         }
     }
 
+    /**
+     * Lösche eine Version eines Dokuments
+     *
+     * @param Request $request
+     * @param Project $project
+     * @param string $doc_type
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function deleteVersion(Request $request, Project $project, string $doc_type) {
         $document = $this->getDocument($project, $doc_type);
-        //todo authorize
-        //$this->authorize('store', $proposal);
 
         $request->validate([
             'id' => 'required|int|min:1',
@@ -116,6 +145,7 @@ class VersionController extends Controller
         }
 
         $version = Version::find($request->id);
+        $this->authorize('delete', $version);
         if ($doc_type == 'antrag') {
             $compare = $version->proposal;
         }
@@ -135,10 +165,17 @@ class VersionController extends Controller
         }
     }
 
+    /**
+     * Lösche den Änderungsverlauf eines Dokuments
+     *
+     * @param Project $project
+     * @param string $doc_type
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function clearHistory(Project $project, string $doc_type) {
         $document = $this->getDocument($project, $doc_type);
-        //todo authorize
-        //$this->authorize('store', $proposal);
+        $this->authorize('clearHistory', $document->versions()->without('sections')->first());
 
         $versions = $document->versions()->without('sections')->orderby('updated_at', 'DESC')->get();
         $versions->shift();
@@ -149,6 +186,13 @@ class VersionController extends Controller
         return redirect()->back()->with('status', 'Der Änderungsverlauf wurde erfolgreich gelöscht.');
     }
 
+    /**
+     * Hilfsmethode, die da gewünschte Dokument liefert
+     *
+     * @param Project $project
+     * @param string $doc_type
+     * @return mixed|null
+     */
     private function getDocument(Project $project, string $doc_type) {
         switch ($doc_type) {
             case 'antrag':

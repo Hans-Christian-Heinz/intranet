@@ -83,7 +83,7 @@ class ProposalController extends Controller
         //update timestamps:
         $proposal->touch();
 
-        if (app()->user->isNot($proposal->user)) {
+        if (app()->user->isNot($project->user)) {
             $project->user->notify(new CustomNotification(app()->user->full_name, 'Änderungen am Projektantrag',
                 'An Ihrem Projektantrag wurden vom Absender Änderungen vorgenommen.'));
         }

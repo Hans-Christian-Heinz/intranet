@@ -82,7 +82,7 @@ class DocumentationController extends Controller
         //update timestamps:
         $documentation->touch();
 
-        if (app()->user->isNot($documentation->user)) {
+        if (app()->user->isNot($project->user)) {
             $project->user->notify(new CustomNotification(app()->user->full_name, 'Änderungen an der Projektdokumentation',
                 'An Ihrer Projektdokumentation wurden vom Absender Änderungen vorgenommen.'));
         }
@@ -207,7 +207,7 @@ class DocumentationController extends Controller
         ]);
         $section->images()->save($img, ['sequence' => $section->images()->count(),]);
 
-        if (app()->user->isNot($documentation->user)) {
+        if (app()->user->isNot($project->user)) {
             $project->user->notify(new CustomNotification(app()->user->full_name, 'Änderungen an der Projektdokumentation',
                 'An Ihrer Projektdokumentation wurden vom Absender Änderungen vorgenommen.'));
         }
@@ -252,7 +252,7 @@ class DocumentationController extends Controller
             }
         }
 
-        if (app()->user->isNot($documentation->user)) {
+        if (app()->user->isNot($project->user)) {
             $project->user->notify(new CustomNotification(app()->user->full_name, 'Änderungen an der Projektdokumentation',
                 'An Ihrer Projektdokumentation wurden vom Absender Änderungen vorgenommen.'));
         }
@@ -333,7 +333,7 @@ class DocumentationController extends Controller
             $section->images()->updateExistingPivot($image, ['sequence' => $sequence]);
         }
 
-        if (app()->user->isNot($documentation->user)) {
+        if (app()->user->isNot($project->user)) {
             $project->user->notify(new CustomNotification(app()->user->full_name, 'Änderungen an der Projektdokumentation',
                 'An Ihrer Projektdokumentation wurden vom Absender Änderungen vorgenommen.'));
         }
