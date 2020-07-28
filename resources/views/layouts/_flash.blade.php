@@ -11,6 +11,19 @@
         </div>
     </div>
 @endif
+@if (session('danger'))
+    <div class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-danger" role="alert">
+                        {{ session('danger') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
 
 @if (session('accept_rules'))
     <div class="section">

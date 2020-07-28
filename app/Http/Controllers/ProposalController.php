@@ -77,7 +77,10 @@ class ProposalController extends Controller
         $versionNew->proposal()->associate($proposal);
         $versionNew->save();
         foreach($sectionsOld as $old) {
-            $this->saveSection($request, $proposal, $versionNew, $versionOld, $old);
+            if (!$this->saveSection($request, $proposal, $versionNew, $versionOld, $old)) {
+                return redirect()->back()->with('danger', 'Der Abschnitt ' . $old->heading
+                    . ' ist gesperrt und darf nicht mehr verändert werden. Alle Änderungen wurden verworfen.');
+            }
         }
 
         //update timestamps:

@@ -76,7 +76,10 @@ class DocumentationController extends Controller
         $versionNew->documentation()->associate($documentation);
         $versionNew->save();
         foreach($sectionsOld as $old) {
-            $this->saveSection($request, $documentation, $versionNew, $versionOld, $old);
+            if (!$this->saveSection($request, $documentation, $versionNew, $versionOld, $old)) {
+                return redirect()->back()->with('danger', 'Der Abschnitt ' . $old->heading
+                    . ' ist gesperrt und darf nicht mehr verändert werden. Alle Änderungen wurden verworfen.');
+            }
         }
 
         //update timestamps:

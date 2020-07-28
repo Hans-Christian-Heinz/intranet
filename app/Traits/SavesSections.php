@@ -31,11 +31,18 @@ trait SavesSections
      * @param Version $version
      * @param Version $versionOld
      * @param Section $oldSection
+     * @return bool false, falls versucht wurde einen gesperrter Abschnitt zu ändern
+     * @throws \Exception
      */
     private function saveSection(Request $request, $parent, Version $version, Version $versionOld, Section $oldSection) {
         $name = $oldSection->name;
         //Erstelle ein neues Objekt, falls sich der Inhalt des Abschnitts geändert hat
         if (! $this->sectionMatches($request, $oldSection)) {
+            //Wenn ein Abschnitt, der gesperrt ist geändert wurde: Lösche die neu angelegte Version und gebe eine Fehlermeldung aus.
+            if ($oldSection->is_locked) {
+                $version->delete();
+                return false;
+            }
             $section = $oldSection->replicate();
             $section->text = $this->getSectionText($request, $name);
             $parent->sections()->save($section);
@@ -49,8 +56,12 @@ trait SavesSections
         $version->sections()->save($section, ['sequence' => $oldSection->pivot->sequence]);
 
         foreach($oldSection->getSections($versionOld) as $child) {
-            $this->saveSection($request, $section, $version, $versionOld, $child);
+            if (!$this->saveSection($request, $section, $version, $versionOld, $child)) {
+                return false;
+            }
         }
+
+        return true;
     }
 
     /**
