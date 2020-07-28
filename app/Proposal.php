@@ -81,7 +81,8 @@ class Proposal extends Model
         $res = [];
         $phasesSection = $this->findSection('phases', $version);
         if ($phasesSection) {
-            foreach ($phasesSection->sections as $phase) {
+            foreach ($version->sections->where('section_id', $phasesSection->id) as $phase) {
+            //foreach ($phasesSection->sections as $phase) {
                 $res[$phase->name] = ['heading' => $phase->heading, 'text' => $phase->text];
             }
         }
