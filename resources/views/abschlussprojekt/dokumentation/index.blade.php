@@ -23,20 +23,11 @@
                     @if(request()->is('admin*'))
                         <a href="{{ route('admin.abschlussprojekt.versionen.index', ['project' => $documentation->project, 'doc_type' => 'dokumentation',]) }}"
                            class="btn btn-secondary">
-                            Veränderungsverlauf neu
+                            Veränderungsverlauf
                         </a>
                     @else
                         <a href="{{ route('abschlussprojekt.versionen.index', ['project' => $documentation->project, 'doc_type' => 'dokumentation',]) }}"
                            class="btn btn-secondary">
-                            Veränderungsverlauf neu
-                        </a>
-                    @endif
-                    @if(request()->is('admin*'))
-                        <a href="{{ route('admin.abschlussprojekt.dokumentation.history', $documentation->project) }}" class="btn btn-secondary">
-                            Veränderungsverlauf
-                        </a>
-                    @else
-                        <a href="{{ route('abschlussprojekt.dokumentation.history', $documentation->project) }}" class="btn btn-secondary">
                             Veränderungsverlauf
                         </a>
                     @endif

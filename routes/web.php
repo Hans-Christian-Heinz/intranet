@@ -72,11 +72,6 @@ Route::group(['middleware' => 'auth'], function () {
             Route::patch('/{proposal}/lock', 'ProposalController@lock')->name('lock');
             Route::patch('/{proposal}/release', 'ProposalController@release')->name('release');
             Route::post('/', 'ProposalController@store')->name('store');
-            Route::get('/history', 'ProposalController@history')->name('history');
-            Route::post('/vergleich', 'ProposalController@vergleich')->name('vergleich');
-            Route::post('/use_version', 'ProposalController@useVersion')->name('use_version');
-            Route::delete('delete_version', 'ProposalController@deleteVersion')->name('delete_version');
-            Route::delete('/clear_history', 'ProposalController@clearHistory')->name('clear_history');
             Route::post('pdf', 'ProposalController@pdf')->name('pdf');
             Route::post('/{proposal}/comment', 'CommentController@addToProposal')->name('comment');
 
@@ -96,11 +91,6 @@ Route::group(['middleware' => 'auth'], function () {
             Route::patch('/{documentation}/lock', 'DocumentationController@lock')->name('lock');
             Route::patch('/{documentation}/release', 'DocumentationController@release')->name('release');
             Route::post('/', 'DocumentationController@store')->name('store');
-            Route::get('/history', 'DocumentationController@history')->name('history');
-            Route::post('/vergleich', 'DocumentationController@vergleich')->name('vergleich');
-            Route::post('/use_version', 'DocumentationController@useVersion')->name('use_version');
-            Route::delete('delete_version', 'DocumentationController@deleteVersion')->name('delete_version');
-            Route::delete('/clear_history', 'DocumentationController@clearHistory')->name('clear_history');
             Route::post('pdf', 'DocumentationController@pdf')->name('pdf');
             Route::post('/{documentation}/comment', 'CommentController@addToDocumentation')->name('comment');
             //Routen für die Abschnitte der Dokumentation
@@ -191,10 +181,6 @@ Route::group(['middleware' => 'admin'], function () {
             Route::get('/', 'ProposalController@index')->name('index');
             //TODO: sollte keine get Route sein.
             Route::get('/create', 'ProposalController@create')->name('create');
-            Route::get('/history', 'ProposalController@history')->name('history');
-            Route::post('/vergleich', 'ProposalController@vergleich')->name('vergleich');
-            Route::post('/use_version', 'ProposalController@useVersion')->name('use_version');
-            Route::delete('delete_version', 'ProposalController@deleteVersion')->name('delete_version');
         });
 
         Route::group([
@@ -204,10 +190,6 @@ Route::group(['middleware' => 'admin'], function () {
             Route::get('/', 'DocumentationController@index')->name('index');
             //TODO: sollte keine get Route sein.
             Route::get('/create', 'DocumentationController@create')->name('create');
-            Route::get('/history', 'DocumentationController@history')->name('history');
-            Route::post('/vergleich', 'DocumentationController@vergleich')->name('vergleich');
-            Route::post('/use_version', 'DocumentationController@useVersion')->name('use_version');
-            Route::delete('delete_version', 'DocumentationController@deleteVersion')->name('delete_version');
         });
 
         //Routen für das Verwalten von Versionen
