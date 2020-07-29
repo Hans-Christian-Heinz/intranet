@@ -27,8 +27,9 @@ Route::group(['middleware' => 'auth'], function () {
     ], function() {
         Route::post('/address', 'UserController@address')->name('address');
         Route::get('/nachrichten', 'UserController@nachrichten')->name('nachrichten');
-        Route::get('nachrichten/{message}', 'UserController@showMessage')->name('nachrichten.detail');
-        Route::delete('nachrichten/{message}', 'UserController@deleteMessage')->name('nachrichten.delete');
+        Route::get('/nachrichten/{message}', 'UserController@showMessage')->name('nachrichten.detail');
+        Route::delete('/nachrichten/{message}', 'UserController@deleteMessage')->name('nachrichten.delete');
+        Route::post('/nachrichten/delete_many', 'UserController@deleteMany')->name('nachrichten.delete_many');
     });
 
     // Routen für Berichtsheft:

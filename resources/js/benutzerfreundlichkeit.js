@@ -2,6 +2,7 @@
  * Einige Methoden zur Benutzerfreundlichkeit.
  * remember which tab is supposed to be opened
  * Im Formular zum Hinzufügen von Bildern (addImageModal) soll das ausgewählte Bild angezeigt werden
+ * In der Auflistung aller Nachrichten (route user.nachrichten) sollen durch Knopfdruck alle Nachrichten zum Löschen markiert werden
  */
 
 $(document).ready(function() {
@@ -33,6 +34,18 @@ $(document).ready(function() {
         }
         if (link_id.startsWith('v1')) {
             $('a#' + link_id.replace('v1', 'v0')).tab('show');
+        }
+    });
+
+    //Nachrichten: Wähle alle Nachrichten zum Löschen
+    $('button#chooseAllMessages').click(function() {
+        let inputs = $('input[type=checkbox].chooseMessage');
+        //wahr genau dann, wenn bereits alle ausgewählt sind: Deselektiere sie
+        if (inputs.prop('checked')) {
+            inputs.prop('checked', false);
+        }
+        else {
+            inputs.prop('checked', true);
         }
     });
 

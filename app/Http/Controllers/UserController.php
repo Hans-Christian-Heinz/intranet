@@ -47,4 +47,22 @@ class UserController extends Controller
             return redirect(route('user.nachrichten'))->with('status', 'Beim Löschen der Nachricht ist ein Fehler aufgetreten.');
         }
     }
+
+    public function deleteMany(Request $request) {
+        $request->validate([
+            'delete' => 'required|array',
+        ]);
+
+        $res = true;
+        foreach ($request->delete as $id) {
+            $res = $res && app()->user->notifications()->where('id', $id)->delete();
+        }
+
+        if ($res) {
+            return redirect()->back()->with('status', 'Die Nachrichten wurden erfolgreich gelöscht.');
+        }
+        else {
+            return redirect()->back()->with('danger', 'Beim Löschen der Nachrichten ist ein Problem aufgetreten.');
+        }
+    }
 }
