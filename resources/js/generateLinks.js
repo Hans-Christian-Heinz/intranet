@@ -4,20 +4,25 @@
 
 $(document).ready(function() {
     const link = $('input#generated_link');
+    const link_text = $('input#link_text');
+    const link_target = $('select#link_target');
 
-    $('select#link_target').change(function() {
-        let text = link.val();
-        let toReplace = text.substring(text.indexOf('(') + 1, text.indexOf(','));
-        text = text.replace(toReplace, $(this).children("option:selected").val());
-
-        link.val(text);
+    link_target.change(function() {
+        link_text.val($(this).children("option:selected").html().trim());
+        generateLink();
     });
 
-    $('input#link_text').change(function() {
+    link_text.change(function() {
+        generateLink();
+    });
+
+    function generateLink() {
         let text = link.val();
-        let toReplace = text.substring(text.indexOf(',') + 2, text.indexOf(')'));
-        text = text.replace(toReplace, $(this).val());
+        let toReplaceTarget = text.substring(text.indexOf('(') + 1, text.indexOf(','));
+        text = text.replace(toReplaceTarget, link_target.children("option:selected").val());
+        let toReplaceText = text.substring(text.indexOf(',') + 2, text.indexOf(')'));
+        text = text.replace(toReplaceText, link_text.val());
 
         link.val(text);
-    });
+    }
 });
