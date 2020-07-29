@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Structs\Link;
 use App\Structs\Phase;
 use App\Traits\HasSections;
 use Illuminate\Database\Eloquent\Model;
@@ -45,6 +46,32 @@ class Section extends Model
         'images',
         //'sections',
     ];
+
+    /**
+     * Liefert zwei Arrays: Der Text und die Links die ihn unterbrechen
+     *
+     * @param $text
+     * @return array[]
+     */
+    public static function separateLinks($text) {
+        $pos = strpos($text,'##LINK(');
+        if ($pos === false) {
+            return ['text' => [$text,], 'links' => []];
+        }
+
+        $res = ['text' => [], 'links' => [],];
+        $start = 0;
+        while($pos !== false) {
+            array_push($res['text'], substr($text, $start, $pos - $start));
+            $help = substr($text, $pos, strpos($text, ')##', $pos) - $pos + 3);
+            array_push($res['links'], Link::create($help));
+            $start = strpos($text, ')##', $start) + 3;
+            $pos = strpos($text,'##LINK(', $start);
+        }
+        array_push($res['text'], substr($text, $start));
+
+        return $res;
+    }
 
     /**
      * Sperre oder entsperre den Abschnitt und alle Unterabschnitte

@@ -1,5 +1,8 @@
 {{----}}
 
+{{-- An diese Stellen kann im Dokument gelinkt werden --}}
+{{-- mit <a href="#{{ $section->name }}"></a> --}}
+<a name="{{ $section->name }}" style="display: none"></a>
 @switch($tiefe)
     @case(1)
         <h1 class="heading">{{ $section->heading }}</h1>

@@ -3,8 +3,17 @@
 <p class="abschnitt">
     {{-- Ersetze die Platzhalter (##PLACEHOLDER##) entweder mit Bildern (falls vorhanden) oder mit Zeilenumbrüchen --}}
     @foreach(explode('##PLACEHOLDER##', $section_text) as $i => $text)
-        {{-- nl2br: new line to break konvertiert \n zu <br/> --}}
-        {!! nl2br(e($text)) !!}
+        {{-- Stelle ggf Links zu Überschriften dar --}}
+        @php($section_links = App\Section::separateLinks($text))
+        @for($i = 0; $i < max(count($section_links['text']), count($section_links['links'])); $i++)
+            @isset($section_links['text'][$i])
+                {!! nl2br(e($section_links['text'][$i])) !!}
+            @endisset
+            @isset($section_links['links'][$i])
+                <a href="#{{ $section_links['links'][$i]->ziel }}">{{ $section_links['links'][$i]->text }}</a>
+            @endisset
+        @endfor
+
         @isset($section->images[$i])
             <br/>
             <div style="page-break-inside: avoid">

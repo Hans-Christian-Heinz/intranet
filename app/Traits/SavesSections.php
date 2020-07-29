@@ -74,6 +74,10 @@ trait SavesSections
      */
     private function sectionMatches(Request $request, Section $oldSection) {
         $name = $oldSection->name;
+        //Nehme keine Änderungen an gesperrten Abschnitten vor
+        if ($oldSection->is_locked) {
+            return true;
+        }
         switch ($name) {
             case 'deadline':
                 if (! $oldSection->text) {

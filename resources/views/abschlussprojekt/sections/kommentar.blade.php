@@ -21,8 +21,8 @@
         @csrf
         <input type="hidden" required name="section_name" value="{{ $section->name }}"/>
         <div class="form-group row">
-            <label for="comment" class="control-label col-lg-2">Kommentar:</label>
-            <input type="text" required class="form-control col-lg-10" name="text" id="comment"/>
+            <label for="comment{{ $section->id }}" class="control-label col-lg-2">Kommentar:</label>
+            <input type="text" required class="form-control col-lg-10" name="text" id="comment{{ $section->id }}"/>
         </div>
         <input type="submit" class="float-right btn btn-outline-primary" value="Kommentar speichern"/>
     </form>
