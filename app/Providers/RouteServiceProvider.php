@@ -30,7 +30,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Route::pattern('doc_type', '(antrag)|(dokumentation)');
 
         parent::boot();
     }
