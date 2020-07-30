@@ -10,10 +10,12 @@ class Documentation extends Model
 {
     // Die Standardabschnitte einer Projektdokumentation
     const SECTIONS = [
+        //Abkürzungsverzeichnis
+        ['name' => 'abbreviations', 'heading' => 'Abkürzungsverzeichnis', 'sequence' => 0, 'tpl' => 'dokumentation.abbreviations_section',],
         //Titel
-        ['name' => 'title', 'heading' => 'Titel', 'sequence' => 0, 'tpl' => 'dokumentation.title_section',],
+        ['name' => 'title', 'heading' => 'Titel', 'sequence' => 1, 'tpl' => 'dokumentation.title_section',],
         //Einleitung
-        ['name' => 'intro', 'heading' => 'Einleitung', 'sequence' => 1, 'tpl' => 'parent_section', 'sections' => [
+        ['name' => 'intro', 'heading' => 'Einleitung', 'sequence' => 2, 'tpl' => 'parent_section', 'sections' => [
             ['name' => 'umfeld', 'heading' => 'Projektumfeld', 'sequence' => 0,],
             ['name' => 'ziel', 'heading' => 'Projektziel', 'sequence' => 1,],
             ['name' => 'begruendung', 'heading' => 'Projektbegründung', 'sequence' => 2,],
@@ -21,7 +23,7 @@ class Documentation extends Model
             ['name' => 'abgrenzung', 'heading' => 'Projektabgrenzung', 'sequence' => 4,],
         ],],
         //Projektplanung
-        ['name' => 'projekt_planung', 'heading' => 'Projektplanung', 'sequence' => 2, 'tpl' => 'parent_section', 'sections' => [
+        ['name' => 'projekt_planung', 'heading' => 'Projektplanung', 'sequence' => 3, 'tpl' => 'parent_section', 'sections' => [
             ['name' => 'doku_phasen', 'heading' => 'Projektphasen', 'sequence' => 0, 'tpl' => 'dokumentation.phases_section',],
             ['name' => 'abweichungen', 'heading' => 'Abweichnungen vom Projektantrag', 'sequence' => 1,],
             ['name' => 'ressourcen', 'heading' => 'Ressourcenplanung', 'sequence' => 2, 'tpl' => 'dokumentation.ressourcen_parent_section', 'sections' => [
@@ -33,7 +35,7 @@ class Documentation extends Model
             ['name' => 'entwicklungsprozess', 'heading' => 'Entwicklungsprozess', 'sequence' => 3,],
         ],],
         //Analysephase
-        ['name' => 'analyse', 'heading' => 'Analysephase', 'sequence' => 3, 'tpl' => 'parent_section', 'sections' => [
+        ['name' => 'analyse', 'heading' => 'Analysephase', 'sequence' => 4, 'tpl' => 'parent_section', 'sections' => [
             ['name' => 'ist_analyse', 'heading' => 'Ist-Analyse', 'sequence' => 0,],
             ['name' => 'wirtschaft_analyse', 'heading' => 'Wirtschaftlichkeitsanalyse (Make or Buy Entscheidung)', 'sequence' => 1,],
             ['name' => 'nutzwertanalyse', 'heading' => 'Nutzwertanalyse', 'sequence' => 2,],
@@ -41,7 +43,7 @@ class Documentation extends Model
             ['name' => 'quality', 'heading' => 'Qualitätsanforderungen', 'sequence' => 4,],
         ],],
         //Entwurfphase
-        ['name' => 'entwurf_phase', 'heading' => 'Entwurfphase', 'sequence' => 4, 'tpl' => 'parent_section', 'sections' => [
+        ['name' => 'entwurf_phase', 'heading' => 'Entwurfphase', 'sequence' => 5, 'tpl' => 'parent_section', 'sections' => [
             ['name' => 'plattform', 'heading' => 'Zielplattform', 'sequence' => 0,],
             ['name' => 'architektur', 'heading' => 'Architekturdesign', 'sequence' => 1,],
             ['name' => 'user_interface', 'heading' => 'Entwurf der Benutzeroberfläche', 'sequence' => 2,],
@@ -50,25 +52,25 @@ class Documentation extends Model
             ['name' => 'qualitaetssicherung', 'heading' => 'Maßnahmen zur Qualitätssicherung', 'sequence' => 5,],
         ],],
         //Implementierungsphase
-        ['name' => 'impl_phase', 'heading' => 'Implementierungsphase', 'sequence' => 5, 'tpl' => 'parent_section', 'sections' => [
+        ['name' => 'impl_phase', 'heading' => 'Implementierungsphase', 'sequence' => 6, 'tpl' => 'parent_section', 'sections' => [
             ['name' => 'datenstrukturen', 'heading' => 'Implementierung der Datenstrukturen', 'sequence' => 0,],
             ['name' => 'benutzeroberfl', 'heading' => 'Implementierung der Benutzeroberfläche', 'sequence' => 1,],
             ['name' => 'impl_geschaeftslogik', 'heading' => 'Implementierung der Geschäftslogik', 'sequence' => 2,],
         ],],
         //Abnahmephase
-        ['name' => 'abnahme_phase', 'heading' => 'Abnahmephase', 'sequence' => 6,],
+        ['name' => 'abnahme_phase', 'heading' => 'Abnahmephase', 'sequence' => 7,],
         //Einführungsphase
-        ['name' => 'einfuehrung', 'heading' => 'Einführungsphase', 'sequence' => 7,],
+        ['name' => 'einfuehrung', 'heading' => 'Einführungsphase', 'sequence' => 8,],
         //Dokumentation
-        ['name' => 'dokumentation', 'heading' => 'Dokumentation', 'sequence' => 8,],
+        ['name' => 'dokumentation', 'heading' => 'Dokumentation', 'sequence' => 9,],
         //Fazit
-        ['name' => 'fazit', 'heading' => 'Fazit', 'sequence' => 9, 'tpl' => 'parent_section', 'sections' => [
+        ['name' => 'fazit', 'heading' => 'Fazit', 'sequence' => 10, 'tpl' => 'parent_section', 'sections' => [
             ['name' => 'soll_ist_vgl', 'heading' => 'Soll-Ist-Vergleich', 'sequence' => 0, 'tpl' => 'dokumentation.vgl_section'],
             ['name' => 'lessons', 'heading' => 'Lessons Learned', 'sequence' => 1,],
             ['name' => 'ausblick', 'heading' => 'Ausblick', 'sequence' => 2,],
         ],],
         //Anhang
-        ['name' => 'anhang', 'heading' => 'Anhang', 'sequence' => 10,],
+        ['name' => 'anhang', 'heading' => 'Anhang', 'sequence' => 11,],
     ];
 
     use HasSections;
@@ -190,6 +192,21 @@ class Documentation extends Model
 
     public function getLongTitleAttribute() {
         return $this->getLongTitle($this->latestVersion());
+    }
+
+    public function getAbbreviationsAttribute() {
+        //TODO validate (auch schon bei der Eingabe ist das noch zu erledigen)
+        $res = [];
+        $abbr = $this->findCurrentSection('abbreviations')->text;
+        $abbr_array = explode(',', $abbr);
+        foreach($abbr_array as $abk) {
+            $tmp = array_map('trim', explode('=>', $abk));
+            if (count($tmp) == 2) {
+                $res[$tmp[0]] = $tmp[1];
+            }
+        }
+
+        return $res;
     }
 
     public function getZeitplanung(Version $version) {

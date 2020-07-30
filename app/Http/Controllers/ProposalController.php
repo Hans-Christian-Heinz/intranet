@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\General\IncrementCounter;
 use App\Http\Requests\PdfRequest;
 use App\Http\Requests\StoreProposalRequest;
 use App\Notifications\CustomNotification;
@@ -161,6 +162,7 @@ class ProposalController extends Controller
             'proposal' => $proposal,
             'format' => $request->all(),
             'version' => $proposal->latestVersion(),
+            'table_nr' => new IncrementCounter(),
         ])->render());
 
         return $mpdf->Output($title . '.pdf', 'I');

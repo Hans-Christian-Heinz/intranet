@@ -18,6 +18,7 @@ class Section extends Model
         'antrag.deadline_section',
         'antrag.phases_parent_section',
         'antrag.phases_text_section',
+        'dokumentation.abbreviations_section',
         'dokumentation.phases_section',
         'dokumentation.ressourcen_gesamt_section',
         'dokumentation.ressourcen_parent_section',
@@ -66,6 +67,7 @@ class Section extends Model
 
     public function formatText() {
         $text = $this->text;
+        $text = $this->abbreviationLinks($text);
         $res = [];
 
         $pos = strpos($text, '##');
@@ -98,7 +100,7 @@ class Section extends Model
 
                 //Nehme den Text vor dem Platzhalter in das Ergebnis auf
                 array_push($res, substr($text, 0, $pos));
-                $help = strpos($text,'(');
+                $help = strpos($text,'(', $pos);
                 $type = substr($text, $pos + 2, $help - $pos -2);
                 $create = substr($text, $pos, $end - $pos + 3);
                 switch($type) {
@@ -134,6 +136,36 @@ class Section extends Model
         }
 
         return $res;
+    }
+
+    private function abbreviationLinks($text) {
+        $dokumentation = $this->getUltimateParent();
+        if (! $dokumentation instanceof Documentation) {
+            return $text;
+        }
+        else {
+            $abbreviations = array_map('trim', array_keys($dokumentation->abbreviations));
+            foreach ($abbreviations as $abbr) {
+                $length = strlen($abbr);
+                $pos = stripos($text, $abbr);
+                while ($pos !== false) {
+                    $help = substr($text, $pos, $length);
+                    $placeholder = '##LINK(abbreviations, ' . $help . ')##';
+                    //Stelle sicher, dass die Abkürzung nicht Teil eines anderen Wortes ist:
+                    //Entweder steht sie nach einem Leerzeichen oder nach einer offenen Klammer oder am Beginn des Abschnitts.
+                    //Entweder steht sie vor einem Leerzeichen oder vor einem Satzzeichen oder am Ende des Abschnitts.
+                    $valid = $pos == strlen($text) - $length || in_array($text{$pos + $length}, [' ', '.', ',', ';', '-', '_', ':', '!', '?', ')', ']', '}',]);
+                    $valid = $valid && ($pos === 0 || in_array($text{$pos - 1}, [' ', '(', '[', '{',]));
+                    if (! $valid) {
+                        $pos = $pos = stripos($text, $abbr, $pos + 1);
+                        continue;
+                    }
+                    $text = substr_replace($text, $placeholder, $pos, $length);
+                    $pos = stripos($text, $abbr, $pos + strlen($placeholder));
+                }
+            }
+            return $text;
+        }
     }
 
     /**

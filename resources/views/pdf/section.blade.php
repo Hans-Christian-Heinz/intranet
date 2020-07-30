@@ -37,6 +37,8 @@
     @include('pdf.dokumentation.kostenstellen_gesamt_table')
 @elseif($section->name == 'soll_ist_vgl')
     @include('pdf.dokumentation.soll_ist_vgl')
+@elseif($section->name == 'abbreviations')
+    @include('pdf.dokumentation.abbreviations')
 @elseif($version->sections()->where('sections.section_id', $section->id)->count() == 0)
     @include('pdf.section_text', ['section_text' => $section->text,])
 @else
