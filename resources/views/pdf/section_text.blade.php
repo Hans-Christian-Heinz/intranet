@@ -39,10 +39,11 @@
         @elseif($help instanceof App\Structs\ImagePlaceholder)
             <br/>
             <div style="page-break-inside: avoid">
+                <tocentry content="Abb {{ $image_nr->nextNumber() . ': ' . $section->images[$help->number]->footnote }}" name="toc_img"/>
                 <img src="{{ asset('storage/' . $section->images[$help->number]->path) }}" height="{{ $section->images[$help->number]->height }}"
                      width="{{ $section->images[$help->number]->width }}" alt="Die Bilddatei konnte nicht gefunden werden."/>
                 <br/>
-                <span class="footnote">{{ $section->images[$help->number]->footnote }}</span>
+                <span class="footnote">Abb {{ $image_nr->getNumber() . ': ' . $section->images[$help->number]->footnote }}</span>
             </div>
             <br/>
         @else

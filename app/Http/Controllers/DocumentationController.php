@@ -174,6 +174,7 @@ class DocumentationController extends Controller
             'kostenstellen_gesamt' => $documentation->getKostenstellenGesamt($version),
             'zeitplanung' => $documentation->zeitplanung,
             'table_nr' => new IncrementCounter(),
+            'image_nr' => new IncrementCounter(),
         ])->render());
 
         return $mpdf->Output($title . '.pdf', 'I');

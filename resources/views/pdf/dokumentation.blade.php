@@ -79,6 +79,8 @@
 
 {{-- Tabellenverzeichnis --}}
 <tocpagebreak links="on" toc-prehtml="&lt;h3 class=&quot;heading&quot;&gt;Tabellenverzeichnis&lt;/h3&gt;" name="toc_tables"></tocpagebreak>
+{{-- Abbildungsverzeichnis --}}
+<tocpagebreak links="on" toc-prehtml="&lt;h3 class=&quot;heading&quot;&gt;Abbildungsverzeichnis&lt;/h3&gt;" name="toc_img"></tocpagebreak>
 
 @foreach($version->sections()->where('sections.documentation_id', $documentation->id)->orderBy('sequence')->get() as $section)
     @if($section->name === 'title')
