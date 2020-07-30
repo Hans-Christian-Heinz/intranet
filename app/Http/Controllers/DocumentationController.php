@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Documentation;
+use App\Helpers\General\IncrementCounter;
 use App\Http\Requests\AddImageRequest;
 use App\Http\Requests\PdfRequest;
 use App\Http\Requests\StoreDocumentationRequest;
@@ -172,6 +173,7 @@ class DocumentationController extends Controller
             'kostenstellen' => $documentation->getKostenstellen($version),
             'kostenstellen_gesamt' => $documentation->getKostenstellenGesamt($version),
             'zeitplanung' => $documentation->zeitplanung,
+            'table_nr' => new IncrementCounter(),
         ])->render());
 
         return $mpdf->Output($title . '.pdf', 'I');

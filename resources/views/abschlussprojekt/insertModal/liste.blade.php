@@ -9,8 +9,11 @@
     <label class="control-label" for="insert_list_type">Aufzählungsart</label>
     <select class="form-control" id="insert_list_type">
         <option selected value="unordered">Ungeordnet</option>
-        <option value="letters">Alphabetisch</option>
-        <option value="numbers">Numerisch</option>
+        <option value="1">1</option>
+        <option value="a">a</option>
+        <option value="A">A</option>
+        <option value="I">I</option>
+        <option value="i">i</option>
     </select>
 </div>
 <div class="my-3">

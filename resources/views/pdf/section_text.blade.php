@@ -5,43 +5,37 @@
         @if($help instanceof App\Structs\Link)
             <a href="#{{ $help->ziel }}">{{ $help->text }}</a>
         @elseif($help instanceof App\Structs\Table)
-            <table>
-                @foreach($help->rows as $row)
-                    <tr class="@if($row->isHeader) bgHeader @elseif($loop->index % 2 == 0) bg0 @else bg1 @endif">
-                        @foreach($row->content as $c)
-                            @if($row->isHeader)
-                                <th>{{ $c }}</th>
-                            @else
-                                <td>{{ $c }}</td>
-                            @endif
-                        @endforeach
-                    </tr>
-                @endforeach
-            </table>
+            <div style="page-break-inside: avoid">
+                <tocentry content="Tabelle {{ $table_nr->nextNumber() . ': ' . $help->footer }}" name="toc_tables"/>
+                <table>
+                    @foreach($help->rows as $row)
+                        <tr class="@if($row->isHeader) bgHeader @elseif($loop->index % 2 == 0) bg0 @else bg1 @endif">
+                            @foreach($row->content as $c)
+                                @if($row->isHeader)
+                                    <th>{{ $c }}</th>
+                                @else
+                                    <td>{{ $c }}</td>
+                                @endif
+                            @endforeach
+                        </tr>
+                    @endforeach
+                </table>
+                <span class="footnote">Tabelle {{ $table_nr->getNumber() . ': ' . $help->footer }}</span>
+            </div>
         @elseif($help instanceof App\Structs\ListStruct)
-            @switch($help->type)
-                @case('letters')
-                    <ol type="a">
-                        @foreach($help->content as $c)
-                            <li>{{ $c }}</li>
-                        @endforeach
-                    </ol>
-                    @break
-                @case('numbers')
-                    <ol type="1">
-                        @foreach($help->content as $c)
-                            <li>{{ $c }}</li>
-                        @endforeach
-                    </ol>
-                    @break
-                @default
-                    <ul>
-                        @foreach($help->content as $c)
-                            <li>{{ $c }}</li>
-                        @endforeach
-                    </ul>
-                    @break
-            @endswitch
+            @if($help->type == 'unordered')
+                <ul>
+                    @foreach($help->content as $c)
+                        <li>{{ $c }}</li>
+                    @endforeach
+                </ul>
+            @else
+                <ol type="{{ $help->type }}">
+                    @foreach($help->content as $c)
+                        <li>{{ $c }}</li>
+                    @endforeach
+                </ol>
+            @endif
         @elseif($help instanceof App\Structs\ImagePlaceholder)
             <br/>
             <div style="page-break-inside: avoid">
