@@ -27,10 +27,17 @@ class Section extends Model
     ];
 
     const INSERT = [
-        //'bild',
         'tabelle',
         'liste',
         'link',
+        'bild',
+    ];
+
+    const PLACEHOLDERS = [
+        '##TABLE(',
+        '##LIST(',
+        '##LINK(',
+        '##IMAGE(',
     ];
 
     use HasSections;
@@ -58,46 +65,72 @@ class Section extends Model
     ];
 
     public function formatText() {
-        //TODO Validierung und Fehlerbehandlung
         $text = $this->text;
         $res = [];
 
         $pos = strpos($text, '##');
+        $countImg = 0;
+        //Falls keine Platzhalter vorliegen, sind auch keine Platzhalter zu ersetzen
         if ($pos === false) {
-            return [$text];
+            $res = [$text];
+        }
+        else {
+            //Schleife: solange noch ein Platzhalter(kandidat) gefunden wird
+            while ($pos !== false) {
+                //Versuche nur dann Platzhalter zu ersetzen, wenn zumindest ein valider Platzhaltername vorliegt.
+                $valid = false;
+                foreach(self::PLACEHOLDERS as $placeholder) {
+                    if (strpos($text, $placeholder) === $pos) {
+                        $valid = true;
+                    }
+                }
+                //Wenn ein vermuteter Platzhalter kein klares Ende hat, wird er nicht als Platzhalter behandelt.
+                $end = strpos($text, ')##', $pos + 2);
+                if ($end === false) {
+                    $valid = false;
+                }
+                if (!$valid) {
+                    array_push($res, substr($text, 0, $pos + 2));
+                    $text = substr($text, $pos + 2);
+                    $pos = strpos($text, '##');
+                    continue;
+                }
+
+                //Nehme den Text vor dem Platzhalter in das Ergebnis auf
+                array_push($res, substr($text, 0, $pos));
+                $help = strpos($text,'(');
+                $type = substr($text, $pos + 2, $help - $pos -2);
+                $create = substr($text, $pos, $end - $pos + 3);
+                switch($type) {
+                    case 'IMAGE':
+                        if ($countImg < $this->images->count()) {
+                            array_push($res, new ImagePlaceholder($countImg));
+                            $countImg++;
+                        }
+                        else {
+                            array_push($res, "\n");
+                        }
+                        break;
+                    case 'TABLE':
+                        array_push($res, Table::create($create));
+                        break;
+                    case 'LIST':
+                        array_push($res, ListStruct::create($create));
+                        break;
+                    case 'LINK':
+                        array_push($res, Link::create($create));
+                        break;
+                }
+
+                $text = substr($text, $end + 3);
+                $pos = strpos($text, '##');
+            }
         }
 
-        $countImg = 0;
-        while ($pos !== false) {
-            array_push($res, substr($text, 0, $pos));
-            $end = strpos($text, ')##');
-            $help = strpos($text,'(');
-            $type = substr($text, $pos + 2, $help - $pos -2);
-            echo $type;
-            $create = substr($text, $pos, $end - $pos + 3);
-            switch($type) {
-                case 'IMAGE':
-                    if ($countImg < $this->images->count()) {
-                        array_push($res, new ImagePlaceholder($countImg));
-                        $countImg++;
-                    }
-                    else {
-                        array_push($res, "\n");
-                    }
-                    break;
-                case 'TABLE':
-                    array_push($res, Table::create($create));
-                    break;
-                case 'LIST':
-                    array_push($res, ListStruct::create($create));
-                    break;
-                case 'LINK':
-                    array_push($res, Link::create($create));
-                    break;
+        if ($this->images->count() > $countImg) {
+            for ($i = $countImg; $i < $this->images->count(); $i++) {
+                array_push($res, new ImagePlaceholder($i));
             }
-
-            $text = substr($text, $end + 3);
-            $pos = strpos($text, '##');
         }
 
         return $res;

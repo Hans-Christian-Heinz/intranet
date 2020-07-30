@@ -19,7 +19,7 @@
                                 Option "Bilder") hochgeladen werden.<br/>
                                 Beachten Sie: Bilder werden nur in denjenigen Abschnitten angezeigt, die durch Fließtext beschrieben
                                 werden. (Bilder werden nicht angezeigt in den folgenden Abschnitten: "Titel", "Projektphasen",
-                                "ressourcenplanung" (alle Unterabschnitte).)
+                                "Ressourcenplanung" (alle Unterabschnitte).)
                             </p>
                         </td>
                     </tr>

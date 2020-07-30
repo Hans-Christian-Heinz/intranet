@@ -23,13 +23,19 @@ class ListStruct extends Struct
 
     public static function create(string $text)
     {
+        //TODO ordentlich validieren.
+
         $type = '';
         $content = [];
 
         //Format: ##LIST(type, (c1)(c2)(c3))##
+        //Anfang ##LIST( und Ende )## sind vor Methodenaufruf validert
         $text = trim(substr($text, strpos($text, '(') + 1));
-        $type = trim(substr($text, 0, strpos($text, ',')));
-        $text = trim(substr($text, strpos($text, ',') + 1));
+        $end = strpos($text, ',');
+        if ($end !== false) {
+            $type = trim(substr($text, 0, strpos($text, ',')));
+            $text = trim(substr($text, strpos($text, ',') + 1));
+        }
         while ($text{0} == '(') {
             array_push($content, substr($text, 1, strpos($text, ')') - 1));
             $text = trim(substr($text, strpos($text, ')') + 1));

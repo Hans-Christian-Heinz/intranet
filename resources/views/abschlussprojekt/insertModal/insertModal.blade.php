@@ -15,6 +15,9 @@
                 {{-- Navigationsleiste --}}
                 <ul class="nav nav-pills" id="insertTab" role="tablist">
                     @foreach(App\Section::INSERT as $insert)
+                        @if(request()->is('*antrag') && $insert == 'bild')
+                            @continue
+                        @endif
                         <li class="nav-item">
                             <a class="nav-link @if($loop->first) active" @endif aria-controls="insert_{{ $insert }}" href="#insert_{{ $insert }}"
                             @if($loop->first) aria-selected="true" @else aria-selected="false" @endif id="insert_{{ $insert }}_tab" data-toggle="tab">
@@ -26,6 +29,9 @@
                 {{-- Tabinhalt --}}
                 <div class="tab-content my-3" id="insertTabContent">
                     @foreach(App\Section::INSERT as $insert)
+                        @if(request()->is('*antrag') && $insert == 'bild')
+                            @continue
+                        @endif
                         <div class="tab-pane @if($loop->first) active show @endif" id="insert_{{ $insert }}" role="tabpanel"
                              aria-labelledby="insert_{{ $insert }}_tab">
                             @include('abschlussprojekt.insertModal.' . $insert)

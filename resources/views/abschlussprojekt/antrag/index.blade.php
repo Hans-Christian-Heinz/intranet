@@ -37,8 +37,6 @@
                     @csrf
                     {{-- Schaltfläche zum Generieren von Platzhaltern (Einfügen von Bildern, Tabellen etc.) --}}
                     <a class="btn btn-secondary mx-2" data-toggle="modal" href="#insertPlaceholders">Einfügen</a>
-                    {{-- Schaltfläche zum Generieren von Links (intern im PDF-Dokument) --}}
-                    <a class="btn btn-secondary mx-2" data-toggle="modal" href="#generateLinks">Links generieren</a>
                     {{-- Link zum Erstellen eines PDF-Dokuments --}}
                     <a class="btn btn-secondary mx-2" data-toggle="modal" id="formatPdfModal" href="#formatPdf">PDF erstellen</a>
                     <input class="btn btn-primary mx-2" type="submit" form="formAntrag" id="speichern"
@@ -49,6 +47,5 @@
     </div>
 
     @include('abschlussprojekt.formatPdfModal', ['route' => 'abschlussprojekt.antrag.pdf', 'project' => $proposal->project,])
-    @include('abschlussprojekt.generateLinksModal')
     @include('abschlussprojekt.insertModal.insertModal')
 @endsection

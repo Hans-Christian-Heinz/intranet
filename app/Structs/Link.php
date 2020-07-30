@@ -22,14 +22,22 @@ class Link extends Struct
 
     /**
      * @param string $text Format: ##LINK($ziel, $text)##
-     * @return Link
+     * @return Link|string
      */
     public static function create(string $text) {
-        $text = substr($text, strpos($text, '(') + 1);
-        $ziel = substr($text, 0, strpos($text, ','));
-        $text = substr($text, strpos($text, ',') + 2);
-        $text = substr($text, 0, strpos($text, ')'));
+        //TODO: ordentlich validieren
 
-        return new Link($ziel, $text);
+        $text = substr($text, strpos($text, '(') + 1);
+        $delimiter = strpos($text, ',');
+        if ($delimiter !== false) {
+            $ziel = trim(substr($text, 0, strpos($text, ',')));
+            $text = trim(substr($text, strpos($text, ',') + 1));
+            trim($text = substr($text, 0, strpos($text, ')')));
+
+            return new Link($ziel, $text);
+        }
+        else {
+            return '';
+        }
     }
 }
