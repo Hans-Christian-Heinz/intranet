@@ -20,4 +20,5 @@ mix.js('resources/js/app.js', 'public/js')
     .scripts([
         'resources/js/benutzerfreundlichkeit.js',
         'resources/js/generateLinks.js',
+        'resources/js/generatePlaceholders.js',
     ], 'public/js/benutzerfreundlichkeit.js');

@@ -4,7 +4,7 @@
 namespace App\Structs;
 
 
-class Link
+class Link extends Struct
 {
     public $ziel;
     public $text;

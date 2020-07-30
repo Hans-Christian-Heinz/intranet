@@ -13,11 +13,11 @@
             </div>
             <div class="modal-body">
                 <p class="text-justify">
-                    Fügen Ihrem dem PDF-Dokument interne Links zu seinen Überschriften hinzu: Wählen Sie die Überschrift
+                    Fügen Sie Ihrem dem PDF-Dokument interne Links zu seinen Überschriften hinzu: Wählen Sie die Überschrift
                     aus, auf die verwiesen werden soll, geben Sie den Text des Links ein und kopieren Sie das Ergebnis
                     an die Stelle, an der der Link stehen soll:
                 </p>
-                <div class="form-group my-3">
+                <div class="my-3">
                     <label class="control-label" for="link_target">Ziel des Links</label>
                     <select class="form-control" id="link_target">
                         @foreach($sectionsHelp as $section)
@@ -27,12 +27,12 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="form-group my-3">
+                <div class="my-3">
                     <label class="control-label" for="link_text">Text des Links</label>
                     <input class="form-control" type="text" id="link_text" value="{{ $sectionsHelp->first()->heading }}"/>
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" style="justify-content: flex-start">
                 <label class="control-label" for="generated_link">Link (Platzhalter)</label>
                 <input type="text" class="form-control" id="generated_link" disabled
                        value="##LINK({{ $sectionsHelp->first()->name . ', ' . $sectionsHelp->first()->heading }})##"/>

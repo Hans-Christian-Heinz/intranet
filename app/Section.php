@@ -2,8 +2,11 @@
 
 namespace App;
 
+use App\Structs\ImagePlaceholder;
 use App\Structs\Link;
+use App\Structs\ListStruct;
 use App\Structs\Phase;
+use App\Structs\Table;
 use App\Traits\HasSections;
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,6 +24,13 @@ class Section extends Model
         'dokumentation.ressourcen_text_section',
         'dokumentation.title_section',
         'dokumentation.vgl_section',
+    ];
+
+    const INSERT = [
+        //'bild',
+        'tabelle',
+        'liste',
+        'link',
     ];
 
     use HasSections;
@@ -46,6 +56,52 @@ class Section extends Model
         'images',
         //'sections',
     ];
+
+    public function formatText() {
+        //TODO Validierung und Fehlerbehandlung
+        $text = $this->text;
+        $res = [];
+
+        $pos = strpos($text, '##');
+        if ($pos === false) {
+            return [$text];
+        }
+
+        $countImg = 0;
+        while ($pos !== false) {
+            array_push($res, substr($text, 0, $pos));
+            $end = strpos($text, ')##');
+            $help = strpos($text,'(');
+            $type = substr($text, $pos + 2, $help - $pos -2);
+            echo $type;
+            $create = substr($text, $pos, $end - $pos + 3);
+            switch($type) {
+                case 'IMAGE':
+                    if ($countImg < $this->images->count()) {
+                        array_push($res, new ImagePlaceholder($countImg));
+                        $countImg++;
+                    }
+                    else {
+                        array_push($res, "\n");
+                    }
+                    break;
+                case 'TABLE':
+                    array_push($res, Table::create($create));
+                    break;
+                case 'LIST':
+                    array_push($res, ListStruct::create($create));
+                    break;
+                case 'LINK':
+                    array_push($res, Link::create($create));
+                    break;
+            }
+
+            $text = substr($text, $end + 3);
+            $pos = strpos($text, '##');
+        }
+
+        return $res;
+    }
 
     /**
      * Liefert zwei Arrays: Der Text und die Links die ihn unterbrechen

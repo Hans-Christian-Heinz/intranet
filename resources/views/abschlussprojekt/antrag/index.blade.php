@@ -35,6 +35,8 @@
                 {{-- Formular zum Speichern --}}
                 <form class="form form-inline ml-auto p-3" action="{{ route('abschlussprojekt.antrag.store', $proposal->project) }}" method="post" id="formAntrag">
                     @csrf
+                    {{-- Schaltfläche zum Generieren von Platzhaltern (Einfügen von Bildern, Tabellen etc.) --}}
+                    <a class="btn btn-secondary mx-2" data-toggle="modal" href="#insertPlaceholders">Einfügen</a>
                     {{-- Schaltfläche zum Generieren von Links (intern im PDF-Dokument) --}}
                     <a class="btn btn-secondary mx-2" data-toggle="modal" href="#generateLinks">Links generieren</a>
                     {{-- Link zum Erstellen eines PDF-Dokuments --}}
@@ -48,4 +50,5 @@
 
     @include('abschlussprojekt.formatPdfModal', ['route' => 'abschlussprojekt.antrag.pdf', 'project' => $proposal->project,])
     @include('abschlussprojekt.generateLinksModal')
+    @include('abschlussprojekt.insertModal.insertModal')
 @endsection
