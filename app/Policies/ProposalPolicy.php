@@ -11,13 +11,22 @@ class ProposalPolicy
 {
     use HandlesAuthorization;
 
+    public function index(LdapUser $ldapUser, Proposal $proposal) {
+        $user = app()->user;
+        return $user->is($proposal->project->user) || $user->is_admin
+            ? Response::allow()
+            : Response::deny('Sofern Sie kein Ausbilder sind, dürfen Sie nur Ihre eigenen Dokumente ansehen.');
+    }
+
     public function store(LdapUser $ldapUser, Proposal $proposal)
     {
         $user = app()->user;
-        $res = $user->is($proposal->lockedBy);
-        return ($user->is($proposal->project->user) || $user->is_admin) && $res
+        if (! $user->is($proposal->lockedBy)) {
+            return Response::deny('Sie müssen das Dokument für andere Benutzer sperren, bevor Sie es bearbeiten können.');
+        }
+        return $user->is($proposal->project->user) || $user->is_admin
             ? Response::allow()
-            : Response::deny('Sie müssen das Dokument für andere Benutzer sperren, bevor Sie es bearbeiten.');
+            : Response::deny('Sofern Sie kein Ausbilder sind, dürfen Sie nur Ihre eigenen Dokumente bearbeiten.');
     }
 
     public function history(LdapUser $ldapUser, Proposal $proposal)

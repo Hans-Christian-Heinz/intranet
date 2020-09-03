@@ -197,9 +197,11 @@ class Section extends Model
             return $text;
         }
         else {
-            $abbreviations = array_map('trim', array_keys($dokumentation->abbreviations));
+            //Die Abkürzungen aus dem Abkürzungsverzeichnis, sofern dieses vorliegt.
+            $abbreviations = array_keys($dokumentation->abbreviations);
             foreach ($abbreviations as $abbr) {
                 $length = strlen($abbr);
+                //stripos ignoriert Groß- und Kleinschreibung
                 $pos = stripos($text, $abbr);
                 while ($pos !== false) {
                     $help = substr($text, $pos, $length);
@@ -222,34 +224,8 @@ class Section extends Model
     }
 
     /**
-     * Liefert zwei Arrays: Der Text und die Links die ihn unterbrechen
-     * Wird nicht mehr verwendet. (Wurde in Template abschlussprojekt.pdf.section_text_alt verwendet)
-     *
-     * @param $text
-     * @return array[]
-     */
-    public static function separateLinks($text) {
-        $pos = strpos($text,'##LINK(');
-        if ($pos === false) {
-            return ['text' => [$text,], 'links' => []];
-        }
-
-        $res = ['text' => [], 'links' => [],];
-        $start = 0;
-        while($pos !== false) {
-            array_push($res['text'], substr($text, $start, $pos - $start));
-            $help = substr($text, $pos, strpos($text, ')##', $pos) - $pos + 3);
-            array_push($res['links'], Link::create($help));
-            $start = strpos($text, ')##', $start) + 3;
-            $pos = strpos($text,'##LINK(', $start);
-        }
-        array_push($res['text'], substr($text, $start));
-
-        return $res;
-    }
-
-    /**
      * Sperre oder entsperre den Abschnitt und alle Unterabschnitte
+     *
      * @param bool $lock
      */
     public function lock(bool $lock) {

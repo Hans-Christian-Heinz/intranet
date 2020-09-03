@@ -203,12 +203,16 @@ class Documentation extends Model
 
     public function getAbbreviationsAttribute() {
         $res = [];
-        $abbr = $this->findCurrentSection('abbreviations')->text;
-        $abbr_array = explode(',', $abbr);
-        foreach($abbr_array as $abk) {
-            $tmp = array_map('trim', explode('=>', $abk));
-            if (count($tmp) == 2) {
-                $res[$tmp[0]] = $tmp[1];
+        $abbreviations = $this->findCurrentSection('abbreviations');
+
+        if ($abbreviations) {
+            $abbr = $abbreviations->text;
+            $abbr_array = explode(',', $abbr);
+            foreach($abbr_array as $abk) {
+                $tmp = array_map('trim', explode('=>', $abk));
+                if (count($tmp) == 2) {
+                    $res[$tmp[0]] = $tmp[1];
+                }
             }
         }
 

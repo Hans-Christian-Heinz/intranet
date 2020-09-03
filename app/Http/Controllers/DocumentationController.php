@@ -21,6 +21,8 @@ class DocumentationController extends Controller
 
     public function index(Project $project) {
         $documentation = $project->documentation()->with('comments')->first();
+        $this->authorize('index', $documentation);
+
         if (! $documentation) {
             return redirect(route('abschlussprojekt.dokumentation.create', $project));
         }
@@ -189,10 +191,9 @@ class DocumentationController extends Controller
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function addImage(AddImageRequest $request, Project $project) {
-        $this->authorize('addImage', $project->documentation);
-
         //Lege zunächst eine neue Version an
         $documentation = $project->documentation;
+        $this->authorize('store', $documentation);
         //Hilfsmethode, die eine neue Version anlegt und den zu bearbeitenden Abschnitt kopiert.
         $data = $this->copySection($request, $documentation);
         $sectionOld = $data['sectionOld'];
@@ -236,7 +237,7 @@ class DocumentationController extends Controller
      */
     public function detachImage(Request $request, Project $project) {
         $documentation = $project->documentation;
-        $this->authorize('addImage', $documentation);
+        $this->authorize('store', $documentation);
 
         $request->validate([
             'img_id' => 'required|int|min:1',
@@ -286,7 +287,7 @@ class DocumentationController extends Controller
      */
     public function updateImage(Request $request, Project $project) {
         $documentation = $project->documentation;
-        $this->authorize('addImage', $documentation);
+        $this->authorize('store', $documentation);
 
         //Maximale sequence / position / reihenfolge wird später überprüft
         $request->validate([

@@ -11,13 +11,22 @@ class DocumentationPolicy
 {
     use HandlesAuthorization;
 
+    public function index(LdapUser $ldapUser, Documentation $documentation) {
+        $user = app()->user;
+        return $user->is($documentation->project->user) || $user->is_admin
+            ? Response::allow()
+            : Response::deny('Sofern Sie kein Ausbilder sind, dürfen Sie nur Ihre eigenen Dokumente ansehen.');
+    }
+
     public function store(LdapUser $ldapUser, Documentation $documentation)
     {
         $user = app()->user;
-        $res = $user->is($documentation->lockedBy);
-        return ($user->is($documentation->project->user) || $user->is_admin) && $res
+        if (! $user->is($documentation->lockedBy)) {
+            return Response::deny('Sie müssen das Dokument für andere Benutzer sperren, bevor Sie es bearbeiten können.');
+        }
+        return $user->is($documentation->project->user) || $user->is_admin
             ? Response::allow()
-            : Response::deny('Sie müssen das Dokument für andere Benutzer sperren, bevor Sie es bearbeiten.');
+            : Response::deny('Sofern Sie kein Ausbilder sind, dürfen Sie nur Ihre eigenen Dokumente bearbeiten.');
     }
 
     public function history(LdapUser $ldapUser, Documentation $documentation)
@@ -34,11 +43,6 @@ class DocumentationPolicy
 
     public function pdf(LdapUser $ldapUser, Documentation $documentation)
     {
-        $user = app()->user;
-        return $user->is($documentation->project->user) || $user->is_admin;
-    }
-
-    public function addImage(LdapUser $ldapUser, Documentation $documentation) {
         $user = app()->user;
         return $user->is($documentation->project->user) || $user->is_admin;
     }

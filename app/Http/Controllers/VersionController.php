@@ -18,14 +18,14 @@ class VersionController extends Controller
      */
     public function index(Project $project, string $doc_type) {
         $document = $this->getDocument($project, $doc_type);
+        $versions = $document->versions()->with('user')->without('sections')->orderBy('updated_at', 'DESC')->get();
 
-        $this->authorize('vergleich', $document->versions()->without('sections')->first());
+        $this->authorize('vergleich', $versions[0]);
 
         if (is_null($document)) {
             return redirect(route('abschlussprojekt.index'))->with('danger', 'Es wurde kein gültiges Dokument gewählt.');
         }
 
-        $versions = $document->versions()->with('user')->without('sections')->orderBy('updated_at', 'DESC')->get();
         return view('abschlussprojekt.versionen.index', compact('document', 'versions', 'doc_type'));
     }
 

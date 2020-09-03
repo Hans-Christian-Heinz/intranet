@@ -74,7 +74,7 @@
             <form class="form" id="insertImageForm" method="POST"
                   action="{{ route('abschlussprojekt.dokumentation.images.create', $documentation->project) }}">
                 @csrf
-                <button type="submit" class="btn btn-primary">Bild hinzufügen</button>
+                <button type="submit" @if($disable) disabled @endif class="btn btn-primary">Bild hinzufügen</button>
             </form>
         </td>
     </tr>

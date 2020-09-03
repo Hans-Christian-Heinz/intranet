@@ -26,7 +26,7 @@ class SectionController extends Controller
             return $this->createDocumentationSection($request, $documentation, $versionOld);
         }
         $sectionOld = $versionOld->sections->where('id', $request->section_id)->shift();
-        $this->authorize('delete', $sectionOld);
+        $this->authorize('create', $sectionOld);
 
         //Erstelle zunächst eine neue Version
         $version = new Version();
@@ -79,9 +79,10 @@ class SectionController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     private function createDocumentationSection(CreateSectionRequest $request, Documentation $documentation, Version $versionOld) {
-        if (! (app()->user->isAdmin() || $documentation->getUser()->is(app()->user))) {
+        /*if (! (app()->user->isAdmin() || $documentation->getUser()->is(app()->user))) {
             return redirect()->back()->with('danger', 'Sie sind nicht berechtigt, einen neuen Abschnitt für diese Dokumentation zu erstellen.');
-        }
+        }*/
+        $this->authorize('createForDoc', new Section());
 
         //Erstelle zunächst eine neue Version
         $version = new Version();
@@ -112,7 +113,7 @@ class SectionController extends Controller
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function delete(Project $project, Section $section) {
-        $this->authorize('delete', $section);
+        $this->authorize('store', $section);
 
         $documentation = $project->documentation;
         $versionOld = $documentation->latestVersion();
@@ -162,7 +163,7 @@ class SectionController extends Controller
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(EditSectionRequest $request, Project $project, Section $section) {
-        $this->authorize('delete', $section);
+        $this->authorize('store', $section);
 
         $documentation = $project->documentation;
         $versionOld = $documentation->latestVersion();

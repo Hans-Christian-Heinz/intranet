@@ -6,11 +6,11 @@
     @if(request()->is('*dokumentation'))
         {{-- Schaltfäche, um der Dokumentation einen neuen Abschnitt hinzuzufügen --}}
         <li class="nav-item border border-dark text-center py-3">
-            <a class="btn btn-secondary" data-toggle="modal" href="#addSection">Abschnitt hinzufügen</a>
+            <a class="btn btn-secondary" data-toggle="modal" @if($disable) href="#" @else href="#addSection" @endif>Abschnitt hinzufügen</a>
         </li>
     @endif
 </ul>
 
-@if(request()->is('*dokumentation'))
+@if(request()->is('*dokumentation') && ! $disable)
     @include('abschlussprojekt.sections.dokumentation.addSectionModal', ['section' => null,])
 @endif

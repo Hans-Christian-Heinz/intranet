@@ -15,12 +15,12 @@
             </td>
             <td>
                 @if(request()->is('*dokumentation'))
-                    <a data-toggle="modal" class="btn btn-secondary" @if($s->is_locked) href="#" @else href="#bildBearbeiten{{ $image->id }}" @endif>Bild bearbeiten</a>
+                    <a data-toggle="modal" class="btn btn-secondary" @if($s->is_locked || $disable) href="#" @else href="#bildBearbeiten{{ $image->id }}" @endif>Bild bearbeiten</a>
                 @endif
             </td>
             <td>
                 @if(request()->is('*dokumentation'))
-                    <a data-toggle="modal" class="btn btn-outline-danger" @if($s->is_locked) href="#" @else href="#bildEntfernen{{ $image->id }}" @endif>Bild entfernen</a>
+                    <a data-toggle="modal" class="btn btn-outline-danger" @if($s->is_locked || $disable) href="#" @else href="#bildEntfernen{{ $image->id }}" @endif>Bild entfernen</a>
                 @endif
             </td>
         </tr>
@@ -28,7 +28,7 @@
 </table>
 
 @foreach($s->images as $image)
-    @if(request()->is('*dokumentation'))
+    @if(request()->is('*dokumentation') && ! $s->is_locked && ! $disable)
         @include('abschlussprojekt.sections.dokumentation.bilder.bildBearbeitenModal')
         @include('abschlussprojekt.sections.dokumentation.bilder.bildEntfernenModal')
     @endif

@@ -19,6 +19,8 @@ class ProposalController extends Controller
 
     public function index(Project $project) {
         $proposal = $project->proposal()->with('comments')->first();
+        $this->authorize('index', $proposal);
+
         if (! $proposal) {
             return redirect(route('abschlussprojekt.antrag.create', $project));
         }

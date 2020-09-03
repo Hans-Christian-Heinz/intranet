@@ -32,9 +32,9 @@ class ImageController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function upload(Request $request, Project $project) {
-        //TODO Validate Filesize (Regel; max:x, wobei x die Dateigröße in kilo-Bytes ist)
+        //Validate Filesize (Regel; max:x, wobei x die Dateigröße in kilo-Bytes ist)
         $request->validate([
-            'bilddatei' => 'required|image',
+            'bilddatei' => 'required|image|max:1000',
         ]);
 
         $user = app()->user;
