@@ -13,7 +13,7 @@ class CreateVersionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('versionen', function (Blueprint $table) {
+        Schema::create('versions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('proposal_id')->nullable();
             $table->unsignedBigInteger('documentation_id')->nullable();

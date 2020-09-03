@@ -25,8 +25,6 @@ class Link extends Struct
      * @return Link|string
      */
     public static function create(string $text) {
-        //TODO: ordentlich validieren
-
         $text = substr($text, strpos($text, '(') + 1);
         $delimiter = strpos($text, ',');
         if ($delimiter !== false) {

@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-md-12 bg-white">
                     <div class="d-flex pb-3">
-                        <h3 class="mr-auto">Benachrichtigungen Ich habe die redirects auskommentiert!!!!!!!!</h3>
+                        <h3 class="mr-auto">Benachrichtigungen</h3>
                     </div>
                     <div class="table-responsive">
                         <table class="table text-center">

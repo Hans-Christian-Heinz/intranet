@@ -24,6 +24,7 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "node": "^9.11.2",
         "tinymce": "^5.2.0"
     }
 }

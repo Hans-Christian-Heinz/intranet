@@ -70,7 +70,6 @@ Route::group(['middleware' => 'auth'], function () {
             'as' => 'antrag.',
         ], function() {
             Route::get('/', 'ProposalController@index')->name('index');
-            //TODO: sollte keine get Route sein.
             Route::get('/create', 'ProposalController@create')->name('create');
             Route::patch('/{proposal}/lock', 'ProposalController@lock')->name('lock');
             Route::patch('/{proposal}/release', 'ProposalController@release')->name('release');
@@ -89,7 +88,6 @@ Route::group(['middleware' => 'auth'], function () {
             'as' => 'dokumentation.',
         ], function() {
             Route::get('/', 'DocumentationController@index')->name('index');
-            //TODO: sollte keine get Route sein.
             Route::get('/create', 'DocumentationController@create')->name('create');
             Route::patch('/{documentation}/lock', 'DocumentationController@lock')->name('lock');
             Route::patch('/{documentation}/release', 'DocumentationController@release')->name('release');
@@ -182,7 +180,6 @@ Route::group(['middleware' => 'admin'], function () {
             'as' => 'antrag.',
         ], function() {
             Route::get('/', 'ProposalController@index')->name('index');
-            //TODO: sollte keine get Route sein.
             Route::get('/create', 'ProposalController@create')->name('create');
         });
 
@@ -191,7 +188,6 @@ Route::group(['middleware' => 'admin'], function () {
             'as' => 'dokumentation.',
         ], function() {
             Route::get('/', 'DocumentationController@index')->name('index');
-            //TODO: sollte keine get Route sein.
             Route::get('/create', 'DocumentationController@create')->name('create');
         });
 

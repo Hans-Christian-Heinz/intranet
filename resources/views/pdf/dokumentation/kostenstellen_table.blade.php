@@ -18,7 +18,7 @@
                 <tr class="@if($loop->index % 2 != 0) bg0 @else bg1 @endif">
                     <th>Summe</th>
                     <th></th>
-                    <th>{{ $kostenstellen_gesamt[$section->heading] }}</th>
+                    <th>{{ $kostenstellen_gesamt[$section->heading] }}€</th>
                 </tr>
             @endif
         @endforeach

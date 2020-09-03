@@ -22,8 +22,6 @@ class Table extends Struct
 
     public static function create(string $text)
     {
-        //TODO ordentlich validieren
-
         $rows = [];
         $footer = '';
 

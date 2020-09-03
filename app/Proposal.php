@@ -20,6 +20,7 @@ class Proposal extends Model
         ['name' => 'presantation', 'heading' => 'Präsentationsmittel', 'sequence' => 7,],
     ];
 
+    //Die Unterabschnitte des Abschnitts phases
     const PHASES = [
         ['name' => 'planung', 'heading' => 'Planung und Analyse', 'sequence' => 0, 'tpl' => 'antrag.phases_text_section',],
         ['name' => 'entwurf', 'heading' => 'Entwurf', 'sequence' => 1, 'tpl' => 'antrag.phases_text_section',],
@@ -82,36 +83,16 @@ class Proposal extends Model
         $phasesSection = $this->findSection('phases', $version);
         if ($phasesSection) {
             foreach ($version->sections->where('section_id', $phasesSection->id) as $phase) {
-            //foreach ($phasesSection->sections as $phase) {
-                $res[$phase->name] = ['heading' => $phase->heading, 'text' => $phase->text];
-            }
-        }
-
-        return $this->formatPhases($res);
-    }
-
-    /**
-     * Formatiere die Phasen: In der Datenbank sind die Phasen als Text gespeichert (Phase1 : 2; Phase2 : 1; ...)
-     * Gewünschtes Format: [$name => ['heading' => $heading, 'phasen' => Phase[]], ['heading' => $heading, 'phasen' => Phase[]], ...]
-     *
-     * @param array $phases
-     * @return array
-     */
-    private function formatPhases(array $phases) {
-        $res = [];
-        foreach ($phases as $name => $phase) {
-            $res[$name] = ['heading' => $phase['heading'], 'phasen' => [],];
-            $temp = explode(';', $phase['text']);
-            foreach($temp as $t) {
-                if (empty(trim($t))) {
-                    continue;
+                $p = [];
+                //Text der Unterabschnitte liegt im Format "phasenname : dauer; phasenname : dauer; ..." vor
+                //Hier wird avon ausgegangen, dass das Format stimmt. (Bei der Eingabe findet eine Validierung statt)
+                foreach (explode(';', $phase->text) as $t) {
+                    if (empty(trim($t))) {
+                        continue;
+                    }
+                    array_push($p, Phase::create($t));
                 }
-                /*$temporary = explode(':', $t);
-                array_push($res[$name]['phasen'], [
-                    'name' => trim($temporary[0]),
-                    'duration' => trim($temporary[1]),
-                ]);*/
-                array_push($res[$name]['phasen'], Phase::create($t));
+                $res[$phase->name] = ['heading' => $phase->heading, 'phasen' => $p];
             }
         }
 

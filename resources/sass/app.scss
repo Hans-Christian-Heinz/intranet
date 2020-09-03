@@ -72,6 +72,16 @@ ul.scrollnav {
             background-color: #99ccff !important;
             color: black !important;
         }
+
+        .fehler {
+            background-color: red !important;
+            color: white !important;
+        }
+
+        .fehler:not(.active) {
+            background-color: darkred !important;
+            color: white !important;
+        }
     }
 }
 

@@ -138,7 +138,7 @@ trait SavesSections
         }
     }
 
-    /**
+    /*
      * Hilfsmethode zum Speichern eines Abschnitts.
      * Beachte: Beim Speichern wird ein neuer Eintrag in der Datenbank angelegt; der alte Eintrag bleibt unverändert.
      * Alte Version der Methode, bevor Tabelle versionen vorhanden war.

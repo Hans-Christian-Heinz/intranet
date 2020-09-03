@@ -14,14 +14,13 @@ class CreateSectionsVersionsTable extends Migration
     public function up()
     {
         Schema::create('sections_versions', function (Blueprint $table) {
-            $table->id();
             $table->unsignedBigInteger('version_id');
             $table->unsignedBigInteger('section_id');
             $table->unsignedSmallInteger('sequence');
             $table->timestamps();
 
             $table->foreign('section_id')->references('id')->on('sections')->onDelete('cascade');
-            $table->foreign('version_id')->references('id')->on('versionen')->onDelete('cascade');
+            $table->foreign('version_id')->references('id')->on('versions')->onDelete('cascade');
         });
     }
 

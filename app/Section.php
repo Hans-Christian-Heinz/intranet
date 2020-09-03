@@ -12,6 +12,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Section extends Model
 {
+    /**
+     * Templates, die für einen Abschnitt im Formular für einen Projektantrag oder eine Projektdokumentation zur Verfügung stehen
+     * Wird im Template abschlussprojekt.sections.dokumentation.addSectionModal und editSectionModal verwendet
+     */
     const TEMPLATES = [
         'text_section',
         'parent_section',
@@ -27,6 +31,9 @@ class Section extends Model
         'dokumentation.vgl_section',
     ];
 
+    /**
+     * Objekte, die in Abschnitte eingefügt werden können. Konstante wird im Template abschlussprojekt.insertModal.inserModal verwendet
+     */
     const INSERT = [
         'tabelle',
         'liste',
@@ -65,6 +72,12 @@ class Section extends Model
         //'sections',
     ];
 
+    /**
+     * Ersetze alle Platzhalter in einem Abschnitt durch entsprechende Structs (App\Structs). Beim Generieren eines PDF-Dokuments
+     * werden die Structs dann durch passende HTML-Syntax ersetzt.
+     *
+     * @return array
+     */
     public function formatText() {
         $text = $this->text;
         $text = $this->abbreviationLinks($text);
@@ -104,6 +117,7 @@ class Section extends Model
                 $type = substr($text, $pos + 2, $help - $pos -2);
                 $create = substr($text, $pos, $end - $pos + 3);
                 switch($type) {
+                    //TODO Platzhalter ordentlich validieren
                     case 'IMAGE':
                         if ($countImg < $this->images->count()) {
                             array_push($res, new ImagePlaceholder($countImg));
@@ -129,6 +143,9 @@ class Section extends Model
             }
         }
 
+        //Der Rest des Texts.
+        array_push($res, $text);
+
         if ($this->images->count() > $countImg) {
             for ($i = $countImg; $i < $this->images->count(); $i++) {
                 array_push($res, new ImagePlaceholder($i));
@@ -138,6 +155,14 @@ class Section extends Model
         return $res;
     }
 
+    /**
+     * Hilfsmethode, die in formatText() aufgerufen wird.
+     * Durchsuche den übergebenen Text nach allen Abkürzungen im Abkürzungsverzeichnis und erstze sie durch Platzhalter für
+     * Links, die auf das Abkürzungsverzeichnis zeigen.
+     *
+     * @param $text
+     * @return string|string[]
+     */
     private function abbreviationLinks($text) {
         $dokumentation = $this->getUltimateParent();
         if (! $dokumentation instanceof Documentation) {
@@ -170,6 +195,7 @@ class Section extends Model
 
     /**
      * Liefert zwei Arrays: Der Text und die Links die ihn unterbrechen
+     * Wird nicht mehr verwendet. (Wurde in Template abschlussprojekt.pdf.section_text_alt verwendet)
      *
      * @param $text
      * @return array[]

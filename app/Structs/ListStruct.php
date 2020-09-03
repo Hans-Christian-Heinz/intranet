@@ -23,8 +23,6 @@ class ListStruct extends Struct
 
     public static function create(string $text)
     {
-        //TODO ordentlich validieren.
-
         $type = '';
         $content = [];
 

@@ -39,9 +39,11 @@
                         <a href="{{ route("rules.index") }}"
                            class="nav-link @if(is_null(app()->user->accepted_rules_at)) text-danger @endif">Werkstattregeln</a>
                     </li>
-                    <li class="nav-item {{ (request()->is('abschlussprojekt*')) ? 'active' : '' }}">
-                        <a href="{{ route("abschlussprojekt.index") }}" class="nav-link">Abschlussprojekt</a>
-                    </li>
+                    @unless(app()->user->isAdmin())
+                        <li class="nav-item {{ (request()->is('abschlussprojekt*')) ? 'active' : '' }}">
+                            <a href="{{ route("abschlussprojekt.index") }}" class="nav-link">Abschlussprojekt</a>
+                        </li>
+                    @endunless
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             {{ Auth::user()->name }} <span class="notifications">{{ app()->user->notifications()->count() }}</span> <span class="caret"></span>

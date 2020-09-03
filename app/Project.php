@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
+    /**
+     * Textarten, die für generierte PDF-Dokumente zur Verfügung stehen.
+     */
     const FONTS = [
         'Courier' => 'courier',
         'Helvetica' => 'helvetica',
@@ -33,7 +36,6 @@ class Project extends Model
      * Gebe für jede Phase ihre Dauer an (Summe der Dauer aller Unterphasen)
      * Format: [Phasenname => ['heading' => heading, 'duration' => Dauer,], ...]
      *
-     * @param Version $version
      * @param bool $withSum Soll die Dauer aller Phasen ebenfalls angegeben werden?
      * @return array
      */

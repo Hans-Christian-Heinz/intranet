@@ -62,7 +62,7 @@ class SectionController extends Controller
         $version->sections()->save($subsection, ['sequence' => $section->getSections($versionOld)->count()]);
         $section->sections()->save($subsection);
 
-        if (app()->user->isNot($documentation->user)) {
+        if (app()->user->isNot($project->user)) {
             $project->user->notify(new CustomNotification(app()->user->full_name, 'Änderungen an der Projektdokumentation',
                 'An Ihrer Projektdokumentation wurden vom Absender Änderungen vorgenommen.'));
         }
@@ -146,7 +146,7 @@ class SectionController extends Controller
             }
         }
 
-        if (app()->user->isNot($documentation->user)) {
+        if (app()->user->isNot($project->user)) {
             $project->user->notify(new CustomNotification(app()->user->full_name, 'Änderungen an der Projektdokumentation',
                 'An Ihrer Projektdokumentation wurden vom Absender Änderungen vorgenommen.'));
         }
@@ -206,7 +206,7 @@ class SectionController extends Controller
         }
         $version->sections()->save($sectionNew, ['sequence' => $request->sequence,]);
 
-        if (app()->user->isNot($documentation->user)) {
+        if (app()->user->isNot($project->user)) {
             $project->user->notify(new CustomNotification(app()->user->full_name, 'Änderungen an der Projektdokumentation',
                 'An Ihrer Projektdokumentation wurden vom Absender Änderungen vorgenommen.'));
         }

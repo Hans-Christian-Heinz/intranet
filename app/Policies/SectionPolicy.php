@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Documentation;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use App\Section;
 use Illuminate\Auth\Access\Response;
@@ -13,13 +14,14 @@ class SectionPolicy
 
     public function create(LdapUser $ldap_user, Section $section) {
         $user = app()->user;
-        return $user->isAdmin() || $user->is($section->getUser());
+        //return $user->isAdmin() || $user->is($section->getUser());
+        return false;
     }
 
     public function delete(LdapUser $ldap_user, Section $section) {
         $user = app()->user;
-        $documentation = $section->documentation;
-        if (is_null($documentation)) {
+        $documentation = $section->getUltimateParent();
+        if (! $documentation instanceof Documentation) {
             $lockedBy = null;
         }
         else {

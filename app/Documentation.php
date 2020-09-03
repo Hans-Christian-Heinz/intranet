@@ -19,7 +19,7 @@ class Documentation extends Model
             ['name' => 'umfeld', 'heading' => 'Projektumfeld', 'sequence' => 0,],
             ['name' => 'ziel', 'heading' => 'Projektziel', 'sequence' => 1,],
             ['name' => 'begruendung', 'heading' => 'Projektbegründung', 'sequence' => 2,],
-            ['name' => 'schnittstellen', 'heading' => 'Projektschnittstellen', 'sequence' => 3,],
+            ['name' => 'schnittstellen', 'heading' => 'Prozessschnittstellen', 'sequence' => 3,],
             ['name' => 'abgrenzung', 'heading' => 'Projektabgrenzung', 'sequence' => 4,],
         ],],
         //Projektplanung
@@ -37,10 +37,15 @@ class Documentation extends Model
         //Analysephase
         ['name' => 'analyse', 'heading' => 'Analysephase', 'sequence' => 4, 'tpl' => 'parent_section', 'sections' => [
             ['name' => 'ist_analyse', 'heading' => 'Ist-Analyse', 'sequence' => 0,],
-            ['name' => 'wirtschaft_analyse', 'heading' => 'Wirtschaftlichkeitsanalyse (Make or Buy Entscheidung)', 'sequence' => 1,],
+            ['name' => 'wirtschaft_analyse', 'heading' => 'Wirtschaftlichkeitsanalyse (Make or Buy Entscheidung)', 'sequence' => 1, 'sections' => [
+                ['name' => 'make_buy', 'heading' => 'Make or Buy-Entscheidung', 'sequence' => 0,],
+                ['name' => 'kosten', 'heading' => 'Projektkosten', 'sequence' => 1,],
+                ['name' => 'amortisation', 'heading' => 'Amortisationsdauer', 'sequence' => 2,],
+            ],],
             ['name' => 'nutzwertanalyse', 'heading' => 'Nutzwertanalyse', 'sequence' => 2,],
             ['name' => 'anwendungsfaelle', 'heading' => 'Anwendungsfälle', 'sequence' => 3,],
             ['name' => 'quality', 'heading' => 'Qualitätsanforderungen', 'sequence' => 4,],
+            ['name' => 'lastenheft', 'heading' => 'Lastenheft/Fachkonzept', 'sequence' => 5,],
         ],],
         //Entwurfphase
         ['name' => 'entwurf_phase', 'heading' => 'Entwurfphase', 'sequence' => 5, 'tpl' => 'parent_section', 'sections' => [
@@ -50,6 +55,7 @@ class Documentation extends Model
             ['name' => 'datenmodell', 'heading' => 'Datenmodell', 'sequence' => 3,],
             ['name' => 'geschaeftslogik', 'heading' => 'Geschäftslogik', 'sequence' => 4,],
             ['name' => 'qualitaetssicherung', 'heading' => 'Maßnahmen zur Qualitätssicherung', 'sequence' => 5,],
+            ['name' => 'pflichtenheft', 'heading' => 'Pflichtenheft/Datenverarbeitungskonzept', 'sequence' => 6,],
         ],],
         //Implementierungsphase
         ['name' => 'impl_phase', 'heading' => 'Implementierungsphase', 'sequence' => 6, 'tpl' => 'parent_section', 'sections' => [
@@ -146,7 +152,8 @@ class Documentation extends Model
         $res = [];
         $ressourcenSection = $this->findSection('ressourcen', $version);
         if ($ressourcenSection) {
-            foreach ($ressourcenSection->sections as $subsection) {
+            //foreach ($ressourcenSection->sections as $subsection) {
+            foreach ($version->sections->where('section_id', $ressourcenSection->id) as $subsection) {
                 if ($subsection->name == 'gesamt') {
                     continue;
                 }
@@ -195,7 +202,6 @@ class Documentation extends Model
     }
 
     public function getAbbreviationsAttribute() {
-        //TODO validate (auch schon bei der Eingabe ist das noch zu erledigen)
         $res = [];
         $abbr = $this->findCurrentSection('abbreviations')->text;
         $abbr_array = explode(',', $abbr);
@@ -209,6 +215,12 @@ class Documentation extends Model
         return $res;
     }
 
+    /**
+     * Ausgabe des Inhalts des Abschnitts Soll-Ist-Vergleich: Text sowie tatsächliche Dauer der einzelnen Projektphasen
+     *
+     * @param Version $version
+     * @return array
+     */
     public function getZeitplanung(Version $version) {
         $vgl = $this->findSection('soll_ist_vgl', $version);
         $keys = ['planung', 'entwurf', 'implementierung', 'test', 'abnahme',];
