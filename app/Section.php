@@ -92,7 +92,7 @@ class Section extends Model
         else {
             //Schleife: solange noch ein Platzhalter(kandidat) gefunden wird
             while ($pos !== false) {
-                //Versuche nur dann Platzhalter zu ersetzen, wenn zumindest ein valider Platzhaltername vorliegt.
+                //Versuche nur dann, Platzhalter zu ersetzen, wenn zumindest ein valider Platzhaltername vorliegt.
                 $valid = false;
                 foreach(self::PLACEHOLDERS as $placeholder) {
                     if (strpos($text, $placeholder) === $pos) {
@@ -105,8 +105,9 @@ class Section extends Model
                     $valid = false;
                 }
                 if (!$valid) {
-                    array_push($res, substr($text, 0, $pos + 2));
-                    $text = substr($text, $pos + 2);
+                    //Wenn kein Platzhalter gefunden wurde: Gehe ein Zeichen weiter als der Beginn des Platzhalterkandidats und versuche es erneut
+                    array_push($res, substr($text, 0, $pos + 1));
+                    $text = substr($text, $pos + 1);
                     $pos = strpos($text, '##');
                     continue;
                 }
@@ -117,7 +118,6 @@ class Section extends Model
                 $type = substr($text, $pos + 2, $help - $pos -2);
                 $create = substr($text, $pos, $end - $pos + 3);
                 switch($type) {
-                    //TODO Platzhalter ordentlich validieren
                     case 'IMAGE':
                         if ($countImg < $this->images->count()) {
                             array_push($res, new ImagePlaceholder($countImg));
@@ -149,6 +149,34 @@ class Section extends Model
         if ($this->images->count() > $countImg) {
             for ($i = $countImg; $i < $this->images->count(); $i++) {
                 array_push($res, new ImagePlaceholder($i));
+            }
+        }
+
+        //Fasse aufeinanderfolgende Textblöcke im Array zusammen
+        return $this->combineTexts($res);
+    }
+
+    /**
+     * Hilfsmethode, um im Ergebnis von formatText($text) aufeinanderfolgende Textblöcke zusammenzufassen
+     * (gemeint: [$text1, $text2, $tabelle, ...] wird zu [$text1 . $text2, $tabelle, ...]
+     *
+     * @param array $values
+     * @return array
+     */
+    private function combineTexts(array $values) {
+        $res = [];
+        for ($i = 0; $i < count($values); $i++) {
+            if (is_string($values[$i])) {
+                $temp = '';
+                while($i < count($values) && is_string($values[$i])) {
+                    $temp = $temp . $values[$i];
+                    $i++;
+                }
+                array_push($res, $temp);
+                $i--;
+            }
+            else {
+                array_push($res, $values[$i]);
             }
         }
 

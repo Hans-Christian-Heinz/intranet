@@ -22,11 +22,13 @@ class Table extends Struct
 
     public static function create(string $text)
     {
+        //Die Methode wird in der Methode formatText($text) der Klasse Section aufgerufen
+        //An der Stelle ist fürdas Format des Parameters validiert: Beginnt mit "##TABLE(" und endet mit ')##'
         $rows = [];
         $footer = '';
 
-        //Format: ##TABLE({header}(row))(fußzeile)##
-        //Zumindest der Beginn ##TABLE( und das Ende )## sind vor Methodenaufruf validiert.
+        //Format: ##TABLE({header}[row])(fußzeile)##
+        //Alles, was nicht in den korrekten Klammern steht, wird ignoriert.
         $text = trim(substr($text, strpos($text, '(') + 1));
         while ($text{0} !== ')') {
             switch ($text{0}) {
@@ -40,8 +42,8 @@ class Table extends Struct
                     array_push($rows, new TableRow(explode('||', $help), true));
                     $text = trim(substr($text, $end + 1));
                     break;
-                case '(':
-                    $end = strpos($text, ')');
+                case '[':
+                    $end = strpos($text, ']');
                     if ($end === false) {
                         $text = trim(substr($text, 1));
                         continue;
