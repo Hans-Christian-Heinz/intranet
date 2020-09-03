@@ -11,6 +11,8 @@ class VersionPolicy
 {
     use HandlesAuthorization;
 
+    //Eine alte Vedrsion eines Dokuments darf nur verwendet werden, wenn das Dokument für andere Benutzer gesperrt ist.
+    //Eine alte Vedrsion eines Dokuments darf nicht verwendet werden, wenn ein Abschnitt des Dokuments von einem Ausbilder gesperrt wurde.
     public function use(LdapUser $user, Version $version)
     {
         $user = app()->user;
@@ -27,6 +29,8 @@ class VersionPolicy
             : Response::deny('Sofern Sie kein Ausbilder sind, dürfen Sie nur Versionen von Dokumenten bearbeiten, die Ihnen gehören.');
     }
 
+    //Der Veränderungsverlauf eines Dokuments darf nur bearbeitet werden, wenn das Dokument für andere Benutzer gesperrt ist.
+    //Die neueste Version eines Dokuments darf nicht gelöscht werden, wenn ein Abschnitt des Dokuments von einem Ausbilder gesperrt wurde.
     public function delete(LdapUser $user, Version $version)
     {
         $user = app()->user;
@@ -44,6 +48,8 @@ class VersionPolicy
             : Response::deny('Sofern Sie kein Ausbilder sind, dürfen Sie nur Versionen von Dokumenten löschen, die Ihnen gehören.');
     }
 
+    //Auszubildende dürfen nur den Veränderungsverlauf ihrer eigenen Dokumente löschen.
+    //Der Veränderungsverlauf eines Dokuments darf nur gelöscht werden, wenn das Dokument für andere Benutzer gesperrt ist.
     public function clearHistory(LdapUser $user, Version $version)
     {
         $user = app()->user;
@@ -57,6 +63,7 @@ class VersionPolicy
             : Response::deny('Sofern Sie kein Ausbilder sind, dürfen Sie nur Versionen von Dokumenten löschen, die Ihnen gehören.');
     }
 
+    //Auszubildende dürfen nur Versionen ihnen gehörender Dokumente ansehen
     public function vergleich(LdapUser $user, Version $version)
     {
         $user = app()->user;

@@ -11,6 +11,7 @@ class DocumentationPolicy
 {
     use HandlesAuthorization;
 
+    //Auszubildende dürfen nur ihre eigenen Dokumentationen ansehen
     public function index(LdapUser $ldapUser, Documentation $documentation) {
         $user = app()->user;
         return $user->is($documentation->project->user) || $user->is_admin
@@ -18,6 +19,7 @@ class DocumentationPolicy
             : Response::deny('Sofern Sie kein Ausbilder sind, dürfen Sie nur Ihre eigenen Dokumente ansehen.');
     }
 
+    //Eine Dokumentation darf nur bearbeitet werden, wenn sie für andere Benutzer gesperrt ist.
     public function store(LdapUser $ldapUser, Documentation $documentation)
     {
         $user = app()->user;
@@ -29,18 +31,14 @@ class DocumentationPolicy
             : Response::deny('Sofern Sie kein Ausbilder sind, dürfen Sie nur Ihre eigenen Dokumente bearbeiten.');
     }
 
-    public function history(LdapUser $ldapUser, Documentation $documentation)
-    {
-        $user = app()->user;
-        return $user->is($documentation->project->user) || $user->is_admin;
-    }
-
+    //Auszubildende dürfen nur ihre eigene Dokumentation für andere Benutzer sperren oder freigeben
     public function lock(LdapUser $ldapUser, Documentation $documentation)
     {
         $user = app()->user;
         return $user->is($documentation->project->user) || $user->is_admin;
     }
 
+    //Auszubildende dürfen nur für ihre eigene Dokumentation PDF-Dokumente generieren lassen.
     public function pdf(LdapUser $ldapUser, Documentation $documentation)
     {
         $user = app()->user;

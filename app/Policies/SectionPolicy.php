@@ -12,6 +12,9 @@ class SectionPolicy
 {
     use HandlesAuthorization;
 
+    //Hinzufügen eines Unterabschnitts zu einem existierenden Abschnitt:
+    //nur, wenn das Dokument für andere Benutzer gesperrt ist; nur, wenn der Abschnitt nicht von einem Ausbilder gesperrt wurde;
+    //nur, wenn der Benutzer entweder Ausbilder ist oder ihm das Dokument gehört.
     public function create(LdapUser $ldap_user, Section $section) {
         $user = app()->user;
         $documentation = $section->getUltimateParent();
@@ -32,6 +35,8 @@ class SectionPolicy
             : Response::deny('Sofern Sie kein Ausbilder sind, dürfen Sie nur Ihre eigenen Dokumente bearbeiten.');
     }
 
+    //Hinzufügen eines Abschnitts zur Projektdokumentation:
+    //nur, wenn das Dokument für andere Benutzer gesperrt ist; nur, wenn der Benutzer entweder Ausbilder ist oder ihm das Dokument gehört.
     public function createForDoc(LdapUser $user, Section $section) {
         $user = app()->user;
         $documentation = $user->project->documentation;
@@ -64,6 +69,7 @@ class SectionPolicy
     }
     */
 
+    //Sperren eines Abschnitts: Nur Ausbilder, wenn das Dokument für andere Benutzer gesperrt ist.
     public function lock(LdapUser $ldap_user, Section $section) {
         $user = app()->user;
         $parent = $section->getUltimateParent();
