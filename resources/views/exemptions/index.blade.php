@@ -5,8 +5,8 @@
 @section('content')
     <div class="section">
         <div class="container">
-            <div class="row">
-                <div class="col-md-12">
+            <div class="row bg-white">
+                <div class="col-md-12 py-2">
                     @if ($exemptions->count())
                         <div class="d-flex pb-3">
                             <h3 class="mr-auto">Freistellungen</h3>
