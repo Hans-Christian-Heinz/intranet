@@ -113,7 +113,7 @@ class SectionController extends Controller
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function delete(Project $project, Section $section) {
-        $this->authorize('store', $section);
+        $this->authorize('create', $section);
 
         $documentation = $project->documentation;
         $versionOld = $documentation->latestVersion();
@@ -163,7 +163,7 @@ class SectionController extends Controller
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(EditSectionRequest $request, Project $project, Section $section) {
-        $this->authorize('store', $section);
+        $this->authorize('create', $section);
 
         $documentation = $project->documentation;
         $versionOld = $documentation->latestVersion();

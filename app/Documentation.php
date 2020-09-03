@@ -17,7 +17,7 @@ class Documentation extends Model
         //Einleitung
         ['name' => 'intro', 'heading' => 'Einleitung', 'sequence' => 2, 'tpl' => 'parent_section', 'sections' => [
             ['name' => 'umfeld', 'heading' => 'Projektumfeld', 'sequence' => 0,],
-            ['name' => 'ziel', 'heading' => 'Projektziel', 'sequence' => 1,],
+            ['name' => 'ziele', 'heading' => 'Projektziele', 'sequence' => 1,],
             ['name' => 'begruendung', 'heading' => 'Projektbegründung', 'sequence' => 2,],
             ['name' => 'schnittstellen', 'heading' => 'Prozessschnittstellen', 'sequence' => 3,],
             ['name' => 'abgrenzung', 'heading' => 'Projektabgrenzung', 'sequence' => 4,],
@@ -37,7 +37,7 @@ class Documentation extends Model
         //Analysephase
         ['name' => 'analyse', 'heading' => 'Analysephase', 'sequence' => 4, 'tpl' => 'parent_section', 'sections' => [
             ['name' => 'ist_analyse', 'heading' => 'Ist-Analyse', 'sequence' => 0,],
-            ['name' => 'wirtschaft_analyse', 'heading' => 'Wirtschaftlichkeitsanalyse (Make or Buy Entscheidung)', 'sequence' => 1, 'sections' => [
+            ['name' => 'wirtschaft_analyse', 'heading' => 'Wirtschaftlichkeitsanalyse', 'sequence' => 1, 'tpl'=>'parent_section', 'sections' => [
                 ['name' => 'make_buy', 'heading' => 'Make or Buy-Entscheidung', 'sequence' => 0,],
                 ['name' => 'kosten', 'heading' => 'Projektkosten', 'sequence' => 1,],
                 ['name' => 'amortisation', 'heading' => 'Amortisationsdauer', 'sequence' => 2,],

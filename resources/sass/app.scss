@@ -49,6 +49,7 @@ ul.scrollnav {
     max-height: 6em;
     max-width: 75em;
     flex-wrap: nowrap;
+    white-space: nowrap;
 
     li.nav-item {
         max-height: 5em;
@@ -98,6 +99,10 @@ ul.scrollnav {
 #addImage .modal-dialog, .section-modal .modal-dialog {
     width: 60%;
     max-width: 60%;
+}
+
+.modal {
+    white-space: normal;
 }
 
 span.comment{

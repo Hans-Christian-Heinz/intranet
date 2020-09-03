@@ -10928,6 +10928,7 @@ ul.scrollnav {
   max-height: 6em;
   max-width: 75em;
   flex-wrap: nowrap;
+  white-space: nowrap;
 }
 
 ul.scrollnav li.nav-item {
@@ -10979,6 +10980,10 @@ ul.scrollnav li.nav-item .fehler:not(.active) {
 .section-modal .modal-dialog {
   width: 60%;
   max-width: 60%;
+}
+
+.modal {
+  white-space: normal;
 }
 
 span.comment {
