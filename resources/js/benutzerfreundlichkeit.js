@@ -20,6 +20,9 @@ $(document).ready(function() {
     //Weiterhin: Beim Vergleich zweier Versionen eines Dokuments: Wenn ein Abschnitt auf der einen Version geöffnet wird,
     //soll er, wen möglich, auch auf der anderen geöffnet werden.
     $('.nav-tabs > li > a').on('shown.bs.tab', function() {
+        //Stelle sicher, dass alle angezeigten Überschriften breit genug sind
+        sectionHeadingsWidth();
+
         let link_id = $(this).attr('id');
         let name = link_id.substr(0, link_id.indexOf('_tab'));
         let parent_id = $(this).closest('ul.nav').attr('id');
@@ -48,6 +51,18 @@ $(document).ready(function() {
             inputs.prop('checked', true);
         }
     });
+
+    //In der Navigationsleiste von Antrag und Dokumentation sind manche Überschriften bzw. Tabs nicht breit genug
+    //Keine CSS-Lösung gefunden => überprüfe: Overflow vorhanden? Wenn ja: Breiter machen
+    //Methode funktioniert nur für Tabs bzw. Überschriften, die im Moment angezeigt werden (andere haben display:none)
+    function sectionHeadingsWidth() {
+        const headings = $('ul.scrollnav').find('li.nav-item');
+        headings.each(function() {
+            if (0 < $(this).prop('scrollWidth') && $(this).prop('offsetWidth') < $(this).prop('scrollWidth')) {
+                $(this).css('min-width', $(this).prop('scrollWidth') + 15);
+            }
+        });
+    }
 
     //Wenn die Validierung eines Feldes fehlschägt (Projektantrag oder -dokumentation), hebe die entsprechenden Überschriften hervor
     function showErrors() {
@@ -84,6 +99,7 @@ $(document).ready(function() {
         return tabs;
     }
 
+    sectionHeadingsWidth();
     showErrors();
 
     let tabs = getOpenTabs();
