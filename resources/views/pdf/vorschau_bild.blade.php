@@ -8,10 +8,10 @@
 </head>
 <body>
     <div style="page-break-inside: avoid">
-        <img src="{{ asset('storage/' . $image->path) }}" height="{{ $image->height }}"
-             width="{{ $image->width }}" alt="Die Bilddatei konnte nicht gefunden werden."/>
+        <img src="{{ asset('storage/' . $image->path) }}" height="{{ $height }}"
+             width="{{ $width }}" alt="Die Bilddatei konnte nicht gefunden werden."/>
         <br/>
-        <span class="footnote">Abb X:{{ $image->footnote }}</span>
+        <span class="footnote">Abb X: {{ $footnote }}</span>
     </div>
 </body>
 </html>

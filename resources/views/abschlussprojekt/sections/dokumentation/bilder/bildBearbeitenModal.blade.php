@@ -51,10 +51,8 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-link text-secondary" data-dismiss="modal">Abbrechen</button>
 
-                <a type="button" class="btn btn-link text-secondary" target="_blank"
-                   href="{{ route('abschlussprojekt.bilder.vorschau', ['project' => $documentation->project, 'image' => $image]) }}">
-                    Vorschau
-                </a>
+                <input type="submit" class="btn btn-link text-dark" formtarget="_blank" form="changeImageForm{{ $image->id }}"
+                   value="Vorschau" name="image_preview"/>
 
                 <form class="form" id="changeImageForm{{ $image->id }}" method="POST"
                       action="{{ route('abschlussprojekt.dokumentation.images.update', $documentation->project) }}">

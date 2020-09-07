@@ -303,6 +303,10 @@ class DocumentationController extends Controller
             'height' => 'required|int|min:100|max:1500',
         ]);
 
+        if ($request->image_preview) {
+            return $this->image_preview(Image::find($request->img_id), $request->height, $request->width, $request->footnote);
+        }
+
         //Hilfsmethode, die eine neue Version anlegt und den zu bearbeitenden Abschnitt kopiert.
         $data = $this->copySection($request, $documentation);
         $sectionOld = $data['sectionOld'];
@@ -396,5 +400,56 @@ class DocumentationController extends Controller
         $version->sections()->save($section, ['sequence' => $sectionOld->pivot->sequence,]);
 
         return compact('versionOld', 'version', 'sectionOld', 'section');
+    }
+
+    /**
+     * Hilfsmethode zur Vorschau eines formatierten Bilds
+     *
+     * @param Image $image
+     * @param $height
+     * @param $width
+     * @return mixed
+     */
+    private function image_preview(Image $image, $height, $width, $footnote) {
+        $title = 'Bildvorschau';
+
+        $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+        $fontDirs = $defaultConfig['fontDir'];
+
+        $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+        $fontData = $defaultFontConfig['fontdata'];
+
+        $mpdf = new \Mpdf\Mpdf([
+            'mode' => 'utf-8',
+            'format' => 'A4',
+
+            'margin_left' => 20,
+            'margin_right' => 20,
+            'margin_top' => 20,
+            'margin_bottom' => 20,
+
+            'fontDir' => array_merge($fontDirs, [base_path() . '/resources/fonts']),
+            'fontdata' => $fontData + [
+                    'opensans' => [
+                        'R' => 'OpenSans-Regular.ttf',
+                        'B' => 'OpenSans-Bold.ttf'
+                    ]
+                ],
+            'default_font_size' => 10,
+            'default_font' => 'opensans',
+
+            'tempDir' => sys_get_temp_dir(),
+        ]);
+
+        $mpdf->SetTitle($title);
+
+        $mpdf->WriteHTML(view('pdf.vorschau_bild', [
+            'image' => $image,
+            'height' => $height,
+            'width' => $width,
+            'footnote' => $footnote,
+        ])->render());
+
+        return $mpdf->Output($title . '.pdf', 'I');
     }
 }
