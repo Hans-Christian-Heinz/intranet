@@ -172,28 +172,29 @@ class SectionController extends Controller
         $version->user()->associate(app()->user);
         $documentation->versions()->save($version);
 
+        //$sections sind nun genau die Abschnitte, die nicht der zu bearbeitende oder dessen Unterabschnitte sind.
+        $sections = $versionOld->sections->reject(function ($value) use ($section) {
+            $reject = $value->is($section);
+            $help = $value;
+            while(! is_null($help->section)) {
+                if ($help->section->is($section)) {
+                    $reject = true;
+                    break;
+                }
+                $help = $help->section;
+            }
 
-        //$sections sind nun genau die Abschnitte, die nicht der zu bearbeitende sind.
-        $sections = $versionOld->sections->reject(function ($value, $key) use ($section) {
-            return $value->is($section);
+            return $reject;
         });
+        //Hilfsmethode zum Speichern des zu bearbeitenden Abschnitts und seiner Unterabschnitte
+        $this->helpEditSection($section, $versionOld, $version, $section->getParent(), $request);
 
-        //Erstelle eine neue Section-Instanz; sie wird in der neuen Version die zu bearbeitende ersetzen
-        $sectionNew = new Section([
-            'name' => $request->name,
-            'heading' => $request->heading,
-            'tpl' => $request->tpl,
-            'text' => $section->text,
-        ]);
-
-        $sectionNew->sections()->saveMany($section->sections);
-        $section->getParent()->sections()->save($sectionNew);
         //Hilfsvariable zum Anpassen der Reihenfolge:
         $reihenfolge = 0;
         foreach($sections as $s) {
             //Reihenfolge anpassen: Stelle sicher, dass die Reihenfolge (sequence) bei 0 startet und sich immer um genau 1 erhöht.
             //Beachte: Die Abschnitte sind bereits geordnet; es muss nur die Position übersprungen werden, an der
-            //der bearbeitete Abschnitt einzufügen ist.
+            //der bearbeitete Abschnitt eingefügt ist.
             if ($s->getParent()->is($section->getParent())) {
                 if ($reihenfolge == $request->sequence) {
                     $reihenfolge++;
@@ -205,7 +206,6 @@ class SectionController extends Controller
                 $version->sections()->save($s, ['sequence' => $s->pivot->sequence,]);
             }
         }
-        $version->sections()->save($sectionNew, ['sequence' => $request->sequence,]);
 
         if (app()->user->isNot($project->user)) {
             $project->user->notify(new CustomNotification(app()->user->full_name, 'Änderungen an der Projektdokumentation',
@@ -213,6 +213,46 @@ class SectionController extends Controller
         }
 
         return redirect()->back()->with('status', 'Der Abshcnitt wurde erfolgreich bearbeitet.');
+    }
+
+    /**
+     * Hilfsmethode zum Bearbeiten von Abschnitten: Es werden der bearbeitete Abschnitt und alle Unterabschnitte gespeichert.
+     *
+     * @param Section $section
+     * @param Version $versionOld
+     * @param Version $versionNew
+     * @param $parent
+     * @param null $request
+     */
+    private function helpEditSection(Section $section, Version $versionOld, Version $versionNew, $parent, $request = null) {
+        //$request ist dann null, wenn ein Unterabschnitt kopiert werden soll.
+        //Unterabschnitte werden kopiert, da der zu verändernde Abschnitt kopiert und gespeichert wird: Sie bekommen also einen neuen Überabschnitt.
+        if (is_null($request)) {
+            $sequence = $section->pivot->sequence;
+            $newSect = new Section();
+            $newSect->name = $section->name;
+            $newSect->heading = $section->heading;
+            $newSect->tpl = $section->tpl;
+            $newSect->text = $section->text;
+        }
+        //Lege einen neuen ABschnitt an, der statt des zu verändernden gespeichert wird
+        else {
+            $sequence = $request->sequence;
+            $newSect = new Section();
+            $newSect->name = $request->name;
+            $newSect->heading = $request->heading;
+            $newSect->tpl = $request->tpl;
+            $newSect->text = $section->text;
+        }
+        $parent->sections()->save($newSect);
+        $versionNew->sections()->save($newSect, ['sequence' => $sequence]);
+        foreach ($section->images as $img) {
+            $newSect->images()->save($img, ['sequence' => $img->pivot->sequence]);
+        }
+        //Rufe die Methode rekursiv für alle Unterabschnitte auf, um sie für die neue Version zu kopieren.
+        foreach($versionOld->sections()->where('sections.section_id', $section->id)->get() as $sect) {
+            $this->helpEditSection($sect, $versionOld, $versionNew, $newSect);
+        }
     }
 
     /**
