@@ -115,6 +115,10 @@ class DocumentationController extends Controller
      * @throws \Mpdf\MpdfException
      */
     public function pdf(PdfRequest $request, Project $project) {
+        if ($request->vorschau_pdf) {
+            return $this->vorschau_pdf($request);
+        }
+
         $documentation = $project->documentation;
         $version = $documentation->latestVersion();
         $this->authorize('pdf', $documentation);

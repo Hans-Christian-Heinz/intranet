@@ -212,7 +212,7 @@ class SectionController extends Controller
                 'An Ihrer Projektdokumentation wurden vom Absender Änderungen vorgenommen.'));
         }
 
-        return redirect()->back()->with('status', 'Der Abshcnitt wurde erfolgreich bearbeitet.');
+        return redirect()->back()->with('status', 'Der Abschnitt wurde erfolgreich bearbeitet.');
     }
 
     /**

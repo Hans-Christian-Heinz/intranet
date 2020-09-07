@@ -128,6 +128,8 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-link text-secondary" data-dismiss="modal">Abbrechen</button>
 
+                <input type="submit" class="btn btn-link text-dark" formtarget="_blank" form="format_pdf" name="vorschau_pdf" value="Vorschau"/>
+
                 <form class="form" id="format_pdf" action="{{ route($route, $project) }}" method="POST" target="_blank">
                     @csrf
                     <button type="submit" class="btn btn-primary">PDF erstellen</button>

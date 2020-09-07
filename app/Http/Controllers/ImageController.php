@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\General\CollectionHelper;
 use App\Http\Requests\DeleteImageRequest;
+use App\Image;
 use App\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -54,5 +55,53 @@ class ImageController extends Controller
         Storage::disk('public')->delete($request->datei);
 
         return redirect()->back()->with('status', 'Die Bilddatei wurde erfolgreich gelöscht.');
+    }
+
+    /**
+     * Vorschau der Formatierung eines Bildes als PDF-Dokument
+     *
+     * @param Project $project
+     * @param Image $image
+     */
+    public function vorschau(Project $project, Image $image) {
+        $this->authorize('vorschau', $image);
+
+        $title = 'Bildvorschau';
+
+        $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+        $fontDirs = $defaultConfig['fontDir'];
+
+        $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+        $fontData = $defaultFontConfig['fontdata'];
+
+        $mpdf = new \Mpdf\Mpdf([
+            'mode' => 'utf-8',
+            'format' => 'A4',
+
+            'margin_left' => 20,
+            'margin_right' => 20,
+            'margin_top' => 20,
+            'margin_bottom' => 20,
+
+            'fontDir' => array_merge($fontDirs, [base_path() . '/resources/fonts']),
+            'fontdata' => $fontData + [
+                    'opensans' => [
+                        'R' => 'OpenSans-Regular.ttf',
+                        'B' => 'OpenSans-Bold.ttf'
+                    ]
+                ],
+            'default_font_size' => 10,
+            'default_font' => 'opensans',
+
+            'tempDir' => sys_get_temp_dir(),
+        ]);
+
+        $mpdf->SetTitle($title);
+
+        $mpdf->WriteHTML(view('pdf.vorschau_bild', [
+            'image' => $image,
+        ])->render());
+
+        return $mpdf->Output($title . '.pdf', 'I');
     }
 }

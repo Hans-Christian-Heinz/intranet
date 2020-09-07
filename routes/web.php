@@ -138,6 +138,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/', 'ImageController@index')->name('index');
             Route::post('/upload', 'ImageController@upload')->name('upload');
             Route::delete('/', 'ImageController@delete')->name('delete');
+            Route::get('{image}/vorschau', 'ImageController@vorschau')->name('vorschau');
         });
 
         Route::fallback(function() {

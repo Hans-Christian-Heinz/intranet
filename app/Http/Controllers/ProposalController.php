@@ -116,6 +116,10 @@ class ProposalController extends Controller
      * @throws \Mpdf\MpdfException
      */
     public function pdf(PdfRequest $request, Project $project) {
+        if ($request->vorschau_pdf) {
+            return $this->vorschau_pdf($request);
+        }
+
         $proposal = $project->proposal;
         $this->authorize('pdf', $proposal);
 

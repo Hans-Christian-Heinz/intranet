@@ -8,7 +8,7 @@
     @foreach($s->images as $image)
         <tr class="align-middle">
             <td>
-                <img height="{{ $image->height }}" width="{{ $image->width }}" src="{{ asset('storage/' . $image->path) }}"
+                <img height="200" width="400" src="{{ asset('storage/' . $image->path) }}"
                      alt="Bilddatei wurde nicht gefunden"/>
                 <br/>
                 <span>{{ $image->footnote }}</span>

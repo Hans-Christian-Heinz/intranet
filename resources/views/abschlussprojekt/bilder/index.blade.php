@@ -14,7 +14,7 @@
                         @foreach($image_files as $file)
                             <tr class="border-bottom-0">
                                 <td colspan="3" class="border-bottom-0">
-                                    <img src="{{ asset('storage/' . $file) }}" alt="Datei wurde nicht gefunden.">
+                                    <img height="200" width="300" src="{{ asset('storage/' . $file) }}" alt="Datei wurde nicht gefunden.">
                                 </td>
                             </tr>
                             <tr class="border-top-0">
