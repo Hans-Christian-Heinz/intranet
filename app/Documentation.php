@@ -26,7 +26,7 @@ class Documentation extends Model
         ['name' => 'projekt_planung', 'heading' => 'Projektplanung', 'sequence' => 3, 'tpl' => 'parent_section', 'sections' => [
             ['name' => 'doku_phasen', 'heading' => 'Projektphasen', 'sequence' => 0, 'tpl' => 'dokumentation.phases_section',],
             ['name' => 'abweichungen', 'heading' => 'Abweichnungen vom Projektantrag', 'sequence' => 1,],
-            ['name' => 'ressourcen', 'heading' => 'Ressourcenplanung', 'sequence' => 2, 'tpl' => 'dokumentation.ressourcen_parent_section', 'sections' => [
+            ['name' => 'ressourcen', 'heading' => 'Ressourcenplanung', 'sequence' => 2, 'tpl' => 'parent_section', 'sections' => [
                 ['name' => 'hardware', 'heading' => 'Hardware', 'sequence' => 0, 'tpl' => 'dokumentation.ressourcen_text_section',],
                 ['name' => 'software', 'heading' => 'Software', 'sequence' => 1, 'tpl' => 'dokumentation.ressourcen_text_section',],
                 ['name' => 'personal', 'heading' => 'Personal', 'sequence' => 2, 'tpl' => 'dokumentation.ressourcen_text_section',],

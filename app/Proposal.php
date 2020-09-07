@@ -14,10 +14,10 @@ class Proposal extends Model
         ['name' => 'deadline', 'heading' => 'Termin', 'sequence' => 1, 'tpl' => 'antrag.deadline_section',],
         ['name' => 'description', 'heading' => 'Beschreibung', 'sequence' => 2,],
         ['name' => 'environment', 'heading' => 'Umfeld', 'sequence' => 3,],
-        ['name' => 'phases', 'heading' => 'Projektphasen mit Zeitplanung', 'sequence' => 4, 'tpl' => 'antrag.phases_parent_section', 'sections' => self::PHASES,],
+        ['name' => 'phases', 'heading' => 'Projektphasen mit Zeitplanung', 'sequence' => 4, 'tpl' => 'parent_section', 'sections' => self::PHASES,],
         ['name' => 'documentation', 'heading' => 'Dokumentation', 'sequence' => 5,],
         ['name' => 'attachments', 'heading' => 'Anlagen', 'sequence' => 6,],
-        ['name' => 'presantation', 'heading' => 'Präsentationsmittel', 'sequence' => 7,],
+        ['name' => 'presentation', 'heading' => 'Präsentationsmittel', 'sequence' => 7,],
     ];
 
     //Die Unterabschnitte des Abschnitts phases

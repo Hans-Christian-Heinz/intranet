@@ -1,7 +1,7 @@
 {{-- Schaltflächen zum Sperren und Freigeben von Dokumenten (damit ein Dokument nur von einem Benutzer auf einmal
      bearbeitet werden kann. --}}
 
-<div class="d-flex pb-3">
+<div class="d-flex mb-3">
     @if(app()->user->is($document->lockedBy))
         <p>Das Dokument wird im Moment von Ihnen bearbeitet. Es ist für andere Benutzer gesperrt.</p>
         <form method="post" class="form mx-4" action="{{ route($route_prefix . '.release', [

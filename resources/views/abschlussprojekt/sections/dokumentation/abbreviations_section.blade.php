@@ -1,7 +1,7 @@
 {{-- Das Textfeld für die Ressourcenplanung hat einen anderen Platzhalter. --}}
 
-<textarea id="{{ $s->name }}_text" name="{{ $s->name }}" placeholder="SQL => Structured Query Language;&#10;HTML => Hypertext Markup Language;"
-          class="form-control mt-2 @error($s->name) is-invalid @enderror" form="{{ $form }}" @if($disable) disabled @endif>{{ $s->text }}</textarea>
+<textarea @if($disable) disabled @else placeholder="SQL => Structured Query Language;&#10;HTML => Hypertext Markup Language;" @endif
+          class="form-control mt-2 @error($s->name) is-invalid @enderror" form="{{ $form }}" id="{{ $s->name }}_text" name="{{ $s->name }}">{{ $s->text }}</textarea>
 
 @error($s->name) <p class="invalid-feedback">{{ $message }}</p> @enderror
 

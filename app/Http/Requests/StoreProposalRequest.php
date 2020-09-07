@@ -29,8 +29,8 @@ class StoreProposalRequest extends FormRequest
         $phasesRule = new PhasesRule();
 
         $rules = [];
-        $rules['start'] = 'date|after:today';
-        $rules['end'] = 'date|after:start';
+        $rules['start'] = 'nullable|date|after:today';
+        $rules['end'] = 'nullable|date|after:today|after:start';
         foreach(Proposal::PHASES as $phase) {
             $rules[$phase['name']] = [
                 $phasesRule,

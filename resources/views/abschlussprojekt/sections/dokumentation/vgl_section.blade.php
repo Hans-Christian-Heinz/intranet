@@ -2,7 +2,7 @@
 
 @php($zeitplanung = $documentation->getZeitplanung($version))
 
-<textarea id="{{ $s->name }}_text" name="{{ $s->name }}" placeholder="{{ $s->heading }}" @if($disable) disabled @endif
+<textarea id="{{ $s->name }}_text" name="{{ $s->name }}" @if($disable) disabled @else placeholder="{{ $s->heading }}" @endif
           class="form-control mt-2 @error($s->name) is-invalid @enderror" form="{{ $form }}">{{ $zeitplanung['text'] }}</textarea>
 
 @error($s->name) <p class="invalid-feedback">{{ $message }}</p> @enderror
@@ -22,7 +22,7 @@
                 <td>{{ $phase['heading'] }}</td>
                 <td>{{ $phase['duration'] }} h</td>
                 <td>
-                    <input type="number" style="width: 4rem;" step="1" min="0" form="{{ $form }}" id="{{ $name }}_input" name="{{ $name }}"
+                    <input type="number" style="width: 4rem; display: inline-block;" step="1" min="0" form="{{ $form }}" id="{{ $name }}_input" name="{{ $name }}"
                            @if($disable) disabled @endif
                            class="form-control @error($name) is-invalid @enderror" value="{{ intval($zeitplanung[$name]) }}"/>
                     @error($name) <p class="invalid-feedback">{{ $message }}</p> @enderror
@@ -33,9 +33,9 @@
         @else
             <tr>
                 <td><b>{{ $phase['heading'] }}</b></td>
-                <td><b>{{ $phase['duration'] }}</b></td>
-                <td><b>{{ $zeitplanung[$name] }}</b></td>
-                <td><b>{{ $phase['difference'] }}</b></td>
+                <td><b>{{ $phase['duration'] }}h</b></td>
+                <td><b>{{ $zeitplanung[$name] }}h</b></td>
+                <td><b>{{ $phase['difference'] }}h</b></td>
             </tr>
         @endif
     @endforeach

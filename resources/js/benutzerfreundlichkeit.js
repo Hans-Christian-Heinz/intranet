@@ -58,8 +58,9 @@ $(document).ready(function() {
     function sectionHeadingsWidth() {
         const headings = $('ul.scrollnav').find('li.nav-item');
         headings.each(function() {
-            if (0 < $(this).prop('scrollWidth') && $(this).prop('offsetWidth') < $(this).prop('scrollWidth')) {
-                $(this).css('min-width', $(this).prop('scrollWidth') + 15);
+            let sw = $(this).prop('scrollWidth');
+            if (0 < sw && $(this).prop('offsetWidth') < sw) {
+                $(this).css('min-width', sw + 15);
             }
         });
     }

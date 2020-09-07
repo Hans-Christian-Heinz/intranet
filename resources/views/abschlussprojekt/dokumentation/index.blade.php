@@ -6,7 +6,7 @@
     <div class="section">
         <div class="container">
             <div class="row bg-white">
-                <div class="col-md-12">
+                <div class="col-md-12 py-2">
                     <div class="d-flex pb-3">
                         <h3 class="mr-auto">Projektdokumentation {{ $documentation->project->user->full_name }}</h3>
                     </div>

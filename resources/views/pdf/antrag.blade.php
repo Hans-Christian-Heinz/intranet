@@ -37,6 +37,7 @@
         }
         .heading {
             color: {{ $format['ueberschrFarbe'] }};
+            page-break-after: avoid;
         }
         table {
             width: 100%;
