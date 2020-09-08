@@ -25,6 +25,6 @@
     },
     "dependencies": {
         "node": "^9.11.2",
-        "tinymce": "^5.2.0"
+        "tinymce": "^5.4.1"
     }
 }

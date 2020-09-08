@@ -21,3 +21,6 @@ mix.js('resources/js/app.js', 'public/js')
         'resources/js/benutzerfreundlichkeit.js',
         'resources/js/generatePlaceholders.js',
     ], 'public/js/benutzerfreundlichkeit.js');
+
+
+mix.copy('node_modules/tinymce/skins', 'public/skins');

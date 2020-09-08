@@ -19,6 +19,7 @@ class Section extends Model
     const TEMPLATES = [
         'text_section',
         'parent_section',
+        'tinymce_section',
         'antrag.deadline_section',
         'antrag.phases_parent_section',
         'antrag.phases_text_section',
