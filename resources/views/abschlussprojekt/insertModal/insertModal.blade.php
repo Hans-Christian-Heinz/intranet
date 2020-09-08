@@ -15,7 +15,7 @@
                 {{-- Navigationsleiste --}}
                 <ul class="nav nav-pills" id="insertTab" role="tablist">
                     @foreach(App\Section::INSERT as $insert)
-                        @if(request()->is('*antrag') && $insert == 'bild')
+                        @if(request()->is('*antrag') && ($insert == 'bild' || $insert == 'dokument'))
                             @continue
                         @endif
                         <li class="nav-item">
@@ -29,7 +29,7 @@
                 {{-- Tabinhalt --}}
                 <div class="tab-content my-3" id="insertTabContent">
                     @foreach(App\Section::INSERT as $insert)
-                        @if(request()->is('*antrag') && $insert == 'bild')
+                        @if(request()->is('*antrag') && ($insert == 'bild' || $insert == 'dokument'))
                             @continue
                         @endif
                         <div class="tab-pane @if($loop->first) active show @endif" id="insert_{{ $insert }}" role="tabpanel"

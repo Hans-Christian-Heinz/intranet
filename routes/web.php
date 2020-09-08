@@ -140,6 +140,16 @@ Route::group(['middleware' => 'auth'], function () {
             Route::delete('/', 'ImageController@delete')->name('delete');
         });
 
+        //Routen für das Verwalten von Hochzuladenden und Einzubindenden Dokumenten für die Dokumentation
+        //Routen werden im Moment nicht verwendet, da die Funktionalität des Einbindens anderer PDF-Dokumente in eine
+        //Abschlussdokumentation im Moment nicht implementiert ist und somit keine Dokumente hochgeladen und verwendet werden.
+        Route::group([
+            'prefix' => '/dokumente',
+            'as' => 'dokumente.',
+        ], function() {
+            Route::post('/upload', 'UploadDocumentsController@upload')->name('upload');
+        });
+
         Route::fallback(function() {
             return redirect(route('abschlussprojekt.index'));
         });

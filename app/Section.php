@@ -39,6 +39,7 @@ class Section extends Model
         'liste',
         'link',
         'bild',
+        //'dokument'
     ];
 
     const PLACEHOLDERS = [
@@ -46,6 +47,7 @@ class Section extends Model
         '##LIST(',
         '##LINK(',
         '##IMAGE(',
+        //'##DOCUMENT(',
     ];
 
     use HasSections;

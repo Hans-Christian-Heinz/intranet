@@ -36,7 +36,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Gebe alle Bilder aus dem Ordner storage/app/public/username zurück.
+     * Gebe alle Bilder aus dem Ordner storage/app/public/images/username zurück.
      *
      * @return array
      */
@@ -51,6 +51,26 @@ class User extends Authenticatable
         }
 
         return $image_files;
+    }
+
+    /**
+     * Gebe alle Dokumente aus dem Ordner storage/app/public/documents/username zurück.
+     * Methode wird im Moment nicht verwendet, da das Einbinden fremder Dokumente in eine Abschlussdokumentation im Moment
+     * nicht implementiert ist, und somit keine Dokumente hochgeladen und verwendet werden.
+     *
+     * @return array
+     */
+    public function getUploadedDocuments() {
+        $dir_path = 'documents/' . $this->ldap_username;
+        if(! Storage::disk('public')->exists($dir_path)) {
+            $documents = [];
+            Storage::disk('public')->makeDirectory($dir_path);
+        }
+        else {
+            $documents = Storage::disk('public')->files($dir_path);
+        }
+
+        return $documents;
     }
 
     public function isAdmin()
