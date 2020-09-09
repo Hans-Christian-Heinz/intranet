@@ -21,7 +21,6 @@
                         </tr>
                     @endforeach
                 </table>
-                <span class="footnote">Tabelle {{ $table_nr->getNumber() . ': ' . $help->footer }}</span>
             </div>
         @elseif($help instanceof App\Structs\ListStruct)
             @if($help->type == 'unordered')

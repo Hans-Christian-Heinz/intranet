@@ -45,7 +45,12 @@
             border: 1px solid black;
             page-break-inside: avoid;
             border-collapse: collapse;
+        }
+        caption {
             caption-side: bottom;
+            text-align: left;
+            margin-top: 0;
+            padding-top: 0;
         }
         td, th {
             border: 1px solid black;

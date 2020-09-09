@@ -5,6 +5,7 @@
 <div style="page-break-inside: avoid">
     <tocentry content="Tabelle {{ $table_nr->nextNumber() }}: Vgl.: geplanter und tatsächlicher Zeitaufwand" name="toc_tables"/>
     <table>
+        <caption>Tabelle {{ $table_nr->getNumber() }}: Vgl.: geplanter und tatsächlicher Zeitaufwand</caption>
         <tr class="bgHeader">
             <th>Projektphase</th>
             <th>Geplant</th>
@@ -29,5 +30,4 @@
             @endif
         @endforeach
     </table>
-    <span class="footnote">Tabelle {{ $table_nr->getNumber() }}: Vgl.: geplanter und tatsächlicher Zeitaufwand</span>
 </div>

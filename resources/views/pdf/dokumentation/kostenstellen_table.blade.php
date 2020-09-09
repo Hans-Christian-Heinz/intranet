@@ -3,6 +3,7 @@
 <div style="page-break-inside: avoid">
     <tocentry content="Tabelle {{ $table_nr->nextNumber() }}: Ressourcenplanung {{ $section->heading }}" name="toc_tables"/>
     <table>
+        <caption>Tabelle {{ $table_nr->getNumber() }}: Ressourcenplanung {{ $section->heading }}</caption>
         <tr class="bgHeader">
             <th>{{ $section->heading }}</th>
             <th>Beschreibung</th>
@@ -23,5 +24,4 @@
             @endif
         @endforeach
     </table>
-    <span class="footnote">Tabelle {{ $table_nr->getNumber() }}: Ressourcenplanung {{ $section->heading }}</span>
 </div>

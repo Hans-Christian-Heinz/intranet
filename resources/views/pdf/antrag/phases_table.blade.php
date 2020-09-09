@@ -3,6 +3,7 @@
 <div style="page-break-inside: avoid">
     <tocentry content="Tabelle {{ $table_nr->nextNumber() }}: grobe Zeitplanung" name="toc_tables"/>
     <table>
+        <caption>Tabelle {{ $table_nr->getNumber() }}: grobe Zeitplanung</caption>
         @foreach($version->sections()->where('sections.section_id', $section->id)->orderBy('sequence')->get() as $phase)
             @php($help = $phase->getPhases())
 
@@ -21,5 +22,4 @@
             @endforeach
         @endforeach
     </table>
-    <span class="footnote">Tabelle {{ $table_nr->getNumber() }}: grobe Zeitplanung</span>
 </div>

@@ -47,6 +47,12 @@
             border-collapse: collapse;
             caption-side: bottom;
         }
+        caption {
+            caption-side: bottom;
+            text-align: left;
+            margin-top: 0;
+            padding-top: 0;
+        }
         tr, td, th {
             border: 1px solid black;
             padding: 0.5em;
