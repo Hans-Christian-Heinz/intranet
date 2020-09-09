@@ -11,7 +11,6 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-    {{--<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>--}}
     <script src="{{ asset('js/tinymce.js') }}"></script>
     <script src="{{ asset('js/benutzerfreundlichkeit.js') }}" defer></script>
 

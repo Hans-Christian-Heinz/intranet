@@ -10,7 +10,7 @@ import 'tinymce/plugins/table';
 //initialize tinymce
 tinymce.init({
     selector: 'textarea.section-content',
-    skin_url: '/skins/ui/oxide',
+    skin_url: '/js/skins/ui/oxide',
     plugins: 'code, table, lists, advlist',
     toolbar: 'undo redo styleselect bold italic alignleft aligncenter alignright alignjustify bullist numlist outdent indent code table',
     table_header_type: 'cells'

@@ -9,7 +9,7 @@
                 Option "Bilder") hochgeladen werden.<br/>
                 Beachten Sie: Bilder werden nur in denjenigen Abschnitten angezeigt, die durch Fließtext beschrieben
                 werden. (Bilder werden nicht angezeigt in den folgenden Abschnitten: "Titel", "Projektphasen",
-                "Ressourcenplanung" (alle Unterabschnitte).)
+                "Ressourcenplanung" (alle Unterabschnitte).)<br/>
                 Beachten Sie: Bilder werden standardmäßig am Ende eines Abschnitts eingefügt. Wenn Sie innerhalb eines
                 Abschnitts eingefügt werden sollen, kennzeichnen Sie diese Stellen bitte mit dem Platzahlter ##IMAGE()##.
             </p>

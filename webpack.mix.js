@@ -23,4 +23,4 @@ mix.js('resources/js/app.js', 'public/js')
     ], 'public/js/benutzerfreundlichkeit.js');
 
 
-mix.copy('node_modules/tinymce/skins', 'public/skins');
+mix.copy('node_modules/tinymce/skins', 'public/js/skins');
