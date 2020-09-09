@@ -20,7 +20,7 @@ class Section extends Model
     const TEMPLATES = [
         'text_section',
         'parent_section',
-        //'tinymce_section',
+        'tinymce_section',
         'antrag.deadline_section',
         'antrag.phases_parent_section',
         'antrag.phases_text_section',
@@ -37,16 +37,16 @@ class Section extends Model
      * Objekte, die in Abschnitte eingefügt werden können. Konstante wird im Template abschlussprojekt.insertModal.inserModal verwendet
      */
     const INSERT = [
-        //'tabelle',
-        //'liste',
+        'tabelle',
+        'liste',
         'link',
         'bild',
         //'dokument'
     ];
 
     const PLACEHOLDERS = [
-        //'##TABLE(',
-        //'##LIST(',
+        '##TABLE(',
+        '##LIST(',
         '##LINK(',
         '##IMAGE(',
         //'##DOCUMENT(',
@@ -84,13 +84,12 @@ class Section extends Model
      * @return array
      */
     public function formatText(IncrementCounter $table_nr) {
-        /*if ($this->tpl == 'tinymce_section') {
+        if ($this->tpl == 'tinymce_section') {
             $text = $this->formatTextTinymce($table_nr);
         }
         else {
             $text = $this->text;
-        }*/
-        $text = $this->formatTextTinymce($table_nr);
+        }
         $text = $this->abbreviationLinks($text);
         $res = [];
 
