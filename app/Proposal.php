@@ -105,7 +105,14 @@ class Proposal extends Model
             return "Es ist ein Fehler aufgetreten: Der Abschnitt Thema liegt in dem Projektantrag nicht vor.";
         }
         else {
-            return $section->text;
+            if (strpos($section->text, '<p') !== false) {
+                $start = strpos($section->text, '>');
+                $end = strpos($section->text, '</p>');
+                return substr($section->text, $start + 1, $end - $start - 1);
+            }
+            else {
+                return $section->text;
+            }
         }
     }
 

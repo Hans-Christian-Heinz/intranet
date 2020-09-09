@@ -4,7 +4,7 @@
     @foreach($section->formatText($table_nr) as $help)
         @if($help instanceof App\Structs\Link)
             <a href="#{{ $help->ziel }}">{{ $help->text }}</a>
-        @elseif($help instanceof App\Structs\Table)
+        {{--@elseif($help instanceof App\Structs\Table)
             <div style="page-break-inside: avoid">
                 <tocentry content="Tabelle {{ $table_nr->nextNumber() . ': ' . $help->footer }}" name="toc_tables"/>
                 <table>
@@ -35,7 +35,7 @@
                         <li>{{ $c }}</li>
                     @endforeach
                 </ol>
-            @endif
+            @endif--}}
         @elseif($help instanceof App\Structs\ImagePlaceholder)
             <br/>
             <div style="page-break-inside: avoid">
@@ -48,11 +48,12 @@
             </div>
             <br/>
         @else
-            @if($section->tpl == 'tinymce_section')
+            {{--@if($section->tpl == 'tinymce_section')
                 {!! $help !!}
             @else
                 {!! nl2br(e($help)) !!}
-            @endif
+            @endif--}}
+            {!! $help !!}
         @endif
     @endforeach
 </p>

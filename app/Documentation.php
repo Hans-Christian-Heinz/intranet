@@ -207,7 +207,7 @@ class Documentation extends Model
 
         if ($abbreviations) {
             $abbr = $abbreviations->text;
-            $abbr_array = explode(',', $abbr);
+            $abbr_array = explode(';', $abbr);
             foreach($abbr_array as $abk) {
                 $tmp = array_map('trim', explode('=>', $abk));
                 if (count($tmp) == 2) {

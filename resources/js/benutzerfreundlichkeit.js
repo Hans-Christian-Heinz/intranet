@@ -55,7 +55,7 @@ $(document).ready(function() {
     //auto-select justify for the tinymce-editor
     $('button.tox-tbtn').each(function() {
         if ($(this).attr('aria-label') === 'Justify' && $(this).attr('title') === 'Justify') {
-            $(this).click();
+            $(this).attr('aria-pressed', 'true');
         }
     });
 

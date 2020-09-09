@@ -1,6 +1,8 @@
 {{-- Zeige die Bilder eines Abschnitts an und stelle Möglichkeiten zur Bearbeitung zur Verfügung --}}
 <div class="my-4">
-    <h5 class="text-center">Bilder des Abschnitts</h5>
+    @if ($s->images->isNotEmpty())
+        <h5 class="text-center">Bilder des Abschnitts</h5>
+    @endif
     <table class="table table-striped">
         @foreach($s->images as $image)
             <tr class="align-middle">

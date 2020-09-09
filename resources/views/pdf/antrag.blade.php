@@ -31,7 +31,7 @@
         div#titelseite p {
             color: {{ $format['textfarbe'] }};;
         }
-        abschnitt {
+        .abschnitt {
             text-align: justify;
             color: {{ $format['textfarbe'] }};
         }
@@ -104,7 +104,8 @@
 
     <tocentry content="Hinweis!" level="0"/>
     <h1 class="heading" style="page-break-before: right">Hinweis!</h1>
-    <p class="abschnitt">Ich bestätige, dass der Projektantrag dem Ausbildungsbetrieb vorgelegt und vom Ausbildenden genehmigt wurde. Der
+    <p class="abschnitt">
+        Ich bestätige, dass der Projektantrag dem Ausbildungsbetrieb vorgelegt und vom Ausbildenden genehmigt wurde. Der
         Projektantrag enthält keine Betriebsgeheimnisse. Soweit diese für die Antragsstellung notwendig sind, wurden nach
         Rücksprache mit dem Ausbildenden die entsprechenden Stellen unkenntlich gemacht.
         Mit dem Absenden des Projektantrages bestätige ich weiterhin, dass der Antrag eigenständig von mir angefertigt wurde.
@@ -113,6 +114,10 @@
         Bei meiner ersten Anmeldung im Online-Portal wurde ich darauf hingewiesen, dass meine Arbeit bei Täuschungshandlungen
         bzw. Ordnungsverstößen mit "null" Punkten bewertet werden kann. Ich bin weiter darüber aufgeklärt worden, dass dies auch
         dann gilt, wenn festgestellt wird, dass meine Arbeit im Ganzen oder zu Teilen mit der eines anderen Prüfungsteilnehmers
-        übereinstimmt. Es ist mir bewusst, dass Kontrollen durchgeführt werden.</p>
+        übereinstimmt. Es ist mir bewusst, dass Kontrollen durchgeführt werden.<br/><br/>
+        Winnenden, den {{ \Carbon\Carbon::today()->format('d.m.Y') }} <br/><br/>
+        ___________________________________________________________________________ <br/>
+        {{ strtoupper($project->user->full_name) }}
+    </p>
 </body>
 </html>
