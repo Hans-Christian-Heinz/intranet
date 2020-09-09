@@ -45,6 +45,7 @@ font-family: "DejaVu Sans", sans-serif;
             border: 1px solid black;
             page-break-inside: avoid;
             border-collapse: collapse;
+            caption-side: bottom;
         }
         tr, td, th {
             border: 1px solid black;

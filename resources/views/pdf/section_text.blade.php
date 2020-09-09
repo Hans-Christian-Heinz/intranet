@@ -8,6 +8,7 @@
             <div style="page-break-inside: avoid">
                 <tocentry content="Tabelle {{ $table_nr->nextNumber() . ': ' . $help->footer }}" name="toc_tables"/>
                 <table>
+                    <caption>Tabelle {{ $table_nr->getNumber() . ': ' . $help->footer }}</caption>
                     @foreach($help->rows as $row)
                         <tr class="@if($row->isHeader) bgHeader @elseif($loop->index % 2 == 0) bg0 @else bg1 @endif">
                             @foreach($row->content as $c)

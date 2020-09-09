@@ -18,8 +18,6 @@
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}" >
     <link rel="stylesheet" href="{{ asset('css/fork-awesome.css') }}">
-    <!-- This one is for tinymce; it doesn't help. -->
-    <link rel="stylesheet" href="{{ asset('skins/content/default/content.css') }}">
     <style>
         @yield('style')
     </style>

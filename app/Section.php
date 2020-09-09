@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Helpers\General\IncrementCounter;
 use App\Structs\ImagePlaceholder;
 use App\Structs\Link;
 use App\Structs\ListStruct;
@@ -157,6 +158,46 @@ class Section extends Model
 
         //Fasse aufeinanderfolgende Textblöcke im Array zusammen
         return $this->combineTexts($res);
+    }
+
+    /**
+     * Füge Tabellen zum Tabellenverzeichnis hinzu und aktualisiere ihre Fußnote / Überschrift mit ihrer Nummer
+     *
+     * @param IncrementCounter $table_nr
+     * @return string|string[]
+     */
+    public function formatTextTinymce(IncrementCounter $table_nr) {
+        $text = $this->text;
+        $res = '';
+        //Suche nach <table>-tags
+        $pos = strpos($text, '<table');
+        $end = strpos($text, '</table>');
+        while($pos !== false) {
+            //determine the table's caption
+            $captPos = strpos($text, '<caption', $pos);
+            if ($captPos === false || $captPos >= $end) {
+                $caption = '<caption>Tabelle ' . $table_nr->nextNumber() . ': </caption>';
+                $captPosHelp = strpos($text, '>', $pos) + 1;
+                $text = substr_replace($text, $caption, $captPosHelp, 0);
+                $addLength = strlen($caption);
+                $caption = 'Tabelle ' . $table_nr->getNumber() . ': ';
+            }
+            else {
+                $captEnd = strpos($text, '</caption>', $pos);
+                $captContentStart = strpos($text, '>', $captPos) + 1;
+                $caption = substr($text, $captContentStart, $captEnd - $captContentStart);
+                $caption = 'Tabelle ' . $table_nr->nextNumber() . ': ' . $caption;
+                $text = substr_replace($text, $caption, $captContentStart, $captEnd - $captContentStart);
+                $addLength = strlen('Tabelle ' . $table_nr->getNumber() . ': ');
+            }
+            $toc_entry = '<tocentry content="' . $caption . '" name="toc_tables"/>';
+            $addLength = $addLength + strlen($toc_entry);
+            $text = substr_replace($text, $toc_entry, $pos, 0);
+            $pos = strpos($text, '<table', $pos + $addLength + 1);
+            $end = strpos($text, '</table>', $end + $addLength + 1);
+        }
+
+        return $text;
     }
 
     /**

@@ -52,6 +52,13 @@ $(document).ready(function() {
         }
     });
 
+    //auto-select justify for the tinymce-editor
+    $('button.tox-tbtn').each(function() {
+        if ($(this).attr('aria-label') === 'Justify' && $(this).attr('title') === 'Justify') {
+            $(this).click();
+        }
+    });
+
     //In der Navigationsleiste von Antrag und Dokumentation sind manche Überschriften bzw. Tabs nicht breit genug
     //Keine CSS-Lösung gefunden => überprüfe: Overflow vorhanden? Wenn ja: Breiter machen
     //Methode funktioniert nur für Tabs bzw. Überschriften, die im Moment angezeigt werden (andere haben display:none)

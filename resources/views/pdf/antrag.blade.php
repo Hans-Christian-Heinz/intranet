@@ -31,7 +31,7 @@
         div#titelseite p {
             color: {{ $format['textfarbe'] }};;
         }
-        p.abschnitt {
+        abschnitt {
             text-align: justify;
             color: {{ $format['textfarbe'] }};
         }
@@ -45,10 +45,25 @@
             border: 1px solid black;
             page-break-inside: avoid;
             border-collapse: collapse;
+            caption-side: bottom;
         }
         tr, td, th {
             border: 1px solid black;
             padding: 0.5em;
+        }
+        tr:nth-child(even) {
+            background: {{ $format['koerperBackground'] }}
+        }
+        tr:nth-child(odd) {
+            background: {{ $format['koerperHintergrund'] }}
+        }
+        th {
+            background-color: {{ $format['kopfHintergrund'] }};
+            color: {{ $format['kopfText'] }};
+            text-align: left;
+        }
+        tr.bgHeader {
+            background-color: {{ $format['kopfHintergrund'] }};
         }
         tr.bgHeader {
             background-color: {{ $format['kopfHintergrund'] }};
