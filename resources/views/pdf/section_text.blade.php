@@ -1,7 +1,7 @@
 {{-- Gebe den Text eines Abschnittes aus. Füge ggf. Bilder ein --}}
 
 <p class="abschnitt">
-    @foreach($section->formatText() as $help)
+    @foreach($section->formatText($table_nr) as $help)
         @if($help instanceof App\Structs\Link)
             <a href="#{{ $help->ziel }}">{{ $help->text }}</a>
         @elseif($help instanceof App\Structs\Table)
@@ -40,14 +40,19 @@
             <br/>
             <div style="page-break-inside: avoid">
                 <tocentry content="Abb {{ $image_nr->nextNumber() . ': ' . $section->images[$help->number]->footnote }}" name="toc_img"/>
-                <img src="{{ asset('storage/' . $section->images[$help->number]->path) }}" height="{{ $section->images[$help->number]->height }}"
-                     width="{{ $section->images[$help->number]->width }}" alt="Die Bilddatei konnte nicht gefunden werden."/>
-                <br/>
-                <span class="footnote">Abb {{ $image_nr->getNumber() . ': ' . $section->images[$help->number]->footnote }}</span>
+                <figure>
+                    <img src="{{ asset('storage/' . $section->images[$help->number]->path) }}" height="{{ $section->images[$help->number]->height }}"
+                         width="{{ $section->images[$help->number]->width }}" alt="Die Bilddatei konnte nicht gefunden werden."/>
+                    <figcaption>Abb {{ $image_nr->getNumber() . ': ' . $section->images[$help->number]->footnote }}</figcaption>
+                </figure>
             </div>
             <br/>
         @else
-            {!! nl2br(e($help)) !!}
+            @if($section->tpl == 'tinymce_section')
+                {!! $help !!}
+            @else
+                {!! nl2br(e($help)) !!}
+            @endif
         @endif
     @endforeach
 </p>

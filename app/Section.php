@@ -80,10 +80,16 @@ class Section extends Model
      * Ersetze alle Platzhalter in einem Abschnitt durch entsprechende Structs (App\Structs). Beim Generieren eines PDF-Dokuments
      * werden die Structs dann durch passende HTML-Syntax ersetzt.
      *
+     * @param IncrementCounter $table_nr
      * @return array
      */
-    public function formatText() {
-        $text = $this->text;
+    public function formatText(IncrementCounter $table_nr) {
+        if ($this->tpl == 'tinymce_section') {
+            $text = $this->formatTextTinymce($table_nr);
+        }
+        else {
+            $text = $this->text;
+        }
         $text = $this->abbreviationLinks($text);
         $res = [];
 
@@ -164,11 +170,10 @@ class Section extends Model
      * Füge Tabellen zum Tabellenverzeichnis hinzu und aktualisiere ihre Fußnote / Überschrift mit ihrer Nummer
      *
      * @param IncrementCounter $table_nr
-     * @return string|string[]
+     * @return string
      */
-    public function formatTextTinymce(IncrementCounter $table_nr) {
+    private function formatTextTinymce(IncrementCounter $table_nr) {
         $text = $this->text;
-        $res = '';
         //Suche nach <table>-tags
         $pos = strpos($text, '<table');
         $end = strpos($text, '</table>');

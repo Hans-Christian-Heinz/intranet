@@ -39,10 +39,8 @@
     @include('pdf.dokumentation.soll_ist_vgl')
 @elseif($section->name == 'abbreviations')
     @include('pdf.dokumentation.abbreviations')
-@elseif($section->tpl == 'tinymce_section')
-    @include('pdf.tinymce_section')
 @elseif($version->sections()->where('sections.section_id', $section->id)->count() == 0)
-    @include('pdf.section_text', ['section_text' => $section->text,])
+    @include('pdf.section_text')
 @else
     @foreach($version->sections()->where('sections.section_id', $section->id)->orderBy('sequence')->get() as $child)
         <tocentry content="{{ $child->heading }}" level="{{ $tiefe }}"/>

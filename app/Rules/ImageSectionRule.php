@@ -30,7 +30,7 @@ class ImageSectionRule implements Rule
     public function passes($attribute, $value)
     {
         $section = Section::find($value);
-        if (!$section || ($section->tpl != 'text_section' && $section->tpl != 'dokumentation.vgl_section')) {
+        if (!$section || ($section->tpl != 'text_section' && $section->tpl != 'dokumentation.vgl_section' && $section->tpl != 'tinymce_section')) {
             return false;
         }
         if (! $this->version->sections->contains($section)) {
