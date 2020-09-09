@@ -41,8 +41,8 @@
             <div style="page-break-inside: avoid">
                 <tocentry content="Abb {{ $image_nr->nextNumber() . ': ' . $section->images[$help->number]->footnote }}" name="toc_img"/>
                 <figure>
-                    <img src="{{ asset('storage/' . $section->images[$help->number]->path) }}" height="{{ $section->images[$help->number]->height }}"
-                         width="{{ $section->images[$help->number]->width }}" alt="Die Bilddatei konnte nicht gefunden werden."/>
+                    <img src="{{ asset('storage/' . $section->images[$help->number]->path) }}" height="{{ $section->images[$help->number]->height }}mm"
+                         width="{{ $section->images[$help->number]->width }}mm" alt="Die Bilddatei konnte nicht gefunden werden."/>
                     <figcaption>Abb {{ $image_nr->getNumber() . ': ' . $section->images[$help->number]->footnote }}</figcaption>
                 </figure>
             </div>

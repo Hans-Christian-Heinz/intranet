@@ -29,18 +29,20 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><label for="width{{ $image->id }}">Breite:</label></td>
+                        <!-- maximale Breite: Breite einer DIN A4 Seite -4cm margins -->
+                        <td><label for="width{{ $image->id }}">Breite in mm:</label></td>
                         <td>
-                            <input type="number" id="width{{ $image->id }}" name="width" min="100" max="1500" step="1"
+                            <input type="number" id="width{{ $image->id }}" name="width" min="10" max="170" step="1"
                                    class="form-control @error('width') is-invalid @enderror" form="changeImageForm{{ $image->id }}"
                                    value="{{ $image->width }}"/>
                             @error('width') <p class="invalid-feedback">{{ $message }}</p> @enderror
                         </td>
                     </tr>
                     <tr>
-                        <td><label for="height{{ $image->id }}">Höhe:</label></td>
+                        <!-- maximale Höhe: Höhe einer DIN A4 Seite -4cm margins -1cm für eine Fußnote -->
+                        <td><label for="height{{ $image->id }}">Höhe in mm:</label></td>
                         <td>
-                            <input type="number" id="height{{ $image->id }}" name="height" min="100" max="1500" step="1"
+                            <input type="number" id="height{{ $image->id }}" name="height" min="10" max="247" step="1"
                                    class="form-control @error('height') is-invalid @enderror" form="changeImageForm{{ $image->id }}"
                                    value="{{ $image->height }}"/>
                             @error('height') <p class="invalid-feedback">{{ $message }}</p> @enderror

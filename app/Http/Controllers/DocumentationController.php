@@ -215,11 +215,17 @@ class DocumentationController extends Controller
 
         //Erstelle nun einen neuen Datensatz für images und ordne ihn dem neuen Abschnitt hinzu
         $imageSize = getimagesize(asset('storage/' . $request->path));
+        //Speichere Breite und Höhe in mm
+        //Maximalgröße: 170mm x 247mm
+        //Standard dpi (dots per inch): 96
+        //1inch = 25,4mm
+        $width_mm = min($imageSize[0] / 96 * 25.4, 170);
+        $height_mm = min($imageSize[1] / 96 * 25.4, 247);
         $img = new Image([
             'footnote' => $request->footnote,
             'path' => $request->path,
-            'width' => $imageSize[0],
-            'height' => $imageSize[1],
+            'width' => $width_mm,
+            'height' => $height_mm,
         ]);
         $section->images()->save($img, ['sequence' => $section->images()->count(),]);
 
@@ -294,13 +300,15 @@ class DocumentationController extends Controller
         $this->authorize('store', $documentation);
 
         //Maximale sequence / position / reihenfolge wird später überprüft
+        //Breite und Höhe werden in mm gespeichert;
+        // Maximalgröße Dimensionen einer DIN A4 Seite - 4cm page-margins; Höhe weiterhin -1cm für eine Fußnote
         $request->validate([
             'img_id' => 'required|int|min:1',
             'section_id' => 'required|int|min:1',
             'footnote' => 'nullable|string|max:255',
             'sequence' => 'required|int|min:0',
-            'width' => 'required|int|min:100|max:1500',
-            'height' => 'required|int|min:100|max:1500',
+            'width' => 'required|int|min:10|max:170',
+            'height' => 'required|int|min:10|max:247',
         ]);
 
         if ($request->image_preview) {

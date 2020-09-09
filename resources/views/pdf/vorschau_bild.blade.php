@@ -7,11 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 </head>
 <body>
-    <div style="page-break-inside: avoid">
-        <img src="{{ asset('storage/' . $image->path) }}" height="{{ $height }}"
-             width="{{ $width }}" alt="Die Bilddatei konnte nicht gefunden werden."/>
-        <br/>
-        <span class="footnote">Abb X: {{ $footnote }}</span>
-    </div>
+    <figure>
+        <img src="{{ asset('storage/' . $image->path) }}" height="{{ $height }}mm"
+             width="{{ $width }}mm" alt="Die Bilddatei konnte nicht gefunden werden."/>
+        <figcaption>Abb X: {{ $footnote }}</figcaption>
+    </figure>
 </body>
 </html>
