@@ -73719,7 +73719,7 @@ tinymce_tinymce__WEBPACK_IMPORTED_MODULE_0___default.a.init({
   selector: 'textarea.section-content',
   skin_url: '/skins/ui/oxide',
   plugins: 'code, table, lists, advlist',
-  toolbar: 'undo redo styleselect bold italic alignleft aligncenter alignright alignjustify bullist numlist outdent indent code',
+  toolbar: 'undo redo styleselect bold italic alignleft aligncenter alignright alignjustify bullist numlist outdent indent code table',
   table_header_type: 'cells'
 });
 

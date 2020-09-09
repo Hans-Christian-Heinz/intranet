@@ -11,8 +11,8 @@
         @foreach($kostenstellen_gesamt as $name => $prize)
             <tr class="@if($loop->index % 2 == 0) bg0 @else bg1 @endif">
                 @if($loop->last)
-                    <th>{{ $name }}</th>
-                    <th>{{ $prize }}€</th>
+                    <td><b>{{ $name }}</b></td>
+                    <td><b>{{ $prize }}€</b></td>
                 @else
                     <td>{{ $name }}</td>
                     <td>{{ $prize }}€</td>

@@ -8,7 +8,7 @@
             <div class="row bg-white">
                 <div class="col-md-12 py-2">
                     <div class="d-flex pb-3">
-                        <h3 class="mr-auto">Projekt{{ $doc_type }} {{ $document->project->user->full_name }}: Veränderungsverlauf</h3>
+                        <h3 class="mx-auto">Projekt{{ $doc_type }} {{ $document->project->user->full_name }}: Veränderungsverlauf</h3>
                     </div>
                     {{-- Tabelle der Versionen --}}
                     <table class="table table-striped">

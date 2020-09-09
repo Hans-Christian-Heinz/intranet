@@ -8,7 +8,7 @@
             <div class="row bg-white">
                 <div class="col-md-12 py-2">
                     <div class="d-flex pb-3">
-                        <h3 class="mr-auto">Bilder für die Projektdokumentation</h3>
+                        <h3 class="mx-auto">Bilder für die Projektdokumentation</h3>
                     </div>
                     <table class="table text-center">
                         @foreach($image_files as $file)

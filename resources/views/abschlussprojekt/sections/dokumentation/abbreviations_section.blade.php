@@ -6,7 +6,7 @@
 @error($s->name) <p class="invalid-feedback">{{ $message }}</p> @enderror
 
 Um ein Abkürzungsverzeichnis zu erstellen, geben Sie einfach Abkürzungen und ihre Bedeutung im Format eines assoziativen Arrays
-(vgl. PHP) an; einzelne Einträge werden durch "," getrennt. (Format: abkürzung => bedeutung,)
+(vgl. PHP) an; einzelne Einträge werden durch ";" getrennt. (Format: abkürzung => bedeutung;)
 
 @if(request()->is('*dokumentation') || request()->is('*antrag'))
     @include('abschlussprojekt.sections.kommentar',

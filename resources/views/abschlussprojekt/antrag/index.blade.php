@@ -8,7 +8,7 @@
             <div class="row bg-white">
                 <div class="col-md-12 py-2">
                     <div class="d-flex pb-3">
-                        <h3 class="mr-auto">Projektantrag {{ $proposal->project->user->full_name }}</h3>
+                        <h3 class="mx-auto">Projektantrag {{ $proposal->project->user->full_name }}</h3>
                     </div>
                     @include('abschlussprojekt.lock_document', [
                         'document' => $proposal,

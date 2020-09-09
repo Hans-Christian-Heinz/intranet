@@ -22,10 +22,10 @@
                 </tr>
             @else
                 <tr class="@if($loop->index % 2 == 0) bg0 @else bg1 @endif">
-                    <th>{{ $phase['heading'] }}</th>
-                    <th>{{ $phase['duration'] }}</th>
-                    <th>{{ $zeitplanung[$name] }}</th>
-                    <th>{{ $phase['difference'] }}</th>
+                    <td><b>{{ $phase['heading'] }}</b></td>
+                    <td><b>{{ $phase['duration'] }}</b></td>
+                    <td><b>{{ $zeitplanung[$name] }}</b></td>
+                    <td><b>{{ $phase['difference'] }}</b></td>
                 </tr>
             @endif
         @endforeach
