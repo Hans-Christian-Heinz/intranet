@@ -12,8 +12,13 @@
         </tr>
         @foreach($zeitplanung as $phase)
             <tr class="@if($loop->index % 2 == 0) bg0 @else bg1 @endif">
-                <td>{{ $phase['heading'] }}</td>
-                <td>{{ $phase['duration'] }}h</td>
+                @if($loop->last)
+                    <td><b>{{ $phase['heading'] }}</b></td>
+                    <td><b>{{ $phase['duration'] }}h</b></td>
+                @else
+                    <td>{{ $phase['heading'] }}</td>
+                    <td>{{ $phase['duration'] }}h</td>
+                @endif
             </tr>
         @endforeach
     </table>
