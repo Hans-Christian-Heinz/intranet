@@ -10,14 +10,14 @@ class Proposal extends Model
 {
     // Die Abschnitte eines Projektantrags
     const SECTIONS = [
-        ['name' => 'topic', 'heading' => 'Thema', 'sequence' => 0,],
-        ['name' => 'deadline', 'heading' => 'Termin', 'sequence' => 1, 'tpl' => 'antrag.deadline_section',],
-        ['name' => 'description', 'heading' => 'Beschreibung', 'sequence' => 2,],
-        ['name' => 'environment', 'heading' => 'Umfeld', 'sequence' => 3,],
-        ['name' => 'phases', 'heading' => 'Projektphasen mit Zeitplanung', 'sequence' => 4, 'tpl' => 'parent_section', 'sections' => self::PHASES,],
-        ['name' => 'documentation', 'heading' => 'Dokumentation', 'sequence' => 5,],
-        ['name' => 'attachments', 'heading' => 'Anlagen', 'sequence' => 6,],
-        ['name' => 'presentation', 'heading' => 'Präsentationsmittel', 'sequence' => 7,],
+        ['name' => 'topic', 'heading' => 'Thema', 'counter' => 'none', 'sequence' => 0,],
+        ['name' => 'deadline', 'heading' => 'Termin', 'counter' => 'none', 'sequence' => 1, 'tpl' => 'antrag.deadline_section',],
+        ['name' => 'description', 'heading' => 'Beschreibung', 'counter' => 'none', 'sequence' => 2,],
+        ['name' => 'environment', 'heading' => 'Umfeld', 'counter' => 'none', 'sequence' => 3,],
+        ['name' => 'phases', 'heading' => 'Projektphasen mit Zeitplanung', 'counter' => 'none', 'sequence' => 4, 'tpl' => 'parent_section', 'sections' => self::PHASES,],
+        ['name' => 'documentation', 'heading' => 'Dokumentation', 'counter' => 'none', 'sequence' => 5,],
+        ['name' => 'attachments', 'heading' => 'Anlagen', 'counter' => 'none', 'sequence' => 6,],
+        ['name' => 'presentation', 'heading' => 'Präsentationsmittel', 'counter' => 'none', 'sequence' => 7,],
     ];
 
     //Die Unterabschnitte des Abschnitts phases

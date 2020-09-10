@@ -64,6 +64,7 @@ class Section extends Model
         'heading',
         'text',
         'tpl',
+        'counter',
     ];
 
     /**
@@ -267,6 +268,35 @@ class Section extends Model
             }
             return $text;
         }
+    }
+
+    /**
+     * TODO
+     *
+     * @param IncrementCounter $inhalt_counter
+     * @param Version $version
+     * @return string
+     */
+    public function getNumberedHeading(IncrementCounter $inhalt_counter, Version $version) {
+        $res = '';
+        $section = $version->sections()->where('id', $this->id)->first();
+        while (! is_null($section->section)) {
+            $res = $section->pivot->sequence + 1 . '.' . $res;
+            $section = $version->sections()->where('id', $section->section_id)->first();
+        }
+        switch($section->counter) {
+            case 'inhalt':
+                $res = strval($inhalt_counter->getNumber()) . '.' . $res;
+                break;
+            case 'anhang':
+                $res = 'A.' . $res;
+                break;
+            default:
+                $res = '';
+                break;
+        }
+
+        return $res . '  ' . $this->heading;
     }
 
     /**

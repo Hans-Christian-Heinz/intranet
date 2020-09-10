@@ -95,10 +95,15 @@
 
     <sethtmlpagefooter name="footer" value="on"/>
 
-    <tocpagebreak links="on" toc-prehtml="&lt;h3 class=&quot;heading&quot;&gt;Inhaltsverzeichnis&lt;/h3&gt;"></tocpagebreak>
+    <tocentry content="Inhaltsverzeichnis" level="0"/>
+    <tocpagebreak links="on" toc-resetpagenum="1" toc-prehtml="{{ '<h3 class="heading">Inhaltsverzeichnis</h3>' }}"></tocpagebreak>
 
     @foreach($version->sections()->where('sections.proposal_id', $proposal->id)->orderBy('sequence')->get() as $section)
-        <tocentry content="{{ $section->heading }}" level="0"/>
+        @if($section->counter == 'inhalt')
+            <tocentry content="{{ $inhalt_counter->nextNumber() . '.  ' . $section->heading }}" level="0"/>
+        @else
+            <tocentry content="{{ $section->heading }}" level="0"/>
+        @endif
         @include('pdf.section', ['tiefe' => 1,])
     @endforeach
 

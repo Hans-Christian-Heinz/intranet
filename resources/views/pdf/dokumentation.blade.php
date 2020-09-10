@@ -93,12 +93,18 @@
 
 <sethtmlpagefooter name="footer" value="on"/>
 
-<tocpagebreak links="on" toc-prehtml="&lt;h3 class=&quot;heading&quot;&gt;Inhaltsverzeichnis&lt;/h3&gt;"></tocpagebreak>
+<tocentry content="Inhaltsverzeichnis" level="0"/>
+{{-- Beachten Sie: Ausgabe mit {{}} benutzt automatisch die Methode htmlspecialchars --}}
+{{--<tocpagebreak links="on" toc-resetpagenum="1" toc-prehtml="{!! htmlspecialchars('<h3 class="heading">Inhaltsverzeichnis</h3>', ENT_QUOTES) !!}"></tocpagebreak>--}}
+<tocpagebreak links="on" toc-resetpagenum="1" toc-prehtml="{{ '<h3 class="heading">Inhaltsverzeichnis</h3>' }}"></tocpagebreak>
 
+<tocentry content="Tabellenverzeichnis" level="0"/>
 {{-- Tabellenverzeichnis --}}
-<tocpagebreak links="on" toc-prehtml="&lt;h3 class=&quot;heading&quot;&gt;Tabellenverzeichnis&lt;/h3&gt;" name="toc_tables"></tocpagebreak>
+<tocpagebreak links="on" toc-prehtml="{{ '<h3 class="heading">Tabellenverzeichnis</h3>' }}" name="toc_tables"></tocpagebreak>
+
+<tocentry content="Abbildungsverzeichnis" level="0"/>
 {{-- Abbildungsverzeichnis --}}
-<tocpagebreak links="on" toc-prehtml="&lt;h3 class=&quot;heading&quot;&gt;Abbildungsverzeichnis&lt;/h3&gt;" name="toc_img"></tocpagebreak>
+<tocpagebreak links="on" toc-prehtml="{{ '<h3 class="heading">Abbildungsverzeichnis</h3>' }}" name="toc_img"></tocpagebreak>
 
 @foreach($version->sections()->where('sections.documentation_id', $documentation->id)->orderBy('sequence')->get() as $section)
     @if($section->name === 'title')
@@ -110,7 +116,11 @@
         @include('pdf.dokumentation.eidesstattliche_erklaerung')
     @endif
 
-    <tocentry content="{{ $section->heading }}" level="0"/>
+    @if($section->counter == 'inhalt')
+        <tocentry content="{{ $inhalt_counter->nextNumber() . '.  ' . $section->heading }}" level="0"/>
+    @else
+        <tocentry content="{{ $section->heading }}" level="0"/>
+    @endif
     @include('pdf.section', ['tiefe' => 1,])
 
     {{-- Eidesstattliche Erklärung muss auch vorkommen, wenn kein Anhang vorliegt (oder der Anahng nicht am Ende steht) --}}

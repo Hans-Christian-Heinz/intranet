@@ -5,22 +5,22 @@
 <a name="{{ $section->name }}" style="display: none"></a>
 @switch($tiefe)
     @case(1)
-        <h1 class="heading">{{ $section->heading }}</h1>
+        <h1 class="heading">{{ $section->getNumberedHeading($inhalt_counter, $version) }}</h1>
         @break
     @case(2)
-        <h2 class="heading">{{ $section->heading }}</h2>
+        <h2 class="heading">{{ $section->getNumberedHeading($inhalt_counter, $version) }}</h2>
         @break
     @case(3)
-        <h3 class="heading">{{ $section->heading }}</h3>
+        <h3 class="heading">{{ $section->getNumberedHeading($inhalt_counter, $version) }}</h3>
         @break
     @case(4)
-        <h4 class="heading">{{ $section->heading }}</h4>
+        <h4 class="heading">{{ $section->getNumberedHeading($inhalt_counter, $version) }}</h4>
         @break
     @case(5)
-        <h5 class="heading">{{ $section->heading }}</h5>
+        <h5 class="heading">{{ $section->getNumberedHeading($inhalt_counter, $version) }}</h5>
         @break
     @default
-        <h6 class="heading">{{ $section->heading }}</h6>
+        <h6 class="heading">{{ $section->getNumberedHeading($inhalt_counter, $version) }}</h6>
         @break
 @endswitch
 
@@ -43,7 +43,7 @@
     @include('pdf.section_text')
 @else
     @foreach($version->sections()->where('sections.section_id', $section->id)->orderBy('sequence')->get() as $child)
-        <tocentry content="{{ $child->heading }}" level="{{ $tiefe }}"/>
+        <tocentry content="{{ $child->getNumberedHeading($inhalt_counter, $version) }}" level="{{ $tiefe }}"/>
         @include('pdf.section', ['section' => $child, 'tiefe' => $tiefe + 1,])
     @endforeach
 @endif

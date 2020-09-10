@@ -11,9 +11,9 @@ class Documentation extends Model
     // Die Standardabschnitte einer Projektdokumentation
     const SECTIONS = [
         //Abkürzungsverzeichnis
-        ['name' => 'abbreviations', 'heading' => 'Abkürzungsverzeichnis', 'sequence' => 0, 'tpl' => 'dokumentation.abbreviations_section',],
+        ['name' => 'abbreviations', 'heading' => 'Abkürzungsverzeichnis', 'sequence' => 0, 'tpl' => 'dokumentation.abbreviations_section', 'counter' => 'none',],
         //Titel
-        ['name' => 'title', 'heading' => 'Titel', 'sequence' => 1, 'tpl' => 'dokumentation.title_section',],
+        ['name' => 'title', 'heading' => 'Titel', 'sequence' => 1, 'tpl' => 'dokumentation.title_section', 'counter' => 'none',],
         //Einleitung
         ['name' => 'intro', 'heading' => 'Einleitung', 'sequence' => 2, 'tpl' => 'parent_section', 'sections' => [
             ['name' => 'umfeld', 'heading' => 'Projektumfeld', 'sequence' => 0,],
@@ -76,20 +76,20 @@ class Documentation extends Model
             ['name' => 'ausblick', 'heading' => 'Ausblick', 'sequence' => 2,],
         ],],
         //Anhang
-        ['name' => 'anhang', 'heading' => 'Anhang', 'sequence' => 11, 'sections' => [
-            ['name' => 'gantt', 'heading' => 'Detaillierte Zeitplanung', 'sequence' => 0,],
-            ['name' => 'lasten', 'heading' => 'Lastenheft (Auszug)', 'sequence' => 1,],
-            ['name' => 'usecase', 'heading' => 'Use-Case-Diagramm', 'sequence' => 2,],
-            ['name' => 'pflichten', 'heading' => 'Pflichtenheft (Auszug)', 'sequence' => 3,],
-            ['name' => 'db_modell', 'heading' => 'Datenbankmodell', 'sequence' => 4,],
-            ['name' => 'klassendiagramm', 'heading' => 'Klassendiagramm', 'sequence' => 5,],
-            ['name' => 'ereignis_prozess', 'heading' => 'Ereignisgesteuerte Prozesskette', 'sequence' => 6,],
-            ['name' => 'oberfl_entwurf', 'heading' => 'Oberflächenentwürfe', 'sequence' => 7,],
-            ['name' => 'screenshots', 'heading' => 'Screenshots der Anwendung', 'sequence' => 8,],
-            ['name' => 'user_doku', 'heading' => 'Benutzerdokumentation (Auszug)', 'sequence' => 9,],
-            ['name' => 'developer_doku', 'heading' => 'Entwicklerdokumentation (Auszug)', 'sequence' => 10,],
-            ['name' => 'testfall', 'heading' => 'Testfall und Konsolenaufruf', 'sequence' => 11,],
-            ['name' => 'code_auszug', 'heading' => 'Code-Auszug', 'sequence' => 12,],
+        ['name' => 'anhang', 'heading' => 'Anhang', 'sequence' => 11, 'counter' => 'anhang', 'sections' => [
+            ['name' => 'gantt', 'heading' => 'Detaillierte Zeitplanung', 'counter' => 'anhang', 'sequence' => 0,],
+            ['name' => 'lasten', 'heading' => 'Lastenheft (Auszug)', 'counter' => 'anhang', 'sequence' => 1,],
+            ['name' => 'usecase', 'heading' => 'Use-Case-Diagramm', 'counter' => 'anhang', 'sequence' => 2,],
+            ['name' => 'pflichten', 'heading' => 'Pflichtenheft (Auszug)', 'counter' => 'anhang', 'sequence' => 3,],
+            ['name' => 'db_modell', 'heading' => 'Datenbankmodell', 'counter' => 'anhang', 'sequence' => 4,],
+            ['name' => 'klassendiagramm', 'heading' => 'Klassendiagramm', 'counter' => 'anhang', 'sequence' => 5,],
+            ['name' => 'ereignis_prozess', 'heading' => 'Ereignisgesteuerte Prozesskette', 'counter' => 'anhang', 'sequence' => 6,],
+            ['name' => 'oberfl_entwurf', 'heading' => 'Oberflächenentwürfe', 'counter' => 'anhang', 'sequence' => 7,],
+            ['name' => 'screenshots', 'heading' => 'Screenshots der Anwendung', 'counter' => 'anhang', 'sequence' => 8,],
+            ['name' => 'user_doku', 'heading' => 'Benutzerdokumentation (Auszug)', 'counter' => 'anhang', 'sequence' => 9,],
+            ['name' => 'developer_doku', 'heading' => 'Entwicklerdokumentation (Auszug)', 'counter' => 'anhang', 'sequence' => 10,],
+            ['name' => 'testfall', 'heading' => 'Testfall und Konsolenaufruf', 'counter' => 'anhang', 'sequence' => 11,],
+            ['name' => 'code_auszug', 'heading' => 'Code-Auszug', 'counter' => 'anhang', 'sequence' => 12,],
         ],],
     ];
 

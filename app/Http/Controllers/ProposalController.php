@@ -169,6 +169,7 @@ class ProposalController extends Controller
             'format' => $request->all(),
             'version' => $proposal->latestVersion(),
             'table_nr' => new IncrementCounter(),
+            'inhalt_counter' => new IncrementCounter(),
         ])->render());
 
         return $mpdf->Output($title . '.pdf', 'I');

@@ -181,6 +181,7 @@ class DocumentationController extends Controller
             'zeitplanung' => $documentation->zeitplanung,
             'table_nr' => new IncrementCounter(),
             'image_nr' => new IncrementCounter(),
+            'inhalt_counter' => new IncrementCounter(),
         ])->render());
 
         return $mpdf->Output($title . '.pdf', 'I');
