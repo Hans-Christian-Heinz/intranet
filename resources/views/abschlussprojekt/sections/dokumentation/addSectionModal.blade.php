@@ -12,6 +12,12 @@
             <div class="modal-body">
                 <p class="text-justify">
                     Beachten Sie, dass der Variablenname innerhalb des Dokuments eindeutig sein muss.<br/>
+                    Die Option "Nummerierung" bestimmt, wie der Abschnitt im englültigen PDF-DOkument nummeriert wird.
+                    Option "Keine Nummerierung" bedeutet, dass der Abschnitt nicht nummeriert wird. Option "Standard
+                    Nummerierung" bedeutet, dass der Abschnitt normal nummeriert wird. Im Normalfall sollten Sie diese
+                    Option wählen. Option "Anhang Nummerierung" bedeutet, dass der Abschnitt separat nummeriert wird.
+                    Im Normalfall sollten Sie diese Option nur für den Anhang wählen.<br/>
+                    Beachten Sie: Für Unterabschnitte wird die Nummerierung ihres Überabschnitts verwendet.<br/>
                     Die Option "Template" existiert hauptsächlich, falls versehentlich ein nicht Standard-Abschnitt
                     gelöscht wurde. Wenn nur Standard-Abschnitte (Textfeld oder Navigationsleiste für Unterabschnitte)
                     erstellt werden sollen, kann die Option ignoriert werden.
@@ -41,6 +47,22 @@
                             <option value="{{ $tpl }}" @if($tpl == 'text_section') selected @endif>{{ $tpl }}</option>
                         @endforeach
                     </select>
+                </div>
+                {{-- Welcher Nummerierung gehört der Abschnitt an? (keine, normales Inhaltsverzeichnis, Anhang --}}
+                <div class="form-group mt-3 mb-3">
+                    <label class="control-label" for="section_counter{{ $section ? $section->id : '' }}">
+                        Die gültige Nummerierung
+                    </label>
+                    <select class="form-control" @if($section) disabled @endif form="formAddSection{{ $section ? $section->id : '' }}"
+                            name="counter" id="section_counter{{ $section ? $section->id : '' }}">
+                        <option value="none" @if($section && $section->counter == 'none') selected @endif>Keine Nummerierung</option>
+                        <option value="inhalt" @if(($section && $section->counter == 'inhalt') || ! $section) selected @endif>Standard Nummerierung</option>
+                        <option value="anhang" @if($section && $section->counter == 'anhang') selected @endif>Anhang Nummerierung</option>
+                    </select>
+                    {{-- Da das Feld counter bei der Validierung notwendig ist --}}
+                    @if($section)
+                        <input type="hidden" name="counter" value="{{ $section->counter }}" form="formAddSection{{ $section->id }}"/>
+                    @endif
                 </div>
             </div>
             <div class="modal-footer">

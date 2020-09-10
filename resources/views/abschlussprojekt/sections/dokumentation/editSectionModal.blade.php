@@ -34,6 +34,22 @@
                         @endforeach
                     </select>
                 </div>
+                {{-- Welcher Nummerierung gehört der Abschnitt an? (keine, normales Inhaltsverzeichnis, Anhang --}}
+                <div class="form-group mt-3 mb-3">
+                    <label class="control-label" for="edit_counter{{ $section->id }}">
+                        Die gültige Nummerierung
+                    </label>
+                    <select class="form-control" @if($section->getParent() instanceof App\Section) disabled @endif
+                            form="formEditSection{{ $section->id }}" name="counter" id="edit_counter{{ $section->id }}">
+                        <option value="none" @if($section->counter == 'none') selected @endif>Keine Nummerierung</option>
+                        <option value="inhalt" @if($section->counter == 'inhalt') selected @endif>Standard Nummerierung</option>
+                        <option value="anhang" @if($section->counter == 'anhang') selected @endif>Anhang Nummerierung</option>
+                    </select>
+                    {{-- Da das Feld counter bei der Validierung notwendig ist --}}
+                    @if($section->getParent() instanceof App\Section)
+                        <input type="hidden" name="counter" value="{{ $section->getParent()->counter }}" form="formEditSection{{ $section->id }}"/>
+                    @endif
+                </div>
                 {{-- Position des Abschnitts --}}
                 <div class="form-group mt-3 mb-3">
                     <label class="control-label" for="edit_sequence{{ $section->id }}">

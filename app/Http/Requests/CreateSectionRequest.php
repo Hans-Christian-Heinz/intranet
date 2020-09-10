@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\SectionCounterRule;
 use App\Rules\SectionNameRule;
 use App\Section;
 use Illuminate\Foundation\Http\FormRequest;
@@ -45,6 +46,11 @@ class CreateSectionRequest extends FormRequest
             'required',
             'int',
             'min:0',
+        ];
+        $rules['counter'] = [
+            'required',
+            Rule::in(['none', 'inhalt', 'anhang']),
+            new SectionCounterRule($this->section_id),
         ];
 
         return $rules;

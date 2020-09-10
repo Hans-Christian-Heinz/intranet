@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\SectionCounterEditRule;
 use App\Rules\SectionNameRule;
 use App\Section;
 use Illuminate\Foundation\Http\FormRequest;
@@ -47,6 +48,11 @@ class EditSectionRequest extends FormRequest
             'int',
             'min:0',
             'max:' . ($section->getParent()->getSections($version)->count() - 1),
+        ];
+        $rules['counter'] = [
+            'required',
+            Rule::in(['none', 'inhalt', 'anhang']),
+            new SectionCounterEditRule($section),
         ];
 
         return $rules;

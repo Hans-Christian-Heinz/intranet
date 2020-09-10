@@ -58,6 +58,7 @@ class SectionController extends Controller
             'name' => $request->name,
             'heading' => $request->heading,
             'tpl' => $request->tpl,
+            'counter' => $request->counter,
         ]);
         $version->sections()->save($subsection, ['sequence' => $section->getSections($versionOld)->count()]);
         $section->sections()->save($subsection);
@@ -99,6 +100,7 @@ class SectionController extends Controller
             'name' => $request->name,
             'heading' => $request->heading,
             'tpl' => $request->tpl,
+            'counter' =>$request->counter,
         ]);
         $version->sections()->save($subsection, ['sequence' => $documentation->getSections($versionOld)->count()]);
         $documentation->sections()->save($subsection);
@@ -234,6 +236,7 @@ class SectionController extends Controller
             $newSect->heading = $section->heading;
             $newSect->tpl = $section->tpl;
             $newSect->text = $section->text;
+            $newSect->counter = $parent->counter;
         }
         //Lege einen neuen ABschnitt an, der statt des zu verändernden gespeichert wird
         else {
@@ -243,6 +246,7 @@ class SectionController extends Controller
             $newSect->heading = $request->heading;
             $newSect->tpl = $request->tpl;
             $newSect->text = $section->text;
+            $newSect->counter = $request->counter;
         }
         $parent->sections()->save($newSect);
         $versionNew->sections()->save($newSect, ['sequence' => $sequence]);

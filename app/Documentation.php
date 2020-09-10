@@ -76,7 +76,7 @@ class Documentation extends Model
             ['name' => 'ausblick', 'heading' => 'Ausblick', 'sequence' => 2,],
         ],],
         //Anhang
-        ['name' => 'anhang', 'heading' => 'Anhang', 'sequence' => 11, 'counter' => 'anhang', 'sections' => [
+        ['name' => 'anhang', 'heading' => 'Anhang', 'sequence' => 11, 'counter' => 'anhang', 'tpl' => 'parent_section', 'sections' => [
             ['name' => 'gantt', 'heading' => 'Detaillierte Zeitplanung', 'counter' => 'anhang', 'sequence' => 0,],
             ['name' => 'lasten', 'heading' => 'Lastenheft (Auszug)', 'counter' => 'anhang', 'sequence' => 1,],
             ['name' => 'usecase', 'heading' => 'Use-Case-Diagramm', 'counter' => 'anhang', 'sequence' => 2,],

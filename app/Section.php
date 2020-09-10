@@ -271,17 +271,25 @@ class Section extends Model
     }
 
     /**
-     * TODO
+     * Nummeriere die Überschrift des Abschnitts (beim Generieren eines PDF-Dokuments)
+     * Erlaube separate Nummerierung für den Anhang
      *
-     * @param IncrementCounter $inhalt_counter
+     * @param IncrementCounter $inhalt_counter aktuelle Nummer im Inhaltsverzeichnis
      * @param Version $version
      * @return string
      */
     public function getNumberedHeading(IncrementCounter $inhalt_counter, Version $version) {
         $res = '';
-        $section = $version->sections()->where('id', $this->id)->first();
+        //Lese die Abschnitte erneut aus der Datenbank aus, um auf das Pivot-Feld sequence zugreifen zu können
+        //$section = $version->sections()->where('id', $this->id)->first();
+        $section = $this;
         while (! is_null($section->section)) {
-            $res = $section->pivot->sequence + 1 . '.' . $res;
+            if (empty($res)) {
+                $res = strval($section->pivot->sequence + 1);
+            }
+            else {
+                $res = $section->pivot->sequence + 1 . '.' . $res;
+            }
             $section = $version->sections()->where('id', $section->section_id)->first();
         }
         switch($section->counter) {
@@ -289,7 +297,9 @@ class Section extends Model
                 $res = strval($inhalt_counter->getNumber()) . '.' . $res;
                 break;
             case 'anhang':
-                $res = 'A.' . $res;
+                if (! is_null($this->section)) {
+                    $res = 'A' . $res;
+                }
                 break;
             default:
                 $res = '';
