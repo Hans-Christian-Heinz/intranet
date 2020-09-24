@@ -18,7 +18,11 @@
                                 <a class="nav-link @if($loop->first) active @endif"
                                    aria-selected="false" role="tab" id="projects_{{ $jahr }}_tab" data-toggle="tab"
                                    aria-controls="projects_{{ $jahr }}" href="#projects_{{ $jahr }}">
-                                    Abschluss: {{ $jahr }}
+                                    @if($jahr == "0")
+                                        Kein Datum festgelegt
+                                    @else
+                                        Abschluss: {{ $jahr }}
+                                    @endif
                                 </a>
                             </li>
                         @endforeach

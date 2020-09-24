@@ -41,7 +41,7 @@ class ExemptionController extends Controller
     public function store(Request $request)
     {
         $attributes = request()->validate([
-            'start-date' => 'required|date_format:Y-m-d|after_or_equal:now',
+            'start-date' => 'required|date_format:Y-m-d',
             'start-time' => 'nullable|date_format:H:i',
             'end-date' => 'required|date_format:Y-m-d|after_or_equal:start-date',
             'end-time' => 'nullable|date_format:H:i',
@@ -70,6 +70,54 @@ class ExemptionController extends Controller
     }
 
     /**
+     * Drucken; Methode aus AdminExemptionController kopiert; ggf. Trait machen oder sonstige Lösung suchen
+     *
+     * @param Exemption $exemption
+     * @return mixed
+     */
+    public function show(Exemption $exemption)
+    {
+        $title = 'Freistellungsantrag';
+
+        $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+        $fontDirs = $defaultConfig['fontDir'];
+
+        $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+        $fontData = $defaultFontConfig['fontdata'];
+
+        $mpdf = new \Mpdf\Mpdf([
+            'mode' => 'utf-8',
+            'format' => 'A4',
+
+            'margin_left' => 20,
+            'margin_right' => 20,
+            'margin_top' => 20,
+            'margin_bottom' => 20,
+
+            'fontDir' => array_merge($fontDirs, [base_path() . '/resources/fonts']),
+            'fontdata' => $fontData + [
+                    'opensans' => [
+                        'R' => 'OpenSans-Regular.ttf',
+                        'B' => 'OpenSans-Bold.ttf'
+                    ]
+                ],
+            'default_font_size' => 12,
+            'default_font' => 'opensans',
+
+            'tempDir' => sys_get_temp_dir(),
+        ]);
+
+        $mpdf->SetTitle($title);
+
+        $applicant = User::find($exemption->user_id)->full_name;
+        $approver = User::find($exemption->admin_id)->full_name;
+
+        $mpdf->WriteHTML(view('pdf.exemption', compact('exemption', 'applicant', 'approver'))->render());
+
+        return $mpdf->Output($title . '.pdf', 'I');
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Exemption  $exemption
@@ -94,7 +142,7 @@ class ExemptionController extends Controller
         $this->authorize('update', $exemption);
 
         $attributes = request()->validate([
-            'start-date' => 'required|date_format:Y-m-d|after_or_equal:now',
+            'start-date' => 'required|date_format:Y-m-d',
             'start-time' => 'nullable|date_format:H:i',
             'end-date' => 'required|date_format:Y-m-d|after_or_equal:start-date',
             'end-time' => 'nullable|date_format:H:i',

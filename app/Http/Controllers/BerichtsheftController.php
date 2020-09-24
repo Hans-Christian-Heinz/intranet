@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Berichtsheft;
+use App\Http\Requests\BerichtsheftRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -38,18 +39,12 @@ class BerichtsheftController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param BerichtsheftRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BerichtsheftRequest $request)
     {
-        $attributes = request()->validate([
-            'grade' => 'required|numeric|between:1,3',
-            'work_activities' => 'nullable|string',
-            'instructions' => 'nullable|string',
-            'school' => 'nullable|string',
-            'week' => 'required|date'
-        ]);
+        $attributes = request()->all();
 
         $attributes['week'] = Carbon::create($attributes['week'])->timestamp;
 
@@ -124,7 +119,7 @@ class BerichtsheftController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @param  \App\Berichtsheft  $berichtsheft
      * @return \Illuminate\Http\Response
      */

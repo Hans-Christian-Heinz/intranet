@@ -72,17 +72,17 @@
 
         <div class="item" style="margin-top: 20px;">
             <p class="title">Betriebliche Tätigkeiten:</p>
-            <p>{{ $berichtsheft->work_activities }}</p>
+            <p>{!! nl2br(htmlspecialchars($berichtsheft->work_activities)) !!}</p>
         </div>
 
         <div class="item">
             <p class="title">Unterweisungen, betrieblicher Unterricht, sonstige Schulungen:</p>
-            <p>{{ $berichtsheft->instructions }}</p>
+            <p>{!! nl2br(htmlspecialchars($berichtsheft->instructions)) !!}</p>
         </div>
 
         <div class="item" style="border-bottom: 1px solid #000;">
             <p class="title">Themen des Berufsschulunterrichts:</p>
-            <p>{{ $berichtsheft->school }}</p>
+            <p>{!! nl2br(htmlspecialchars($berichtsheft->school)) !!}</p>
         </div>
 
         <p style="font-size: 9.5pt;">Durch die nachfolgende Unterschrift wird die Richtigkeit und Vollständigkeit der obigen Angaben bestätigt.</p>

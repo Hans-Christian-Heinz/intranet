@@ -102,7 +102,7 @@ class Proposal extends Model
     public function getTopicAttribute() {
         $section = $this->findCurrentSection('topic');
         if ($section == false || ! $section->text) {
-            return "Es ist ein Fehler aufgetreten: Der Abschnitt Thema liegt in dem Projektantrag nicht vor.";
+            return "Projektthema wurde im Projektantrag noch nicht erfasst.";
         }
         else {
             return $section->text;

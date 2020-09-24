@@ -14,7 +14,7 @@
                     @if (app()->user->isAdmin())
                     <li class="nav-item">
                         <a href="{{ route("admin.index") }}" class="nav-link text-danger">
-                            <span class="fa fa-cog mr-2" aria-hidden="true"></span>Zur Administration
+                            <span class="fa fa-cog mr-2" aria-hidden="true"></span>Adminbereich
                         </a>
                     </li>
                     @endif
@@ -48,7 +48,7 @@
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#addressModal" data-toggle="modal">Adresse verwalten</a>
+                            <a class="dropdown-item" href="#addressModal" data-toggle="modal">Profil verwalten</a>
                             <a class="dropdown-item" href="{{ route('user.nachrichten') }}">
                                 Benachrichtigungen <span class="notifications">{{ app()->user->notifications()->count() }}</span>
                             </a>
@@ -71,5 +71,5 @@
 </nav>
 
 @auth
-    @include('user.addressModal')
+    @include('user.userProfileModal')
 @endauth

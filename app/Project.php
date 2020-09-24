@@ -28,7 +28,7 @@ class Project extends Model
             return $this->proposal->topic;
         }
         else {
-            return "Das Thema wird im Projektantrag ausgewählt.";
+            return "Projektthema wurde im Projektantrag noch nicht erfasst.";
         }
     }
 
