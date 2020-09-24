@@ -6,6 +6,8 @@ use Adldap\Laravel\Facades\Adldap;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Access\Response;
+use Illuminate\Auth\Access\AuthorizationException;
 use App\User;
 use JotaEleSalinas\AdminlessLdap\LdapUser;
 
@@ -28,6 +30,17 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+
+        //Gate to authorize deleting users
+        //erster Parameter der closure ist der Benutzer, der bei der Authentifizierung herauskommt; er wird aber nicht verwendet
+        Gate::define('delete-user', function(LdapUser $user, User $toDelete) {
+            if (! app()->user->is_admin) {
+                return Response::deny('Nur Ausbilder dürfen Benutzerprofile löschen.');
+            }
+            return ($toDelete->is(app()->user))
+                ? Response::deny('Sie dürfen nicht Ihr eigenes Benutezrprofil löschen.')
+                : Response::allow();
+        });
 
         //custom auth_guard for single sign on
         Auth::viaRequest('sso', function ($request) {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class AdminUserController extends Controller
 {
@@ -19,34 +20,14 @@ class AdminUserController extends Controller
     }
 
     /**
-     * Nutzer zu Admin machen
-     *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
+     * @param User $user
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function promote(User $user)
-    {
-        $user->is_admin = true;
-        $user->save();
-
-        return redirect()->route('admin.users.index')->with(
-            'status', 'Der Benutzer ' . $user->ldap_username . ' wurde erfolgreich zum Admin gemacht.'
-        );
-    }
-
-    /**
-     * Admin zu normalem Nutzer machen
-     *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function demote(User $user)
-    {
-        $user->is_admin = false;
-        $user->save();
-
-        return redirect()->route('admin.users.index')->with(
-            'status', 'Der Admin ' . $user->ldap_username . ' wurde erfolgreich zum Nutzer gemacht.'
-        );
+    public function delete(User $user) {
+        if (Gate::allows('delete-user', $user)) {
+            $user->delete();
+            return redirect()->back()->with('status', 'Das Benutzerprofil wurde erfolgreich gelöscht.');
+        }
     }
 }

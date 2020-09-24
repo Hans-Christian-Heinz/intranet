@@ -11,7 +11,7 @@
                         <div class="d-flex pb-3">
                             <h3 class="mr-auto">Freistellungen</h3>
                             <a href="{{ route("exemptions.create") }}" class="btn btn-outline-primary">
-                                <span class="fas fa-plus mr-2"></span>Hinzufügen
+                                <span class="fa fa-plus mr-2"></span>Hinzufügen
                             </a>
                         </div>
                         <table class="table table-striped table-bordered table-hover">
@@ -67,7 +67,7 @@
                                 <h3>Noch keine Freistellungen vorhanden</h3>
                                 <p>Sie können hier eine neue Freistellung beantragen</p>
                                 <a href="{{ route("exemptions.create") }}" class="btn btn-outline-primary">
-                                    <span class="fas fa-plus mr-2"></span>Freistellung beantragen
+                                    <span class="fa fa-plus mr-2"></span>Freistellung beantragen
                                 </a>
                             </div>
                         </div>

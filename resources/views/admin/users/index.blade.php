@@ -6,7 +6,7 @@
     <div class="section">
         <div class="container">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12 bg-white">
                     <div class="d-flex pb-3">
                         <h3 class="mr-auto">Benutzer</h3>
                     </div>
@@ -17,7 +17,7 @@
                                 <th class="text-center">Nutzername</th>
                                 <th class="text-center">Klarname</th>
                                 <th class="text-center" style="width: 15%;">Regeln akzeptiert</th>
-                                <th class="text-center" style="width: 12%;">Rechte</th>
+                                <th class="text-center" style="width: 12%;"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -34,30 +34,8 @@
                                             <span class="fa fa-times text-danger"></span>
                                         @endif
                                     </td>
-                                    <td class="d-flex">
-                                        @if ($user->is_admin)
-                                            <span class="text-danger mr-auto">Admin</span>
-                                            <form action="{{ route('admin.users.demote', $user) }}" method="POST">
-                                                @csrf
-                                                @method('PATCH')
-
-                                                <button type="submit" class="btn btn-sm btn-outline-dark"
-                                                    data-toggle="tooltip" data-placement="right" title="Zu normalem Nutzer machen">
-                                                    <span class="fa fa-user-times font-weight-bold" aria-hidden="true">
-                                                </button>
-                                            </form>
-                                        @else
-                                            <span class="text-muted mr-auto">Benutzer</span>
-                                            <form action="{{ route('admin.users.promote', $user) }}" method="POST">
-                                                @csrf
-                                                @method('PATCH')
-
-                                                <button type="submit" class="btn btn-sm btn-outline-primary"
-                                                    data-toggle="tooltip" data-placement="right" title="Zu Admin machen">
-                                                    <span class="fa fa-user-plus font-weight-bold" aria-hidden="true">
-                                                </button>
-                                            </form>
-                                        @endif
+                                    <td class="text-center">
+                                        <a href="#deleteUserModal{{ $user->id }}" data-toggle="modal" class="btn btn-outline-danger">Löschen</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -67,4 +45,7 @@
             </div>
         </div>
     </div>
+    @foreach($users as $user)
+        @include('admin.users.deleteUserModal')
+    @endforeach
 @endsection

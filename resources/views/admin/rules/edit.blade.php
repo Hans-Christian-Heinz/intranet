@@ -13,7 +13,7 @@
                     <div class="d-flex pb-3">
                         <h3 class="mr-auto my-auto">Werkstattregeln</h3>
                         <a href="{{ route("rules.index") }}" class="btn btn-outline-secondary mr-2">
-                            <span class="far fa-eye mr-2"></span>Zu den Werkstattregeln
+                            <span class="fa fa-eye mr-2"></span>Zu den Werkstattregeln
                         </a>
                         <button type="submit" class="btn btn-outline-primary" form="saveRules">
                             <span class="fa fa-floppy-o mr-2"></span>Änderungen speichern

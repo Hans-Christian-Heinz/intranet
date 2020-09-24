@@ -69,15 +69,15 @@
                                     </div>
                                     <div>
                                         <a href="{{ $previousWeek ? route("berichtshefte.edit", $previousWeek) : "#" }}" class="btn btn-outline-secondary {{ (!$previousWeek) ? "disabled" : "" }}" {{ (!$previousWeek) ? "disabled" : "" }}>
-                                            <span class="fas fa-caret-left mr-2"></span>Vorherige Woche
+                                            <span class="fa fa-caret-left mr-2"></span>Vorherige Woche
                                         </a>
                                         @if ($nextWeek)
                                             <a href="{{ route("berichtshefte.edit", $nextWeek)}}" class="btn btn-outline-secondary">
-                                                Nächste Woche<span class="fas fa-caret-right ml-2"></span>
+                                                Nächste Woche<span class="fa fa-caret-right ml-2"></span>
                                             </a>
                                         @else
                                             <a href="{{ route("berichtshefte.create") }}" class="btn btn-outline-info">
-                                                Neue Woche<span class="fas fa-plus ml-2"></span>
+                                                Neue Woche<span class="fa fa-plus ml-2"></span>
                                             </a>
                                         @endif
                                     </div>
