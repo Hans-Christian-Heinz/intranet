@@ -14,7 +14,7 @@
                             <h1 class="card-title text-center display-2 {{ $exemptionCount ? 'text-primary font-weight-bold' : '' }}">
                                 {{ $exemptionCount }}
                             </h1>
-                                <p class="card-text text-center">neue Freistellungsanträge</p>
+                                <p class="card-text text-center">Neue Freistellungsanträge</p>
                             </div>
                         </a>
                     </div>
@@ -25,7 +25,7 @@
                         <a href="{{ route('admin.users.index') }}" class="text-dark">
                             <div class="card-body">
                                 <h1 class="card-title text-center display-2">{{ $userCount }}</h1>
-                                <p class="card-text text-center">registrierte Benutzer</p>
+                                <p class="card-text text-center">Registrierte Benutzer</p>
                             </div>
                         </a>
                     </div>

@@ -9,7 +9,7 @@
                 <div class="col-md-12">
                     @if ($newExemptions->count())
                         <div class="d-flex pb-3">
-                            <h3 class="mr-auto">neue Freistellungsanträge</h3>
+                            <h3 class="mr-auto">Neue Freistellungsanträge</h3>
                         </div>
                         <table class="table table-striped table-bordered table-hover">
                             <thead>
@@ -54,7 +54,7 @@
                     @else
                         <div class="card">
                             <div class="card-body text-center p-5">
-                                <h3>keine Freistellungen vorhanden</h3>
+                                <h3>Keine Freistellungen vorhanden</h3>
                                 <p>Aktuell sind keine neuen Freistellungen vorhanden.</p>
                             </div>
                         </div>

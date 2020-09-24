@@ -112,4 +112,6 @@ $(document).ready(function() {
 
     let tabs = getOpenTabs();
     tabs.forEach(tab => $('a#' + tab).tab('show'));
+
+    $('[data-toggle="tooltip"]').tooltip();
 });

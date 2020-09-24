@@ -69,14 +69,13 @@
                                     <button type="submit" class="btn btn-primary">
                                         <span class="fa fa-floppy-o mr-2"></span>Änderungen speichern
                                     </button>
+                                    <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#deleteExemption">
+                                        <span class="fa fa-trash mr-2" aria-hidden="true"></span>Löschen
+                                    </button>
                                     @if ($exemption->status === 'approved')
                                         <a href="{{ route('admin.exemptions.show', $exemption) }}" class="btn btn-secondary">
                                             <span class="fa fa-print mr-2" aria-hidden="true"></span>Drucken
                                         </a>
-                                    @else
-                                        <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#deleteExemption">
-                                            <span class="fa fa-trash mr-2" aria-hidden="true"></span>Löschen
-                                        </button>
                                     @endif
                                 </div>
                             </form>
