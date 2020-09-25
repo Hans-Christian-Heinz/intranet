@@ -80,6 +80,7 @@ font-family: "DejaVu Sans", sans-serif;
 
     <div class="abschnitt" style="page-break-inside: avoid">
         <table>
+            <caption style="caption-side: bottom; text-align: left">Tabelle 1: Fußnote</caption>
             @for($i = 0; $i < 4; $i++)
                 <tr class="@if($i == 0) bgHeader @elseif($i % 2 == 0) bg0 @else bg1 @endif">
                     @if($i == 0)
@@ -90,7 +91,6 @@ font-family: "DejaVu Sans", sans-serif;
                 </tr>
             @endfor
         </table>
-        <span class="footnote">Tabelle 1: Fußnote</span>
     </div>
 </body>
 </html>

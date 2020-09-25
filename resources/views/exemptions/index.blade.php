@@ -52,7 +52,7 @@
                                                     <span class="fa fa-pencil-square-o mr-1" aria-hidden="true"></span>Bearbeiten
                                                 </a>
                                             @elseif($exemption->status === 'approved')
-                                                <a href="{{ route("exemptions.show", $exemption) }}" class="btn btn-sm btn-secondary mx-auto">
+                                                <a href="{{ route("exemptions.show", $exemption) }}" class="btn btn-sm btn-secondary mx-auto" target="_blank">
                                                     <span class="fa fa-print mr-1" aria-hidden="true"></span>Drucken
                                                 </a>
                                             @endif

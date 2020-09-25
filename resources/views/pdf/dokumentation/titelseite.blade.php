@@ -1,7 +1,8 @@
 {{-- Titelseite eines Projektantrags --}}
 
 <div id="titelseite">
-    <img src="{{ asset("/img/ihk_logo.png") }}">
+    {{--<img src="{{ asset("/img/ihk_logo.png") }}">--}}
+    <img src="{{ storage_path('app/public/img/ihk_logo.png') }}"/>
 
     <p>
         <b>Abschlussprüfung {{ $project->jahreszeit }}</b>
@@ -32,5 +33,6 @@
         71364 Winnenden
     </p>
 
-    <img src="{{ asset("/img/bbw_logo.png") }}">
+    {{--<img src="{{ asset("/img/bbw_logo.png") }}">--}}
+    <img src="{{ storage_path('app/public/img/bbw_logo.png') }}"/>
 </div>

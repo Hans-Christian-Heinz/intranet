@@ -103,6 +103,7 @@
             &#x2610; Werkstatt/Schule<br>
         </p>
 
-        <img src="{{ asset("/img/bbw_logo.png") }}">
+        {{--<img src="{{ asset("/img/bbw_logo.png") }}">--}}
+        <img src="{{ storage_path('app/public/img/bbw_logo.png') }}">
     </body>
 </html>

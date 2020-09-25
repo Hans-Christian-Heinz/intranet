@@ -8,7 +8,9 @@
 </head>
 <body>
     <figure>
-        <img src="{{ asset('storage/' . $image->path) }}" height="{{ $height }}mm"
+        {{--<img src="{{ asset('storage/' . $image->path) }}" height="{{ $height }}mm"
+             width="{{ $width }}mm" alt="Die Bilddatei konnte nicht gefunden werden."/>--}}
+        <img src="{{ storage_path('app/public/' . $image->path) }}" height="{{ $height }}mm"
              width="{{ $width }}mm" alt="Die Bilddatei konnte nicht gefunden werden."/>
         <figcaption>Abb X: {{ $footnote }}</figcaption>
     </figure>

@@ -44,7 +44,8 @@
     </head>
     <body>
         <div>
-            <img src="{{ asset("/img/ihk_logo.png") }}">
+            {{--<img src="{{ asset("/img/ihk_logo.png") }}">--}}
+            <img src="{{ storage_path('app/public/img/ihk_logo.png') }}">
             <span style="font-size: 25px;">Region Stuttgart</span>
         </div>
         <p><strong>Anlage 2 b: Ausbildungsnachweis (wöchentlich)</strong></p>

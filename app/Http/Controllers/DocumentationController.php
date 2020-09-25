@@ -215,7 +215,8 @@ class DocumentationController extends Controller
         }
 
         //Erstelle nun einen neuen Datensatz für images und ordne ihn dem neuen Abschnitt hinzu
-        $imageSize = getimagesize(asset('storage/' . $request->path));
+        //$imageSize = getimagesize(asset('storage/' . $request->path));
+        $imageSize = getimagesize(storage_path('app/public/') . $request->path);
         //Speichere Breite und Höhe in mm
         //Maximalgröße: 170mm x 247mm
         //Standard dpi (dots per inch): 96
