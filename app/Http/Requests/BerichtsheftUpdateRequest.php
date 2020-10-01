@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\BerichtsHeftWocheRule;
+use App\Rules\BerichtsheftUpdateWocheRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class BerichtsheftRequest extends FormRequest
+class BerichtsheftUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -33,7 +33,7 @@ class BerichtsheftRequest extends FormRequest
                 'required',
                 'date',
                 'before:today',
-                new BerichtsHeftWocheRule(app()->user),
+                new BerichtsheftUpdateWocheRule($this->route()->parameter('berichtsheft')),
             ]
         ];
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Berichtsheft;
 use App\Http\Requests\BerichtsheftRequest;
+use App\Http\Requests\BerichtsheftUpdateRequest;
 use App\Notifications\CustomNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -147,17 +148,10 @@ class BerichtsheftController extends Controller
      * @param  \App\Berichtsheft  $berichtsheft
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Berichtsheft $berichtsheft)
+    public function update(BerichtsheftUpdateRequest $request, Berichtsheft $berichtsheft)
     {
         $this->authorize('update', $berichtsheft);
-
-        $attributes = request()->validate([
-            'grade' => 'required|numeric|between:1,3',
-            'work_activities' => 'nullable|string',
-            'instructions' => 'nullable|string',
-            'school' => 'nullable|string',
-            'week' => 'required|date'
-        ]);
+        $attributes = $request->all();
 
         $user = $berichtsheft->owner;
         $week = Carbon::create($attributes['week']);

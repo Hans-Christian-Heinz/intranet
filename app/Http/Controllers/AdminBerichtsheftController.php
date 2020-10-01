@@ -15,7 +15,7 @@ class AdminBerichtsheftController extends Controller
 {
     /**
      * Gebe eine Liste aller Auszubildenden aus, sortiert nach der Anzahl der fehlenden Berichtshefte.
-     * Wird momentan nicht verwendet
+     * Wird momentan verwendet
      *
      * @return mixed
      */
@@ -42,7 +42,7 @@ class AdminBerichtsheftController extends Controller
 
     /**
      * Gebe eine Liste aller Auszubildenden aus, unterteilt nach Ausbildungsbeginn, sortiert nach der Anzahl der fehlenden Berichtshefte.
-     * Wird momentan verwendet.
+     * Wird momentan nicht verwendet.
      *
      * @return mixed
      */
@@ -129,6 +129,12 @@ class AdminBerichtsheftController extends Controller
         return redirect()->route('admin.berichtshefte.edit', $berichtsheft)->with('status', 'Das Berichtsheft wurde erfolgreich hinzugefügt.');
     }
 
+    /**
+     * Gebe eine Liste aller Wochenberichte für den ausgewählten Auszubildenden aus
+     *
+     * @param User $azubi
+     * @return mixed
+     */
     public function liste(User $azubi) {
         return view('admin.berichtshefte.liste', [
             'berichtshefte' => $azubi->berichtshefte()->orderBy('week', 'DESC')->paginate(10),
