@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Berichtsheft;
 use App\Http\Requests\BerichtsheftRequest;
+use App\Notifications\CustomNotification;
 use Illuminate\Http\Request;
 use App\User;
 use Carbon\Carbon;
@@ -11,6 +12,11 @@ use App\Helpers\General\CollectionHelper;
 
 class AdminBerichtsheftController extends Controller
 {
+    /**
+     * Gebe eine Liste aller Auszubildenden aus, sortiert nach der Anzahl der fehlenden Berichtshefte
+     *
+     * @return mixed
+     */
     public function index() {
         $azubis = User::where('fachrichtung', '<>', 'Ausbilder')->get();
 
@@ -53,6 +59,7 @@ class AdminBerichtsheftController extends Controller
      * Store a newly created resource in storage.
      *
      * @param BerichtsheftRequest $request
+     * @param User $azubi
      * @return \Illuminate\Http\Response
      */
     public function store(BerichtsheftRequest $request, User $azubi)
@@ -68,6 +75,9 @@ class AdminBerichtsheftController extends Controller
             $azubi->ausbildungsbeginn = $week;
             $azubi->save();
         }
+
+        $azubi->notify(new CustomNotification(app()->user->full_name, 'Neuer Wochenbericht',
+            'Für Sie wurde vom Absender ein Wochenbericht für die Woche ' . $week->format("Y-W") . ' angelegt'));
 
         return redirect()->route('admin.berichtshefte.edit', $berichtsheft)->with('status', 'Das Berichtsheft wurde erfolgreich hinzugefügt.');
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Berichtsheft;
 use App\Http\Requests\BerichtsheftRequest;
+use App\Notifications\CustomNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -154,6 +155,11 @@ class BerichtsheftController extends Controller
             $user->save();
         }
 
+        if (! $user->is(app()->user)) {
+            $user->notify(new CustomNotification(app()->user->full_name, 'Wochenbericht geändert',
+                'Ihr Wochenbericht für die Woche ' . $berichtsheft->week->format("Y-W") . ' wurde vom Absender geändert.'));
+        }
+
         return back()->with('status', 'Das Berichtsheft wurde erfolgreich aktualisiert.');
     }
 
@@ -168,6 +174,11 @@ class BerichtsheftController extends Controller
         $this->authorize('destroy', $berichtsheft);
 
         $berichtsheft->delete();
+
+        if (! $berichtsheft->owner->is(app()->user)) {
+            $berichtsheft->owner->notify(new CustomNotification(app()->user->full_name, 'Wochenbericht gelöscht',
+                'Ihr Wochenbericht für die Woche ' . $berichtsheft->week->format("Y-W") . ' wurde vom Absender gelöscht.'));
+        }
 
         if (request()->is('admin*')) {
             return redirect()->route('admin.berichtshefte.liste', $berichtsheft->owner)->with('status', 'Das Berichtsheft wurde erfolgreich gelöscht.');
