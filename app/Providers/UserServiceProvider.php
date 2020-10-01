@@ -35,7 +35,6 @@ class UserServiceProvider extends ServiceProvider
                 $fachrichtung = $app->auth->user()->fachrichtung;
             }
             else {
-                $fachrichtung = 'Anwendungsentwicklung';
                 $groups = Adldap::search()->findByDn(sprintf(env('LDAP_USER_FULL_DN_FMT'), $username))->getMemberOf();
                 foreach ($groups as $group) {
                     if (strpos($group, 'cn=admins') === 0) {
@@ -44,6 +43,9 @@ class UserServiceProvider extends ServiceProvider
                     }
                     if (strpos($group, 'cn=systemintegration') === 0) {
                         $fachrichtung = 'Systemintegration';
+                    }
+                    if (strpos($group, 'cn=anwendungsentwicklung') === 0) {
+                        $fachrichtung = 'Anwendungsentwicklung';
                     }
                 }
             }
