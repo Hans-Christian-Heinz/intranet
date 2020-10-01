@@ -163,6 +163,15 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/admin/rules', 'AdminRulesController@edit')->name('admin.rules.edit');
     Route::patch('/admin/rules', 'AdminRulesController@update')->name('admin.rules.update');
 
+    Route::group([
+        'as' => 'admin.berichtshefte.',
+        'prefix' => '/admin/berichtshefte',
+    ], function() {
+        Route::get('/index', 'AdminBerichtsheftController@index')->name('index');
+        Route::get('/{azubi}/liste', 'AdminBerichtsheftController@liste')->name('liste');
+        Route::get('{berichtsheft}/show', 'AdminBerichtsheftController@show')->name('show');
+    });
+
     Route::get('/admin/exemptions', 'AdminExemptionController@index')->name('admin.exemptions.index');
     Route::get('/admin/exemptions/{exemption}/edit', 'AdminExemptionController@edit')->name('admin.exemptions.edit');
     Route::get('/admin/exemptions/{exemption}', 'AdminExemptionController@show')->name('admin.exemptions.show');

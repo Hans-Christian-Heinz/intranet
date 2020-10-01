@@ -45,10 +45,17 @@ class BerichtsheftController extends Controller
     public function store(BerichtsheftRequest $request)
     {
         $attributes = request()->all();
+        $week = Carbon::create($attributes['week']);
+        $user = app()->user;
 
-        $attributes['week'] = Carbon::create($attributes['week'])->timestamp;
+        $attributes['week'] = $week->timestamp;
 
-        $berichtsheft = app()->user->berichtshefte()->create($attributes);
+        $berichtsheft = $user->berichtshefte()->create($attributes);
+        //Aktualisiere ggf. den Ausbildungsbeginn des Benutzers
+        if (is_null($user->ausbildungsbeginn) || $week < $user->ausbildungsbeginn) {
+            $user->ausbildungsbeginn = $week;
+            $user->save();
+        }
 
         return redirect()->route('berichtshefte.edit', $berichtsheft)->with('status', 'Das Berichtsheft wurde erfolgreich hinzugefügt.');
     }
@@ -135,9 +142,16 @@ class BerichtsheftController extends Controller
             'week' => 'required|date'
         ]);
 
-        $attributes['week'] = Carbon::create($attributes['week'])->timestamp;
+        $user = app()->user;
+        $week = Carbon::create($attributes['week']);
+        $attributes['week'] = $week->timestamp;
 
         $berichtsheft->update($attributes);
+        //Aktualisiere ggf. den Ausbildungsbeginn des Benutzers
+        if (is_null($user->ausbildungsbeginn) || $week < $user->ausbildungsbeginn) {
+            $user->ausbildungsbeginn = $week;
+            $user->save();
+        }
 
         return back()->with('status', 'Das Berichtsheft wurde erfolgreich aktualisiert.');
     }

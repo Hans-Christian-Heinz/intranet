@@ -13,6 +13,9 @@
                 <table class="table table-striped">
                     {{-- Formular als Tabelle --}}
                     <tr>
+                        <th colspan="2" class="text-center">Adresse verwalten</th>
+                    </tr>
+                    <tr>
                         <td><label for="strasse">Straße</label></td>
                         <td>
                             <input class="form-control @error('strasse') is-invalid @enderror" name="strasse"
@@ -59,7 +62,7 @@
 
                 <form class="form" id="address_form" action="{{ route('user.address') }}" method="POST">
                     @csrf
-                    <button type="submit" class="btn btn-primary">Adresse speichern</button>
+                    <button type="submit" class="btn btn-primary">Profil speichern</button>
                 </form>
             </div>
         </div>

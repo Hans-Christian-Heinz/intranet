@@ -31,6 +31,9 @@
                 <li class="nav-item {{ (request()->is("admin")) ? 'active' : '' }}">
                     <a href="{{ route("admin.index") }}" class="nav-link pl-0">Dashboard</a>
                 </li>
+                <li class="nav-item {{ (request()->is("admin/berichtshefte*")) ? 'active' : '' }}">
+                    <a href="{{ route("admin.berichtshefte.index") }}" class="nav-link">Berichtshefte</a>
+                </li>
                 <li class="nav-item {{ (request()->is("admin/exemptions*")) ? 'active' : '' }}">
                     <a href="{{ route("admin.exemptions.index") }}" class="nav-link">Freistellungen</a>
                 </li>

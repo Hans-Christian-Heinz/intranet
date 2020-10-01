@@ -6,7 +6,7 @@
     <div class="section">
         <div class="container">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12 bg-white">
                     <div class="d-flex pb-3">
                         <h3 class="mr-auto">Alle Abschlussprojekte</h3>
                     </div>
