@@ -22,7 +22,15 @@ class BerichtsheftController extends Controller
         $now = Carbon::now()->startOfWeek();
         $beginn = $user->ausbildungsbeginn;
         if (! is_null($beginn)) {
-            $dauer = $now->diffInWeeks($beginn);
+            $ausbildungsende = $user->ausbildungsende;
+            if ($now > $ausbildungsende) {
+                $helpDate = Carbon::create($ausbildungsende);
+            }
+            else {
+                $helpDate = $now;
+            }
+
+            $dauer = $helpDate->diffInWeeks($beginn);
             $anzahl = $user->berichtshefte()->count();
             $fehlend = $dauer - $anzahl;
             $criteria = compact('beginn', 'dauer', 'anzahl', 'fehlend');

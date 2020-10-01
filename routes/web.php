@@ -25,7 +25,7 @@ Route::group(['middleware' => 'auth'], function () {
         'prefix' => 'user',
         'as' => 'user.',
     ], function() {
-        Route::post('/address', 'UserController@address')->name('address');
+        Route::post('/profile', 'UserController@profile')->name('profile');
         Route::get('/nachrichten', 'UserController@nachrichten')->name('nachrichten');
         Route::get('/nachrichten/{message}', 'UserController@showMessage')->name('nachrichten.detail');
         Route::delete('/nachrichten/{message}', 'UserController@deleteMessage')->name('nachrichten.delete');

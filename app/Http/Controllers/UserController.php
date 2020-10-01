@@ -7,12 +7,13 @@ use Illuminate\Notifications\DatabaseNotification;
 
 class UserController extends Controller
 {
-    public function address(Request $request) {
+    public function profile(Request $request) {
         $request->validate([
             'strasse' => 'required|string',
             'hausnr' => 'required|string',
             'plz' => 'required|regex:#^[0-9]{5}$#',
             'ort' => 'required|string',
+            'ende' => 'nullable|date'
         ]);
 
         $user = app()->user;
@@ -22,9 +23,10 @@ class UserController extends Controller
             'hausnr' => $request->hausnr,
             'plz' => $request->plz,
             'ort' => $request->ort,
+            'ausbildungsende' => $request->ende,
         ]);
 
-        return redirect()->back()->with('status', 'Ihre Adresse wurde erfolgreich aktualisiert.');
+        return redirect()->back()->with('status', 'Ihre Benutzerprofil wurde erfolgreich aktualisiert.');
     }
 
     public function nachrichten() {

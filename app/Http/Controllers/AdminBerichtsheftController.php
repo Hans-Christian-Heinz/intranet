@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 class AdminBerichtsheftController extends Controller
 {
     /**
-     * Gebe eine Liste aller Auszubildenden aus, sortiert nach der Anzahl der fehlenden Berichtshefte.
+     * Gebe eine Liste aller Auszubildenden aus, sortiert nach der Erstanmweldung bei der Applikation
      * Wird momentan verwendet
      *
      * @return mixed
@@ -25,9 +25,17 @@ class AdminBerichtsheftController extends Controller
         //Bestimme für jeden Benutzer, wie viele Berichtshefte vorliegen und wie viele Wochen seit seinem Ausbildungsbeginn vergangen sind
         $now = Carbon::now()->startOfWeek();
         foreach($azubis as $azubi) {
+            $ausbildungsende = $azubi->ausbildungsende;
+            if ($now > $ausbildungsende) {
+                $helpDate = Carbon::create($ausbildungsende);
+            }
+            else {
+                $helpDate = $now;
+            }
+
             $beginn = Carbon::create($azubi->ausbildungsbeginn);
             //Max-Value, damit beim Sortieren diejenigen Auszubildenden zuerst aufgeführt werden, die noch keine Berichtshefte angelegt haben
-            is_null($beginn) ? $dauer = PHP_INT_MAX : $dauer = $now->diffInWeeks($beginn);
+            is_null($beginn) ? $dauer = PHP_INT_MAX : $dauer = $helpDate->diffInWeeks($beginn);
             $anzahl = $azubi->berichtshefte()->count();
             $fehlend = $dauer - $anzahl;
             $azubi->criteria = compact('beginn', 'dauer', 'anzahl', 'fehlend');
@@ -63,9 +71,17 @@ class AdminBerichtsheftController extends Controller
             }
 
             foreach($list as $azubi) {
+                $ausbildungsende = $azubi->ausbildungsende;
+                if ($now > $ausbildungsende) {
+                    $helpDate = Carbon::create($ausbildungsende);
+                }
+                else {
+                    $helpDate = $now;
+                }
+
                 $beginn = Carbon::create($azubi->ausbildungsbeginn);
                 //Max-Value, damit beim Sortieren diejenigen Auszubildenden zuerst aufgeführt werden, die noch keine Berichtshefte angelegt haben
-                is_null($help) ? $dauer = PHP_INT_MAX : $dauer = $now->diffInWeeks($beginn);
+                is_null($help) ? $dauer = PHP_INT_MAX : $dauer = $helpDate->diffInWeeks($beginn);
                 $anzahl = $azubi->berichtshefte()->count();
                 $fehlend = $dauer - $anzahl;
                 $azubi->criteria = compact('beginn', 'dauer', 'anzahl', 'fehlend');

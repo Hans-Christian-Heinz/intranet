@@ -55,12 +55,25 @@
                             @enderror
                         </td>
                     </tr>
+                    <tr>
+                        <th colspan="2" class="text-center">Ausbildungszeitraum verwalten</th>
+                    </tr>
+                    <tr>
+                        <td><label for="ende">Ausbildungsende</label></td>
+                        <td>
+                            <input class="form-control @error('ende') is-invalid @enderror" name="ende"
+                                   id="ende" form="address_form" type="date" value="{{ app()->user->ausbildungsende }}"/>
+                            @error("ende")
+                                <p class="invalid-feedback">{{ $message }}</p>
+                            @enderror
+                        </td>
+                    </tr>
                 </table>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-link text-secondary" data-dismiss="modal">Abbrechen</button>
 
-                <form class="form" id="address_form" action="{{ route('user.address') }}" method="POST">
+                <form class="form" id="address_form" action="{{ route('user.profile') }}" method="POST">
                     @csrf
                     <button type="submit" class="btn btn-primary">Profil speichern</button>
                 </form>
