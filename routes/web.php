@@ -167,7 +167,7 @@ Route::group(['middleware' => 'admin'], function () {
         'as' => 'admin.berichtshefte.',
         'prefix' => '/admin/berichtshefte',
     ], function() {
-        Route::get('/index', 'AdminBerichtsheftController@index')->name('index');
+        Route::get('/index', 'AdminBerichtsheftController@indexNeu')->name('index');
         Route::get('/{azubi}/liste', 'AdminBerichtsheftController@liste')->name('liste');
         Route::get('{berichtsheft}/edit', 'BerichtsheftController@edit')->name('edit');
         Route::patch('{berichtsheft}', 'BerichtsheftController@update')->name('update');

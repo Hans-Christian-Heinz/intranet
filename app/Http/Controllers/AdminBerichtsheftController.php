@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\User;
 use Carbon\Carbon;
 use App\Helpers\General\CollectionHelper;
+use Illuminate\Support\Facades\DB;
 
 class AdminBerichtsheftController extends Controller
 {
@@ -36,6 +37,56 @@ class AdminBerichtsheftController extends Controller
         $azubis = CollectionHelper::paginate($azubis, 25);
 
         return view('admin.berichtshefte.index', compact('azubis'));
+    }
+
+    /**
+     * Gebe eine Liste aller Auszubildenden aus, unterteilt nach Ausbildungsbeginn, sortiert nach der Anzahl der fehlenden Berichtshefte.
+     *
+     * @return mixed
+     */
+    public function indexNeu() {
+        $beginn = DB::table('users')->select('ausbildungsbeginn')->where('fachrichtung', '<>', 'Ausbilder')->distinct()->get();
+        $azubis = [];
+        $now = Carbon::now()->startOfWeek();
+
+        foreach($beginn as $b) {
+            $help = $b->ausbildungsbeginn;
+            if (is_null($help)) {
+                $azubis['None'] = User::where('fachrichtung', '<>', 'Ausbilder')->where('ausbildungsbeginn', $help)->get();
+                $list = $azubis['None'];
+            }
+            else {
+                $azubis[$help] = User::where('fachrichtung', '<>', 'Ausbilder')->where('ausbildungsbeginn', $help)->get();
+                $list = $azubis[$help];
+            }
+
+            foreach($list as $azubi) {
+                $beginn = Carbon::create($azubi->ausbildungsbeginn);
+                //Max-Value, damit beim Sortieren diejenigen Auszubildenden zuerst aufgeführt werden, die noch keine Berichtshefte angelegt haben
+                is_null($help) ? $dauer = PHP_INT_MAX : $dauer = $now->diffInWeeks($help);
+                $anzahl = $azubi->berichtshefte()->count();
+                $fehlend = $dauer - $anzahl;
+                //$azubi->criteria = compact('beginn', 'dauer', 'anzahl', 'fehlend');
+                $azubi->criteria = [
+                    'beginn' => $help,
+                    'dauer' => $dauer,
+                    'anzahl' => $anzahl,
+                    'fehlend' => $fehlend,
+                ];
+            }
+            $list = $list->sortByDesc(function ($azubi) {
+                return $azubi->criteria['fehlend'];
+            });
+            //$list = CollectionHelper::paginate($list, 25);
+            if (is_null($help)) {
+                $azubis['None'] = $list;
+            }
+            else {
+                $azubis[$help] = $list;
+            }
+        }
+
+        return view('admin.berichtshefte.index_neu', compact('azubis'));
     }
 
     /**
