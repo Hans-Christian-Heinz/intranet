@@ -35,7 +35,7 @@
                                     <td>{{ $azubi->criteria['fehlend'] }}</td>
                                 @endif
                                 <td>
-                                    <a class="btn btn-secondary" href="{{ route('admin.berichtshefte.liste', $azubi) }}">Ansehen</a>
+                                    <a class="btn btn-sm btn-secondary" href="{{ route('admin.berichtshefte.liste', $azubi) }}">Ansehen</a>
                                 </td>
                             </tr>
                         @endforeach

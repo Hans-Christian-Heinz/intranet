@@ -117,8 +117,9 @@ class BerichtsheftController extends Controller
     {
         $this->authorize('edit', $berichtsheft);
 
-        $previousWeek = app()->user->berichtshefte()->where('week', '<', $berichtsheft->week)->orderBy('week', 'DESC')->first();
-        $nextWeek = app()->user->berichtshefte()->where('week', '>', $berichtsheft->week)->orderBy('week', 'ASC')->first();
+        $user = $berichtsheft->owner;
+        $previousWeek = $user->berichtshefte()->where('week', '<', $berichtsheft->week)->orderBy('week', 'DESC')->first();
+        $nextWeek = $user->berichtshefte()->where('week', '>', $berichtsheft->week)->orderBy('week', 'ASC')->first();
 
         return view('berichtshefte.edit', compact('berichtsheft', 'previousWeek', 'nextWeek'));
     }
@@ -142,7 +143,7 @@ class BerichtsheftController extends Controller
             'week' => 'required|date'
         ]);
 
-        $user = app()->user;
+        $user = $berichtsheft->owner;
         $week = Carbon::create($attributes['week']);
         $attributes['week'] = $week->timestamp;
 
@@ -168,6 +169,11 @@ class BerichtsheftController extends Controller
 
         $berichtsheft->delete();
 
-        return redirect()->route('berichtshefte.index')->with('status', 'Das Berichtsheft wurde erfolgreich gelöscht.');
+        if (request()->is('admin*')) {
+            return redirect()->route('admin.berichtshefte.liste', $berichtsheft->owner)->with('status', 'Das Berichtsheft wurde erfolgreich gelöscht.');
+        }
+        else {
+            return redirect()->route('berichtshefte.index')->with('status', 'Das Berichtsheft wurde erfolgreich gelöscht.');
+        }
     }
 }

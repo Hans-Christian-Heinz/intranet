@@ -9,7 +9,11 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
+                            @if(request()->is('admin*'))
+                            <form action="{{ route("admin.berichtshefte.update", $berichtsheft) }}" method="POST">
+                            @else
                             <form action="{{ route("berichtshefte.update", $berichtsheft) }}" method="POST">
+                            @endif
                                 @csrf
                                 @method("PATCH")
 
@@ -68,15 +72,27 @@
                                         </button>
                                     </div>
                                     <div>
-                                        <a href="{{ $previousWeek ? route("berichtshefte.edit", $previousWeek) : "#" }}" class="btn btn-outline-secondary {{ (!$previousWeek) ? "disabled" : "" }}" {{ (!$previousWeek) ? "disabled" : "" }}>
+                                        @if(request()->is('admin*'))
+                                        <a href="{{ $previousWeek ? route("admin.berichtshefte.edit", $previousWeek) : "#" }}" class="btn btn-outline-secondary {{ (!$previousWeek) ? "disabled" : "" }}" {{ (!$previousWeek) ? "disabled" : "" }}>
+                                        @else
+                                        <a href="{{ $previousWeek ? route("admin.berichtshefte.edit", $previousWeek) : "#" }}" class="btn btn-outline-secondary {{ (!$previousWeek) ? "disabled" : "" }}" {{ (!$previousWeek) ? "disabled" : "" }}>
+                                        @endif
                                             <span class="fa fa-caret-left mr-2"></span>Vorherige Woche
                                         </a>
                                         @if ($nextWeek)
+                                            @if(request()->is('admin*'))
+                                            <a href="{{ route("admin.berichtshefte.edit", $nextWeek)}}" class="btn btn-outline-secondary">
+                                            @else
                                             <a href="{{ route("berichtshefte.edit", $nextWeek)}}" class="btn btn-outline-secondary">
+                                            @endif
                                                 Nächste Woche<span class="fa fa-caret-right ml-2"></span>
                                             </a>
                                         @else
+                                            @if(request()->is('admin*'))
+                                            <a href="{{ route("admin.berichtshefte.create", $berichtsheft->owner) }}" class="btn btn-outline-info">
+                                            @else
                                             <a href="{{ route("berichtshefte.create") }}" class="btn btn-outline-info">
+                                            @endif
                                                 Neue Woche<span class="fa fa-plus ml-2"></span>
                                             </a>
                                         @endif
@@ -106,7 +122,11 @@
                     <button type="button" class="btn btn-link text-secondary" data-dismiss="modal">Abbrechen</button>
                     <button type="submit" class="btn btn-danger" form="deleteBerichtsheftForm">Löschen</button>
 
+                    @if(request()->is('admin*'))
+                    <form id="deleteBerichtsheftForm" action="{{ route('admin.berichtshefte.destroy', $berichtsheft) }}" method="POST">
+                    @else
                     <form id="deleteBerichtsheftForm" action="{{ route('berichtshefte.destroy', $berichtsheft) }}" method="POST">
+                    @endif
                         @csrf
                         @method('DELETE')
                     </form>

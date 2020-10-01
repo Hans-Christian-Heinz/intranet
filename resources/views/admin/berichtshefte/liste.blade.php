@@ -29,8 +29,8 @@
                                     <td>{{ $berichtsheft->grade }}</td>
                                     <td class="text-center">{{ $berichtsheft->week->format("Y-W") }}</td>
                                     <td class="text-center">
-                                        <a class="btn btn-sm btn-secondary" href="{{ route('admin.berichtshefte.show', $berichtsheft) }}">
-                                            Ansehen
+                                        <a class="btn btn-sm btn-secondary" href="{{ route('admin.berichtshefte.edit', $berichtsheft) }}">
+                                            <span class="fa fa-pencil-square-o mr-1" aria-hidden="true"></span>Bearbeiten
                                         </a>
                                     </td>
                                 </tr>
@@ -43,6 +43,10 @@
                         <div class="card">
                             <div class="card-body text-center p-5">
                                 <h3>Noch kein Berichtheft vorhanden</h3>
+                                <p>Berichtsheft anlegen für {{ $azubi->full_name }}</p>
+                                <a href="{{ route("admin.berichtshefte.create", $azubi) }}" class="btn btn-outline-primary">
+                                    <span class="fa fa-plus mr-2"></span>Berichtsheft hinzufügen
+                                </a>
                             </div>
                         </div>
                     @endif

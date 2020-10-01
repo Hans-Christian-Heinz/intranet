@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Berichtsheft;
+use App\Http\Requests\BerichtsheftRequest;
 use Illuminate\Http\Request;
 use App\User;
 use Carbon\Carbon;
@@ -31,18 +32,50 @@ class AdminBerichtsheftController extends Controller
         return view('admin.berichtshefte.index', compact('azubis'));
     }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @param User $azubi
+     * @return \Illuminate\Http\Response
+     */
+    public function create(User $azubi)
+    {
+        $latestBerichtsheft = $azubi->berichtshefte()->orderBy('week', 'DESC')->first();
+
+        return view('berichtshefte.create', [
+            'nextBerichtsheftDate' => ($latestBerichtsheft) ? $latestBerichtsheft->week->addWeek() : Carbon::now(),
+            'nextBerichtsheftGrade' => ($latestBerichtsheft) ? $latestBerichtsheft->grade : 1,
+            'azubi' => $azubi,
+        ]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param BerichtsheftRequest $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(BerichtsheftRequest $request, User $azubi)
+    {
+        $attributes = request()->all();
+        $week = Carbon::create($attributes['week']);
+
+        $attributes['week'] = $week->timestamp;
+
+        $berichtsheft = $azubi->berichtshefte()->create($attributes);
+        //Aktualisiere ggf. den Ausbildungsbeginn des Benutzers
+        if (is_null($azubi->ausbildungsbeginn) || $week < $azubi->ausbildungsbeginn) {
+            $azubi->ausbildungsbeginn = $week;
+            $azubi->save();
+        }
+
+        return redirect()->route('admin.berichtshefte.edit', $berichtsheft)->with('status', 'Das Berichtsheft wurde erfolgreich hinzugefügt.');
+    }
+
     public function liste(User $azubi) {
         return view('admin.berichtshefte.liste', [
             'berichtshefte' => $azubi->berichtshefte()->orderBy('week', 'DESC')->paginate(10),
             'azubi' => $azubi,
         ]);
-    }
-
-    public function show(Berichtsheft $berichtsheft) {
-        $azubi = $berichtsheft->owner;
-        $previousWeek = $azubi->berichtshefte()->where('week', '<', $berichtsheft->week)->orderBy('week', 'DESC')->first();
-        $nextWeek = $azubi->berichtshefte()->where('week', '>', $berichtsheft->week)->orderBy('week', 'ASC')->first();
-
-        return view('admin.berichtshefte.show', compact('berichtsheft', 'previousWeek', 'nextWeek'));
     }
 }

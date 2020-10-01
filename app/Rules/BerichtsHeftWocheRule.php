@@ -29,7 +29,7 @@ class BerichtsHeftWocheRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        //Berichtsheft ist nur dann anlegbar, wenn für die ausgewähltze Woche und den Benutzer noch kein Berichtsheft vorliegt.
+        //Berichtsheft ist nur dann anlegbar, wenn für die ausgewählte Woche und den Benutzer noch kein Berichtsheft vorliegt.
         return $this->user->berichtshefte()->where('week', Carbon::create($value))->count() == 0;
     }
 

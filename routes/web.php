@@ -169,7 +169,11 @@ Route::group(['middleware' => 'admin'], function () {
     ], function() {
         Route::get('/index', 'AdminBerichtsheftController@index')->name('index');
         Route::get('/{azubi}/liste', 'AdminBerichtsheftController@liste')->name('liste');
-        Route::get('{berichtsheft}/show', 'AdminBerichtsheftController@show')->name('show');
+        Route::get('{berichtsheft}/edit', 'BerichtsheftController@edit')->name('edit');
+        Route::patch('{berichtsheft}', 'BerichtsheftController@update')->name('update');
+        Route::delete('{berichtsheft}', 'BerichtsheftController@destroy')->name('destroy');
+        Route::get('/{azubi}/create', 'AdminBerichtsheftController@create')->name('create');
+        Route::post('/{azubi}', 'AdminBerichtsheftController@store')->name('store');
     });
 
     Route::get('/admin/exemptions', 'AdminExemptionController@index')->name('admin.exemptions.index');

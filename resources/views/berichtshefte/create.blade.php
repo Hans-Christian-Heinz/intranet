@@ -8,8 +8,17 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
+                        @if(request()->is('admin*'))
+                            <div class="card-header bg-white">
+                                <h3>Berichtsheft erstellen für {{ $azubi->full_name }}</h3>
+                            </div>
+                        @endif
                         <div class="card-body">
+                            @if(request()->is('admin*'))
+                            <form action="{{ route("admin.berichtshefte.store", $azubi) }}" method="POST">
+                            @else
                             <form action="{{ route("berichtshefte.store") }}" method="POST">
+                            @endif
                                 @csrf
 
                                 <div class="row">
