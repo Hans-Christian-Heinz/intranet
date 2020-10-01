@@ -14,12 +14,13 @@ use Illuminate\Support\Facades\DB;
 class AdminBerichtsheftController extends Controller
 {
     /**
-     * Gebe eine Liste aller Auszubildenden aus, sortiert nach der Anzahl der fehlenden Berichtshefte
+     * Gebe eine Liste aller Auszubildenden aus, sortiert nach der Anzahl der fehlenden Berichtshefte.
+     * Wird momentan nicht verwendet
      *
      * @return mixed
      */
     public function index() {
-        $azubis = User::where('fachrichtung', '<>', 'Ausbilder')->get();
+        $azubis = User::where('fachrichtung', '<>', 'Ausbilder')->orderByDesc('created_at')->get();
 
         //Bestimme für jeden Benutzer, wie viele Berichtshefte vorliegen und wie viele Wochen seit seinem Ausbildungsbeginn vergangen sind
         $now = Carbon::now()->startOfWeek();
@@ -31,21 +32,22 @@ class AdminBerichtsheftController extends Controller
             $fehlend = $dauer - $anzahl;
             $azubi->criteria = compact('beginn', 'dauer', 'anzahl', 'fehlend');
         }
-        $azubis = $azubis->sortByDesc(function ($azubi) {
+        /*$azubis = $azubis->sortByDesc(function ($azubi) {
             return $azubi->criteria['fehlend'];
-        });
-        $azubis = CollectionHelper::paginate($azubis, 25);
+        });*/
+        $azubis = CollectionHelper::paginate($azubis, 30);
 
         return view('admin.berichtshefte.index', compact('azubis'));
     }
 
     /**
      * Gebe eine Liste aller Auszubildenden aus, unterteilt nach Ausbildungsbeginn, sortiert nach der Anzahl der fehlenden Berichtshefte.
+     * Wird momentan verwendet.
      *
      * @return mixed
      */
     public function indexNeu() {
-        $beginn = DB::table('users')->select('ausbildungsbeginn')->where('fachrichtung', '<>', 'Ausbilder')->distinct()->get();
+        $beginn = DB::table('users')->select('ausbildungsbeginn')->distinct()->where('fachrichtung', '<>', 'Ausbilder')->get();
         $azubis = [];
         $now = Carbon::now()->startOfWeek();
 
@@ -63,16 +65,10 @@ class AdminBerichtsheftController extends Controller
             foreach($list as $azubi) {
                 $beginn = Carbon::create($azubi->ausbildungsbeginn);
                 //Max-Value, damit beim Sortieren diejenigen Auszubildenden zuerst aufgeführt werden, die noch keine Berichtshefte angelegt haben
-                is_null($help) ? $dauer = PHP_INT_MAX : $dauer = $now->diffInWeeks($help);
+                is_null($help) ? $dauer = PHP_INT_MAX : $dauer = $now->diffInWeeks($beginn);
                 $anzahl = $azubi->berichtshefte()->count();
                 $fehlend = $dauer - $anzahl;
-                //$azubi->criteria = compact('beginn', 'dauer', 'anzahl', 'fehlend');
-                $azubi->criteria = [
-                    'beginn' => $help,
-                    'dauer' => $dauer,
-                    'anzahl' => $anzahl,
-                    'fehlend' => $fehlend,
-                ];
+                $azubi->criteria = compact('beginn', 'dauer', 'anzahl', 'fehlend');
             }
             $list = $list->sortByDesc(function ($azubi) {
                 return $azubi->criteria['fehlend'];
