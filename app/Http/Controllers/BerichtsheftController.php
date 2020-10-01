@@ -17,8 +17,23 @@ class BerichtsheftController extends Controller
      */
     public function index()
     {
+        $user = app()->user;
+        $now = Carbon::now()->startOfWeek();
+        $beginn = $user->ausbildungsbeginn;
+        if (! is_null($beginn)) {
+            $dauer = $now->diffInWeeks($beginn);
+            $anzahl = $user->berichtshefte()->count();
+            $fehlend = $dauer - $anzahl;
+            $criteria = compact('beginn', 'dauer', 'anzahl', 'fehlend');
+        }
+        else {
+            $criteria = [];
+        }
+
+
         return view('berichtshefte.index', [
-            'berichtshefte' => app()->user->berichtshefte()->orderBy('week', 'DESC')->paginate(10)
+            'berichtshefte' => $user->berichtshefte()->orderBy('week', 'DESC')->paginate(10),
+            'criteria' => $criteria,
         ]);
     }
 

@@ -14,6 +14,22 @@
                                 <span class="fa fa-plus mr-2"></span>Hinzufügen
                             </a>
                         </div>
+                        <table class="table table-striped table-bordered text-center">
+                            <tr>
+                                <th>Wochen seit Ausbildungsbeginn</th>
+                                <th>Vorhandene Berichtshefte</th>
+                                <th>Fehlende Berichtshefte</th>
+                            </tr>
+                            <tr>
+                                @if($criteria)
+                                    <td>{{ $criteria['dauer'] }}</td>
+                                    <td>{{ $criteria['anzahl'] }}</td>
+                                    <td>{{ $criteria['fehlend'] }}</td>
+                                @else
+                                    <td colspan="3">Es wurden noch keine Berichtshefte angelegt.</td>
+                                @endif
+                            </tr>
+                        </table>
                         <table class="table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>

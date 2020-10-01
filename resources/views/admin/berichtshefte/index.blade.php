@@ -19,7 +19,7 @@
                             <th>Auszubildene(r)</th>
                             <th>Wochen seit Ausbildungsbeginn</th>
                             <th>Vorhandene Berichtshefte</th>
-                            <th>fehlende Berichtshefte</th>
+                            <th>Fehlende Berichtshefte</th>
                             <th>Berichtshefte ansehen</th>
                         </tr>
                         </thead>
