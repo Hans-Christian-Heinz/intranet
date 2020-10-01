@@ -14,6 +14,9 @@ class AdminProjectController extends Controller
         $all_projects = Project::with('supervisor')->get()->sortBy(function ($value) {
             return $value->user->full_name;
         });
+        $all_projects = $all_projects->reject(function($project) {
+            return $project->user->isAdmin;
+        });
         $projects = [];
         //Teile die Projekte nach dem Abschlussjahr auf.
         foreach($all_projects as $p) {
