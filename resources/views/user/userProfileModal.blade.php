@@ -55,19 +55,21 @@
                             @enderror
                         </td>
                     </tr>
-                    <tr>
-                        <th colspan="2" class="text-center">Ausbildungszeitraum verwalten</th>
-                    </tr>
-                    <tr>
-                        <td><label for="ende">Ausbildungsende</label></td>
-                        <td>
-                            <input class="form-control @error('ende') is-invalid @enderror" name="ende"
-                                   id="ende" form="address_form" type="date" value="{{ app()->user->ausbildungsende }}"/>
-                            @error("ende")
-                                <p class="invalid-feedback">{{ $message }}</p>
-                            @enderror
-                        </td>
-                    </tr>
+                    @unless(app()->user->isAdmin())
+                        <tr>
+                            <th colspan="2" class="text-center">Ausbildungszeitraum verwalten</th>
+                        </tr>
+                        <tr>
+                            <td><label for="ende">Ausbildungsende</label></td>
+                            <td>
+                                <input class="form-control @error('ende') is-invalid @enderror" name="ende"
+                                       id="ende" form="address_form" type="date" value="{{ app()->user->ausbildungsende }}"/>
+                                @error("ende")
+                                    <p class="invalid-feedback">{{ $message }}</p>
+                                @enderror
+                            </td>
+                        </tr>
+                    @endunless
                 </table>
             </div>
             <div class="modal-footer">

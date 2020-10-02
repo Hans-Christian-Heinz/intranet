@@ -38,7 +38,8 @@ class AuthServiceProvider extends ServiceProvider
                 return Response::deny('Nur Ausbilder dürfen Benutzerprofile löschen.');
             }
             return ($toDelete->is(app()->user))
-                ? Response::deny('Sie dürfen nicht Ihr eigenes Benutezrprofil löschen.')
+                //? Response::deny('Sie dürfen nicht Ihr eigenes Benutezrprofil löschen.')
+                ? abort(403, 'Sie dürfen nicht Ihr eigenes Benutzerprofil löschen.')
                 : Response::allow();
         });
 
