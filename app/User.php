@@ -118,4 +118,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Project::class, 'supervisor_id', 'id');
     }
+
+    public function resume()
+    {
+        return $this->hasOne(Resume::class);
+    }
+
+    public function applications()
+    {
+        return $this->hasMany(Application::class);
+    }
 }
