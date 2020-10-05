@@ -35,7 +35,7 @@ class AuthServiceProvider extends ServiceProvider
         //erster Parameter der closure ist der Benutzer, der bei der Authentifizierung herauskommt; er wird aber nicht verwendet
         Gate::define('delete-user', function(LdapUser $user, User $toDelete) {
             if (! app()->user->is_admin) {
-                return Response::deny('Nur Ausbilder dürfen Benutzerprofile löschen.');
+                return abort(403, 'Nur Ausbilder dürfen Benutzerprofile löschen.');
             }
             return ($toDelete->is(app()->user))
                 //? Response::deny('Sie dürfen nicht Ihr eigenes Benutezrprofil löschen.')
@@ -49,9 +49,15 @@ class AuthServiceProvider extends ServiceProvider
 
             if (session()->get('auth_guard', 'sso') === 'sso' && $username) {
 
-                $username = substr($username, 0, strpos($username, env('KERBEROS_DOMAIN', '')));
+                //Falls in der Server-Variable die Domäne im Benutzernamen gespeichert ist, entferne diese:
+                //(username@domain wird zu username)
+                $length_help = strpos($username, env('KERBEROS_DOMAIN', ''));
+                if ($length_help) {
+                    $username = substr($username, 0, $length_help);
+                }
                 $adldap_user = Adldap::search()->findByDn(sprintf(env('LDAP_USER_FULL_DN_FMT'), $username));
                 foreach ($adldap_user->getMemberOf() as $group) {
+                    $fachrichtung = 'Anwendungsentwicklung';
                     if (strpos($group, 'cn=admins') === 0) {
                         $fachrichtung = 'Ausbilder';
                         break;

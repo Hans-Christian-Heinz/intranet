@@ -32,7 +32,7 @@ class BerichtsheftUpdateRequest extends FormRequest
             'week' => [
                 'required',
                 'date',
-                'before:today',
+                'before_or_equal:today',
                 new BerichtsheftUpdateWocheRule($this->route()->parameter('berichtsheft')),
             ]
         ];

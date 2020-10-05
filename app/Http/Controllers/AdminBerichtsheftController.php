@@ -27,7 +27,7 @@ class AdminBerichtsheftController extends Controller
         foreach($azubis as $azubi) {
             //Die Dauer der Ausbildung wird als Differenz in Wochen zwischen Ausbildungsbeginn und Minimum von jetzt und Ausbildungsende berechnet
             $ausbildungsende = $azubi->ausbildungsende;
-            if ($now > $ausbildungsende) {
+            if ($ausbildungsende && $now > $ausbildungsende) {
                 $helpDate = Carbon::create($ausbildungsende);
             }
             else {
@@ -74,7 +74,7 @@ class AdminBerichtsheftController extends Controller
             foreach($list as $azubi) {
                 //Die Dauer der Ausbildung wird als Differenz in Wochen zwischen Ausbildungsbeginn und Minimum von jetzt und Ausbildungsende berechnet
                 $ausbildungsende = $azubi->ausbildungsende;
-                if ($now > $ausbildungsende) {
+                if ($ausbildungsende && $now > $ausbildungsende) {
                     $helpDate = Carbon::create($ausbildungsende);
                 }
                 else {

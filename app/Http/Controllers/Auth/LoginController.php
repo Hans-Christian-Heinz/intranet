@@ -56,7 +56,7 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        //Beim Vergessen der session; merke dir, welhe auth-guard zu verwenden ist.
+        //Beim Vergessen der session; merke dir, welche auth-guard zu verwenden ist.
         $auth_guard = session()->get('auth_guard', 'sso');
         $res = $this->logoutStandard($request);
         session()->put('auth_guard', $auth_guard);

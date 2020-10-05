@@ -24,7 +24,7 @@ class BerichtsheftController extends Controller
         if (! is_null($beginn)) {
             //Die Dauer der Ausbildung wird als Differenz in Wochen zwischen Ausbildungsbeginn und Minimum von jetzt und Ausbildungsende berechnet
             $ausbildungsende = $user->ausbildungsende;
-            if ($now > $ausbildungsende) {
+            if ($ausbildungsende && $now > $ausbildungsende) {
                 $helpDate = Carbon::create($ausbildungsende);
             }
             else {
