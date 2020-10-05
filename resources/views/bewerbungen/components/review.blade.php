@@ -14,9 +14,9 @@
                 </div>
             </div>
 
-            @if (auth()->user()->id === $review->user->id || auth()->user()->isAdmin())
+            @if (app()->user->id === $review->user->id || app()->user->isAdmin())
                 <div>
-                    <a href="{{ route("companies.reviews.edit", ["company" => $review->company, "review" => $review]) }}" class="text-secondary"><small>Bearbeiten</small></a>
+                    <a href="{{ route("bewerbungen.companies.reviews.edit", ["company" => $review->company, "review" => $review]) }}" class="text-secondary"><small>Bearbeiten</small></a>
                     <a href="#" class="text-danger ml-2" data-toggle="modal" data-target="#deleteReviewModal{{ $review->id }}"><small>Löschen</small></a>
                 </div>
 
@@ -26,7 +26,7 @@
                             <p class="text-center mb-0 py-3">Möchten Sie Ihre Bewertung wirklich löschen?</p>
                         </x-slot>
                         <x-slot name="footer">
-                            <form action="{{ route("reviews.destroy", ["company" => $review->company, "review" => $review]) }}" method="post">
+                            <form action="{{ route("bewerbungen.reviews.destroy", ["company" => $review->company, "review" => $review]) }}" method="post">
                                 @csrf
                                 @method("DELETE")
 
@@ -38,7 +38,7 @@
                 @endpush
             @endif
         </div>
-        
+
         <h6 class="mt-3">Kommentar</h6>
         <p class="mb-0 text-secondary">
             {{ $review->comment }}

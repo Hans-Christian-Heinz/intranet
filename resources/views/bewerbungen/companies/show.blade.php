@@ -19,8 +19,7 @@
                     {{-- Company Ratings --}}
                     <div class="card my-3">
                         <div class="card-body">
-                            {{--<a href="{{ route("bewerbungen.companies.reviews.create", $company) }}" class="text-secondary stretched-link mb-0">Bewertung schreiben...</a>--}}
-                            <a href="#" class="text-secondary stretched-link mb-0">Bewertung schreiben...</a>
+                            <a href="{{ route("bewerbungen.companies.reviews.create", $company) }}" class="text-secondary stretched-link mb-0">Bewertung schreiben...</a>
                         </div>
                     </div>
 

@@ -169,6 +169,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get("/companies/{company}/edit", "CompanyController@edit")->name("companies.edit");
         Route::delete("/companies/{company}", "CompanyController@destroy")->name("companies.destroy");
         Route::patch("/companies/{company}", "CompanyController@update")->name("companies.update");
+
+        // Review Routes
+        Route::delete("/companies/{company}/reviews/{review}", "ReviewController@destroy")->name("reviews.destroy");
+        Route::get("/companies/{company}/reviews/create", "ReviewController@create")->name("companies.reviews.create");
+        Route::post("/companies/{company}/reviews", "ReviewController@store")->name("companies.reviews.store");
+        Route::get("/companies/{company}/reviews/{review}/edit", "ReviewController@edit")->name("companies.reviews.edit");
+        Route::patch("/companies/{company}/reviews/{review}", "ReviewController@update")->name("companies.reviews.update");
     });
 });
 

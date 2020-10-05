@@ -4,6 +4,8 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+@import "star-rating";
+
 body {
     /*
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", ForkAwesome;
@@ -134,3 +136,7 @@ select#grade {
     min-width: 4rem;
 }
 
+.rating-stars {
+    margin-left: -3px!important;
+    display: inline;
+}
