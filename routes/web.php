@@ -155,6 +155,21 @@ Route::group(['middleware' => 'auth'], function () {
             return redirect(route('abschlussprojekt.index'));
         });
     });
+
+    //Routen für das Bewerbungs-Toolkit
+    Route::group([
+        'prefix' => '/bewerbungen',
+        'as' => 'bewerbungen.',
+    ], function() {
+        // Company Routes
+        Route::get("/companies", "CompanyController@index")->name("companies.index");
+        Route::get("/companies/create", "CompanyController@create")->name("companies.create");
+        Route::post("/companies", "CompanyController@store")->name("companies.store");
+        Route::get("/companies/{company}", "CompanyController@show")->name("companies.show");
+        Route::get("/companies/{company}/edit", "CompanyController@edit")->name("companies.edit");
+        Route::delete("/companies/{company}", "CompanyController@destroy")->name("companies.destroy");
+        Route::patch("/companies/{company}", "CompanyController@update")->name("companies.update");
+    });
 });
 
 Route::group(['middleware' => 'admin'], function () {

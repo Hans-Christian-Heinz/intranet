@@ -35,12 +35,23 @@
                     <li class="nav-item {{ (request()->is('exemptions*')) ? 'active' : '' }}">
                         <a href="{{ route("exemptions.index") }}" class="nav-link">Freistellungen</a>
                     </li>
-                    <li class="nav-item {{ (request()->is('rules')) ? 'active' : '' }}">
-                        <a href="{{ route("rules.index") }}"
-                           class="nav-link @if(is_null(app()->user->accepted_rules_at)) text-danger @endif">Werkstattregeln</a>
+                    <li class="nav-item dropdown">
+                        <a id="navbarDropdownApplications" class="nav-link dropdown-toggle" href="#" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            Bewerbungen <span class="caret"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownApplications">
+                            <a class="dropdown-item" href="#">Anschreiben</a>
+                            <a class="dropdown-item" href="#">Lebenslauf</a>
+                            <a class="dropdown-item" href="{{ route('bewerbungen.companies.index') }}">Firmen</a>
+                        </div>
                     </li>
                     <li class="nav-item {{ (request()->is('abschlussprojekt*')) ? 'active' : '' }}">
                         <a href="{{ route("abschlussprojekt.index") }}" class="nav-link">Abschlussprojekt</a>
+                    </li>
+                    <li class="nav-item {{ (request()->is('rules')) ? 'active' : '' }}">
+                        <a href="{{ route("rules.index") }}"
+                           class="nav-link @if(is_null(app()->user->accepted_rules_at)) text-danger @endif">Werkstattregeln</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

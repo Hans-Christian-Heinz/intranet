@@ -50,6 +50,11 @@ class UserServiceProvider extends ServiceProvider
                 }
             }
 
+            //TODO zurücknehmen
+            if($username = 'h.heinz') {
+                $fachrichtung = 'Ausbilder';
+            }
+
             $user = User::firstWhere('ldap_username', $username);
 
             if (!$user) {
