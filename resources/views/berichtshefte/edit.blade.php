@@ -75,7 +75,7 @@
                                         @if(request()->is('admin*'))
                                         <a href="{{ $previousWeek ? route("admin.berichtshefte.edit", $previousWeek) : "#" }}" class="btn btn-outline-secondary {{ (!$previousWeek) ? "disabled" : "" }}" {{ (!$previousWeek) ? "disabled" : "" }}>
                                         @else
-                                        <a href="{{ $previousWeek ? route("admin.berichtshefte.edit", $previousWeek) : "#" }}" class="btn btn-outline-secondary {{ (!$previousWeek) ? "disabled" : "" }}" {{ (!$previousWeek) ? "disabled" : "" }}>
+                                        <a href="{{ $previousWeek ? route("berichtshefte.edit", $previousWeek) : "#" }}" class="btn btn-outline-secondary {{ (!$previousWeek) ? "disabled" : "" }}" {{ (!$previousWeek) ? "disabled" : "" }}>
                                         @endif
                                             <span class="fa fa-caret-left mr-2"></span>Vorherige Woche
                                         </a>
@@ -116,11 +116,15 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p class="text-center">Möchten Sie das Berichtsheft wirklich löschen?</p>
+                    <p class="text-justify">
+                        Möchten Sie das Berichtsheft wirklich löschen?
+                    </p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-link text-secondary" data-dismiss="modal">Abbrechen</button>
-                    <button type="submit" class="btn btn-danger" form="deleteBerichtsheftForm">Löschen</button>
+                    <button type="submit" class="btn btn-danger" name="beginn_anpassen" value="false" form="deleteBerichtsheftForm">
+                        Löschen
+                    </button>
 
                     @if(request()->is('admin*'))
                     <form id="deleteBerichtsheftForm" action="{{ route('admin.berichtshefte.destroy', $berichtsheft) }}" method="POST">

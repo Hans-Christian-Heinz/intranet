@@ -45,6 +45,8 @@ class AuthServiceProvider extends ServiceProvider
 
         //custom auth_guard for single sign on
         Auth::viaRequest('sso', function ($request) {
+            //Es wäre wahrscheinlich sauberer, eine config-Datei anzulegen oder weitere Werte zur config/auth.php hinzuzufügen,
+            //anstatt in der Programmlogik unmittelbar auf env-Variablen zuzugreifen.
             $username = $request->server(env('SERVER_USERNAME_FIELD', 'REMOTE_USER'));
 
             if (session()->get('auth_guard', 'sso') === 'sso' && $username) {

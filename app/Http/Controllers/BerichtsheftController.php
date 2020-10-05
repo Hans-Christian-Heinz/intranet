@@ -8,6 +8,7 @@ use App\Http\Requests\BerichtsheftUpdateRequest;
 use App\Notifications\CustomNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BerichtsheftController extends Controller
 {
@@ -184,22 +185,33 @@ class BerichtsheftController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Berichtsheft  $berichtsheft
+     * @param \App\Berichtsheft $berichtsheft
      * @return \Illuminate\Http\Response
      */
     public function destroy(Berichtsheft $berichtsheft)
     {
         $this->authorize('destroy', $berichtsheft);
 
-        $berichtsheft->delete();
+        $user = $berichtsheft->owner;
+        $beginn_anpassen = $berichtsheft->week == DB::table('berichtshefte')->where('user_id', $user->id)->min('week');
 
-        if (! $berichtsheft->owner->is(app()->user)) {
-            $berichtsheft->owner->notify(new CustomNotification(app()->user->full_name, 'Wochenbericht gelöscht',
+        $berichtsheft->delete();
+        //beim Löschen des ersten Berichtshefts wird der hinterlegte Ausbildungsbeginn angepasst.
+        if ($beginn_anpassen) {
+            $help = DB::table('berichtshefte')->where('user_id', $user->id)->min('week');
+            is_null($help)
+                ? $user->ausbildungsbeginn = null
+                : $user->ausbildungsbeginn = Carbon::create(DB::table('berichtshefte')->where('user_id', $user->id)->min('week'));
+            $user->save();
+        }
+
+        if (! $user->is(app()->user)) {
+            $user->notify(new CustomNotification(app()->user->full_name, 'Wochenbericht gelöscht',
                 'Ihr Wochenbericht für die Woche ' . $berichtsheft->week->format("Y-W") . ' wurde vom Absender gelöscht.'));
         }
 
         if (request()->is('admin*')) {
-            return redirect()->route('admin.berichtshefte.liste', $berichtsheft->owner)->with('status', 'Das Berichtsheft wurde erfolgreich gelöscht.');
+            return redirect()->route('admin.berichtshefte.liste', $user)->with('status', 'Das Berichtsheft wurde erfolgreich gelöscht.');
         }
         else {
             return redirect()->route('berichtshefte.index')->with('status', 'Das Berichtsheft wurde erfolgreich gelöscht.');
