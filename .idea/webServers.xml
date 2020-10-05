@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="23531b5d-ada2-450f-8861-8edcf15c6f61" name="portal" url="http://portal.in.pp-fachinformatik.de">
+        <fileTransfer accessType="SFTP" host="portal.in.pp-fachinformatik.de" port="22" sshConfigId="811893d4-9eda-4008-a0a2-8f25b101eac7" sshConfig="h.heinz@portal.in.pp-fachinformatik.de:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
