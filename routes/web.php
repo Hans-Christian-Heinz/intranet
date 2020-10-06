@@ -158,7 +158,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Routen für das Bewerbungs-Toolkit
     Route::group([
-        'prefix' => '/bewerbungen',
+        'prefix' => 'bewerbungen',
         'as' => 'bewerbungen.',
     ], function() {
         // Company Routes
@@ -176,6 +176,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post("/companies/{company}/reviews", "ReviewController@store")->name("companies.reviews.store");
         Route::get("/companies/{company}/reviews/{review}/edit", "ReviewController@edit")->name("companies.reviews.edit");
         Route::patch("/companies/{company}/reviews/{review}", "ReviewController@update")->name("companies.reviews.update");
+
+        // Resume Routes
+        Route::get("/resumes", "ResumeController@index")->name("resumes.index");
+        Route::get("/resumes/print", "ResumeController@print")->name("resumes.print");
+        Route::post("/resumes/{user}", "ResumeController@store")->name("resumes.store");
+        Route::get("/resumes/{user}", "ResumeController@show")->name("resumes.show");
     });
 });
 

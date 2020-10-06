@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="form-group d-flex">
-            <a :href="printroute" class="btn btn-outline-primary ml-auto">Drucken</a>
+            <a :href="printroute" target="_blank" class="btn btn-outline-primary ml-auto">Drucken</a>
         </div>
 
         <template v-if="statusMessage.length">
@@ -53,7 +53,7 @@
                 </div>
                 <div class="form-group">
                     <label for="email">E-Mail</label>
-                    <input type="email" name="email" id="emial" class="form-control" placeholder="E-Mail Adresse" v-model="resume.personal.email" required>
+                    <input type="email" name="email" id="email" class="form-control" placeholder="E-Mail Adresse" v-model="resume.personal.email" required>
                 </div>
                 <div class="form-group mb-0">
                     <label for="birthday">Geboren</label>
@@ -61,7 +61,7 @@
                 </div>
             </div>
         </div>
-        
+
 
         <div class="resume-card shadow-sm mb-3">
             <a href="#" class="resume-card-title" @click.prevent="toggle(cards.education)">
@@ -170,7 +170,6 @@
             </div>
         </div>
 
-
         <div class="resume-card shadow-sm mb-3">
             <a href="#" class="resume-card-title" @click.prevent="toggle(cards.career)">
                 <span>Berufliche Laufbahn</span>
@@ -187,6 +186,7 @@
                     </template>
                 </span>
             </a>
+
 
             <!-- Career body -->
             <div class="resume-card-body" :style="{ display: cards.career.collapsed ? 'block' : 'none' }">
@@ -233,7 +233,7 @@
 <script>
 export default {
     props: ["user", "resumedata", "printroute"],
-    
+
     data() {
         return {
             cards: {
@@ -268,13 +268,19 @@ export default {
     },
 
     mounted() {
-        axios.get(`/resumes/${this.user.id}`)
+        axios.get(`/bewerbungen/resumes/${this.user.id}`)
             .then(response => response.data)
             .then(data => {
                 if (data) {
                     this.resume = data;
                 } else {
-                    this.resume.personal.name = this.user.name;
+                    this.resume.personal.name = this.user.full_name;
+                    this.resume.personal.address = this.user.strasse + " " + this.user.hausnr;
+                    this.resume.personal.zip = this.user.plz;
+                    this.resume.personal.city = this.user.ort;
+                    this.resume.personal.email = this.user.email;
+
+                    this.save();
                 }
             })
             .catch(error => {
@@ -305,7 +311,7 @@ export default {
             this.timesSaved++;
 
             if (this.timesSaved > 1) {
-                axios.post(`/resumes/${this.user.id}`, {resume: this.resume})
+                axios.post(`/bewerbungen/resumes/${this.user.id}`, {resume: this.resume})
                     .then(response => response.data)
                     .then(data => {
                         this.statusMessage = "Die Änderungen wurden erfolgreich gespeichert.";
@@ -318,7 +324,7 @@ export default {
                         console.log(error);
                     })
             }
-           
+
         },
 
         toggle(card) {

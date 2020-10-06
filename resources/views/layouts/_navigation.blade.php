@@ -35,14 +35,14 @@
                     <li class="nav-item {{ (request()->is('exemptions*')) ? 'active' : '' }}">
                         <a href="{{ route("exemptions.index") }}" class="nav-link">Freistellungen</a>
                     </li>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item {{ request()->is("bewerbungen*") ? "active" : "" }} dropdown">
                         <a id="navbarDropdownApplications" class="nav-link dropdown-toggle" href="#" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             Bewerbungen <span class="caret"></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownApplications">
                             <a class="dropdown-item" href="#">Anschreiben</a>
-                            <a class="dropdown-item" href="#">Lebenslauf</a>
+                            <a class="dropdown-item" href="{{ route('bewerbungen.resumes.index') }}">Lebenslauf</a>
                             <a class="dropdown-item" href="{{ route('bewerbungen.companies.index') }}">Firmen</a>
                         </div>
                     </li>
