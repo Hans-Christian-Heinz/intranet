@@ -268,6 +268,23 @@ Route::group(['middleware' => 'admin'], function () {
         });
     });
 
+    Route::group([
+        'as' => 'admin.bewerbungen.',
+        'prefix' => '/admin/bewerbungen',
+    ], function() {
+        Route::group([
+            'as' => 'categories.',
+            'prefix' => '/categories',
+        ], function() {
+            Route::get("/", "AdminCategoryController@index")->name("index");
+            Route::post("/", "AdminCategoryController@store")->name("store");
+            Route::get("/create", "AdminCategoryController@create")->name("create");
+            Route::get("/{category}/edit", "AdminCategoryController@edit")->name("edit");
+            Route::patch("/{category}", "AdminCategoryController@update")->name("update");
+            Route::delete("/{category}", "AdminCategoryController@destroy")->name("destroy");
+        });
+    });
+
     Route::fallback(function() {
         return redirect(route('admin.index'));
     });

@@ -37,11 +37,20 @@
                 <li class="nav-item {{ (request()->is("admin/exemptions*")) ? 'active' : '' }}">
                     <a href="{{ route("admin.exemptions.index") }}" class="nav-link">Freistellungen</a>
                 </li>
-                <li class="nav-item {{ (request()->is("admin/rules*")) ? 'active' : '' }}">
-                    <a href="{{ route("admin.rules.edit") }}" class="nav-link">Werkstattregeln</a>
+                <li class="nav-item {{ request()->is("admin/bewerbungen*") ? "active" : "" }} dropdown">
+                    <a id="navbarDropdownBewerbungen" class="nav-link dropdown-toggle" href="#" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        Bewerbungen <span class="caret"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownBewerbungen">
+                        <a class="dropdown-item" href="{{ route('admin.bewerbungen.categories.index') }}">Review-Kategorien</a>
+                    </div>
                 </li>
                 <li class="nav-item {{ request()->is("admin/abschlussprojekt*") ? 'active' : '' }}">
                     <a href="{{ route('admin.abschlussprojekt.index') }}" class="nav-link">Abschlussprojekt</a>
+                </li>
+                <li class="nav-item {{ (request()->is("admin/rules*")) ? 'active' : '' }}">
+                    <a href="{{ route("admin.rules.edit") }}" class="nav-link">Werkstattregeln</a>
                 </li>
                 <li class="nav-item {{ (request()->is("admin/users*")) ? 'active' : '' }}">
                     <a href="{{ route("admin.users.index") }}" class="nav-link">Benutzer</a>
