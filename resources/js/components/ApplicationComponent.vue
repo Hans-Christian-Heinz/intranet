@@ -22,7 +22,7 @@
 
                     <p>Mit freundlichen Grüßen</p>
 
-                    <p class="mt-5">{{ this.user.name }}, {{ currentDate }}</p>
+                    <p class="mt-5">{{ this.user.full_name }}, {{ currentDate }}</p>
 
                     <hr>
 
@@ -119,12 +119,12 @@
                             <input type="checkbox" id="zuverlässig" value="zuverlässig" v-model="data.wayOfWork">
                             <label for="zuverlässig">Zuverlässig</label>
                         </div>
-                        
+
                         <div>
                             <input type="checkbox" id="verantwortungsbewusst" value="verantwortungsbewusst" v-model="data.wayOfWork">
                             <label for="verantwortungsbewusst">Verantwortungsbewusst</label>
                         </div>
-                        
+
                         <div>
                             <input type="checkbox" id="präzise" value="präzise" v-model="data.wayOfWork">
                             <label for="präzise">Präzise</label>
@@ -152,12 +152,12 @@
                             <input type="checkbox" id="flexibel" value="flexibel" v-model="data.skills">
                             <label for="flexibel">Flexibel</label>
                         </div>
-                        
+
                         <div>
                             <input type="checkbox" id="motiviert" value="motiviert" v-model="data.skills">
                             <label for="motiviert">Motiviert</label>
                         </div>
-                        
+
                         <div>
                             <input type="checkbox" id="teamorientiert" value="teamorientiert" v-model="data.skills">
                             <label for="teamorientiert">Teamorientiert</label>
@@ -216,7 +216,7 @@
 <script>
 export default {
     props: ["route", "saved", "user"],
-    
+
     data() {
         return {
             data: {
@@ -282,7 +282,7 @@ export default {
         if (!this.data.currentactivity.body.length) this.data.currentactivity.body = this.data.currentactivity.templates.first;
         if (!this.data.whycontact.body.length) this.data.whycontact.body = this.data.whycontact.templates.first;
         if (!this.data.ending.body.length) this.data.ending.body = this.data.ending.templates.first;
-        
+
         if (this.saved.greeting.body.length) this.data.greeting.body = this.saved.greeting.body;
         if (this.saved.awareofyou.body.length) this.data.awareofyou.body = this.saved.awareofyou.body;
         if (this.saved.currentactivity.body.length) this.data.currentactivity.body = this.saved.currentactivity.body;
@@ -300,11 +300,11 @@ export default {
             let lastSkill = this.data.skills[this.data.skills.length - 1];
 
             if (wayOfWork.length > 1) {
-                wayOfWork.pop();                
+                wayOfWork.pop();
             }
 
             if (skills.length > 1) {
-                skills.pop();                
+                skills.pop();
             }
 
             let wayOfWorkMessage = (this.data.wayOfWork.length > 1) ? wayOfWork.join(", ") + " und " + lastWayOfWork : lastWayOfWork;
@@ -328,7 +328,7 @@ export default {
     methods: {
         save() {
             let route = this.route;
-            
+
             axios.post(this.route, {body: this.data, _method: "patch"})
                 .then(response => response.data)
                 .then(data => {

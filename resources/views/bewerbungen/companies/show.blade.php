@@ -70,8 +70,7 @@
 
                     <div class="card mb-3">
                         <div class="card-body">
-                            {{--<form action="{{ route("bewerbungen.applications.store", $company) }}" method="POST">--}}
-                            <form action="#" method="POST">
+                            <form action="{{ route("bewerbungen.applications.store", $company) }}" method="POST">
                                 @csrf
                                 <button type="submit" class="btn btn-block btn-outline-primary">Bewerben</button>
                             </form>

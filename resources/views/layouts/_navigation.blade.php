@@ -41,7 +41,7 @@
                             Bewerbungen <span class="caret"></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownApplications">
-                            <a class="dropdown-item" href="#">Anschreiben</a>
+                            <a class="dropdown-item" href="{{ route('bewerbungen.applications.index') }}">Anschreiben</a>
                             <a class="dropdown-item" href="{{ route('bewerbungen.resumes.index') }}">Lebenslauf</a>
                             <a class="dropdown-item" href="{{ route('bewerbungen.companies.index') }}">Firmen</a>
                         </div>
