@@ -43,9 +43,8 @@
                                     <span class="sr-only">Toggle Dropdown</span>
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#" @click.prevent="data.greeting.body = data.greeting.templates.first">{{ data.greeting.templates.first }}</a>
-                                    <a class="dropdown-item" href="#" @click.prevent="data.greeting.body = data.greeting.templates.second">{{ data.greeting.templates.second }}</a>
-                                    <a class="dropdown-item" href="#" @click.prevent="data.greeting.body = data.greeting.templates.third">{{ data.greeting.templates.third }}</a>
+                                    <a class="dropdown-item" href="#" v-for="tpl in templates.greeting"
+                                       @click.prevent="data.greeting.body = tpl">{{ tpl }}</a>
                                 </div>
                             </div>
                         </div>
@@ -62,9 +61,8 @@
                                     <span class="sr-only">Toggle Dropdown</span>
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#" @click.prevent="data.awareofyou.body = data.awareofyou.templates.first">Stellenanzeige</a>
-                                    <a class="dropdown-item" href="#" @click.prevent="data.awareofyou.body = data.awareofyou.templates.second">Initiativbewerbung</a>
-                                    <a class="dropdown-item" href="#" @click.prevent="data.awareofyou.body = data.awareofyou.templates.third">Vorkontakt</a>
+                                    <a class="dropdown-item" href="#" v-for="tpl in templates.awareofyou"
+                                       @click.prevent="data.awareofyou.body = tpl">{{ tpl }}</a>
                                 </div>
                             </div>
                         </div>
@@ -81,11 +79,8 @@
                                     <span class="sr-only">Toggle Dropdown</span>
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#" @click.prevent="data.currentactivity.body = data.currentactivity.templates.first">Angestellte/r</a>
-                                    <a class="dropdown-item" href="#" @click.prevent="data.currentactivity.body = data.currentactivity.templates.second">Studium</a>
-                                    <a class="dropdown-item" href="#" @click.prevent="data.currentactivity.body = data.currentactivity.templates.third">Ausbildung/Lehre</a>
-                                    <a class="dropdown-item" href="#" @click.prevent="data.currentactivity.body = data.currentactivity.templates.fourth">Praktikum</a>
-                                    <a class="dropdown-item" href="#" @click.prevent="data.currentactivity.body = data.currentactivity.templates.fifth">Schule</a>
+                                    <a class="dropdown-item" href="#" v-for="tpl in templates.currentactivity"
+                                       @click.prevent="data.currentactivity.body = tpl">{{ tpl }}</a>
                                 </div>
                             </div>
                         </div>
@@ -102,10 +97,8 @@
                                     <span class="sr-only">Toggle Dropdown</span>
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#" @click.prevent="data.whycontact.body = data.whycontact.templates.first">bessere Entwicklungsmöglichkeiten</a>
-                                    <a class="dropdown-item" href="#" @click.prevent="data.whycontact.body = data.whycontact.templates.second">mehr Verantwortung</a>
-                                    <a class="dropdown-item" href="#" @click.prevent="data.whycontact.body = data.whycontact.templates.third">beschriebene Aufgabenstellung</a>
-                                    <a class="dropdown-item" href="#" @click.prevent="data.whycontact.body = data.whycontact.templates.fourth">anderer Wohnort</a>
+                                    <a class="dropdown-item" href="#" v-for="tpl in templates.whycontact"
+                                       @click.prevent="data.whycontact.body = tpl">{{ tpl }}</a>
                                 </div>
                             </div>
                         </div>
@@ -188,17 +181,13 @@
 
                     <div class="form-group">
                         <h5>Schlusswort</h5>
-                        <div>
-                            <input type="radio" id="version1" :value="data.ending.templates.first" v-model="data.ending.body">
-                            <label for="version1">Version 1</label>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#" v-for="tpl in templates.whycontact"
+                               @click.prevent="data.whycontact.body = tpl">{{ tpl }}</a>
                         </div>
-                        <div>
-                            <input type="radio" id="version2" :value="data.ending.templates.second" v-model="data.ending.body">
-                            <label for="version2">Version 2</label>
-                        </div>
-                        <div>
-                            <input type="radio" id="version3" :value="data.ending.templates.third" v-model="data.ending.body">
-                            <label for="version3">Version 3</label>
+                        <div v-for="(tpl, index) in templates.ending">
+                            <input type="radio" :id="'version' + index" :value="tpl" v-model="data.ending.body">
+                            <label :for="'version' + index">Version {{ index}}</label>
                         </div>
                     </div>
                 </div>
@@ -221,56 +210,30 @@ export default {
         return {
             data: {
                 greeting: {
-                    body: "",
-                    templates: {
-                        /*first: "Sehr geehrte Damen und Herren,",
-                        second: "Sehr geehrte Frau Musterfrau,",
-                        third: "Sehr geehrter Herr Mustermann,",*/
-                    }
+                    body: ""
                 },
 
                 awareofyou: {
-                    body: "",
-                    templates: {
-                        /*first: "mit großem Interesse bin ich im XING Stellenmarkt auf die ausgeschriebene Position aufmerksam geworden. Aus diesem Grund bewerbe ich mich bei Ihnen um eine Werkstudententätigkeit als Musterstelle (m/w).",
-                        second: "auf der Suche nach einer neuen Beschäftigung bin ich auf Ihr Unternehmen aufmerksam geworden und komme jetzt initiativ auf Sie zu. Aus diesem Grund bewerbe ich mich bei Ihnen um eine Werkstudententätigkeit als Musterstelle (m/w).",
-                        third: "wie telefonisch besprochen, interessiere ich mich sehr für eine Beschäftigung in Ihrem Unternehmen. Aus diesem Grund bewerbe ich mich bei Ihnen um eine Werkstudententätigkeit als Musterstelle (m/w)."*/
-                    }
+                    body: ""
                 },
 
                 currentactivity: {
-                    body: "",
-                    templates: {
-                        /*first: "Zurzeit arbeite ich als Musterberuf bei Musterfirma. Zu meinen wichtigsten Aufgaben gehören hierbei die Einarbeitung in neue Produkte, die Durchführung von Verkaufsgesprächen und die Erstellung und Weitergabe von Bestellungen.",
-                        second: "Zurzeit studiere ich Musterstudiengang an der Musterhochschule. Zu meinen wichtigsten Aufgaben gehören hierbei die Einarbeitung in neue Produkte, die Durchführung von Verkaufsgesprächen und die Erstellung und Weitergabe von Bestellungen.",
-                        third: "Zurzeit befinde ich mich in der Ausbildung als Musterausbildung bei Musterfirma. Zu meinen wichtigsten Aufgaben gehören hierbei die Einarbeitung in neue Produkte, die Durchführung von Verkaufsgesprächen und die Erstellung und Weitergabe von Bestellungen.",
-                        fourth: "Zurzeit absolviere ich ein Praktikum im Bereich Musterstelle bei Musterfirma. Zu meinen wichtigsten Aufgaben gehören hierbei die Einarbeitung in neue Produkte, die Durchführung von Verkaufsgesprächen und die Erstellung und Weitergabe von Bestellungen.",
-                        fifth: "Zurzeit besuche ich die Musterschule in Musterort. Zu meinen wichtigsten Aufgaben gehören hierbei die Einarbeitung in neue Produkte, die Durchführung von Verkaufsgesprächen und die Erstellung und Weitergabe von Bestellungen.",*/
-                    }
+                    body: ""
                 },
 
                 whycontact: {
-                    body: "",
-                    templates: {
-                        /*first: "Ihr Stellenangebot hört sich toll an! Ich hoffe, mir hierdurch persönliche und fachliche Entwicklungsmöglichkeiten erschließen zu können. Ihre Ausrichtung und das Image in dieser Branche gefallen mir besonders gut, daher sehe ich Sie als einen sehr interessanten Arbeitgeber an. In den Medien habe ich Ihre Entwicklung schon lange verfolgt und glaube daher, auch gut ins Unternehmen zu passen.",
-                        second: "Nachdem ich schon länger in diesem Bereich tätig bin, suche ich jetzt nach einer neuen Position, in der ich mehr Verantwortung übernehmen kann. Ihre Ausrichtung und das Image in dieser Branche gefallen mir besonders gut, daher sehe ich Sie als einen sehr interessanten Arbeitgeber an. In den Medien habe ich Ihre Entwicklung schon lange verfolgt und glaube daher, auch gut ins Unternehmen zu passen.",
-                        third: "Mein Wunsch ist es, die beschriebene Aufgabenstellung als nächsten Schritt für meine weitere berufliche Entwicklung in Ihrem Hause zu nutzen. Ihre Ausrichtung und das Image in dieser Branche gefallen mir besonders gut, daher sehe ich Sie als einen sehr interessanten Arbeitgeber an. In den Medien habe ich Ihre Entwicklung schon lange verfolgt und glaube daher, auch gut ins Unternehmen zu passen.",
-                        fourth: "Ich suche an meinem neuen Wohnort eine interessante Beschäftigung und bin daher auf Ihr Unternehmen aufmerksam geworden. Ihre Ausrichtung und das Image in dieser Branche gefallen mir besonders gut, daher sehe ich Sie als einen sehr interessanten Arbeitgeber an. In den Medien habe ich Ihre Entwicklung schon lange verfolgt und glaube daher, auch gut ins Unternehmen zu passen.",*/
-                    }
+                    body: ""
                 },
 
                 wayOfWork: ["zuverlässig", "verantwortungsbewusst", "präzise"],
                 skills: ["flexibel", "motiviert", "teamorientiert"],
 
                 ending: {
-                    body: "",
-                    templates: {
-                        /*first: "Konnte ich Sie mit dieser Bewerbung überzeugen? Ich bin für einen Einstieg zum nächstmöglichen Zeitpunkt verfügbar. Einen vertiefenden Eindruck gebe ich Ihnen gerne in einem persönlichen Gespräch. Ich freue mich über Ihre Einladung!",
-                        second: "Ich danke Ihnen für das Interesse an meiner Bewerbung. Zum nächstmöglichen Zeitpunkt bin ich verfügbar. Wenn Sie mehr von mir erfahren möchten, freue ich mich über eine Einladung zum Vorstellungsgespräch.",
-                        third: "Ich hoffe, dass Sie einen ersten Eindruck von mir gewinnen konnten. Ein Einstieg zum nächstmöglichen Zeitpunkt ist für mich möglich. Ich freue mich, weitere Details und offene Fragen in einem persönlichen Gespräch auszutauschen.",*/
-                    }
+                    body: ""
                 }
             },
+
+            templates: {},
 
             recentlySaved: false
         };
@@ -280,19 +243,21 @@ export default {
         //Lese zunächst die Templates aus
         axios.get(`/bewerbungen/applications/templates`)
             .then(response => response.data).then(data => {
-                this.data.greeting.templates = data.greeting;
-                this.data.awareofyou.templates = data.awareofyou;
-                this.data.currentactivity.templates = data.currentactivity;
-                this.data.whycontact.templates = data.whycontact;
-                //this.data.wayOfWork = data.wayOfWork;
-                //this.data.skills = data.skills;
-                this.data.ending.templates = data.ending;
+                Object.keys(data).forEach(key => {
+                    this.templates[key] = data[key];
+                });
 
-                if (!this.data.greeting.body.length) this.data.greeting.body = this.data.greeting.templates.first;
+                if (!this.data.greeting.body.length) this.data.greeting.body = this.templates.greeting.first;
+                if (!this.data.awareofyou.body.length) this.data.awareofyou.body = this.templates.awareofyou.first;
+                if (!this.data.currentactivity.body.length) this.data.currentactivity.body = this.templates.currentactivity.first;
+                if (!this.data.whycontact.body.length) this.data.whycontact.body = this.templates.whycontact.first;
+                if (!this.data.ending.body.length) this.data.ending.body = this.templates.ending.first;
+
+                /*if (!this.data.greeting.body.length) this.data.greeting.body = this.data.greeting.templates.first;
                 if (!this.data.awareofyou.body.length) this.data.awareofyou.body = this.data.awareofyou.templates.first;
                 if (!this.data.currentactivity.body.length) this.data.currentactivity.body = this.data.currentactivity.templates.first;
                 if (!this.data.whycontact.body.length) this.data.whycontact.body = this.data.whycontact.templates.first;
-                if (!this.data.ending.body.length) this.data.ending.body = this.data.ending.templates.first;
+                if (!this.data.ending.body.length) this.data.ending.body = this.data.ending.templates.first;*/
 
                 if (this.saved.greeting.body.length) this.data.greeting.body = this.saved.greeting.body;
                 if (this.saved.awareofyou.body.length) this.data.awareofyou.body = this.saved.awareofyou.body;
