@@ -223,39 +223,39 @@ export default {
                 greeting: {
                     body: "",
                     templates: {
-                        first: "Sehr geehrte Damen und Herren,",
+                        /*first: "Sehr geehrte Damen und Herren,",
                         second: "Sehr geehrte Frau Musterfrau,",
-                        third: "Sehr geehrter Herr Mustermann,",
+                        third: "Sehr geehrter Herr Mustermann,",*/
                     }
                 },
 
                 awareofyou: {
                     body: "",
                     templates: {
-                        first: "mit großem Interesse bin ich im XING Stellenmarkt auf die ausgeschriebene Position aufmerksam geworden. Aus diesem Grund bewerbe ich mich bei Ihnen um eine Werkstudententätigkeit als Musterstelle (m/w).",
+                        /*first: "mit großem Interesse bin ich im XING Stellenmarkt auf die ausgeschriebene Position aufmerksam geworden. Aus diesem Grund bewerbe ich mich bei Ihnen um eine Werkstudententätigkeit als Musterstelle (m/w).",
                         second: "auf der Suche nach einer neuen Beschäftigung bin ich auf Ihr Unternehmen aufmerksam geworden und komme jetzt initiativ auf Sie zu. Aus diesem Grund bewerbe ich mich bei Ihnen um eine Werkstudententätigkeit als Musterstelle (m/w).",
-                        third: "wie telefonisch besprochen, interessiere ich mich sehr für eine Beschäftigung in Ihrem Unternehmen. Aus diesem Grund bewerbe ich mich bei Ihnen um eine Werkstudententätigkeit als Musterstelle (m/w)."
+                        third: "wie telefonisch besprochen, interessiere ich mich sehr für eine Beschäftigung in Ihrem Unternehmen. Aus diesem Grund bewerbe ich mich bei Ihnen um eine Werkstudententätigkeit als Musterstelle (m/w)."*/
                     }
                 },
 
                 currentactivity: {
                     body: "",
                     templates: {
-                        first: "Zurzeit arbeite ich als Musterberuf bei Musterfirma. Zu meinen wichtigsten Aufgaben gehören hierbei die Einarbeitung in neue Produkte, die Durchführung von Verkaufsgesprächen und die Erstellung und Weitergabe von Bestellungen.",
+                        /*first: "Zurzeit arbeite ich als Musterberuf bei Musterfirma. Zu meinen wichtigsten Aufgaben gehören hierbei die Einarbeitung in neue Produkte, die Durchführung von Verkaufsgesprächen und die Erstellung und Weitergabe von Bestellungen.",
                         second: "Zurzeit studiere ich Musterstudiengang an der Musterhochschule. Zu meinen wichtigsten Aufgaben gehören hierbei die Einarbeitung in neue Produkte, die Durchführung von Verkaufsgesprächen und die Erstellung und Weitergabe von Bestellungen.",
                         third: "Zurzeit befinde ich mich in der Ausbildung als Musterausbildung bei Musterfirma. Zu meinen wichtigsten Aufgaben gehören hierbei die Einarbeitung in neue Produkte, die Durchführung von Verkaufsgesprächen und die Erstellung und Weitergabe von Bestellungen.",
                         fourth: "Zurzeit absolviere ich ein Praktikum im Bereich Musterstelle bei Musterfirma. Zu meinen wichtigsten Aufgaben gehören hierbei die Einarbeitung in neue Produkte, die Durchführung von Verkaufsgesprächen und die Erstellung und Weitergabe von Bestellungen.",
-                        fifth: "Zurzeit besuche ich die Musterschule in Musterort. Zu meinen wichtigsten Aufgaben gehören hierbei die Einarbeitung in neue Produkte, die Durchführung von Verkaufsgesprächen und die Erstellung und Weitergabe von Bestellungen.",
+                        fifth: "Zurzeit besuche ich die Musterschule in Musterort. Zu meinen wichtigsten Aufgaben gehören hierbei die Einarbeitung in neue Produkte, die Durchführung von Verkaufsgesprächen und die Erstellung und Weitergabe von Bestellungen.",*/
                     }
                 },
 
                 whycontact: {
                     body: "",
                     templates: {
-                        first: "Ihr Stellenangebot hört sich toll an! Ich hoffe, mir hierdurch persönliche und fachliche Entwicklungsmöglichkeiten erschließen zu können. Ihre Ausrichtung und das Image in dieser Branche gefallen mir besonders gut, daher sehe ich Sie als einen sehr interessanten Arbeitgeber an. In den Medien habe ich Ihre Entwicklung schon lange verfolgt und glaube daher, auch gut ins Unternehmen zu passen.",
+                        /*first: "Ihr Stellenangebot hört sich toll an! Ich hoffe, mir hierdurch persönliche und fachliche Entwicklungsmöglichkeiten erschließen zu können. Ihre Ausrichtung und das Image in dieser Branche gefallen mir besonders gut, daher sehe ich Sie als einen sehr interessanten Arbeitgeber an. In den Medien habe ich Ihre Entwicklung schon lange verfolgt und glaube daher, auch gut ins Unternehmen zu passen.",
                         second: "Nachdem ich schon länger in diesem Bereich tätig bin, suche ich jetzt nach einer neuen Position, in der ich mehr Verantwortung übernehmen kann. Ihre Ausrichtung und das Image in dieser Branche gefallen mir besonders gut, daher sehe ich Sie als einen sehr interessanten Arbeitgeber an. In den Medien habe ich Ihre Entwicklung schon lange verfolgt und glaube daher, auch gut ins Unternehmen zu passen.",
                         third: "Mein Wunsch ist es, die beschriebene Aufgabenstellung als nächsten Schritt für meine weitere berufliche Entwicklung in Ihrem Hause zu nutzen. Ihre Ausrichtung und das Image in dieser Branche gefallen mir besonders gut, daher sehe ich Sie als einen sehr interessanten Arbeitgeber an. In den Medien habe ich Ihre Entwicklung schon lange verfolgt und glaube daher, auch gut ins Unternehmen zu passen.",
-                        fourth: "Ich suche an meinem neuen Wohnort eine interessante Beschäftigung und bin daher auf Ihr Unternehmen aufmerksam geworden. Ihre Ausrichtung und das Image in dieser Branche gefallen mir besonders gut, daher sehe ich Sie als einen sehr interessanten Arbeitgeber an. In den Medien habe ich Ihre Entwicklung schon lange verfolgt und glaube daher, auch gut ins Unternehmen zu passen.",
+                        fourth: "Ich suche an meinem neuen Wohnort eine interessante Beschäftigung und bin daher auf Ihr Unternehmen aufmerksam geworden. Ihre Ausrichtung und das Image in dieser Branche gefallen mir besonders gut, daher sehe ich Sie als einen sehr interessanten Arbeitgeber an. In den Medien habe ich Ihre Entwicklung schon lange verfolgt und glaube daher, auch gut ins Unternehmen zu passen.",*/
                     }
                 },
 
@@ -265,9 +265,9 @@ export default {
                 ending: {
                     body: "",
                     templates: {
-                        first: "Konnte ich Sie mit dieser Bewerbung überzeugen? Ich bin für einen Einstieg zum nächstmöglichen Zeitpunkt verfügbar. Einen vertiefenden Eindruck gebe ich Ihnen gerne in einem persönlichen Gespräch. Ich freue mich über Ihre Einladung!",
+                        /*first: "Konnte ich Sie mit dieser Bewerbung überzeugen? Ich bin für einen Einstieg zum nächstmöglichen Zeitpunkt verfügbar. Einen vertiefenden Eindruck gebe ich Ihnen gerne in einem persönlichen Gespräch. Ich freue mich über Ihre Einladung!",
                         second: "Ich danke Ihnen für das Interesse an meiner Bewerbung. Zum nächstmöglichen Zeitpunkt bin ich verfügbar. Wenn Sie mehr von mir erfahren möchten, freue ich mich über eine Einladung zum Vorstellungsgespräch.",
-                        third: "Ich hoffe, dass Sie einen ersten Eindruck von mir gewinnen konnten. Ein Einstieg zum nächstmöglichen Zeitpunkt ist für mich möglich. Ich freue mich, weitere Details und offene Fragen in einem persönlichen Gespräch auszutauschen.",
+                        third: "Ich hoffe, dass Sie einen ersten Eindruck von mir gewinnen konnten. Ein Einstieg zum nächstmöglichen Zeitpunkt ist für mich möglich. Ich freue mich, weitere Details und offene Fragen in einem persönlichen Gespräch auszutauschen.",*/
                     }
                 }
             },
@@ -277,19 +277,31 @@ export default {
     },
 
     mounted() {
-        if (!this.data.greeting.body.length) this.data.greeting.body = this.data.greeting.templates.first;
-        if (!this.data.awareofyou.body.length) this.data.awareofyou.body = this.data.awareofyou.templates.first;
-        if (!this.data.currentactivity.body.length) this.data.currentactivity.body = this.data.currentactivity.templates.first;
-        if (!this.data.whycontact.body.length) this.data.whycontact.body = this.data.whycontact.templates.first;
-        if (!this.data.ending.body.length) this.data.ending.body = this.data.ending.templates.first;
+        //Lese zunächst die Templates aus
+        axios.get(`/bewerbungen/applications/templates`)
+            .then(response => response.data).then(data => {
+                this.data.greeting.templates = data.greeting;
+                this.data.awareofyou.templates = data.awareofyou;
+                this.data.currentactivity.templates = data.currentactivity;
+                this.data.whycontact.templates = data.whycontact;
+                //this.data.wayOfWork = data.wayOfWork;
+                //this.data.skills = data.skills;
+                this.data.ending.templates = data.ending;
 
-        if (this.saved.greeting.body.length) this.data.greeting.body = this.saved.greeting.body;
-        if (this.saved.awareofyou.body.length) this.data.awareofyou.body = this.saved.awareofyou.body;
-        if (this.saved.currentactivity.body.length) this.data.currentactivity.body = this.saved.currentactivity.body;
-        if (this.saved.whycontact.body.length) this.data.whycontact.body = this.saved.whycontact.body;
-        if (this.saved.wayOfWork.length) this.data.wayOfWork = this.saved.wayOfWork;
-        if (this.saved.skills.length) this.data.skills = this.saved.skills;
-        if (this.saved.ending.body.length) this.data.ending.body = this.saved.ending.body;
+                if (!this.data.greeting.body.length) this.data.greeting.body = this.data.greeting.templates.first;
+                if (!this.data.awareofyou.body.length) this.data.awareofyou.body = this.data.awareofyou.templates.first;
+                if (!this.data.currentactivity.body.length) this.data.currentactivity.body = this.data.currentactivity.templates.first;
+                if (!this.data.whycontact.body.length) this.data.whycontact.body = this.data.whycontact.templates.first;
+                if (!this.data.ending.body.length) this.data.ending.body = this.data.ending.templates.first;
+
+                if (this.saved.greeting.body.length) this.data.greeting.body = this.saved.greeting.body;
+                if (this.saved.awareofyou.body.length) this.data.awareofyou.body = this.saved.awareofyou.body;
+                if (this.saved.currentactivity.body.length) this.data.currentactivity.body = this.saved.currentactivity.body;
+                if (this.saved.whycontact.body.length) this.data.whycontact.body = this.saved.whycontact.body;
+                if (this.saved.wayOfWork.length) this.data.wayOfWork = this.saved.wayOfWork;
+                if (this.saved.skills.length) this.data.skills = this.saved.skills;
+                if (this.saved.ending.body.length) this.data.ending.body = this.saved.ending.body;
+            });
     },
 
     computed: {

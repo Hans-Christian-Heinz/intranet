@@ -7,11 +7,11 @@
                 {{ $application->company->zip . " " . $application->company->city }}<br>
             </td>
             <td style="text-align: right;">
-                {{ auth()->user()->name }}<br>
+                {{ app()->user->full_name }}<br>
                 {{ $resume->personal->address }}<br>
                 {{ $resume->personal->zip . " " . $resume->personal->city }}<br>
                 {{ $resume->personal->phone }}<br>
-                {{ auth()->user()->email }}
+                {{ app()->user->email }}
             </td>
         </tr>
     </tbody>

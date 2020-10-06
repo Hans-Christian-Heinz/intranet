@@ -190,6 +190,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::patch("/applications/{application}", "ApplicationController@update")->name("applications.update");
         Route::delete("/applications/{application}", "ApplicationController@destroy")->name("applications.destroy");
         Route::get("/applications/{application}/print", "ApplicationController@show")->name("applications.print");
+        Route::get("/applications/templates", "ApplicationController@templates")->name("applications.templates");
     });
 });
 
