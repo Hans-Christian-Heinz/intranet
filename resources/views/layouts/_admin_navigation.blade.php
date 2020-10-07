@@ -44,6 +44,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownBewerbungen">
                         <a class="dropdown-item" href="{{ route('admin.bewerbungen.categories.index') }}">Review-Kategorien</a>
+                        <a class="dropdown-item" href="{{ route('admin.bewerbungen.templates.index') }}">Bewerbungs-Templates</a>
                     </div>
                 </li>
                 <li class="nav-item {{ request()->is("admin/abschlussprojekt*") ? 'active' : '' }}">

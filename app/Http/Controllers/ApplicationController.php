@@ -9,8 +9,70 @@ use Mpdf\Mpdf;
 
 class ApplicationController extends Controller
 {
-    //Standardtemplates für Bewerbungsanschreiben. Wird verwendet, wenn die Datei storage/app/public/bewerbungen/templates.json nicht gefunden wird
     const STANDARD_TEMPLATES = '{
+        "greeting": {
+            "heading" : "Anrede",
+            "fix": true,
+            "tpls": [
+                "Sehr geehrte Damen und Herren,",
+                "Sehr geehrte Frau Musterfrau,",
+                "Sehr geehrter Herr Mustermann,"
+            ]
+        },
+        "awareofyou": {
+            "heading": "Wie bist du auf diese Stelle aufmerksam geworden?",
+            "fix": false,
+            "tpls": [
+                "mit großem Interesse bin ich im XING Stellenmarkt auf die ausgeschriebene Position aufmerksam geworden. Aus diesem Grund bewerbe ich mich bei Ihnen um eine Werkstudententätigkeit als Musterstelle (m/w).",
+                "auf der Suche nach einer neuen Beschäftigung bin ich auf Ihr Unternehmen aufmerksam geworden und komme jetzt initiativ auf Sie zu. Aus diesem Grund bewerbe ich mich bei Ihnen um eine Werkstudententätigkeit als Musterstelle (m/w).",
+                "wie telefonisch besprochen, interessiere ich mich sehr für eine Beschäftigung in Ihrem Unternehmen. Aus diesem Grund bewerbe ich mich bei Ihnen um eine Werkstudententätigkeit als Musterstelle (m/w)."
+            ]
+        },
+        "currentactivity": {
+            "heading": "Was ist deine derzeitige Beschäftigung?",
+            "fix": false,
+            "tpls": [
+                "Zurzeit arbeite ich als Musterberuf bei Musterfirma. Zu meinen wichtigsten Aufgaben gehören hierbei die Einarbeitung in neue Produkte, die Durchführung von Verkaufsgesprächen und die Erstellung und Weitergabe von Bestellungen.",
+                "Zurzeit studiere ich Musterstudiengang an der Musterhochschule. Zu meinen wichtigsten Aufgaben gehören hierbei die Einarbeitung in neue Produkte, die Durchführung von Verkaufsgesprächen und die Erstellung und Weitergabe von Bestellungen.",
+                "Zurzeit befinde ich mich in der Ausbildung als Musterausbildung bei Musterfirma. Zu meinen wichtigsten Aufgaben gehören hierbei die Einarbeitung in neue Produkte, die Durchführung von Verkaufsgesprächen und die Erstellung und Weitergabe von Bestellungen.",
+                "Zurzeit absolviere ich ein Praktikum im Bereich Musterstelle bei Musterfirma. Zu meinen wichtigsten Aufgaben gehören hierbei die Einarbeitung in neue Produkte, die Durchführung von Verkaufsgesprächen und die Erstellung und Weitergabe von Bestellungen.",
+                "Zurzeit besuche ich die Musterschule in Musterort. Zu meinen wichtigsten Aufgaben gehören hierbei die Einarbeitung in neue Produkte, die Durchführung von Verkaufsgesprächen und die Erstellung und Weitergabe von Bestellungen."
+            ]
+        },
+        "whycontact": {
+            "heading": "Warum bewirbst du dich bei dem Unternehmen?",
+            "fix": false,
+            "tpls": [
+                "Ihr Stellenangebot hört sich toll an! Ich hoffe, mir hierdurch persönliche und fachliche Entwicklungsmöglichkeiten erschließen zu können. Ihre Ausrichtung und das Image in dieser Branche gefallen mir besonders gut, daher sehe ich Sie als einen sehr interessanten Arbeitgeber an. In den Medien habe ich Ihre Entwicklung schon lange verfolgt und glaube daher, auch gut ins Unternehmen zu passen.",
+                "Nachdem ich schon länger in diesem Bereich tätig bin, suche ich jetzt nach einer neuen Position, in der ich mehr Verantwortung übernehmen kann. Ihre Ausrichtung und das Image in dieser Branche gefallen mir besonders gut, daher sehe ich Sie als einen sehr interessanten Arbeitgeber an. In den Medien habe ich Ihre Entwicklung schon lange verfolgt und glaube daher, auch gut ins Unternehmen zu passen.",
+                "Mein Wunsch ist es, die beschriebene Aufgabenstellung als nächsten Schritt für meine weitere berufliche Entwicklung in Ihrem Hause zu nutzen. Ihre Ausrichtung und das Image in dieser Branche gefallen mir besonders gut, daher sehe ich Sie als einen sehr interessanten Arbeitgeber an. In den Medien habe ich Ihre Entwicklung schon lange verfolgt und glaube daher, auch gut ins Unternehmen zu passen.",
+                "Ich suche an meinem neuen Wohnort eine interessante Beschäftigung und bin daher auf Ihr Unternehmen aufmerksam geworden. Ihre Ausrichtung und das Image in dieser Branche gefallen mir besonders gut, daher sehe ich Sie als einen sehr interessanten Arbeitgeber an. In den Medien habe ich Ihre Entwicklung schon lange verfolgt und glaube daher, auch gut ins Unternehmen zu passen."
+            ]
+        },
+        "wayofwork": {
+            "heading": "Was zeichnet deine Arbeitsweise aus?",
+            "fix": false,
+            "checkbox": true,
+            "tpls": ["zuverlässig", "verantwortungsbewusst", "präzise"]
+        },
+        "skills": {
+            "heading": "Welche Begriffe beschreiben am besten deine persönlichen Kompetenzen?",
+            "fix": false,
+            "checkbox": true,
+            "tpls": ["flexibel", "motiviert", "teamorientiert"]
+        },
+        "ending": {
+            "heading": "Schlusswort",
+            "fix": true,
+            "tpls": [
+                "Konnte ich Sie mit dieser Bewerbung überzeugen? Ich bin für einen Einstieg zum nächstmöglichen Zeitpunkt verfügbar. Einen vertiefenden Eindruck gebe ich Ihnen gerne in einem persönlichen Gespräch. Ich freue mich über Ihre Einladung!",
+                "Ich danke Ihnen für das Interesse an meiner Bewerbung. Zum nächstmöglichen Zeitpunkt bin ich verfügbar. Wenn Sie mehr von mir erfahren möchten, freue ich mich über eine Einladung zum Vorstellungsgespräch.",
+                "Ich hoffe, dass Sie einen ersten Eindruck von mir gewinnen konnten. Ein Einstieg zum nächstmöglichen Zeitpunkt ist für mich möglich. Ich freue mich, weitere Details und offene Fragen in einem persönlichen Gespräch auszutauschen."
+            ]
+        }
+    }';
+    //Standardtemplates für Bewerbungsanschreiben. Wird verwendet, wenn die Datei storage/app/public/bewerbungen/templates.json nicht gefunden wird
+    /*const STANDARD_TEMPLATES = '{
         "greeting": {
             "first": "Sehr geehrte Damen und Herren,",
             "second": "Sehr geehrte Frau Musterfrau,",
@@ -41,7 +103,7 @@ class ApplicationController extends Controller
             "second": "Ich danke Ihnen für das Interesse an meiner Bewerbung. Zum nächstmöglichen Zeitpunkt bin ich verfügbar. Wenn Sie mehr von mir erfahren möchten, freue ich mich über eine Einladung zum Vorstellungsgespräch.",
             "third": "Ich hoffe, dass Sie einen ersten Eindruck von mir gewinnen konnten. Ein Einstieg zum nächstmöglichen Zeitpunkt ist für mich möglich. Ich freue mich, weitere Details und offene Fragen in einem persönlichen Gespräch auszutauschen."
         }
-    }';
+    }';*/
 
     /**
      * Display a listing of the resource.

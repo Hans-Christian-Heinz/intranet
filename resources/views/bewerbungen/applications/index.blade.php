@@ -9,7 +9,7 @@
                     <h3 class="my-auto">Bewerbungen</h3>
                 </div>
 
-                <table class="table table-bordered table-hover table-striped">
+                <table class="table table-bordered table-hover table-striped bg-white">
                     <thead>
                         <tr>
                             <th>Firma</th>
@@ -26,7 +26,10 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="2">Noch keine Bewerbungen geschrieben</td>
+                                <td>Noch keine Bewerbungen geschrieben</td>
+                                <td class="text-center">
+                                    <a href="{{ route("bewerbungen.companies.index") }}" class="text-secondary">Zur Firmenübersicht</a>
+                                </td>
                             </tr>
                         @endforelse
                     </tbody>

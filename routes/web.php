@@ -283,6 +283,13 @@ Route::group(['middleware' => 'admin'], function () {
             Route::patch("/{category}", "AdminCategoryController@update")->name("update");
             Route::delete("/{category}", "AdminCategoryController@destroy")->name("destroy");
         });
+
+        Route::group([
+            'as' => 'templates.',
+            'prefix' => '/templates',
+        ], function() {
+            Route::get('/', 'AdminTemplateController@index')->name('index');
+        });
     });
 
     Route::fallback(function() {

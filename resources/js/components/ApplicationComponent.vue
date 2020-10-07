@@ -244,14 +244,14 @@ export default {
         axios.get(`/bewerbungen/applications/templates`)
             .then(response => response.data).then(data => {
                 Object.keys(data).forEach(key => {
-                    this.templates[key] = data[key];
+                    this.templates[key] = data[key].tpls;
                 });
 
-                if (!this.data.greeting.body.length) this.data.greeting.body = this.templates.greeting.first;
-                if (!this.data.awareofyou.body.length) this.data.awareofyou.body = this.templates.awareofyou.first;
-                if (!this.data.currentactivity.body.length) this.data.currentactivity.body = this.templates.currentactivity.first;
-                if (!this.data.whycontact.body.length) this.data.whycontact.body = this.templates.whycontact.first;
-                if (!this.data.ending.body.length) this.data.ending.body = this.templates.ending.first;
+                if (!this.data.greeting.body.length) this.data.greeting.body = this.templates.greeting[0];
+                if (!this.data.awareofyou.body.length) this.data.awareofyou.body = this.templates.awareofyou[0];
+                if (!this.data.currentactivity.body.length) this.data.currentactivity.body = this.templates.currentactivity[0];
+                if (!this.data.whycontact.body.length) this.data.whycontact.body = this.templates.whycontact[0];
+                if (!this.data.ending.body.length) this.data.ending.body = this.templates.ending[0];
 
                 /*if (!this.data.greeting.body.length) this.data.greeting.body = this.data.greeting.templates.first;
                 if (!this.data.awareofyou.body.length) this.data.awareofyou.body = this.data.awareofyou.templates.first;
