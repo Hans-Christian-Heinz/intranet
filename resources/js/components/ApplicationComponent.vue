@@ -8,17 +8,10 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-body" style="max-height: 100vh; overflow-y: scroll;">
-                    <p>{{ data.greeting.body }}</p>
-
-                    <p>{{ data.awareofyou.body }}</p>
-
-                    <p>{{ data.currentactivity.body }}</p>
-
-                    <p>{{ data.whycontact.body }}</p>
-
-                    <p>{{ workAndSkillBody }}</p>
-
-                    <p>{{ data.ending.body }}</p>
+                    <p v-for="(text, key) in data">
+                        <span v-if="! text.keywords">{{ text }}</span>
+                        <span v-else>{{ keywordsText(key, data[key].values) }}</span>
+                    </p>
 
                     <p>Mit freundlichen Grüßen</p>
 
@@ -33,162 +26,30 @@
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body" style="max-height: 76vh; overflow-y: scroll;">
-                    <div class="form-group">
-                        <h5>Anrede</h5>
+                    <div class="form-group" v-for="(tpl, key) in this.templates">
+                        <h5>{{ tpl.heading }}</h5>
 
-                        <div class="input-group">
-                            <input type="text" class="form-control" v-model="data.greeting.body">
+                        <div class="input-group" v-if="!tpl.checkbox">
+                            <input type="text" class="form-control" v-model="data[key]">
                             <div class="input-group-append">
                                 <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="sr-only">Toggle Dropdown</span>
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#" v-for="tpl in templates.greeting"
-                                       @click.prevent="data.greeting.body = tpl">{{ tpl }}</a>
+                                    <a class="dropdown-item" href="#" v-for="temp in tpl.tpls" @click.prevent="useTemplate(key, temp, false)">{{ temp }}</a>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <hr>
-
-                    <div class="form-group">
-                        <h5>Wie bist du auf diese Stelle aufmerksam geworden?</h5>
-                        <div class="input-group">
-                            <textarea class="form-control" rows="4" v-model="data.awareofyou.body"></textarea>
-                            <div class="input-group-append">
-                                <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="sr-only">Toggle Dropdown</span>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#" v-for="tpl in templates.awareofyou"
-                                       @click.prevent="data.awareofyou.body = tpl">{{ tpl }}</a>
-                                </div>
+                        <div v-else>
+                            <div v-for="(temp, index) in tpl.tpls">
+                                <input type="checkbox" @change="$forceUpdate()"
+                                       :id="key + '_tpl_' + index" :value="temp" v-model="data[tpl.key].values[tpl.index]"/>
+                                <label :for="key + '_tpl_' + index">{{ temp }}</label>
                             </div>
                         </div>
-                    </div>
 
-                    <hr>
-
-                    <div class="form-group">
-                        <h5>Was ist deine derzeitige Beschäftigung?</h5>
-                        <div class="input-group">
-                            <textarea class="form-control" rows="4" v-model="data.currentactivity.body"></textarea>
-                            <div class="input-group-append">
-                                <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="sr-only">Toggle Dropdown</span>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#" v-for="tpl in templates.currentactivity"
-                                       @click.prevent="data.currentactivity.body = tpl">{{ tpl }}</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <hr>
-
-                    <div class="form-group">
-                        <h5>Warum bewirbst du dich bei dem Unternehmen?</h5>
-                        <div class="input-group">
-                            <textarea class="form-control" rows="4" v-model="data.whycontact.body"></textarea>
-                            <div class="input-group-append">
-                                <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="sr-only">Toggle Dropdown</span>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#" v-for="tpl in templates.whycontact"
-                                       @click.prevent="data.whycontact.body = tpl">{{ tpl }}</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <hr>
-
-                    <div class="form-group">
-                        <h5>Wie zeichnet sich deine Arbeitsweise aus?</h5>
-                        <div>
-                            <input type="checkbox" id="zuverlässig" value="zuverlässig" v-model="data.wayOfWork">
-                            <label for="zuverlässig">Zuverlässig</label>
-                        </div>
-
-                        <div>
-                            <input type="checkbox" id="verantwortungsbewusst" value="verantwortungsbewusst" v-model="data.wayOfWork">
-                            <label for="verantwortungsbewusst">Verantwortungsbewusst</label>
-                        </div>
-
-                        <div>
-                            <input type="checkbox" id="präzise" value="präzise" v-model="data.wayOfWork">
-                            <label for="präzise">Präzise</label>
-                        </div>
-
-                        <div>
-                            <input type="checkbox" id="engagiert" value="engagiert" v-model="data.wayOfWork">
-                            <label for="engagiert">Engagiert</label>
-                        </div>
-
-                        <div>
-                            <input type="checkbox" id="gewissenhaft" value="gewissenhaft" v-model="data.wayOfWork">
-                            <label for="gewissenhaft">Gewissenhaft</label>
-                        </div>
-
-                        <div>
-                            <input type="checkbox" id="ausdauernd" value="ausdauernd" v-model="data.wayOfWork">
-                            <label for="ausdauernd">Ausdauernd</label>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <h5>Welche Begriffe beschreiben am besten deine persönlichen Kompetenzen?</h5>
-                        <div>
-                            <input type="checkbox" id="flexibel" value="flexibel" v-model="data.skills">
-                            <label for="flexibel">Flexibel</label>
-                        </div>
-
-                        <div>
-                            <input type="checkbox" id="motiviert" value="motiviert" v-model="data.skills">
-                            <label for="motiviert">Motiviert</label>
-                        </div>
-
-                        <div>
-                            <input type="checkbox" id="teamorientiert" value="teamorientiert" v-model="data.skills">
-                            <label for="teamorientiert">Teamorientiert</label>
-                        </div>
-
-                        <div>
-                            <input type="checkbox" id="belastbar" value="belastbar" v-model="data.skills">
-                            <label for="belastbar">Belastbar</label>
-                        </div>
-
-                        <div>
-                            <input type="checkbox" id="selbstständig" value="selbstständig" v-model="data.skills">
-                            <label for="selbstständig">Selbstständig</label>
-                        </div>
-
-                        <div>
-                            <input type="checkbox" id="aufgeschlossen" value="aufgeschlossen" v-model="data.skills">
-                            <label for="aufgeschlossen">Aufgeschlossen</label>
-                        </div>
-
-                        <div>
-                            <input type="checkbox" id="begeisterungsfähig" value="begeisterungsfähig" v-model="data.skills">
-                            <label for="begeisterungsfähig">Begeisterungsfähig</label>
-                        </div>
-                    </div>
-
-                    <hr>
-
-                    <div class="form-group">
-                        <h5>Schlusswort</h5>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#" v-for="tpl in templates.whycontact"
-                               @click.prevent="data.whycontact.body = tpl">{{ tpl }}</a>
-                        </div>
-                        <div v-for="(tpl, index) in templates.ending">
-                            <input type="radio" :id="'version' + index" :value="tpl" v-model="data.ending.body">
-                            <label :for="'version' + index">Version {{ index}}</label>
-                        </div>
+                        <hr>
                     </div>
                 </div>
                 <div class="card-body d-flex justify-content-center">
@@ -208,32 +69,10 @@ export default {
 
     data() {
         return {
-            data: {
-                greeting: {
-                    body: ""
-                },
-
-                awareofyou: {
-                    body: ""
-                },
-
-                currentactivity: {
-                    body: ""
-                },
-
-                whycontact: {
-                    body: ""
-                },
-
-                wayOfWork: ["zuverlässig", "verantwortungsbewusst", "präzise"],
-                skills: ["flexibel", "motiviert", "teamorientiert"],
-
-                ending: {
-                    body: ""
-                }
-            },
+            data: {},
 
             templates: {},
+            helpTpls: {},
 
             recentlySaved: false
         };
@@ -244,52 +83,56 @@ export default {
         axios.get(`/bewerbungen/applications/templates`)
             .then(response => response.data).then(data => {
                 Object.keys(data).forEach(key => {
-                    this.templates[key] = data[key].tpls;
+                    //Die templates-Variable soll die im Editor verfügbaren templates beinhalten
+                    //Die data-Variable soll die im Dokument bzw. in der Vorschau angezeigten Werte beinhalten
+                    if (data[key].chooseKeywords) {
+                        this.helpTpls[key] = data[key];
+
+                        let indices = [];
+                        for (let i = 0; i < data[key].keywords.length; i++) {
+                            indices[i] = [];
+                            for (let j = 0; j < Math.min(3, data[key].keywords[i].tpls.length); j++) {
+                                indices[i].push(j);
+                            }
+                            this.templates[key + "_keyword_" + i] = {};
+                            this.templates[key + "_keyword_" + i].heading = data[key].keywords[i].heading;
+                            this.templates[key + "_keyword_" + i].tpls = data[key].keywords[i].tpls;
+                            this.templates[key + "_keyword_" + i].checkbox = true;
+                            this.templates[key + "_keyword_" + i].key = key;
+                            this.templates[key + "_keyword_" + i].index = i;
+                        }
+
+                        let values = this.kwValues(key, indices);
+                        if (! this.data[key]) {
+                            this.data[key] = {
+                                keywords: true,
+                                values: values
+                            };
+                        }
+                        if (this.saved[key]) {
+                            this.data[key] = this.saved[key];
+                        }
+                    }
+                    else {
+                        this.templates[key] = {};
+                        this.templates[key].heading = data[key].heading;
+                        this.templates[key].tpls = data[key].tpls;
+
+                        if(! (this.data[key] && this.data[key].length)) {
+                            this.data[key] = data[key].tpls[0];
+                        }
+                    }
+
+                    if (this.saved[key] && this.saved[key].length) {
+                        this.data[key] = this.saved[key];
+                    }
                 });
 
-                if (!this.data.greeting.body.length) this.data.greeting.body = this.templates.greeting[0];
-                if (!this.data.awareofyou.body.length) this.data.awareofyou.body = this.templates.awareofyou[0];
-                if (!this.data.currentactivity.body.length) this.data.currentactivity.body = this.templates.currentactivity[0];
-                if (!this.data.whycontact.body.length) this.data.whycontact.body = this.templates.whycontact[0];
-                if (!this.data.ending.body.length) this.data.ending.body = this.templates.ending[0];
-
-                /*if (!this.data.greeting.body.length) this.data.greeting.body = this.data.greeting.templates.first;
-                if (!this.data.awareofyou.body.length) this.data.awareofyou.body = this.data.awareofyou.templates.first;
-                if (!this.data.currentactivity.body.length) this.data.currentactivity.body = this.data.currentactivity.templates.first;
-                if (!this.data.whycontact.body.length) this.data.whycontact.body = this.data.whycontact.templates.first;
-                if (!this.data.ending.body.length) this.data.ending.body = this.data.ending.templates.first;*/
-
-                if (this.saved.greeting.body.length) this.data.greeting.body = this.saved.greeting.body;
-                if (this.saved.awareofyou.body.length) this.data.awareofyou.body = this.saved.awareofyou.body;
-                if (this.saved.currentactivity.body.length) this.data.currentactivity.body = this.saved.currentactivity.body;
-                if (this.saved.whycontact.body.length) this.data.whycontact.body = this.saved.whycontact.body;
-                if (this.saved.wayOfWork.length) this.data.wayOfWork = this.saved.wayOfWork;
-                if (this.saved.skills.length) this.data.skills = this.saved.skills;
-                if (this.saved.ending.body.length) this.data.ending.body = this.saved.ending.body;
+                this.$forceUpdate();
             });
     },
 
     computed: {
-        workAndSkillBody() {
-            let wayOfWork = [...this.data.wayOfWork];
-            let lastWayOfWork = this.data.wayOfWork[this.data.wayOfWork.length - 1];
-            let skills = [...this.data.skills];
-            let lastSkill = this.data.skills[this.data.skills.length - 1];
-
-            if (wayOfWork.length > 1) {
-                wayOfWork.pop();
-            }
-
-            if (skills.length > 1) {
-                skills.pop();
-            }
-
-            let wayOfWorkMessage = (this.data.wayOfWork.length > 1) ? wayOfWork.join(", ") + " und " + lastWayOfWork : lastWayOfWork;
-            let skillsMessage = (this.data.skills.length > 1) ? skills.join(", ") + " und " + lastSkill : lastSkill;
-
-            return `In eine neue Aufgabe bei Ihnen kann ich verschiedene Stärken einbringen. So bin ich meine Aufgaben sehr ${wayOfWorkMessage} angegangen. Mit mir gewinnt Ihr Unternehmen einen Mitarbeiter, der ${skillsMessage} ist. Außerdem habe ich in früheren Projekten insbesondere ausgeprägte Kommunikationsstärke, hohe Lernbereitschaft und viel Kreativität unter Beweis stellen können.`;
-        },
-
         currentDate() {
             let date = new Date();
             let day = ("0" + date.getDate()).slice(-2);
@@ -320,6 +163,57 @@ export default {
                 .catch(error => {
                     console.log(error);
                 });
+        },
+
+        useTemplate(key, temp, keyword) {
+            if (! keyword) {
+                this.data[key] = temp;
+                this.$forceUpdate();
+            }
+        },
+
+        //key: der Index des beschriebenen Abschnitts
+        //indices: mehrdimensionaler Array: [Schlüsselwortkategorie => [Schlüsselwortnr, Schlüsselwortnr...], ...]
+        kwValues(key, indices) {
+            let template = this.helpTpls[key];
+            let res = [];
+
+            for (let i = 0; i < Math.min(indices.length, template.keywords.length); i++) {
+                res[i] = [];
+                for (let j = 0; j < indices[i].length; j++) {
+                    if (indices[i][j] < template.keywords[i].tpls.length) {
+                        res[i].push(template.keywords[i].tpls[j]);
+                    }
+                }
+            }
+
+            return res;
+        },
+
+        //key: der Index des beschriebenen Abschnitts
+        //values: mehrdimensionaler Array: [Schlüsselwortkategorie => [Schlüsselwort, Schlüsselwort...], ...]
+        keywordsText(key, values) {
+            let template = this.helpTpls[key];
+            let res = "";
+
+            //Gehe den Array text im Template durch. (Der Text, in den Schlüsselworte einzusetzen sind, unterbrochen an
+            //den Stellen, an denen Schlüsselworte einzusetzen sind.
+            for (let i = 0; i < template.text.length; i++) {
+                res += template.text[i];
+                if (i < values.length) {
+                    for (let j = 0; j < values[i].length; j++){
+                        res += values[i][j];
+                        if (j < values[i].length - 2) {
+                            res += ", ";
+                        }
+                        if (j === values[i].length - 2) {
+                            res += " " + template.keywords[i].conjunction + " ";
+                        }
+                    }
+                }
+            }
+
+            return res;
         }
     }
 }
