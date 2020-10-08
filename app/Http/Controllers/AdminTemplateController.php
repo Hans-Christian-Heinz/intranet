@@ -23,7 +23,19 @@ class AdminTemplateController extends Controller
             return file_put_contents($filename, json_encode($request->tpl));
         }
         catch(\Exception $e) {
-            return $e;
+            return false;
+        }
+    }
+
+    public function restoreDefault() {
+        $filename = storage_path('app/public/bewerbungen/templates.json');
+        try {
+            file_put_contents($filename, ApplicationController::STANDARD_TEMPLATES);
+            return file_get_contents($filename);
+
+        }
+        catch (\Exception $e) {
+            return false;
         }
     }
 }

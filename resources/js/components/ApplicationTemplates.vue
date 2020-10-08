@@ -2,6 +2,14 @@
 
 <template>
     <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-info" v-if="recentlySaved">
+                Die Änderungen wurden erfolgreich gespeichert.
+            </div>
+            <div class="alert alert-danger" v-if="saveFailed">
+                Beim Speichern ist ein Fehler aufgetreten
+            </div>
+        </div>
         <!-- Editor -->
         <div class="col-md-12">
             <div class="card">
@@ -132,6 +140,7 @@
                 </div>
                 <div class="card-body">
                     <button type="button" class="btn btn-primary float-right mx-3" @click.prevent="save()">Speichern</button>
+                    <button type="button" class="btn btn-outline-primary float-right mx-3" @click.prevent="restoreDefault()">Standard wiederherstellen</button>
                 </div>
             </div>
         </div>
@@ -140,7 +149,7 @@
 
 <script>
 export default {
-    props: ["tpl", "save_route"],
+    props: ["tpl", "save_route", "restore_default_route"],
 
     data() {
         return {
@@ -149,7 +158,9 @@ export default {
             },
             cards: {
                 addSection: {shown: false}
-            }
+            },
+            recentlySaved: false,
+            saveFailed: false
         }
     },
 
@@ -340,14 +351,44 @@ export default {
                 .then(response => response.data)
                 .then(data => {
                     // do something
-                    //TODO
-                    console.log(data);
-
-                    /*this.recentlySaved = true;
-
-                    setTimeout(() => {
+                    if (data === false) {
+                        this.saveFailed = true;
                         this.recentlySaved = false;
-                    }, 3000);*/
+                    }
+                    else {
+                        this.recentlySaved = true;
+                        this.saveFailed = false;
+
+                        setTimeout(() => {
+                            this.recentlySaved = false;
+                        }, 3000);
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
+
+        restoreDefault() {
+            let route = this.restore_default_route;
+
+            axios.post(route, {_method: "patch"})
+                .then(response => response.data)
+                .then(data => {
+                    if (data === false) {
+                        this.saveFailed = true;
+                        this.recentlySaved = false;
+                    }
+                    else {
+                        this.recentlySaved = true;
+                        this.saveFailed = false;
+
+                        this.tpl = data;
+
+                        setTimeout(() => {
+                            this.recentlySaved = false;
+                        }, 3000);
+                    }
                 })
                 .catch(error => {
                     console.log(error);
