@@ -1,9 +1,5 @@
 <template>
     <div>
-        <div class="form-group d-flex">
-            <a :href="printroute" target="_blank" class="btn btn-outline-primary ml-auto">Drucken</a>
-        </div>
-
         <template v-if="statusMessage.length">
             <div class="alert alert-info">
                 {{ statusMessage }}
@@ -226,6 +222,10 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+
+        <div class="form-group d-flex">
+            <a :href="printroute" target="_blank" class="btn btn-outline-primary ml-auto">Drucken</a>
         </div>
     </div>
 </template>

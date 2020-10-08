@@ -5,6 +5,9 @@
 @section("content")
     <div class="section">
         <div class="container">
+            <div class="row p-3">
+                <h3>Freistellungsantrag bearbeiten</h3>
+            </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
@@ -51,15 +54,17 @@
                                 </div>
 
                                 <div class="form-group mb-0">
-                                    <a href="{{ route('exemptions.index') }}" class="btn btn-outline-secondary">
-                                        <span class="fa fa-times mr-2"></span>Abbrechen
-                                    </a>
-                                    <button type="submit" class="btn btn-primary">
-                                        <span class="fa fa-floppy-o mr-2"></span>Änderungen speichern
-                                    </button>
                                     <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#deleteExemption">
                                         <span class="fa fa-trash mr-2" aria-hidden="true"></span>Löschen
                                     </button>
+                                    <div class="float-right">
+                                        <a href="{{ route('exemptions.index') }}" class="btn btn-outline-secondary">
+                                            <span class="fa fa-times mr-2"></span>Abbrechen
+                                        </a>
+                                        <button type="submit" class="btn btn-primary">
+                                            <span class="fa fa-floppy-o mr-2"></span>Änderungen speichern
+                                        </button>
+                                    </div>
                                 </div>
                             </form>
                         </div>

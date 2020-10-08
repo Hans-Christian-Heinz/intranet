@@ -9,7 +9,6 @@
                     <h3 class="my-auto">Kategorie bearbeiten</h3>
 
                     <div class="ml-auto my-auto">
-                        <button type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#deleteCategoryModal">Löschen</button>
                         <a href="{{ route("admin.bewerbungen.categories.index") }}" class="btn btn-sm btn-outline-secondary">Zurück</a>
                     </div>
                 </div>
@@ -36,7 +35,8 @@
                             </div>
 
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary">Änderungen speichern</button>
+                                <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#deleteCategoryModal">Löschen</button>
+                                <button type="submit" class="btn btn-primary float-right">Änderungen speichern</button>
                             </div>
                         </form>
                     </div>

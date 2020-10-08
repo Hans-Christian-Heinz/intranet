@@ -26,10 +26,9 @@ class AdminProjectController extends Controller
             }
             $fachrichtung = $p->user->fachrichtung;
             //Sollte eigentlich nicht vorkommen
-            if ($fachrichtung == 'Ausbilder') {
-                continue;
+            if ($fachrichtung != 'Ausbilder') {
+                $projects[$jahr][$fachrichtung]->push($p);
             }
-            $projects[$jahr][$fachrichtung]->push($p);
         }
 
         return view('admin.abschlussprojekt.index', compact('projects'));

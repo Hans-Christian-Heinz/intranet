@@ -5,6 +5,9 @@
 @section("content")
     <div class="section">
         <div class="container">
+            <div class="row p-3">
+                <h3>Berichtsheft erstellen</h3>
+            </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
@@ -64,7 +67,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group mb-0">
-                                    <input type="submit" class="btn btn-primary" value="Berichtsheft hinzufügen">
+                                    <input type="submit" class="btn btn-primary float-right" value="Berichtsheft hinzufügen">
                                 </div>
                             </form>
                         </div>

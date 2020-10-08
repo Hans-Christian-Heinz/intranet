@@ -72,7 +72,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group float-right">
                                     <button type="submit" class="btn btn-outline-primary">Firma anlegen</button>
                                 </div>
                             </form>

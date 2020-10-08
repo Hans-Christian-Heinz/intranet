@@ -5,6 +5,9 @@
 @section("content")
     <div class="section">
         <div class="container">
+            <div class="row b-3">
+                <h3>Freistellungsantrag stellen</h3>
+            </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
@@ -48,7 +51,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="form-group mb-0">
+                                <div class="form-group mb-0 float-right">
                                     <input type="submit" class="btn btn-primary" value="Freistellung beantragen">
                                 </div>
                             </form>

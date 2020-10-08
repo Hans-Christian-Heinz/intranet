@@ -19,7 +19,10 @@
 
                     <hr>
 
-                    <button type="button" class="btn btn-outline-primary mt-3" @click="save()">Änderungen speichern</button>
+                    <button type="button" class="btn btn-outline-danger mt-3" data-toggle="modal" data-target="#deleteApplicationModal">Löschen</button>
+
+                    <button type="button" class="btn btn-primary float-right mt-3 mx-2" @click="save()">Änderungen speichern</button>
+                    <a :href="print_route" target="_blank" class="btn btn-outline-info float-right mt-3">Drucken</a>
                 </div>
             </div>
         </div>
@@ -68,7 +71,7 @@
 
 <script>
 export default {
-    props: ["route", "saved", "user"],
+    props: ["route", "saved", "user", "print_route"],
 
     data() {
         return {

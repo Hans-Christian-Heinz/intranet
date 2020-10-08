@@ -8,14 +8,13 @@
                 <div class="d-flex mb-3">
                     <h3 class="my-auto">Bewerbung an {{ $application->company->name }}</h3>
                     <div class="ml-auto my-auto">
-                        <a href="{{ route("bewerbungen.applications.print", $application) }}" target="_blank" class="btn btn-sm btn-outline-info">Drucken</a>
-                        <button type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#deleteApplicationModal">Löschen</button>
                         <a href="{{ route("bewerbungen.applications.index") }}" class="btn btn-sm btn-outline-secondary">Zurück</a>
                     </div>
                 </div>
             </div>
         </div>
-        <application route="{{ route("bewerbungen.applications.update", $application) }}" :user="{{ app()->user }}" :saved="{{ $application->body ?: json_encode([]) }}"></application>
+        <application route="{{ route("bewerbungen.applications.update", $application) }}" print_route="{{ route("bewerbungen.applications.print", $application) }}"
+                     :user="{{ app()->user }}" :saved="{{ $application->body ?: json_encode([]) }}"></application>
     </div>
 </div>
 @endsection

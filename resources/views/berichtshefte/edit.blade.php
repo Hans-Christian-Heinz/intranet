@@ -5,6 +5,35 @@
 @section("content")
     <div class="section">
         <div class="container">
+            <div class="row p-3">
+                <h3>Berichtsheft bearbeiten</h3>
+                <div class="ml-auto">
+                    @if(request()->is('admin*'))
+                        <a href="{{ $previousWeek ? route("admin.berichtshefte.edit", $previousWeek) : "#" }}" class="btn btn-sm btn-outline-secondary {{ (!$previousWeek) ? "disabled" : "" }}" {{ (!$previousWeek) ? "disabled" : "" }}>
+                    @else
+                        <a href="{{ $previousWeek ? route("berichtshefte.edit", $previousWeek) : "#" }}" class="btn btn-sm btn-outline-secondary {{ (!$previousWeek) ? "disabled" : "" }}" {{ (!$previousWeek) ? "disabled" : "" }}>
+                    @endif
+                            <span class="fa fa-caret-left mr-2"></span>Vorherige Woche
+                        </a>
+                    @if ($nextWeek)
+                        @if(request()->is('admin*'))
+                            <a href="{{ route("admin.berichtshefte.edit", $nextWeek)}}" class="btn btn-sm btn-outline-secondary">
+                        @else
+                            <a href="{{ route("berichtshefte.edit", $nextWeek)}}" class="btn btn-sm btn-outline-secondary">
+                        @endif
+                                Nächste Woche<span class="fa fa-caret-right ml-2"></span>
+                            </a>
+                    @else
+                        @if(request()->is('admin*'))
+                            <a href="{{ route("admin.berichtshefte.create", $berichtsheft->owner) }}" class="btn btn-sm btn-outline-info">
+                        @else
+                            <a href="{{ route("berichtshefte.create") }}" class="btn btn-sm btn-outline-info">
+                        @endif
+                                Neue Woche<span class="fa fa-plus ml-2"></span>
+                            </a>
+                    @endif
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
@@ -61,41 +90,17 @@
                                 </div>
                                 <div class="form-group d-flex mb-0">
                                     <div class="mr-auto">
-                                        <button type="submit" class="btn btn-primary">
-                                            <span class="fa fa-floppy-o mr-2"></span>Änderungen speichern
-                                        </button>
-                                        <a href="{{ route("berichtshefte.show", $berichtsheft) }}" class="btn btn-secondary" target="_blank">
-                                            <span class="fa fa-print mr-2" aria-hidden="true"></span>Drucken
-                                        </a>
                                         <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#deleteBerichtsheft">
                                             <span class="fa fa-trash mr-2" aria-hidden="true"></span>Löschen
                                         </button>
                                     </div>
-                                    <div>
-                                        @if(request()->is('admin*'))
-                                        <a href="{{ $previousWeek ? route("admin.berichtshefte.edit", $previousWeek) : "#" }}" class="btn btn-outline-secondary {{ (!$previousWeek) ? "disabled" : "" }}" {{ (!$previousWeek) ? "disabled" : "" }}>
-                                        @else
-                                        <a href="{{ $previousWeek ? route("berichtshefte.edit", $previousWeek) : "#" }}" class="btn btn-outline-secondary {{ (!$previousWeek) ? "disabled" : "" }}" {{ (!$previousWeek) ? "disabled" : "" }}>
-                                        @endif
-                                            <span class="fa fa-caret-left mr-2"></span>Vorherige Woche
+                                    <div class="ml-auto">
+                                        <a href="{{ route("berichtshefte.show", $berichtsheft) }}" class="btn btn-secondary" target="_blank">
+                                            <span class="fa fa-print mr-2" aria-hidden="true"></span>Drucken
                                         </a>
-                                        @if ($nextWeek)
-                                            @if(request()->is('admin*'))
-                                            <a href="{{ route("admin.berichtshefte.edit", $nextWeek)}}" class="btn btn-outline-secondary">
-                                            @else
-                                            <a href="{{ route("berichtshefte.edit", $nextWeek)}}" class="btn btn-outline-secondary">
-                                            @endif
-                                                Nächste Woche<span class="fa fa-caret-right ml-2"></span>
-                                            </a>
-                                        @else
-                                            @if(request()->is('admin*'))
-                                            <a href="{{ route("admin.berichtshefte.create", $berichtsheft->owner) }}" class="btn btn-outline-info">
-                                            @else
-                                            <a href="{{ route("berichtshefte.create") }}" class="btn btn-outline-info">
-                                            @endif
-                                                Neue Woche<span class="fa fa-plus ml-2"></span>
-                                            </a>
-                                        @endif
+                                        <button type="submit" class="btn btn-primary">
+                                            <span class="fa fa-floppy-o mr-2"></span>Änderungen speichern
+                                        </button>
                                     </div>
                                 </div>
                             </form>

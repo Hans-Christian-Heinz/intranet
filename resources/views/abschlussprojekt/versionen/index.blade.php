@@ -46,7 +46,7 @@
                         @endforeach
                         </tbody>
                     </table>
-                    <a class="btn btn-outline-danger float-right" data-toggle="modal" href="#clearHistoryModal">Verlauf löschen</a>
+                    <a class="btn btn-outline-danger" data-toggle="modal" href="#clearHistoryModal">Verlauf löschen</a>
                     @include('abschlussprojekt.versionen.clearHistory', ['project' => $document->project,])
                 </div>
             </div>

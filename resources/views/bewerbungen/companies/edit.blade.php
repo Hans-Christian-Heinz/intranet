@@ -74,8 +74,13 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-outline-primary">Änderungen speichern</button>
-                                    <a href="{{ route("bewerbungen.companies.show", $company) }}" class="btn btn-outline-secondary">Abbrechen</a>
+                                    <button class="btn btn-outline-danger" data-toggle="modal" type="button"
+                                            @if(app()->user->isAdmin()) data-target="#deleteCompanyModal" @endif>Firma löschen</button>
+
+                                    <div class="float-right">
+                                        <a href="{{ route("bewerbungen.companies.show", $company) }}" class="btn btn-outline-secondary">Abbrechen</a>
+                                        <button type="submit" class="btn btn-primary">Änderungen speichern</button>
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -84,4 +89,6 @@
             </div>
         </div>
     </div>
+
+    @include('bewerbungen.companies.deleteCompanyModal')
 @endsection

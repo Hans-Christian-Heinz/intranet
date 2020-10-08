@@ -63,20 +63,22 @@
                                 </div>
 
                                 <div class="form-group mb-0">
-                                    <a href="{{ route('admin.exemptions.index') }}" class="btn btn-outline-secondary">
-                                        <span class="fa fa-times mr-2"></span>Abbrechen
-                                    </a>
-                                    <button type="submit" class="btn btn-primary">
-                                        <span class="fa fa-floppy-o mr-2"></span>Änderungen speichern
-                                    </button>
+                                    <div class="float-right">
+                                        <a href="{{ route('admin.exemptions.index') }}" class="btn btn-outline-secondary mx-2">
+                                            <span class="fa fa-times mr-2"></span>Abbrechen
+                                        </a>
+                                        @if ($exemption->status === 'approved')
+                                            <a href="{{ route('admin.exemptions.show', $exemption) }}" class="btn btn-secondary mx-2">
+                                                <span class="fa fa-print mr-2" aria-hidden="true"></span>Drucken
+                                            </a>
+                                        @endif
+                                        <button type="submit" class="btn btn-primary mx-2">
+                                            <span class="fa fa-floppy-o mr-2"></span>Änderungen speichern
+                                        </button>
+                                    </div>
                                     <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#deleteExemption">
                                         <span class="fa fa-trash mr-2" aria-hidden="true"></span>Löschen
                                     </button>
-                                    @if ($exemption->status === 'approved')
-                                        <a href="{{ route('admin.exemptions.show', $exemption) }}" class="btn btn-secondary">
-                                            <span class="fa fa-print mr-2" aria-hidden="true"></span>Drucken
-                                        </a>
-                                    @endif
                                 </div>
                             </form>
                         </div>

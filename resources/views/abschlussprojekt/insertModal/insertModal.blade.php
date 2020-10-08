@@ -19,7 +19,7 @@
                             @continue
                         @endif
                         <li class="nav-item">
-                            <a class="nav-link @if($loop->first) active" @endif aria-controls="insert_{{ $insert }}" href="#insert_{{ $insert }}"
+                            <a class="nav-link @if($loop->first) active @endif" aria-controls="insert_{{ $insert }}" href="#insert_{{ $insert }}"
                             @if($loop->first) aria-selected="true" @else aria-selected="false" @endif id="insert_{{ $insert }}_tab" data-toggle="tab">
                                 {{ ucfirst($insert) }}
                             </a>

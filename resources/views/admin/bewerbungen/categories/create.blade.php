@@ -26,7 +26,7 @@
                             </div>
 
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary">Kategorie hinzufügen</button>
+                                <button type="submit" class="btn btn-primary float-right">Kategorie hinzufügen</button>
                             </div>
                         </form>
                     </div>
