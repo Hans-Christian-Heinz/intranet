@@ -35,8 +35,9 @@
                                 <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="sr-only">Toggle Dropdown</span>
                                 </button>
-                                <div class="dropdown-menu" style="width: 100%;">
-                                    <a class="dropdown-item" href="#" v-for="temp in tpl.tpls" @click.prevent="useTemplate(key, temp, false)">
+                                <div class="dropdown-menu" style="width: 100%; overflow-y: scroll; max-height:30rem;">
+                                    <a class="dropdown-item" style="border-bottom: solid 1px grey" href="#"
+                                       v-for="temp in tpl.tpls" @click.prevent="useTemplate(key, temp, false)">
                                         <span style="word-wrap: break-word; white-space: normal;">{{ temp }}</span>
                                     </a>
                                 </div>
