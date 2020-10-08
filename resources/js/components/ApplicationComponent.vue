@@ -82,7 +82,58 @@ export default {
         //Lese zunächst die Templates aus
         axios.get(`/bewerbungen/applications/templates`)
             .then(response => response.data).then(data => {
-                Object.keys(data).forEach(key => {
+                let keys = Object.keys(data);
+                //Berücksichtige die Anordnung: Sehr hässlich, eigentlich sollte eine bessere Variante möglich sein
+                for (let count = 0; count < keys.length; count++) {
+                    keys.forEach(key => {
+                        if (parseInt(data[key].number) === count) {
+                            //Die templates-Variable soll die im Editor verfügbaren templates beinhalten
+                            //Die data-Variable soll die im Dokument bzw. in der Vorschau angezeigten Werte beinhalten
+                            if (data[key].chooseKeywords) {
+                                this.helpTpls[key] = data[key];
+
+                                let indices = [];
+                                for (let i = 0; i < data[key].keywords.length; i++) {
+                                    indices[i] = [];
+                                    for (let j = 0; j < Math.min(3, data[key].keywords[i].tpls.length); j++) {
+                                        indices[i].push(j);
+                                    }
+                                    this.templates[key + "_keyword_" + i] = {};
+                                    this.templates[key + "_keyword_" + i].heading = data[key].keywords[i].heading;
+                                    this.templates[key + "_keyword_" + i].tpls = data[key].keywords[i].tpls;
+                                    this.templates[key + "_keyword_" + i].checkbox = true;
+                                    this.templates[key + "_keyword_" + i].key = key;
+                                    this.templates[key + "_keyword_" + i].index = i;
+                                }
+
+                                let values = this.kwValues(key, indices);
+                                if (! this.data[key]) {
+                                    this.data[key] = {
+                                        keywords: true,
+                                        values: values
+                                    };
+                                }
+                                if (this.saved[key]) {
+                                    this.data[key] = this.saved[key];
+                                }
+                            }
+                            else {
+                                this.templates[key] = {};
+                                this.templates[key].heading = data[key].heading;
+                                this.templates[key].tpls = data[key].tpls;
+
+                                if(! (this.data[key] && this.data[key].length)) {
+                                    this.data[key] = data[key].tpls[0];
+                                }
+                            }
+
+                            if (this.saved[key] && this.saved[key].length) {
+                                this.data[key] = this.saved[key];
+                            }
+                        }
+                    });
+                }
+                /*Object.keys(data).forEach(key => {
                     //Die templates-Variable soll die im Editor verfügbaren templates beinhalten
                     //Die data-Variable soll die im Dokument bzw. in der Vorschau angezeigten Werte beinhalten
                     if (data[key].chooseKeywords) {
@@ -126,7 +177,7 @@ export default {
                     if (this.saved[key] && this.saved[key].length) {
                         this.data[key] = this.saved[key];
                     }
-                });
+                });*/
 
                 this.$forceUpdate();
             });

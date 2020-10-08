@@ -289,6 +289,7 @@ Route::group(['middleware' => 'admin'], function () {
             'prefix' => '/templates',
         ], function() {
             Route::get('/', 'AdminTemplateController@index')->name('index');
+            Route::patch('/', 'AdminTemplateController@update')->name('update');
         });
     });
 

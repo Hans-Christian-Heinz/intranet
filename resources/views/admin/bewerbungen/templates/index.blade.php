@@ -10,7 +10,7 @@
                     </div>
                 </div>
             </div>
-            <app-tpl :tpl="{{ $templates }}"></app-tpl>
+            <app-tpl save_route="{{ route('admin.bewerbungen.templates.update') }}" :tpl="{{ $templates }}"></app-tpl>
         </div>
     </div>
 @endsection

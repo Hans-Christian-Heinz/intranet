@@ -2,29 +2,6 @@
 
 <template>
     <div class="row">
-        <!--<div class="col-md-6">
-            <div class="card">
-                <div class="card-header bg-white">
-                    <b>Vorschau</b>
-                </div>
-                <div class="card-body" style="max-height: 100vh; overflow-y: scroll;">
-                    <p>{{ preview.greeting }}</p>
-
-                    <p v-for="(temp, key) in variableTemplates">
-                        {{ preview[key] }}
-                    </p>
-
-                    <p>{{ preview.ending }}</p>
-
-                    <p>Mit freundlichen Grüßen</p>
-
-                    <p class="mt-5">Max Mustermann, {{ currentDate }}</p>
-
-                    <hr>
-                </div>
-            </div>
-        </div>-->
-
         <!-- Editor -->
         <div class="col-md-12">
             <div class="card">
@@ -33,6 +10,8 @@
                     <div class="card">
                         <div class="card-header">
                             <a href="#" @click.prevent="toggle(cards.greeting)"><h5>{{ tpl.greeting.heading }}</h5></a>
+                            <label for="number_greeting">Reihenfolge</label>
+                            <input type="number" id="number_greeting" class="border-0" disabled v-model="tpl.greeting.number"/>
                         </div>
                         <div class="card-body" v-if="cards.greeting.shown">
                             <p>Templates:</p>
@@ -56,12 +35,15 @@
                                 <!-- Link zum Löschen eines Abschnitts -->
                                 <a href="#" class="btn text-danger btn-link col-1" style="font-size: 1.2rem" @click.prevent="removeAbschnitt(key)">&#128465</a>
                             </div>
+                            <label :for="'number_' + key">Reihenfolge:</label>
+                            <input type="number" class="border-0" style="width:3em" min="1" @change="changeNumber(key)"
+                                   :max="tpl.ending.number - 1" :id="'number_' + key" v-model="tpl[key].number"/>
                         </div>
                         <div class="card-body" v-if="cards[key].shown">
                             <!-- fixer Text, in dem nur einige Schlüsselworte ausgewählt werden. -->
                             <div v-if="tpl[key].chooseKeywords">
                                 <label :for="'full_text_' + key">Vorgeschreibener Text:</label>
-                                <textarea :id="'full_text_' + key" class="form-control border-0" v-model="keywordTpls()[key]"/>
+                                <textarea :id="'full_text_' + key" class="form-control border-0" @input="changeKwText($event, key)">{{ keywordTpls()[key] }}</textarea>
                                 <p>Schlüsselworte:</p>
                                 <div style="border: solid lightgrey 1px" class="mb-1" v-for="(help, index) in tpl[key].keywords">
                                     <div class="row">
@@ -107,6 +89,8 @@
                     <div class="card">
                         <div class="card-header">
                             <a href="#" @click.prevent="toggle(cards.ending)"><h5>{{ tpl.ending.heading }}</h5></a>
+                            <label for="number_ending">Reihenfolge:</label>
+                            <input type="number" disabled class="border-0" id="number_ending" v-model="tpl.ending.number"/>
                         </div>
                         <div class="card-body" v-if="cards.ending.shown">
                             <p>Templates</p>
@@ -146,6 +130,9 @@
                         </div>
                     </div>
                 </div>
+                <div class="card-body">
+                    <button type="button" class="btn btn-primary float-right mx-3" @click.prevent="save()">Speichern</button>
+                </div>
             </div>
         </div>
     </div>
@@ -153,13 +140,10 @@
 
 <script>
 export default {
-    props: ["tpl",],
+    props: ["tpl", "save_route"],
 
     data() {
         return {
-            /*preview: {
-                //greeting: this.tpl.greeting.tpls[0]
-            },*/
             templates: {
                 //greeting: []
             },
@@ -172,25 +156,20 @@ export default {
     created() {
         //Erstelle ein Objekt, das aus Arrays besteht in templates
         //leichter, über Arrays zu iterieren
-        Object.keys(this.tpl).forEach(key => {
+        Object.keys(this.tpl).forEach((key, i) => {
+            //Die Reihenfolge, in der die Abschnitte ausgelesen werden
+            //this.tpl[key].number = i;
             this.templates[key] = Object.values(this.tpl[key]);
-            //this.preview[key] = this.tpl[key].tpls[0];
-            this.cards[key] = {shown: false};
+            //Nummeriere auch hier, um beim Ändern der Reihenfolge Zugriff auf die alte Nummer zu haben
+            this.cards[key] = {
+                shown: false,
+                //number: i
+                number: this.tpl[key].number
+            };
         });
     },
 
     computed: {
-        /*currentDate() {
-            let date = new Date();
-            let day = ("0" + date.getDate()).slice(-2);
-            let month = ("0" + (date.getMonth() + 1)).slice(-2);
-            let year = date.getFullYear();
-
-            let dateString = `${day}.${month}.${year}`;
-
-            return dateString;
-        },*/
-
         variableTemplates: function() {
             let filtered = {};
             Object.keys(this.tpl).forEach(key => {
@@ -254,7 +233,8 @@ export default {
                     fix: false,
                     chooseKeywords: true,
                     text: [
-                        "Bitte geben Sie einen Text ein. (Platzhalter für Schlüsselworte: ###)"
+                        "Bitte geben Sie einen Text ein. (Platzhalter für Schlüsselworte:) ",
+                        " "
                     ],
                     keywords: [
                         {
@@ -276,16 +256,14 @@ export default {
                     ]
                 };
             }
+            temp.number = this.tpl.ending.number;
+            this.tpl.ending.number ++;
             this.tpl[name] = temp;
             this.cards[name] = {shown: false};
             this.$forceUpdate();
         },
         removeAbschnitt(key) {
             delete this.tpl[key];
-            this.$forceUpdate();
-        },
-        addAnrede() {
-            this.tpl.greeting.tpls.push("anrede");
             this.$forceUpdate();
         },
         addTpl(key) {
@@ -321,6 +299,59 @@ export default {
         toggle(card) {
             card.shown = !card.shown;
             this.$forceUpdate();
+        },
+        changeNumber(key) {
+            //Passe die Nummer bzw. Reihenfolge aller variablen Abschnitte an
+            let number = this.tpl[key].number;
+            let old_number = this.cards[key].number;
+            Object.keys(this.tpl).forEach(i_key => {
+                if (key !== i_key) {
+                    let i_number = this.tpl[i_key].number;
+                    //Zwei Fälle: old_number > number und old_number < number
+                    if (old_number > number) {
+                        if (i_number >= number && i_number < old_number) {
+                            this.tpl[i_key].number ++;
+                            this.cards[i_key].number ++;
+                        }
+                    }
+                    if (old_number < number) {
+                        if (i_number <= number && i_number > old_number) {
+                            this.tpl[i_key].number --;
+                            this.cards[i_key].number --;
+                        }
+                    }
+                }
+            });
+            this.cards[key].number = number;
+
+            this.$forceUpdate();
+        },
+
+        changeKwText(e, key) {
+            let text = e.target.value;
+            let temp = this.tpl[key];
+            this.tpl[key].text = text.split("###");
+        },
+
+        save() {
+            let route = this.save_route;
+
+            axios.post(route, {tpl: this.tpl, _method: "patch"})
+                .then(response => response.data)
+                .then(data => {
+                    // do something
+                    //TODO
+                    console.log(data);
+
+                    /*this.recentlySaved = true;
+
+                    setTimeout(() => {
+                        this.recentlySaved = false;
+                    }, 3000);*/
+                })
+                .catch(error => {
+                    console.log(error);
+                });
         }
     }
 }

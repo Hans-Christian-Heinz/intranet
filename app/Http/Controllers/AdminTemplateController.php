@@ -12,4 +12,18 @@ class AdminTemplateController extends Controller
 
         return view('admin.bewerbungen.templates.index', compact('templates'));
     }
+
+    public function update(Request $request) {
+        $request->validate([
+            'tpl' => 'required',
+        ]);
+
+        $filename = storage_path('app/public/bewerbungen/templates.json');
+        try{
+            return file_put_contents($filename, json_encode($request->tpl));
+        }
+        catch(\Exception $e) {
+            return $e;
+        }
+    }
 }
