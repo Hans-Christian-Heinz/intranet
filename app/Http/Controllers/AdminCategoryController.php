@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AdminCategoryController extends Controller
 {
@@ -15,7 +16,7 @@ class AdminCategoryController extends Controller
     public function index()
     {
         // Get all categories from the database
-        $categories = Category::orderBy("created_at", "DESC")->paginate(10);
+        $categories = Category::orderBy("position")->paginate(10);
 
         return view("admin.bewerbungen.categories.index", compact("categories"));
     }
@@ -41,6 +42,7 @@ class AdminCategoryController extends Controller
         $attributes = $request->validate([
             "name" => "required",
         ]);
+        $attributes['position'] = DB::table('categories')->count();
 
         $category = Category::create($attributes);
 
@@ -55,7 +57,8 @@ class AdminCategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return view("admin.bewerbungen.categories.edit", compact("category"));
+        $max = DB::table('categories')->count() - 1;
+        return view("admin.bewerbungen.categories.edit", compact("category", "max"));
     }
 
     /**
@@ -69,9 +72,26 @@ class AdminCategoryController extends Controller
     {
         $attributes = $request->validate([
             "name" => "required",
+            "position" => "required|int|min:0|max:" . (DB::table('categories')->count() - 1),
         ]);
 
+        $oldPos = $category->position;
+        $newPos = $request->position;
         $category->update($attributes);
+
+        //adjust the position field of other categories.
+        if ($newPos < $oldPos) {
+            DB::table('categories')->where('position', '>=', $newPos)
+                ->where('position', '<', $oldPos)
+                ->where('id', '<>', $category->id)
+                ->increment('position', 1);
+        }
+        if ($newPos > $oldPos) {
+            DB::table('categories')->where('position', '<=', $newPos)
+                ->where('position', '>', $oldPos)
+                ->where('id', '<>', $category->id)
+                ->decrement('position', 1);
+        }
 
         return redirect()->route("admin.bewerbungen.categories.edit", $category)->with("status", "Die Änderungen wurden erfolgreich gespeichert");
     }
@@ -85,6 +105,8 @@ class AdminCategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
+        //adjust the position field of following categories.
+        DB::table('categories')->where('position', '>', $category->position)->decrement('position', 1);
 
         return redirect()->route("admin.bewerbungen.categories.index")->with("status", "Die Kategorie {$category->name} wurde erfolgreich gelöscht");
     }

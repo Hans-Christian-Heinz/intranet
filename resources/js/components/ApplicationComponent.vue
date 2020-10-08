@@ -35,8 +35,10 @@
                                 <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="sr-only">Toggle Dropdown</span>
                                 </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#" v-for="temp in tpl.tpls" @click.prevent="useTemplate(key, temp, false)">{{ temp }}</a>
+                                <div class="dropdown-menu" style="width: 100%;">
+                                    <a class="dropdown-item" href="#" v-for="temp in tpl.tpls" @click.prevent="useTemplate(key, temp, false)">
+                                        <span style="word-wrap: break-word; white-space: normal;">{{ temp }}</span>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -199,14 +201,6 @@ export default {
     methods: {
         save() {
             let route = this.route;
-            let data = Object.assign({}, this.data);
-            Object.keys(data).forEach(key => {
-                if (data[key].keywords) {
-                    data[key] = this.keywordsText(key, data[key].values)
-                }
-            });
-            console.log(this.data);
-            console.log(data);
 
             axios.post(route, {body: this.data, _method: "patch"})
                 .then(response => response.data)

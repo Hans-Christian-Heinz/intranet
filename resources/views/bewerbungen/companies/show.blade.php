@@ -25,7 +25,6 @@
 
                     {{-- Reviews list --}}
                     @forelse ($reviews as $review)
-                        {{-- TODO figure out --}}
                         <x-review :review="$review" />
                     @empty
                         <div class="card">
@@ -51,7 +50,6 @@
                     </div>
 
                     @push('modals')
-                        {{-- TODO figure out --}}
                         <x-modal id="deleteCompanyModal" title="Firma löschen">
                             <x-slot name="body">
                                 <p class="text-center py-3">Möchten Sie diese Firma wirklich löschen?</p>

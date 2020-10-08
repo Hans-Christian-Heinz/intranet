@@ -26,6 +26,13 @@ class Review extends Model
         return $this->hasMany(CategoryReview::class);
     }
 
+    public function getOrderedRatingsAttribute() {
+        $ratings = $this->ratings;
+        return $ratings->sortBy(function($rating) {
+            return $rating->category->position;
+        });
+    }
+
     public function rating()
     {
         $ratings = $this->ratings;

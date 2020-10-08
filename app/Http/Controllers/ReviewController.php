@@ -16,7 +16,7 @@ class ReviewController extends Controller
      */
     public function create(Company $company)
     {
-        $categories = Category::all();
+        $categories = Category::orderBy('position')->get();
 
         return view("bewerbungen.companies.reviews.create", compact("company", "categories"));
     }

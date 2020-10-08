@@ -28,6 +28,14 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="pos">Kategorie Position</label>
+                                <input type="number" min="0" max="{{ $max }}" class="form-control @error("position") is-invalid @enderror" name="position" id="pos" value="{{ old("position") ?: $category->position }}">
+                                @error('position')
+                                <p class="text-danger">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
                                 <button type="submit" class="btn btn-primary">Änderungen speichern</button>
                             </div>
                         </form>

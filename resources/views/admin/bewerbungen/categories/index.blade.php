@@ -12,6 +12,7 @@
                 <table class="table table-striped table-bordered table-hover mt-3 bg-white">
                     <thead>
                         <tr>
+                            <th class="text-center" style="width: 10%;">Position</th>
                             <th>Name</th>
                             <th class="text-center" style="width: 10%;">Aktionen</th>
                         </tr>
@@ -19,6 +20,7 @@
                     <tbody>
                         @forelse ($categories as $category)
                             <tr>
+                                <td class="text-center">{{ $category->position }}</td>
                                 <td>{{ $category->name }}</td>
                                 <td class="text-center">
                                     <a href="{{ route("admin.bewerbungen.categories.edit", $category) }}" class="text-secondary">Bearbeiten</a>
@@ -26,7 +28,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="2">Noch keine Kategorien erstellt</td>
+                                <td colspan="3">Noch keine Kategorien erstellt</td>
                             </tr>
                         @endforelse
                     </tbody>

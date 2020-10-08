@@ -13,7 +13,7 @@
         <!-- Editor -->
         <div class="col-md-12">
             <div class="card">
-                <div class="card-body" style="max-height: 76vh; overflow-y: scroll;">
+                <div class="card-body">
                     <!-- Bearbeite Textbausteine für die Anrede -->
                     <div class="card">
                         <div class="card-header">
@@ -208,10 +208,6 @@ export default {
     },
 
     methods: {
-        /*greetingPreview(event) {
-            this.preview.greeting = event.target.value;
-            this.$forceUpdate();
-        },*/
         variableTpls() {
             let filtered = {};
             Object.keys(this.tpl).forEach(key => {

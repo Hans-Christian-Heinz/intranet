@@ -47,7 +47,7 @@
         <hr>
 
         {{-- Ratings --}}
-        @foreach ($review->ratings as $rating)
+        @foreach ($review->orderedRatings as $rating)
             <x-review-category :category="$rating->category->name" :stars="$rating->stars" :message="$rating->comment" />
         @endforeach
 

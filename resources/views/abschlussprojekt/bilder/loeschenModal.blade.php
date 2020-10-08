@@ -1,4 +1,4 @@
-{{----}}
+{{-- Modales Fenster zum Löschen einer Bilddatei vom Server --}}
 
 <div class="modal fade" id="deleteImage{{ $index }}" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
