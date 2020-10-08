@@ -7,16 +7,23 @@
                 {{ $application->company->zip . " " . $application->company->city }}<br>
             </td>
             <td style="text-align: right;">
-                {{ app()->user->full_name }}<br>
+                {{ $resume->personal->name }}<br>
                 {{ $resume->personal->address }}<br>
                 {{ $resume->personal->zip . " " . $resume->personal->city }}<br>
                 {{ $resume->personal->phone }}<br>
-                {{ app()->user->email }}
+                {{ $resume->personal->email }}
             </td>
         </tr>
     </tbody>
 </table>
 
+<div style="margin-top: 50px">
+    @foreach($content as $c)
+        <p>{{ $c }}</p>
+    @endforeach
+</div>
+
+{{--
 <p style="margin-top: 50px;">{{ $content->greeting->body }}</p>
 
 <p>{{ $content->awareofyou->body }}</p>
@@ -51,4 +58,5 @@
 
 <p>Mit freundlichen Grüßen</p>
 
-<p style="margin-top: 60px;">{{ app()->user->full_name }}, {{ Carbon\Carbon::now()->format("d.m.Y") }}</p>
+<p style="margin-top: 60px;">{{ $resume->personal->name }}, {{ Carbon\Carbon::now()->format("d.m.Y") }}</p>
+--}}

@@ -199,8 +199,16 @@ export default {
     methods: {
         save() {
             let route = this.route;
+            let data = Object.assign({}, this.data);
+            Object.keys(data).forEach(key => {
+                if (data[key].keywords) {
+                    data[key] = this.keywordsText(key, data[key].values)
+                }
+            });
+            console.log(this.data);
+            console.log(data);
 
-            axios.post(this.route, {body: this.data, _method: "patch"})
+            axios.post(route, {body: this.data, _method: "patch"})
                 .then(response => response.data)
                 .then(data => {
                     // do something
@@ -250,7 +258,7 @@ export default {
             //Gehe den Array text im Template durch. (Der Text, in den Schlüsselworte einzusetzen sind, unterbrochen an
             //den Stellen, an denen Schlüsselworte einzusetzen sind.
             for (let i = 0; i < template.text.length; i++) {
-                res += template.text[i];
+                res += template.text[i] + " ";
                 if (i < values.length) {
                     for (let j = 0; j < values[i].length; j++){
                         res += values[i][j];
@@ -261,6 +269,7 @@ export default {
                             res += " " + template.keywords[i].conjunction + " ";
                         }
                     }
+                    res = res + " ";
                 }
             }
 

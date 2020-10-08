@@ -58,9 +58,9 @@ class ApplicationController extends Controller
             "chooseKeywords": true,
             "number": 4,
             "text": [
-                "In eine neue Aufgabe bei Ihnen kann ich verschiedene Stärken einbringen. So bin ich meine Aufgaben sehr ",
-                " angegangen. Mit mir gewinnt Ihr Unternehmen einen Mitarbeiter, der ",
-                " ist. Außerdem habe ich in früheren Projekten insbesondere ausgeprägte Kommunikationsstärke, hohe Lernbereitschaft und viel Kreativität unter Beweis stellen können."
+                "In eine neue Aufgabe bei Ihnen kann ich verschiedene Stärken einbringen. So bin ich meine Aufgaben sehr",
+                "angegangen. Mit mir gewinnt Ihr Unternehmen einen Mitarbeiter, der",
+                "ist. Außerdem habe ich in früheren Projekten insbesondere ausgeprägte Kommunikationsstärke, hohe Lernbereitschaft und viel Kreativität unter Beweis stellen können."
             ],
             "keywords": [
                 {
@@ -157,14 +157,44 @@ class ApplicationController extends Controller
      */
     public function show(Application $application)
     {
-        $content = json_decode($application->body);
+        $filename = storage_path('app/public/bewerbungen/templates.json');
+
+        $content = json_decode($application->body, true);
+        $templates = json_decode(file_get_contents($filename), true);
         $resume = json_decode(app()->user->resume->data);
+
+        foreach($content as $key => $val) {
+            if (is_array($val) && $val['keywords']) {
+                $content[$key] = $this->helpKeywordSection($content[$key], $templates[$key]);
+            }
+        }
 
         $pdf = new Mpdf([
             'tempDir' => sys_get_temp_dir(),
         ]);
         $pdf->WriteHTML(view("bewerbungen.applications.pdf", compact("application", "content", "resume"))->render());
         $pdf->Output();
+    }
+
+    private function helpKeywordSection($section, $tpl) {
+        $text = "";
+        foreach($tpl['text'] as $i => $t) {
+            $text = $text . $t . " ";
+            if (isset($section['values'][$i])) {
+                for ($j = 0; $j < count($section['values'][$i]); $j++) {
+                    $text = $text . $section['values'][$i][$j];
+                    if ($j < count($section['values'][$i]) - 2) {
+                        $text = $text . ", ";
+                    }
+                    if ($j === count($section['values'][$i]) - 2) {
+                        $text = $text . " " . $tpl['keywords'][$i]['conjunction'] . " ";
+                    }
+                }
+                $text .= " ";
+            }
+        }
+
+        return $text;
     }
 
     /**
