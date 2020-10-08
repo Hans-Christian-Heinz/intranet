@@ -18,7 +18,7 @@
 </table>
 
 <div style="margin-top: 50px">
-    @foreach($content as $c)
+    @foreach($res as $c)
         <p>{{ $c }}</p>
     @endforeach
 </div>
@@ -55,8 +55,8 @@
 <p>{{ $finalMessage }}</p>
 
 <p>{{ $content->ending->body }}</p>
+--}}
 
 <p>Mit freundlichen Grüßen</p>
 
 <p style="margin-top: 60px;">{{ $resume->personal->name }}, {{ Carbon\Carbon::now()->format("d.m.Y") }}</p>
---}}

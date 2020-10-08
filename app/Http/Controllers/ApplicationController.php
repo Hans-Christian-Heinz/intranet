@@ -162,17 +162,22 @@ class ApplicationController extends Controller
         $content = json_decode($application->body, true);
         $templates = json_decode(file_get_contents($filename), true);
         $resume = json_decode(app()->user->resume->data);
+        $res = [];
 
         foreach($content as $key => $val) {
+            $res[$templates[$key]['number']] = $content[$key];
             if (is_array($val) && $val['keywords']) {
-                $content[$key] = $this->helpKeywordSection($content[$key], $templates[$key]);
+                //$content[$key] = $this->helpKeywordSection($content[$key], $templates[$key]);
+                $res[$templates[$key]['number']] = $this->helpKeywordSection($content[$key], $templates[$key]);
             }
         }
+
+        ksort($res);
 
         $pdf = new Mpdf([
             'tempDir' => sys_get_temp_dir(),
         ]);
-        $pdf->WriteHTML(view("bewerbungen.applications.pdf", compact("application", "content", "resume"))->render());
+        $pdf->WriteHTML(view("bewerbungen.applications.pdf", compact("application", "res", "resume"))->render());
         $pdf->Output();
     }
 
