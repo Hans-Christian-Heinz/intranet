@@ -31,7 +31,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-link text-secondary" data-dismiss="modal">Abbrechen</button>
 
-                    <form class="form" id="format_pdf" action="{{ route('bewerbungen.resumes.deletePassbild', app()->user) }}" method="POST">
+                    <form class="form" action="{{ route('bewerbungen.resumes.deletePassbild', app()->user) }}" method="POST">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger">Löschen</button>

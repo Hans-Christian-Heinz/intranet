@@ -32,9 +32,20 @@
 <body>
 <sethtmlpagefooter name="footer" value="on"/>
 
-<h1 class="heading">{{ $content->personal->name }}</h1>
+<table style="border: none; width: 100%;">
+    <tr>
+        <td>
+            <h1 class="heading">{{ $content->personal->name }}</h1>
+        </td>
+        @if($passbild)
+            <td style="text-align: right">
+                <img style="height: 45mm; width: 35mm;" src="data:image/png;base64,{{ $passbild }}" alt="Kein Passbild hochgeladen"/>
+            </td>
+        @endif
+    </tr>
+</table>
 
-<table style="width: 100%;">
+<table style="width: 100%; margin-top: 10px;">
     <tbody>
     <tr>
         <td>

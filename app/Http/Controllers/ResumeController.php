@@ -77,6 +77,12 @@ class ResumeController extends Controller
         $resume = app()->user->resume;
         $content = json_decode($resume->data);
         $format = $request->all();
+        if (! is_null($resume->passbild)) {
+            $passbild = base64_encode($resume->passbild);
+        }
+        else {
+            $passbild = false;
+        }
 
         $pdf = new \Mpdf\Mpdf([
             'tempDir' => sys_get_temp_dir(),
@@ -91,7 +97,7 @@ class ResumeController extends Controller
     </tr>
 </table>');
 
-        $pdf->WriteHTML(view("bewerbungen.resumes.print", compact("resume", "content", "format"))->render());
+        $pdf->WriteHTML(view("bewerbungen.resumes.print", compact("content", "format", "passbild"))->render());
         $pdf->Output();
         return view("bewerbungen.resumes.print");
         //return $pdf->Output('Lebenslauf_' . app()->user->full_name . '.pdf', 'I');
