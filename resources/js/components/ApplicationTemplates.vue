@@ -14,6 +14,27 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
+                    <!-- Bearbeite Textbausteine für die Überschrift -->
+                    <div class="card">
+                        <div class="card-header">
+                            <a href="#" @click.prevent="toggle(cards.heading)"><h5>{{ tpl.heading.heading }}</h5></a>
+                            <label for="number_heading">Reihenfolge</label>
+                            <input type="number" id="number_heading" class="border-0" disabled v-model="tpl.heading.number"/>
+                        </div>
+                        <div class="card-body" v-if="cards.heading.shown">
+                            <p>Templates:</p>
+                            <ul>
+                                <li v-for="(heading, index) in tpl.heading.tpls" :key="index" class="row">
+                                    <input type="text" :name="'heading' + index" :id="'heading' + index" class="form-control border-0 col-11"
+                                           v-model="tpl.heading.tpls[index]"/>
+                                    <a href="#" class="btn text-danger btn-link col-1" style="font-size: 1.2rem" @click.prevent="removeTpl('heading', index)">&#128465</a>
+                                </li>
+                                <li>
+                                    <a href="#" @click.prevent="addTpl('heading')">Neue Überschrift</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                     <!-- Bearbeite Textbausteine für die Anrede -->
                     <div class="card">
                         <div class="card-header">
@@ -44,7 +65,7 @@
                                 <a href="#" class="btn text-danger btn-link col-1" style="font-size: 1.2rem" @click.prevent="removeAbschnitt(key)">&#128465</a>
                             </div>
                             <label :for="'number_' + key">Reihenfolge:</label>
-                            <input type="number" class="border-0" style="width:3em" min="1" @change="changeNumber(key)"
+                            <input type="number" class="border-0" style="width:3em" :min="tpl.greeting.number + 1" @change="changeNumber(key)"
                                    :max="tpl.ending.number - 1" :id="'number_' + key" v-model="tpl[key].number"/>
                         </div>
                         <div class="card-body" v-if="cards[key].shown">

@@ -53,7 +53,11 @@
 
 <div style="margin-top: 50px">
     @foreach($res as $c)
-        <p>{{ $c }}</p>
+        @if(is_array($c) && isset($c['is_heading']) && $c['is_heading'])
+            <h2 class="heading">{{ $c['text'] }}</h2>
+        @else
+            <p>{{ $c }}</p>
+        @endif
     @endforeach
 </div>
 

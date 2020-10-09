@@ -9,7 +9,8 @@
             <div class="card">
                 <div class="card-body" style="max-height: 100vh; overflow-y: scroll;">
                     <p v-for="(text, key) in data">
-                        <span v-if="! text.keywords">{{ text }}</span>
+                        <b v-if="text.is_heading">{{ text.text }}</b>
+                        <span v-else-if="! text.keywords">{{ text }}</span>
                         <span v-else>{{ keywordsText(key, data[key].values) }}</span>
                     </p>
 
@@ -33,7 +34,8 @@
                         <h5>{{ tpl.heading }}</h5>
 
                         <div class="input-group" v-if="!tpl.checkbox">
-                            <input type="text" class="form-control" v-model="data[key]">
+                            <input type="text" class="form-control" v-if="! data[key].is_heading" v-model="data[key]">
+                            <input type="text" class="form-control" v-else v-model="data[key].text">
                             <div class="input-group-append">
                                 <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="sr-only">Toggle Dropdown</span>
@@ -129,7 +131,14 @@ export default {
                                 this.templates[key].tpls = data[key].tpls;
 
                                 if(! (this.data[key] && this.data[key].length)) {
-                                    this.data[key] = data[key].tpls[0];
+                                    if (data[key].is_heading) {
+                                        this.data[key] = {};
+                                        this.data[key].is_heading = true;
+                                        this.data[key].text = data[key].tpls[0];
+                                    }
+                                    else {
+                                        this.data[key] = data[key].tpls[0];
+                                    }
                                 }
                             }
 
@@ -224,7 +233,12 @@ export default {
 
         useTemplate(key, temp, keyword) {
             if (! keyword) {
-                this.data[key] = temp;
+                if (this.data[key].is_heading) {
+                    this.data[key].text = temp;
+                }
+                else {
+                    this.data[key] = temp;
+                }
                 this.$forceUpdate();
             }
         },

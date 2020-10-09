@@ -11,10 +11,20 @@ use Mpdf\Mpdf;
 class ApplicationController extends Controller
 {
     const STANDARD_TEMPLATES = '{
+        "heading": {
+            "heading" : "Überschrift",
+            "is_heading": true,
+            "fix": true,
+            "number": 0,
+            "tpls": [
+                "Bewerbung auf die Stelle als Musterstelle",
+                "Bewerbung auf die ausgeschriebene Stelle 12345"
+            ]
+        },
         "greeting": {
             "heading" : "Anrede",
             "fix": true,
-            "number": 0,
+            "number": 1,
             "tpls": [
                 "Sehr geehrte Damen und Herren,",
                 "Sehr geehrte Frau Musterfrau,",
@@ -24,7 +34,7 @@ class ApplicationController extends Controller
         "awareofyou": {
             "heading": "Wie bist du auf diese Stelle aufmerksam geworden?",
             "fix": false,
-            "number": 1,
+            "number": 2,
             "tpls": [
                 "mit großem Interesse bin ich im XING Stellenmarkt auf die ausgeschriebene Position aufmerksam geworden. Aus diesem Grund bewerbe ich mich bei Ihnen um eine Werkstudententätigkeit als Musterstelle (m/w).",
                 "auf der Suche nach einer neuen Beschäftigung bin ich auf Ihr Unternehmen aufmerksam geworden und komme jetzt initiativ auf Sie zu. Aus diesem Grund bewerbe ich mich bei Ihnen um eine Werkstudententätigkeit als Musterstelle (m/w).",
@@ -34,7 +44,7 @@ class ApplicationController extends Controller
         "currentactivity": {
             "heading": "Was ist deine derzeitige Beschäftigung?",
             "fix": false,
-            "number": 2,
+            "number": 3,
             "tpls": [
                 "Zurzeit arbeite ich als Musterberuf bei Musterfirma. Zu meinen wichtigsten Aufgaben gehören hierbei die Einarbeitung in neue Produkte, die Durchführung von Verkaufsgesprächen und die Erstellung und Weitergabe von Bestellungen.",
                 "Zurzeit studiere ich Musterstudiengang an der Musterhochschule. Zu meinen wichtigsten Aufgaben gehören hierbei die Einarbeitung in neue Produkte, die Durchführung von Verkaufsgesprächen und die Erstellung und Weitergabe von Bestellungen.",
@@ -46,7 +56,7 @@ class ApplicationController extends Controller
         "whycontact": {
             "heading": "Warum bewirbst du dich bei dem Unternehmen?",
             "fix": false,
-            "number": 3,
+            "number": 4,
             "tpls": [
                 "Ihr Stellenangebot hört sich toll an! Ich hoffe, mir hierdurch persönliche und fachliche Entwicklungsmöglichkeiten erschließen zu können. Ihre Ausrichtung und das Image in dieser Branche gefallen mir besonders gut, daher sehe ich Sie als einen sehr interessanten Arbeitgeber an. In den Medien habe ich Ihre Entwicklung schon lange verfolgt und glaube daher, auch gut ins Unternehmen zu passen.",
                 "Nachdem ich schon länger in diesem Bereich tätig bin, suche ich jetzt nach einer neuen Position, in der ich mehr Verantwortung übernehmen kann. Ihre Ausrichtung und das Image in dieser Branche gefallen mir besonders gut, daher sehe ich Sie als einen sehr interessanten Arbeitgeber an. In den Medien habe ich Ihre Entwicklung schon lange verfolgt und glaube daher, auch gut ins Unternehmen zu passen.",
@@ -57,7 +67,7 @@ class ApplicationController extends Controller
         "workAndSkills": {
             "fix": false,
             "chooseKeywords": true,
-            "number": 4,
+            "number": 5,
             "text": [
                 "In eine neue Aufgabe bei Ihnen kann ich verschiedene Stärken einbringen. So bin ich meine Aufgaben sehr",
                 "angegangen. Mit mir gewinnt Ihr Unternehmen einen Mitarbeiter, der",
@@ -94,7 +104,7 @@ class ApplicationController extends Controller
         "ending": {
             "heading": "Schlusswort",
             "fix": true,
-            "number": 5,
+            "number": 6,
             "tpls": [
                 "Konnte ich Sie mit dieser Bewerbung überzeugen? Ich bin für einen Einstieg zum nächstmöglichen Zeitpunkt verfügbar. Einen vertiefenden Eindruck gebe ich Ihnen gerne in einem persönlichen Gespräch. Ich freue mich über Ihre Einladung!",
                 "Ich danke Ihnen für das Interesse an meiner Bewerbung. Zum nächstmöglichen Zeitpunkt bin ich verfügbar. Wenn Sie mehr von mir erfahren möchten, freue ich mich über eine Einladung zum Vorstellungsgespräch.",
@@ -168,7 +178,7 @@ class ApplicationController extends Controller
 
         foreach($content as $key => $val) {
             $res[$templates[$key]['number']] = $content[$key];
-            if (is_array($val) && $val['keywords']) {
+            if (is_array($val) && isset($val['keywords'])) {
                 //$content[$key] = $this->helpKeywordSection($content[$key], $templates[$key]);
                 $res[$templates[$key]['number']] = $this->helpKeywordSection($content[$key], $templates[$key]);
             }
