@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PdfRequest;
 use App\Resume;
 use App\User;
 use Illuminate\Http\Request;
@@ -63,15 +64,26 @@ class ResumeController extends Controller
         return null;
     }
 
-    public function print()
+    public function print(PdfRequest $request)
     {
         $resume = app()->user->resume;
         $content = json_decode($resume->data);
+        $format = $request->all();
 
         $pdf = new \Mpdf\Mpdf([
             'tempDir' => sys_get_temp_dir(),
+            'default_font_size' => $request->textgroesse,
+            'default_font' => 'opensans',
         ]);
-        $pdf->WriteHTML(view("bewerbungen.resumes.print", compact("resume", "content"))->render());
+
+        $pdf->DefHTMLFooterByName('footer',
+            '<table style="width: 100%; border: none; border-top: 1px solid black;">
+    <tr style="border: none;">
+        <td style="border:none; text-align: right;">{PAGENO}/{nbpg}</td>
+    </tr>
+</table>');
+
+        $pdf->WriteHTML(view("bewerbungen.resumes.print", compact("resume", "content", "format"))->render());
         $pdf->Output();
         return view("bewerbungen.resumes.print");
         //return $pdf->Output('Lebenslauf_' . app()->user->full_name . '.pdf', 'I');

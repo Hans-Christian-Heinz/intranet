@@ -17,6 +17,8 @@
                      :user="{{ app()->user }}" :saved="{{ $application->body ?: json_encode([]) }}"></application>
     </div>
 </div>
+
+@include('bewerbungen.formatPdfModal', ['route' => route("bewerbungen.applications.print", $application),])
 @endsection
 
 @push('modals')

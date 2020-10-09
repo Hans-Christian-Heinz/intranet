@@ -22,7 +22,7 @@
                     <button type="button" class="btn btn-outline-danger mt-3" data-toggle="modal" data-target="#deleteApplicationModal">Löschen</button>
 
                     <button type="button" class="btn btn-primary float-right mt-3 mx-2" @click="save()">Änderungen speichern</button>
-                    <a :href="print_route" target="_blank" class="btn btn-outline-info float-right mt-3">Drucken</a>
+                    <a class="btn btn-outline-info float-right mt-3 mx-2" data-toggle="modal" href="#formatPdf">Drucken</a>
                 </div>
             </div>
         </div>

@@ -13,4 +13,6 @@
         </div>
     </div>
 </div>
+
+@include('bewerbungen.formatPdfModal', ['route' => route("bewerbungen.resumes.print"),])
 @endsection

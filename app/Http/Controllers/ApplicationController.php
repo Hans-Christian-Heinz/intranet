@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Application;
 use App\Company;
+use App\Http\Requests\PdfRequest;
 use Illuminate\Http\Request;
 use Mpdf\Mpdf;
 
@@ -155,7 +156,7 @@ class ApplicationController extends Controller
      * @param  \App\Application  $application
      * @return \Illuminate\Http\Response
      */
-    public function show(Application $application)
+    public function show(PdfRequest $request, Application $application)
     {
         $filename = storage_path('app/public/bewerbungen/templates.json');
 
@@ -163,6 +164,7 @@ class ApplicationController extends Controller
         $templates = json_decode(file_get_contents($filename), true);
         $resume = json_decode(app()->user->resume->data);
         $res = [];
+        $format = $request->all();
 
         foreach($content as $key => $val) {
             $res[$templates[$key]['number']] = $content[$key];
@@ -176,8 +178,16 @@ class ApplicationController extends Controller
 
         $pdf = new Mpdf([
             'tempDir' => sys_get_temp_dir(),
+            'default_font_size' => $request->textgroesse,
+            'default_font' => 'opensans',
         ]);
-        $pdf->WriteHTML(view("bewerbungen.applications.pdf", compact("application", "res", "resume"))->render());
+        $pdf->DefHTMLFooterByName('footer',
+            '<table style="width: 100%; border: none; border-top: 1px solid black;">
+    <tr style="border: none;">
+        <td style="border:none; text-align: right;">{PAGENO}/{nbpg}</td>
+    </tr>
+</table>');
+        $pdf->WriteHTML(view("bewerbungen.applications.pdf", compact("application", "res", "resume", "format"))->render());
         $pdf->Output();
     }
 

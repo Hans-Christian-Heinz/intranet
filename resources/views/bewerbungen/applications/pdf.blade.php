@@ -1,19 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Lebenslauf {{ $resume->personal->name }}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        body {
+            font-size: {{ $format['textgroesse'] }}pt;
+            @switch($format['textart'])
+                @case('courier')
+                    font-family: courier, serif;
+                @break
+                @case('helvetica')
+                    font-family: helvetica, serif;
+                @break
+                @case('times')
+                    font-family: "Times New Roman", Times, serif;
+                    @break
+                @case('dejausans')
+                    font-family: "DejaVu Sans", sans-serif;
+                    @break
+            @endswitch
+            color: {{ $format['textfarbe'] }};
+        }
+        .heading {
+            color: {{ $format['ueberschrFarbe'] }};
+        }
+    </style>
+</head>
+<body>
+<sethtmlpagefooter name="footer" value="on"/>
+
 <table style="width: 100%;">
     <tbody>
-        <tr>
-            <td>
-                <strong>{{ $application->company->name }}</strong><br>
-                {{ $application->company->address }}<br>
-                {{ $application->company->zip . " " . $application->company->city }}<br>
-            </td>
-            <td style="text-align: right;">
-                {{ $resume->personal->name }}<br>
-                {{ $resume->personal->address }}<br>
-                {{ $resume->personal->zip . " " . $resume->personal->city }}<br>
-                {{ $resume->personal->phone }}<br>
-                {{ $resume->personal->email }}
-            </td>
-        </tr>
+    <tr>
+        <td>
+            <strong>{{ $application->company->name }}</strong><br>
+            {{ $application->company->address }}<br>
+            {{ $application->company->zip . " " . $application->company->city }}<br>
+        </td>
+        <td style="text-align: right;">
+            {{ $resume->personal->name }}<br>
+            {{ $resume->personal->address }}<br>
+            {{ $resume->personal->zip . " " . $resume->personal->city }}<br>
+            {{ $resume->personal->phone }}<br>
+            {{ $resume->personal->email }}
+        </td>
+    </tr>
     </tbody>
 </table>
 
@@ -60,3 +94,6 @@
 <p>Mit freundlichen Grüßen</p>
 
 <p style="margin-top: 60px;">{{ $resume->personal->name }}, {{ Carbon\Carbon::now()->format("d.m.Y") }}</p>
+
+</body>
+

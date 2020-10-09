@@ -179,7 +179,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         // Resume Routes
         Route::get("/resumes", "ResumeController@index")->name("resumes.index");
-        Route::get("/resumes/print", "ResumeController@print")->name("resumes.print");
+        Route::post("/resumes/print", "ResumeController@print")->name("resumes.print");
         Route::post("/resumes/{user}", "ResumeController@store")->name("resumes.store");
         Route::get("/resumes/{user}", "ResumeController@show")->name("resumes.show");
 
@@ -189,7 +189,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get("/applications/{application}/edit", "ApplicationController@edit")->name("applications.edit");
         Route::patch("/applications/{application}", "ApplicationController@update")->name("applications.update");
         Route::delete("/applications/{application}", "ApplicationController@destroy")->name("applications.destroy");
-        Route::get("/applications/{application}/print", "ApplicationController@show")->name("applications.print");
+        Route::post("/applications/{application}/print", "ApplicationController@show")->name("applications.print");
         Route::get("/applications/templates", "ApplicationController@templates")->name("applications.templates");
     });
 });

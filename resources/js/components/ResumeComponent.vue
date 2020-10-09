@@ -225,7 +225,7 @@
         </div>
 
         <div class="form-group d-flex">
-            <a :href="printroute" target="_blank" class="btn btn-outline-primary ml-auto">Drucken</a>
+            <a class="btn btn-outline-primary ml-auto" data-toggle="modal" href="#formatPdf">Drucken</a>
         </div>
     </div>
 </template>

@@ -34,11 +34,11 @@ class PdfRequest extends FormRequest
         //Farbe im hex-code
         $rules['textfarbe'] = 'required|regex:#^\#[0-9a-fA-F]{6}$#';
         $rules['ueberschrFarbe'] = 'required|regex:#^\#[0-9a-fA-F]{6}$#';
-        $rules['kopfHintergrund'] = 'required|regex:#^\#[0-9a-fA-F]{6}$#';
-        $rules['kopfText'] = 'required|regex:#^\#[0-9a-fA-F]{6}$#';
-        $rules['koerperBackground'] = 'required|regex:#^\#[0-9a-fA-F]{6}$#';
-        $rules['koerperHintergrund'] = 'required|regex:#^\#[0-9a-fA-F]{6}$#';
-        $rules['koerperText'] = 'required|regex:#^\#[0-9a-fA-F]{6}$#';
+        $rules['kopfHintergrund'] = 'nullable|regex:#^\#[0-9a-fA-F]{6}$#';
+        $rules['kopfText'] = 'nullable|regex:#^\#[0-9a-fA-F]{6}$#';
+        $rules['koerperBackground'] = 'nullable|regex:#^\#[0-9a-fA-F]{6}$#';
+        $rules['koerperHintergrund'] = 'nullable|regex:#^\#[0-9a-fA-F]{6}$#';
+        $rules['koerperText'] = 'nullable|regex:#^\#[0-9a-fA-F]{6}$#';
 
         return $rules;
     }
