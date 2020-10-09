@@ -34,8 +34,8 @@
                         <h5>{{ tpl.heading }}</h5>
 
                         <div class="input-group" v-if="!tpl.checkbox">
-                            <input type="text" class="form-control" v-if="! data[key].is_heading" v-model="data[key]">
-                            <input type="text" class="form-control" v-else v-model="data[key].text">
+                            <input type="text" class="form-control" v-if="! data[key].is_heading" @input="$forceUpdate()" v-model="data[key]">
+                            <input type="text" class="form-control" v-else @input="$forceUpdate()" v-model="data[key].text">
                             <div class="input-group-append">
                                 <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="sr-only">Toggle Dropdown</span>
