@@ -136,7 +136,7 @@ class ApplicationController extends Controller
     {
         $application = app()->user->applications()->create([
             "company_id" => $company->id,
-            "body" => '{
+            /*"body" => '{
                 "greeting": {
                     "body": ""
                 },
@@ -154,7 +154,7 @@ class ApplicationController extends Controller
                 "ending": {
                     "body": ""
                 }
-            }'
+            }',*/
         ]);
 
         return redirect()->route("bewerbungen.applications.edit", $application)->with("status", "Eine leere Bewerbung für {$company->name} wurde erfolgreich angelegt.");

@@ -19,7 +19,7 @@ class ResumeController extends Controller
         $resume = app()->user->resume;
         //Variable, in der Resume nicht geladen ist, da das Binärfeld passbild Probleme bereitet (toString))
         $user = User::find(app()->user->id);
-        if (! is_null($resume->passbild)) {
+        if (!(is_null($resume) || is_null($resume->passbild))) {
             $passbild = base64_encode($resume->passbild);
         }
         else {

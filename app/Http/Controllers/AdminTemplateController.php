@@ -9,6 +9,10 @@ class AdminTemplateController extends Controller
     public function index() {
         $filename = storage_path('app/public/bewerbungen/templates.json');
         $templates = file_get_contents($filename);
+        if (!$templates) {
+            file_put_contents($filename, ApplicationController::STANDARD_TEMPLATES);
+            $templates = ApplicationController::STANDARD_TEMPLATES;
+        }
 
         return view('admin.bewerbungen.templates.index', compact('templates'));
     }
