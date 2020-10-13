@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Application;
+use App\ApplicationTemplate;
 use App\Company;
 use App\Http\Requests\PdfRequest;
 use Illuminate\Http\Request;
 use Mpdf\Mpdf;
+use Illuminate\Support\Facades\DB;
 
 class ApplicationController extends Controller
 {
@@ -134,8 +136,10 @@ class ApplicationController extends Controller
      */
     public function store(Request $request, Company $company)
     {
+        $tpl_version = DB::table('application_tpls')->max('version');
         $application = app()->user->applications()->create([
             "company_id" => $company->id,
+            'tpl_version' => $tpl_version,
             /*"body" => '{
                 "greeting": {
                     "body": ""
@@ -303,5 +307,19 @@ class ApplicationController extends Controller
         }
 
         return $templates;
+    }
+    
+    /**
+     * Gibt die Templates bzw. Textbausteine für Bewerbungsanschreiben als Array aus.
+     *
+     * @return false|string
+     */
+    public function templatesNew(int $version = null) {
+        if (is_null($version)) {
+            $version = DB::table('application_tpls')->max('version');
+        }
+        $temp = ApplicationTemplate::where('version', $version)->orderBy('number')->get()->toArray();
+        $keys = array_column($temp, 'name');
+        return array_combine($keys, $temp);
     }
 }

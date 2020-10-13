@@ -6,7 +6,7 @@
             <div class="row mb-3">
                 <div class="col-md-12">
                     <div class="d-flex justify-content-between">
-                        <h3 class="my-auto">Templates fÃ¼r Bewerbungsanschreiben</h3>
+                        <h3 class="my-auto">Templates für Bewerbungsanschreiben</h3>
                     </div>
                 </div>
             </div>

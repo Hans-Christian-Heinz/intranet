@@ -40002,7 +40002,7 @@ var render = function() {
       _vm.recentlySaved
         ? _c("div", { staticClass: "alert alert-info" }, [
             _vm._v(
-              "\n            Die Änderungen wurden erfolgreich gespeichert.\n        "
+              "\n            Die �nderungen wurden erfolgreich gespeichert.\n        "
             )
           ])
         : _vm._e(),
