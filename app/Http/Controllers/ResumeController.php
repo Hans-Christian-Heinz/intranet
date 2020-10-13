@@ -19,14 +19,26 @@ class ResumeController extends Controller
         $resume = app()->user->resume;
         //Variable, in der Resume nicht geladen ist, da das Binärfeld passbild Probleme bereitet (toString))
         $user = User::find(app()->user->id);
-        if (!(is_null($resume) || is_null($resume->passbild))) {
-            $passbild = base64_encode($resume->passbild);
+        if (! is_null($resume)) {
+            if (! is_null($resume->passbild)) {
+                $passbild = base64_encode($resume->passbild);
+            }
+            else {
+                $passbild = false;
+            }
+            if (! is_null($resume->signature)) {
+                $signature = base64_encode($resume->signature);
+            }
+            else {
+                $signature = false;
+            }
         }
         else {
             $passbild = false;
+            $resume = false;
         }
 
-        return view("bewerbungen.resumes.index", compact("resume", "user", "passbild"));
+        return view("bewerbungen.resumes.index", compact("resume", "user", "passbild", "signature"));
     }
 
     /**
@@ -125,5 +137,29 @@ class ResumeController extends Controller
         ]);
 
         return redirect(route('bewerbungen.resumes.index'))->with('status', 'Das Passbild wurde erfolgreich gelöscht.');
+    }
+    
+    public function uploadSignature(Request $request) {
+        //Validate Filesize (Regel; max:x, wobei x die Dateigröße in kilo-Bytes ist)
+        $request->validate([
+            'signature' => 'required|image|mimes:png|max:50',
+        ]);
+        
+        $resume = app()->user->resume;
+        $resume->update([
+            "signature" => file_get_contents($request->file('signature')),
+        ]);
+        
+        return redirect(route('bewerbungen.resumes.index'))->with('status', 'Die Signatur wurde erfolgreich gespeichert.');
+    }
+    
+    public function deleteSignature(User $user) {
+        $resume = $user->resume;
+        
+        $resume->update([
+            "signature" => null,
+        ]);
+        
+        return redirect(route('bewerbungen.resumes.index'))->with('status', 'Die Signatur wurde erfolgreich gelöscht.');
     }
 }

@@ -61,12 +61,32 @@
                                 @enderror
                             </td>
                         </tr>
+                        @if(request()->is("bewerbungen/applications*") && $signature === false)
+                        	<tr>
+                        		<th colspan="2">Signatur hochladen</th>
+                        	</tr>
+                        	<tr>
+                        		<td colspan="2">Beachten Sie: Die Signatur wird nicht gespeichert.</td>
+                        	</tr>
+                        	<tr>
+                        		<td colspan="2">
+                        			<div class="custom-file" style="height: 45mm;">
+                                		<input type="file" id="signature" name="signature" class="custom-file-input"
+                                       		accept="image/png" form="format_pdf" required/>
+                                		<label class="custom-file-label" for="signature">Signatur</label>
+                            		</div>
+                            		@error("signature")
+                                    <p class="invalid-feedback">{{ $message }}</p>
+                                @enderror
+                        		</td>
+                        	</tr>
+                        @endif
                     </table>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-link text-secondary" data-dismiss="modal">Abbrechen</button>
 
-                    <form class="form" id="format_pdf" action="{{ $route }}" method="POST" target="_blank">
+                    <form class="form" id="format_pdf" action="{{ $route }}" method="POST" target="_blank" enctype="multipart/form-data">
                         @csrf
                         <button type="submit" class="btn btn-primary">PDF erstellen</button>
                     </form>

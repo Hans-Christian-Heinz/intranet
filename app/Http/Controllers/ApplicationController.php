@@ -172,7 +172,17 @@ class ApplicationController extends Controller
 
         $content = json_decode($application->body, true);
         $templates = json_decode(file_get_contents($filename), true);
-        $resume = json_decode(app()->user->resume->data);
+        $help = app()->user->resume;
+        $resume = json_decode($help->data);
+        if (is_null($help->signature)) {
+            $signature = base64_encode(file_get_contents($request->file('signature')));
+        }
+        else {
+            $signature = base64_encode($help->signature);
+        }
+        /*$signature = app()->user->resume
+            ? base64_encode(app()->user->resume->signature)
+            : base64_encode(file_get_contents($request->file('signature')));*/
         $res = [];
         $format = $request->all();
 
@@ -197,7 +207,7 @@ class ApplicationController extends Controller
         <td style="border:none; text-align: right;">{PAGENO}/{nbpg}</td>
     </tr>
 </table>');
-        $pdf->WriteHTML(view("bewerbungen.applications.pdf", compact("application", "res", "resume", "format"))->render());
+        $pdf->WriteHTML(view("bewerbungen.applications.pdf", compact("application", "res", "resume", "format", "signature"))->render());
         $pdf->Output();
     }
 
@@ -230,7 +240,16 @@ class ApplicationController extends Controller
      */
     public function edit(Application $application)
     {
-        return view("bewerbungen.applications.edit", compact("application"));
+        $user = $application->user;
+        $resume = $user->resume;
+        if (!(is_null($resume) || is_null($resume->signature))) {
+            $signature = base64_encode($resume->signature);
+        }
+        else{
+            $signature = false;
+        }
+        
+        return view("bewerbungen.applications.edit", compact("application", "signature"));
     }
 
     /**

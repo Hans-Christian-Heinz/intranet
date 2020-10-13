@@ -97,6 +97,8 @@
 
 <p>Mit freundlichen Grüßen</p>
 
+<img height="60" width="350" src="data:image/png;base64,{{ $signature }}" alt="Keine Signatur hochgeladen"/>
+
 <p style="margin-top: 60px;">{{ $resume->personal->name }}, {{ Carbon\Carbon::now()->format("d.m.Y") }}</p>
 
 </body>
