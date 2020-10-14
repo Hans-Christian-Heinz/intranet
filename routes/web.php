@@ -295,7 +295,9 @@ Route::group(['middleware' => 'admin'], function () {
         ], function() {
             Route::get('/', 'AdminTemplateController@index')->name('index');
             Route::patch('/', 'AdminTemplateController@update')->name('update');
+            Route::patch('/new', 'AdminTemplateController@updateNew')->name('updateNew');
             Route::patch('/default', 'AdminTemplateController@restoreDefault')->name('restoreDefault');
+            Route::patch('/defaultNew', 'AdminTemplateController@restoreDefaultNew')->name('restoreDefaultNew');
         });
     });
 

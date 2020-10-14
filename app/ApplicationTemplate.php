@@ -15,6 +15,16 @@ class ApplicationTemplate extends Model
     protected $casts = [
         'tpls' => 'array',
     ];
+    protected $fillable = [
+        'fix',
+        'is_heading',
+        'choose_keywords',
+        'number',
+        'heading',
+        'tpls',
+        'version',
+        'name',
+    ];
     
     private static $at_table = 'application_tpls';
     private static $kw_table = 'keyword_tpls';
@@ -49,17 +59,5 @@ class ApplicationTemplate extends Model
     
     public function keywords() {
         return $this->hasMany(KeywordTemplate::class, 'tpl_id')->orderBy('number');
-    }
-
-    //TODO löschen
-    public static function test() {
-        $at = new ApplicationTemplate();
-        $at->number = 0;
-        $at->name = 'test';
-        $at->version=0;
-        $at->tpls=['a' => 'abc', 'b' => 'def'];
-
-        $at->save();
-        return $at->id;
     }
 }

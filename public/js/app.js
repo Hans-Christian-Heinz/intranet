@@ -2742,9 +2742,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: [],
+  props: ["save_route", "restore_default_route"],
   data: function data() {
     return {
       templates: [],
@@ -2755,7 +2754,8 @@ __webpack_require__.r(__webpack_exports__);
       },
       recentlySaved: false,
       saveFailed: false,
-      nameError: ""
+      nameError: "",
+      csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
     };
   },
   computed: {
@@ -2777,9 +2777,6 @@ __webpack_require__.r(__webpack_exports__);
         tpl['keywords'].forEach(function (kw) {
           kw['changed'] = 0;
         });
-      });
-
-      data.forEach(function (tpl, i) {
         _this.cards[tpl['name']] = {
           shown: false,
           number: tpl['number']
@@ -2880,7 +2877,7 @@ __webpack_require__.r(__webpack_exports__);
           heading: null,
           is_heading: false,
           fix: false,
-          chooseKeywords: true,
+          choose_keywords: true,
           tpls: ["Bitte geben Sie einen Text ein. (Platzhalter f�r Schl�sselworte:) ", " "],
           keywords: [{
             changed: 0,
@@ -2962,6 +2959,68 @@ __webpack_require__.r(__webpack_exports__);
         tpl.number = newVal;
         tpl.changed++;
       }
+    },
+    //Speichere die �nderungen an der Vorlage
+    save: function save() {
+      var route = this.save_route;
+      axios.post(route, {
+        templates: this.templates,
+        _method: "patch"
+      }).then(function (response) {
+        return response.data;
+      }).then(function (data) {
+        /*if (data === false) {
+            this.saveFailed = true;
+            this.recentlySaved = false;
+        }
+        else {
+            this.recentlySaved = true;
+            this.saveFailed = false;
+              setTimeout(() => {
+                this.recentlySaved = false;
+            }, 3000);
+        }*/
+        console.log(data);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    //Stelle die Standardvorlage wieder her
+    restoreDefault: function restoreDefault() {
+      var _this2 = this;
+
+      var route = this.restore_default_route;
+      axios.post(route, {
+        _method: "patch"
+      }).then(function (response) {
+        return response.data;
+      }).then(function (data) {
+        if (data === false) {
+          _this2.saveFailed = true;
+          _this2.recentlySaved = false;
+        } else {
+          _this2.recentlySaved = true;
+          _this2.saveFailed = false;
+          _this2.templates = data;
+
+          _this2.templates.forEach(function (tpl) {
+            tpl['changed'] = 0;
+            tpl['keywords'].forEach(function (kw) {
+              kw['changed'] = 0;
+            });
+            _this2.cards[tpl['name']] = {
+              shown: false,
+              number: tpl['number']
+            };
+          });
+
+          setTimeout(function () {
+            _this2.recentlySaved = false;
+          }, 3000);
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
     }
   }
 });
@@ -41463,7 +41522,7 @@ var render = function() {
                                 [_vm._v(_vm._s(_vm.getKwText(temp)))]
                               ),
                               _vm._v(" "),
-                              _c("p", [_vm._v("Schl�sselworte:")]),
+                              _c("b", [_vm._v("Schl�sselworte:")]),
                               _vm._v(" "),
                               _vm._l(temp["keywords"], function(help, index) {
                                 return _c(
@@ -41854,7 +41913,37 @@ var render = function() {
           2
         ),
         _vm._v(" "),
-        _vm._m(2)
+        _c("div", { staticClass: "card-body" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary float-right mx-3",
+              attrs: { type: "button" },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.save()
+                }
+              }
+            },
+            [_vm._v("Speichern")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-outline-primary float-right mx-3",
+              attrs: { type: "button" },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.restoreDefault()
+                }
+              }
+            },
+            [_vm._v("Standard wiederherstellen")]
+          )
+        ])
       ])
     ])
   ])
@@ -41906,30 +41995,6 @@ var staticRenderFns = [
           attrs: { for: "addSectionKeyword" }
         },
         [_vm._v("Schl�sselwortabschnitt")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-body" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-primary float-right mx-3",
-          attrs: { type: "button" }
-        },
-        [_vm._v("Speichern")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-outline-primary float-right mx-3",
-          attrs: { type: "button" }
-        },
-        [_vm._v("Standard wiederherstellen")]
       )
     ])
   }

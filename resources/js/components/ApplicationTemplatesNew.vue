@@ -36,7 +36,7 @@
                                 <label :for="'full_text_' + temp['name']">Vorgeschriebener Text:</label>
                                 <textarea :id="'full_text_' + temp['name']" class="form-control border-0"
                                           @input="setKwText($event, temp)">{{ getKwText(temp) }}</textarea>
-                                <p>Schlüsselworte:</p>
+                                <b>Schlüsselworte:</b>
                                 <div style="border: solid lightgrey 1px" class="mb-1" 
                                      v-for="(help, index) in temp['keywords']" :key="help['changed'] + '_kw_' + temp['name'] + index">
                                     <div class="row">
@@ -57,7 +57,6 @@
                                 </div>
                                 <a href="#" @click.prevent="addKwCat(temp)">Neue Schlüsselwortkategorie</a>
                             </div>
-
                             <!-- Der gesamte Text ist variabel. -->
                             <div v-else>
                                 <label :for="'heading_' + temp['name']">Überschrift:</label>
@@ -105,8 +104,8 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <button type="button" class="btn btn-primary float-right mx-3">Speichern</button>
-                    <button type="button" class="btn btn-outline-primary float-right mx-3">Standard wiederherstellen</button>
+                    <button type="button" class="btn btn-primary float-right mx-3" @click.prevent="save()">Speichern</button>
+                    <button type="button" class="btn btn-outline-primary float-right mx-3" @click.prevent="restoreDefault()">Standard wiederherstellen</button>
                 </div>
             </div>
         </div>
@@ -115,7 +114,7 @@
 
 <script>
 export default {
-	props: [],
+	props: ["save_route", "restore_default_route"],
 	
 	data() {
 		return {
@@ -125,7 +124,8 @@ export default {
             },
             recentlySaved: false,
             saveFailed: false,
-            nameError: ""
+            nameError: "",
+            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
 		};
     },
 
@@ -145,8 +145,6 @@ export default {
                     tpl['keywords'].forEach((kw) => {
                         kw['changed'] = 0;
                     });
-                });
-                data.forEach((tpl, i) => {
                     this.cards[tpl['name']] = {
                         shown: false,
                         number: tpl['number']
@@ -258,7 +256,7 @@ export default {
                     heading: null,
                     is_heading: false,
                     fix: false,
-                    chooseKeywords: true,
+                    choose_keywords: true,
                     tpls: [
                         "Bitte geben Sie einen Text ein. (Platzhalter für Schlüsselworte:) ",
                         " "
@@ -349,6 +347,69 @@ export default {
                 tpl.number = newVal;
                 tpl.changed++;
             }
+        },
+
+        //Speichere die Änderungen an der Vorlage
+        save() {
+            let route = this.save_route;
+
+            axios.post(route, {templates: this.templates, _method: "patch"})
+                .then(response => response.data)
+                .then(data => {
+                    /*if (data === false) {
+                        this.saveFailed = true;
+                        this.recentlySaved = false;
+                    }
+                    else {
+                        this.recentlySaved = true;
+                        this.saveFailed = false;
+
+                        setTimeout(() => {
+                            this.recentlySaved = false;
+                        }, 3000);
+                    }*/
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
+
+        //Stelle die Standardvorlage wieder her
+        restoreDefault() {
+            let route = this.restore_default_route;
+
+            axios.post(route, {_method: "patch"})
+                .then(response => response.data)
+                .then(data => {
+                    if (data === false) {
+                        this.saveFailed = true;
+                        this.recentlySaved = false;
+                    }
+                    else {
+                        this.recentlySaved = true;
+                        this.saveFailed = false;
+
+                        this.templates = data;
+                        this.templates.forEach((tpl) => {
+                            tpl['changed'] = 0;
+                            tpl['keywords'].forEach((kw) => {
+                                kw['changed'] = 0;
+                            });
+                            this.cards[tpl['name']] = {
+                                shown: false,
+                                number: tpl['number']
+                            };
+                        });
+
+                        setTimeout(() => {
+                            this.recentlySaved = false;
+                        }, 3000);
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                });
         }
     }
 };
