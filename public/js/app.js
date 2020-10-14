@@ -2738,6 +2738,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: [],
   data: function data() {
@@ -2749,8 +2754,14 @@ __webpack_require__.r(__webpack_exports__);
         }
       },
       recentlySaved: false,
-      saveFailed: false
+      saveFailed: false,
+      nameError: ""
     };
+  },
+  computed: {
+    orderedTpls: function orderedTpls() {
+      return _.orderBy(this.templates, 'number');
+    }
   },
   mounted: function mounted() {
     var _this = this;
@@ -2797,6 +2808,159 @@ __webpack_require__.r(__webpack_exports__);
       if (tpl['choose_keywords']) {
         var text = e.target.value;
         tpl.tpls = text.split("###");
+      }
+    },
+    //F�ge einem Abschnitt eine neue Vorlage hinzu
+    addTpl: function addTpl(tpl) {
+      tpl.tpls.push("Bitte geben Sie eine neue Vorlage ein.");
+      tpl.changed++;
+    },
+    //Entferne eine Vorlage f�r einen Abschnitt
+    removeTpl: function removeTpl(tpl, i) {
+      tpl.tpls.splice(i, 1);
+      tpl.changed++;
+    },
+    //F�ge einem Abschnitt eine neue Schl�sselwortkategorie hinzu
+    addKwCat: function addKwCat(tpl) {
+      if (tpl.choose_keywords) {
+        var cat = {
+          "number": tpl.keywords.length,
+          "heading": "Bitte geben Sie eine �berschrift ein.",
+          "conjunction": "und",
+          "tpls": ["Bitte geben Sie ein Schl�sselwort ein."]
+        };
+        tpl.keywords.push(cat);
+        tpl.changed++;
+      }
+    },
+    //Entferne eine Schl�sselwortkategorie aus einem Abschnitt
+    removeKwCat: function removeKwCat(tpl, i) {
+      if (tpl.choose_keywords) {
+        tpl.keywords.splice(i, 1);
+        tpl.changed++;
+      }
+    },
+    //F�ge den ausw�hlbaren Schl�sselworten in einer Kategorie eines Abschnitts ein neues Schl�sselwort hinzu
+    addKw: function addKw(cat) {
+      cat.tpls.push("Bitte geben Sie ein Schl�sselwort ein.");
+      cat.changed++;
+    },
+    //Entferne ein Schl�sselwort aus einer Kategorie
+    removeKw: function removeKw(cat, i) {
+      cat.tpls.splice(i, 1);
+      cat.changed++;
+    },
+    //F�ge der Vorlage einen neuen Abschnitt hinzu
+    addSection: function addSection() {
+      this.nameError = "";
+      var kw = document.getElementById('addSectionKeyword').checked;
+      var name = $('#addSectionName').val();
+      var temp; //name validieren
+
+      var invalid = !name || !name.trim();
+
+      if (invalid) {
+        this.nameError = "Bitte geben Sie einen Namen f�r den Abschnitt ein.";
+        return;
+      }
+
+      this.templates.forEach(function (tpl) {
+        invalid = invalid || tpl.name === name;
+      });
+
+      if (invalid) {
+        this.nameError = "Der eingegebene Name ist der Name eines bereits vorhandenen Abschnitts.";
+        return;
+      } //Erstelle einen neuen Schl�sselwortabschnitt
+
+
+      if (kw) {
+        temp = {
+          changed: 0,
+          heading: null,
+          is_heading: false,
+          fix: false,
+          chooseKeywords: true,
+          tpls: ["Bitte geben Sie einen Text ein. (Platzhalter f�r Schl�sselworte:) ", " "],
+          keywords: [{
+            changed: 0,
+            heading: "Bitte f�gen Sie eine �berschrift hinzu.",
+            conjunction: "und",
+            number: 0,
+            tpls: ["Bitte f�gen Sie ein Schl�sselwort hinzu."]
+          }]
+        };
+      } //Erstelle einen neuen Standardabschnitt
+      else {
+          temp = {
+            heading: "Bitte geben Sie eine �berschrift an.",
+            changed: 0,
+            is_heading: false,
+            choose_keywords: false,
+            fix: false,
+            tpls: ["Bitte geben Sie ein Template an."]
+          };
+        }
+
+      temp.name = name;
+      temp.number = this.templates.length - 1;
+      this.templates.forEach(function (tpl) {
+        if (tpl.name === 'ending') {
+          tpl.number++;
+          tpl.changed++;
+        }
+      });
+      this.templates.push(temp);
+      this.cards[name] = {
+        shown: false
+      };
+    },
+    //Entferne einen Abschnitt aus der Vorlage
+    removeSection: function removeSection(tpl) {
+      if (!tpl.fix) {
+        var index;
+        var number = tpl.number;
+        this.templates.forEach(function (temp, i) {
+          if (temp.number > number) {
+            temp.number--;
+            temp.changed++;
+          }
+
+          if (temp.name === tpl.name) {
+            index = i;
+          }
+        });
+        this.templates.splice(index, 1);
+      }
+    },
+    //�ndere die Reihenfolge der Abschnitte (Verschiebe einen Abschnitt und passe die Nummer der restlichen Abschnitte an)
+    changeNumber: function changeNumber(e, tpl) {
+      var old = tpl.number;
+      var newVal = e.target.value;
+
+      if (!tpl.fix && newVal > 1 && newVal < this.templates.length - 1) {
+        //nach unten verschieben
+        if (newVal > old) {
+          this.templates.forEach(function (temp) {
+            if (temp.number > old && temp.number <= newVal) {
+              temp.number--;
+              temp.changed++;
+            }
+          });
+        } //nach oben verschieben
+
+
+        if (newVal < old) {
+          this.templates.forEach(function (temp) {
+            if (temp.number < old && temp.number >= newVal) {
+              temp.number++;
+              temp.changed++;
+            }
+          });
+        }
+
+        tpl.number = newVal;
+        tpl.changed++;
       }
     }
   }
@@ -41184,7 +41348,7 @@ var render = function() {
           "div",
           { staticClass: "card-body" },
           [
-            _vm._l(_vm.templates, function(temp) {
+            _vm._l(_vm.orderedTpls, function(temp) {
               return _c(
                 "div",
                 {
@@ -41219,7 +41383,13 @@ var render = function() {
                             {
                               staticClass: "btn text-danger btn-link col-1",
                               staticStyle: { "font-size": "1.2rem" },
-                              attrs: { href: "#" }
+                              attrs: { href: "#" },
+                              on: {
+                                click: function($event) {
+                                  $event.preventDefault()
+                                  return _vm.removeSection(temp)
+                                }
+                              }
                             },
                             [_vm._v("🗑")]
                           )
@@ -41235,14 +41405,6 @@ var render = function() {
                           ),
                           _vm._v(" "),
                           _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: temp["number"],
-                                expression: "temp['number']"
-                              }
-                            ],
                             staticClass: "border-0",
                             staticStyle: { width: "3em" },
                             attrs: {
@@ -41253,11 +41415,8 @@ var render = function() {
                             },
                             domProps: { value: temp["number"] },
                             on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(temp, "number", $event.target.value)
+                              change: function($event) {
+                                return _vm.changeNumber($event, temp)
                               }
                             }
                           })
@@ -41339,7 +41498,16 @@ var render = function() {
                                           staticStyle: {
                                             "font-size": "1.2rem"
                                           },
-                                          attrs: { href: "#" }
+                                          attrs: { href: "#" },
+                                          on: {
+                                            click: function($event) {
+                                              $event.preventDefault()
+                                              return _vm.removeKwCat(
+                                                temp,
+                                                index
+                                              )
+                                            }
+                                          }
                                         },
                                         [_vm._v("🗑")]
                                       )
@@ -41382,7 +41550,7 @@ var render = function() {
                                         _vm._l(help["tpls"], function(kw, ind) {
                                           return _c(
                                             "li",
-                                            { key: kw, staticClass: "row" },
+                                            { key: ind, staticClass: "row" },
                                             [
                                               _c("input", {
                                                 directives: [
@@ -41424,7 +41592,16 @@ var render = function() {
                                                   staticStyle: {
                                                     "font-size": "1.2rem"
                                                   },
-                                                  attrs: { href: "#" }
+                                                  attrs: { href: "#" },
+                                                  on: {
+                                                    click: function($event) {
+                                                      $event.preventDefault()
+                                                      return _vm.removeKw(
+                                                        help,
+                                                        ind
+                                                      )
+                                                    }
+                                                  }
                                                 },
                                                 [_vm._v("🗑")]
                                               )
@@ -41432,7 +41609,21 @@ var render = function() {
                                           )
                                         }),
                                         _vm._v(" "),
-                                        _vm._m(0, true)
+                                        _c("li", [
+                                          _c(
+                                            "a",
+                                            {
+                                              attrs: { href: "#" },
+                                              on: {
+                                                click: function($event) {
+                                                  $event.preventDefault()
+                                                  return _vm.addKw(help)
+                                                }
+                                              }
+                                            },
+                                            [_vm._v("Neues Schl�sselwort")]
+                                          )
+                                        ])
                                       ],
                                       2
                                     )
@@ -41440,9 +41631,19 @@ var render = function() {
                                 )
                               }),
                               _vm._v(" "),
-                              _c("a", { attrs: { href: "#" } }, [
-                                _vm._v("Neue Schl�sselwortkategorie")
-                              ])
+                              _c(
+                                "a",
+                                {
+                                  attrs: { href: "#" },
+                                  on: {
+                                    click: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.addKwCat(temp)
+                                    }
+                                  }
+                                },
+                                [_vm._v("Neue Schl�sselwortkategorie")]
+                              )
                             ],
                             2
                           )
@@ -41486,7 +41687,7 @@ var render = function() {
                                 _vm._l(temp.tpls, function(help, index) {
                                   return _c(
                                     "li",
-                                    { key: help, staticClass: "row" },
+                                    { key: index, staticClass: "row" },
                                     [
                                       _c("textarea", {
                                         directives: [
@@ -41527,7 +41728,13 @@ var render = function() {
                                           staticStyle: {
                                             "font-size": "1.2rem"
                                           },
-                                          attrs: { href: "#" }
+                                          attrs: { href: "#" },
+                                          on: {
+                                            click: function($event) {
+                                              $event.preventDefault()
+                                              return _vm.removeTpl(temp, index)
+                                            }
+                                          }
                                         },
                                         [_vm._v("🗑")]
                                       )
@@ -41535,7 +41742,21 @@ var render = function() {
                                   )
                                 }),
                                 _vm._v(" "),
-                                _vm._m(1, true)
+                                _c("li", [
+                                  _c(
+                                    "a",
+                                    {
+                                      attrs: { href: "#" },
+                                      on: {
+                                        click: function($event) {
+                                          $event.preventDefault()
+                                          return _vm.addTpl(temp)
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Neues Template")]
+                                  )
+                                ])
                               ],
                               2
                             )
@@ -41577,13 +41798,55 @@ var render = function() {
                   staticClass: "card-body"
                 },
                 [
-                  _vm._m(2),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "addSectionName" } }, [
+                      _vm._v("Name:")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: { id: "addSectionName", type: "text" }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.nameError,
+                            expression: "nameError"
+                          }
+                        ],
+                        key: _vm.nameError,
+                        staticClass: "invalid-feedback d-block",
+                        attrs: { role: "alert" }
+                      },
+                      [_c("strong", [_vm._v(_vm._s(_vm.nameError))])]
+                    )
+                  ]),
                   _vm._v(" "),
-                  _vm._m(3),
+                  _vm._m(0),
                   _vm._v(" "),
-                  _vm._m(4),
+                  _vm._m(1),
                   _vm._v(" "),
-                  _vm._m(5)
+                  _c("div", { staticClass: "form-group text-right" }, [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "btn btn-small btn-outline-primary",
+                        attrs: { href: "#" },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.addSection()
+                          }
+                        }
+                      },
+                      [_vm._v("Abschnitt hinzuf�gen")]
+                    )
+                  ])
                 ]
               )
             ])
@@ -41591,41 +41854,12 @@ var render = function() {
           2
         ),
         _vm._v(" "),
-        _vm._m(6)
+        _vm._m(2)
       ])
     ])
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", [
-      _c("a", { attrs: { href: "#" } }, [_vm._v("Neues Schl�sselwort")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", [
-      _c("a", { attrs: { href: "#" } }, [_vm._v("Neues Template")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "addSectionName" } }, [_vm._v("Name:")]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { id: "addSectionName", type: "text" }
-      })
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -41672,21 +41906,6 @@ var staticRenderFns = [
           attrs: { for: "addSectionKeyword" }
         },
         [_vm._v("Schl�sselwortabschnitt")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group text-right" }, [
-      _c(
-        "a",
-        {
-          staticClass: "btn btn-small btn-outline-primary",
-          attrs: { href: "#" }
-        },
-        [_vm._v("Abschnitt hinzuf�gen")]
       )
     ])
   },
