@@ -10,8 +10,9 @@
                     </div>
                 </div>
             </div>
-            <app-tpl save_route="{{ route('admin.bewerbungen.templates.update') }}"
-                     restore_default_route="{{ route('admin.bewerbungen.templates.restoreDefault') }}" :tpl="{{ $templates }}"></app-tpl>
+            {{--<app-tpl save_route="{{ route('admin.bewerbungen.templates.update') }}"
+                     restore_default_route="{{ route('admin.bewerbungen.templates.restoreDefault') }}" :tpl="{{ $templates }}"></app-tpl>--}}
+            <app-tpl-new></app-tpl-new>
         </div>
     </div>
 @endsection

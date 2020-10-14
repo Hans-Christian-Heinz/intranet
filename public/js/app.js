@@ -2619,6 +2619,191 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ApplicationTemplatesNew.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ApplicationTemplatesNew.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: [],
+  data: function data() {
+    return {
+      templates: [],
+      cards: {
+        addSection: {
+          shown: false
+        }
+      },
+      recentlySaved: false,
+      saveFailed: false
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    //Lese zun�chst die Templates aus der Datenbank aus
+    axios.get("/bewerbungen/applications/templatesNew").then(function (response) {
+      return response.data;
+    }).then(function (data) {
+      _this.templates = data;
+
+      _this.templates.forEach(function (tpl) {
+        tpl['changed'] = 0;
+        tpl['keywords'].forEach(function (kw) {
+          kw['changed'] = 0;
+        });
+      });
+
+      data.forEach(function (tpl, i) {
+        _this.cards[tpl['name']] = {
+          shown: false,
+          number: tpl['number']
+        };
+      });
+    });
+  },
+  methods: {
+    toggle: function toggle(name) {
+      //card.shown = !card.shown;
+      this.cards[name].shown = !this.cards[name].shown; //TODO ohne forceUpdate zum Laufen bringen
+
+      this.$forceUpdate();
+    },
+    //Der Text, in den in einem entsprechenden Abschnitt Schl�sselworte eingesetzt werden k�nnen,
+    //ist als Array gespeichert. (Getrennt an Stellen, an denen Schl�sselworte eingesetzt werden k�nnen.)
+    //Methode statt computed properties, da computed properties mir hier Probleme bereiten (im Setter)
+    getKwText: function getKwText(tpl) {
+      if (tpl['choose_keywords']) {
+        return tpl.tpls.join('###');
+      } else {
+        return false;
+      }
+    },
+    setKwText: function setKwText(e, tpl) {
+      if (tpl['choose_keywords']) {
+        var text = e.target.value;
+        tpl.tpls = text.split("###");
+      }
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ExampleComponent.vue?vue&type=script&lang=js&":
 /*!***************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ExampleComponent.vue?vue&type=script&lang=js& ***!
@@ -39665,7 +39850,7 @@ var render = function() {
               ])
             }),
             _vm._v(" "),
-            _c("p", [_vm._v("Mit freundlichen Grüßen")]),
+            _c("p", [_vm._v("Mit freundlichen Gr��en")]),
             _vm._v(" "),
             _c("p", { staticClass: "mt-5" }, [
               _vm._v(
@@ -40949,6 +41134,583 @@ var staticRenderFns = [
           attrs: { for: "addSectionKeyword" }
         },
         [_vm._v("Schlüsselwortabschnitt")]
+      )
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ApplicationTemplatesNew.vue?vue&type=template&id=4c52e4fc&":
+/*!**************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ApplicationTemplatesNew.vue?vue&type=template&id=4c52e4fc& ***!
+  \**************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "row" }, [
+    _c("div", { staticClass: "col-md-12" }, [
+      _vm.recentlySaved
+        ? _c("div", { staticClass: "alert alert-info" }, [
+            _vm._v(
+              "\n            Die �nderungen wurden erfolgreich gespeichert.\n        "
+            )
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.saveFailed
+        ? _c("div", { staticClass: "alert alert-danger" }, [
+            _vm._v(
+              "\n            Beim Speichern ist ein Fehler aufgetreten\n        "
+            )
+          ])
+        : _vm._e()
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-md-12" }, [
+      _c("div", { staticClass: "card" }, [
+        _c(
+          "div",
+          { staticClass: "card-body" },
+          [
+            _vm._l(_vm.templates, function(temp) {
+              return _c(
+                "div",
+                {
+                  key: temp["changed"] + temp["name"] + "_card",
+                  staticClass: "card"
+                },
+                [
+                  _c("div", { staticClass: "card-header" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "col-11",
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.toggle(temp["name"])
+                            }
+                          }
+                        },
+                        [
+                          _c("h5", [
+                            _vm._v("Abschnitt " + _vm._s(temp["name"]))
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      !temp["fix"]
+                        ? _c(
+                            "a",
+                            {
+                              staticClass: "btn text-danger btn-link col-1",
+                              staticStyle: { "font-size": "1.2rem" },
+                              attrs: { href: "#" }
+                            },
+                            [_vm._v("🗑")]
+                          )
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    !temp["fix"]
+                      ? _c("div", [
+                          _c(
+                            "label",
+                            { attrs: { for: "number_" + temp["name"] } },
+                            [_vm._v("Reihenfolge:")]
+                          ),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: temp["number"],
+                                expression: "temp['number']"
+                              }
+                            ],
+                            staticClass: "border-0",
+                            staticStyle: { width: "3em" },
+                            attrs: {
+                              type: "number",
+                              min: "2",
+                              max: _vm.templates.length - 2,
+                              id: "number_" + temp["name"]
+                            },
+                            domProps: { value: temp["number"] },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(temp, "number", $event.target.value)
+                              }
+                            }
+                          })
+                        ])
+                      : _vm._e()
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.cards[temp["name"]].shown,
+                          expression: "cards[temp['name']].shown"
+                        }
+                      ],
+                      key: _vm.cards[temp["name"]].shown,
+                      staticClass: "card-body"
+                    },
+                    [
+                      temp["choose_keywords"]
+                        ? _c(
+                            "div",
+                            [
+                              _c(
+                                "label",
+                                { attrs: { for: "full_text_" + temp["name"] } },
+                                [_vm._v("Vorgeschriebener Text:")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "textarea",
+                                {
+                                  staticClass: "form-control border-0",
+                                  attrs: { id: "full_text_" + temp["name"] },
+                                  on: {
+                                    input: function($event) {
+                                      return _vm.setKwText($event, temp)
+                                    }
+                                  }
+                                },
+                                [_vm._v(_vm._s(_vm.getKwText(temp)))]
+                              ),
+                              _vm._v(" "),
+                              _c("p", [_vm._v("Schl�sselworte:")]),
+                              _vm._v(" "),
+                              _vm._l(temp["keywords"], function(help, index) {
+                                return _c(
+                                  "div",
+                                  {
+                                    key:
+                                      help["changed"] +
+                                      "_kw_" +
+                                      temp["name"] +
+                                      index,
+                                    staticClass: "mb-1",
+                                    staticStyle: {
+                                      border: "solid lightgrey 1px"
+                                    }
+                                  },
+                                  [
+                                    _c("div", { staticClass: "row" }, [
+                                      _c(
+                                        "label",
+                                        {
+                                          staticClass: "col-11",
+                                          attrs: { for: "kw_heading" + index }
+                                        },
+                                        [_vm._v("�berschrift:")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "a",
+                                        {
+                                          staticClass:
+                                            "btn text-danger btn-link col-1",
+                                          staticStyle: {
+                                            "font-size": "1.2rem"
+                                          },
+                                          attrs: { href: "#" }
+                                        },
+                                        [_vm._v("🗑")]
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: help["heading"],
+                                          expression: "help['heading']"
+                                        }
+                                      ],
+                                      staticClass: "form-control border-0",
+                                      attrs: {
+                                        type: "text",
+                                        id: "kw_heading" + index
+                                      },
+                                      domProps: { value: help["heading"] },
+                                      on: {
+                                        input: function($event) {
+                                          if ($event.target.composing) {
+                                            return
+                                          }
+                                          _vm.$set(
+                                            help,
+                                            "heading",
+                                            $event.target.value
+                                          )
+                                        }
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c("hr"),
+                                    _vm._v(" "),
+                                    _c(
+                                      "ul",
+                                      [
+                                        _vm._l(help["tpls"], function(kw, ind) {
+                                          return _c(
+                                            "li",
+                                            { key: kw, staticClass: "row" },
+                                            [
+                                              _c("input", {
+                                                directives: [
+                                                  {
+                                                    name: "model",
+                                                    rawName: "v-model",
+                                                    value: help["tpls"][ind],
+                                                    expression:
+                                                      "help['tpls'][ind]"
+                                                  }
+                                                ],
+                                                staticClass:
+                                                  "form-control border-0 col-11",
+                                                attrs: { type: "text" },
+                                                domProps: {
+                                                  value: help["tpls"][ind]
+                                                },
+                                                on: {
+                                                  input: function($event) {
+                                                    if (
+                                                      $event.target.composing
+                                                    ) {
+                                                      return
+                                                    }
+                                                    _vm.$set(
+                                                      help["tpls"],
+                                                      ind,
+                                                      $event.target.value
+                                                    )
+                                                  }
+                                                }
+                                              }),
+                                              _vm._v(" "),
+                                              _c(
+                                                "a",
+                                                {
+                                                  staticClass:
+                                                    "btn text-danger btn-link col-1",
+                                                  staticStyle: {
+                                                    "font-size": "1.2rem"
+                                                  },
+                                                  attrs: { href: "#" }
+                                                },
+                                                [_vm._v("🗑")]
+                                              )
+                                            ]
+                                          )
+                                        }),
+                                        _vm._v(" "),
+                                        _vm._m(0, true)
+                                      ],
+                                      2
+                                    )
+                                  ]
+                                )
+                              }),
+                              _vm._v(" "),
+                              _c("a", { attrs: { href: "#" } }, [
+                                _vm._v("Neue Schl�sselwortkategorie")
+                              ])
+                            ],
+                            2
+                          )
+                        : _c("div", [
+                            _c(
+                              "label",
+                              { attrs: { for: "heading_" + temp["name"] } },
+                              [_vm._v("�berschrift:")]
+                            ),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: temp["heading"],
+                                  expression: "temp['heading']"
+                                }
+                              ],
+                              staticClass: "form-control border-0",
+                              attrs: {
+                                type: "text",
+                                id: "heading_" + temp["name"]
+                              },
+                              domProps: { value: temp["heading"] },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(temp, "heading", $event.target.value)
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("p", [_vm._v("Templates:")]),
+                            _vm._v(" "),
+                            _c(
+                              "ul",
+                              [
+                                _vm._l(temp.tpls, function(help, index) {
+                                  return _c(
+                                    "li",
+                                    { key: help, staticClass: "row" },
+                                    [
+                                      _c("textarea", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: temp["tpls"][index],
+                                            expression: "temp['tpls'][index]"
+                                          }
+                                        ],
+                                        staticClass:
+                                          "form-control border-0 col-11",
+                                        attrs: {
+                                          id: temp["name"] + "_tpl_" + index
+                                        },
+                                        domProps: {
+                                          value: temp["tpls"][index]
+                                        },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.$set(
+                                              temp["tpls"],
+                                              index,
+                                              $event.target.value
+                                            )
+                                          }
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c(
+                                        "a",
+                                        {
+                                          staticClass:
+                                            "btn text-danger btn-link col-1",
+                                          staticStyle: {
+                                            "font-size": "1.2rem"
+                                          },
+                                          attrs: { href: "#" }
+                                        },
+                                        [_vm._v("🗑")]
+                                      )
+                                    ]
+                                  )
+                                }),
+                                _vm._v(" "),
+                                _vm._m(1, true)
+                              ],
+                              2
+                            )
+                          ])
+                    ]
+                  )
+                ]
+              )
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "card" }, [
+              _c("div", { staticClass: "card-header" }, [
+                _c(
+                  "a",
+                  {
+                    attrs: { href: "#" },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.toggle("addSection")
+                      }
+                    }
+                  },
+                  [_c("h5", [_vm._v("Abschnitt hinzuf�gen")])]
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.cards.addSection.shown,
+                      expression: "cards.addSection.shown"
+                    }
+                  ],
+                  staticClass: "card-body"
+                },
+                [
+                  _vm._m(2),
+                  _vm._v(" "),
+                  _vm._m(3),
+                  _vm._v(" "),
+                  _vm._m(4),
+                  _vm._v(" "),
+                  _vm._m(5)
+                ]
+              )
+            ])
+          ],
+          2
+        ),
+        _vm._v(" "),
+        _vm._m(6)
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", [
+      _c("a", { attrs: { href: "#" } }, [_vm._v("Neues Schl�sselwort")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", [
+      _c("a", { attrs: { href: "#" } }, [_vm._v("Neues Template")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", { attrs: { for: "addSectionName" } }, [_vm._v("Name:")]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        attrs: { id: "addSectionName", type: "text" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "custom-control custom-radio" }, [
+      _c("input", {
+        staticClass: "custom-control-input",
+        attrs: {
+          type: "radio",
+          id: "addSectionStandard",
+          name: "addSectionType",
+          checked: ""
+        }
+      }),
+      _vm._v(" "),
+      _c(
+        "label",
+        {
+          staticClass: "custom-control-label",
+          attrs: { for: "addSectionStandard" }
+        },
+        [_vm._v("Standardabschnitt")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "custom-control custom-radio" }, [
+      _c("input", {
+        staticClass: "custom-control-input",
+        attrs: {
+          type: "radio",
+          id: "addSectionKeyword",
+          name: "addSectionType"
+        }
+      }),
+      _vm._v(" "),
+      _c(
+        "label",
+        {
+          staticClass: "custom-control-label",
+          attrs: { for: "addSectionKeyword" }
+        },
+        [_vm._v("Schl�sselwortabschnitt")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group text-right" }, [
+      _c(
+        "a",
+        {
+          staticClass: "btn btn-small btn-outline-primary",
+          attrs: { href: "#" }
+        },
+        [_vm._v("Abschnitt hinzuf�gen")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-body" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-primary float-right mx-3",
+          attrs: { type: "button" }
+        },
+        [_vm._v("Speichern")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-outline-primary float-right mx-3",
+          attrs: { type: "button" }
+        },
+        [_vm._v("Standard wiederherstellen")]
       )
     ])
   }
@@ -54899,6 +55661,7 @@ Vue.component('review-form', __webpack_require__(/*! ./components/ReviewForm.vue
 Vue.component('resume', __webpack_require__(/*! ./components/ResumeComponent.vue */ "./resources/js/components/ResumeComponent.vue")["default"]);
 Vue.component('application', __webpack_require__(/*! ./components/ApplicationComponent.vue */ "./resources/js/components/ApplicationComponent.vue")["default"]);
 Vue.component('app-tpl', __webpack_require__(/*! ./components/ApplicationTemplates.vue */ "./resources/js/components/ApplicationTemplates.vue")["default"]);
+Vue.component('app-tpl-new', __webpack_require__(/*! ./components/ApplicationTemplatesNew.vue */ "./resources/js/components/ApplicationTemplatesNew.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -55089,6 +55852,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ApplicationTemplates_vue_vue_type_template_id_52958798___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ApplicationTemplates_vue_vue_type_template_id_52958798___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/ApplicationTemplatesNew.vue":
+/*!*************************************************************!*\
+  !*** ./resources/js/components/ApplicationTemplatesNew.vue ***!
+  \*************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ApplicationTemplatesNew_vue_vue_type_template_id_4c52e4fc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ApplicationTemplatesNew.vue?vue&type=template&id=4c52e4fc& */ "./resources/js/components/ApplicationTemplatesNew.vue?vue&type=template&id=4c52e4fc&");
+/* harmony import */ var _ApplicationTemplatesNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ApplicationTemplatesNew.vue?vue&type=script&lang=js& */ "./resources/js/components/ApplicationTemplatesNew.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ApplicationTemplatesNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ApplicationTemplatesNew_vue_vue_type_template_id_4c52e4fc___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ApplicationTemplatesNew_vue_vue_type_template_id_4c52e4fc___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/ApplicationTemplatesNew.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/ApplicationTemplatesNew.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/ApplicationTemplatesNew.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ApplicationTemplatesNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./ApplicationTemplatesNew.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ApplicationTemplatesNew.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ApplicationTemplatesNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/ApplicationTemplatesNew.vue?vue&type=template&id=4c52e4fc&":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/components/ApplicationTemplatesNew.vue?vue&type=template&id=4c52e4fc& ***!
+  \********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ApplicationTemplatesNew_vue_vue_type_template_id_4c52e4fc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./ApplicationTemplatesNew.vue?vue&type=template&id=4c52e4fc& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ApplicationTemplatesNew.vue?vue&type=template&id=4c52e4fc&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ApplicationTemplatesNew_vue_vue_type_template_id_4c52e4fc___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ApplicationTemplatesNew_vue_vue_type_template_id_4c52e4fc___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

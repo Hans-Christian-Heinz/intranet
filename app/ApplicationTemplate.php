@@ -7,9 +7,14 @@ use Illuminate\Support\Facades\DB;
 
 class ApplicationTemplate extends Model
 {
+    public $timestamps = false;
+
     protected $table = 'application_tpls';
     
     protected $with = ['keywords'];
+    protected $casts = [
+        'tpls' => 'array',
+    ];
     
     private static $at_table = 'application_tpls';
     private static $kw_table = 'keyword_tpls';
@@ -44,5 +49,17 @@ class ApplicationTemplate extends Model
     
     public function keywords() {
         return $this->hasMany(KeywordTemplate::class, 'tpl_id')->orderBy('number');
+    }
+
+    //TODO löschen
+    public static function test() {
+        $at = new ApplicationTemplate();
+        $at->number = 0;
+        $at->name = 'test';
+        $at->version=0;
+        $at->tpls=['a' => 'abc', 'b' => 'def'];
+
+        $at->save();
+        return $at->id;
     }
 }

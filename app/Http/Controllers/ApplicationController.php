@@ -318,8 +318,6 @@ class ApplicationController extends Controller
         if (is_null($version)) {
             $version = DB::table('application_tpls')->max('version');
         }
-        $temp = ApplicationTemplate::where('version', $version)->orderBy('number')->get()->toArray();
-        $keys = array_column($temp, 'name');
-        return array_combine($keys, $temp);
+        return ApplicationTemplate::where('version', $version)->orderBy('number')->get()->toArray();
     }
 }

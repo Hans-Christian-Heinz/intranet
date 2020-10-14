@@ -195,7 +195,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete("/applications/{application}", "ApplicationController@destroy")->name("applications.destroy");
         Route::post("/applications/{application}/print", "ApplicationController@show")->name("applications.print");
         Route::get("/applications/templates", "ApplicationController@templates")->name("applications.templates");
-        Route::get("/applications/templatesNew", "ApplicationController@templatesNew")->name("applications.templatesNew");
+        Route::get("/applications/templatesNew/{version?}", "ApplicationController@templatesNew")->name("applications.templatesNew");
     });
 });
 

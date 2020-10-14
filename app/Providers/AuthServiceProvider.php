@@ -47,7 +47,7 @@ class AuthServiceProvider extends ServiceProvider
         Auth::viaRequest('sso', function ($request) {
             //Es wÃ¤re wahrscheinlich sauberer, eine config-Datei anzulegen oder weitere Werte zur config/auth.php hinzuzufÃ¼gen,
             //anstatt in der Programmlogik unmittelbar auf env-Variablen zuzugreifen.
-            $username = $request->server(env('SERVER_USERNAME_FIELD', 'REMOTE_USER'));
+            /*$username = $request->server(env('SERVER_USERNAME_FIELD', 'REMOTE_USER'));
 
             if (session()->get('auth_guard', 'sso') === 'sso' && $username) {
 
@@ -84,7 +84,15 @@ class AuthServiceProvider extends ServiceProvider
                 //Wenn die Kerberos-Anmeldung nicht funktioniert oder sonst manuelle Anmeldung erwÃ¼nscht ist, verwende
                 //auth-guard web.
                 return Auth::guard('web')->user();
-            }
+            }*/
+            
+            //TODO zurücknehmen
+            return new LdapUser([
+                'username' => 'm.mustermann',
+                'name' => 'Max Mustermann',
+                'email' => 'm.mustermann@mail.de',
+                'fachrichtung' => 'Ausbilder',
+            ]);
         });
     }
 }

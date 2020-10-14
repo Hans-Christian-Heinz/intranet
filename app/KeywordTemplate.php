@@ -7,4 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class KeywordTemplate extends Model
 {
     protected $table = 'keyword_tpls';
+    
+    protected $casts = [
+        'tpls' => 'array',
+    ];
 }
