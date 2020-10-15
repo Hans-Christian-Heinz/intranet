@@ -13,8 +13,10 @@
                 </div>
             </div>
         </div>
-        <application route="{{ route("bewerbungen.applications.update", $application) }}" print_route="{{ route("bewerbungen.applications.print", $application) }}"
-                     :user="{{ app()->user }}" :saved="{{ $application->body ?: json_encode([]) }}"></application>
+        {{--<application route="{{ route("bewerbungen.applications.update", $application) }}" print_route="{{ route("bewerbungen.applications.print", $application) }}"
+                     :user="{{ app()->user }}" :saved="{{ $application->body ?: json_encode([]) }}"></application>--}}
+        <application-new route="{{ route("bewerbungen.applications.update", $application) }}" version="{{ $application->tpl_version }}" print_route="{{ route("bewerbungen.applications.print", $application) }}"
+                     :user="{{ app()->user }}" :saved="{{ $application->body ?: json_encode([]) }}"></application-new>
     </div>
 </div>
 
