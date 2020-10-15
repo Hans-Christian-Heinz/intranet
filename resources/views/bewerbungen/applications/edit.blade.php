@@ -15,12 +15,13 @@
         </div>
         {{--<application route="{{ route("bewerbungen.applications.update", $application) }}" print_route="{{ route("bewerbungen.applications.print", $application) }}"
                      :user="{{ app()->user }}" :saved="{{ $application->body ?: json_encode([]) }}"></application>--}}
-        <application-new route="{{ route("bewerbungen.applications.update", $application) }}" version="{{ $application->tpl_version }}" print_route="{{ route("bewerbungen.applications.print", $application) }}"
+        <application-new route="{{ route("bewerbungen.applications.update", $application) }}" version="{{ $application->tpl_version }}"
                      :user="{{ app()->user }}" :saved="{{ $application->body ?: json_encode([]) }}"></application-new>
     </div>
 </div>
 
-@include('bewerbungen.formatPdfModal', ['route' => route("bewerbungen.applications.print", $application),])
+{{--@include('bewerbungen.formatPdfModal', ['route' => route("bewerbungen.applications.print", $application),])--}}
+@include('bewerbungen.formatPdfModal', ['route' => route("bewerbungen.applications.printNew", $application),])
 @endsection
 
 @push('modals')

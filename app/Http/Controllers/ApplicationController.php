@@ -214,6 +214,44 @@ class ApplicationController extends Controller
         $pdf->WriteHTML(view("bewerbungen.applications.pdf", compact("application", "res", "resume", "format", "signature"))->render());
         $pdf->Output();
     }
+    
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Application  $application
+     * @return \Illuminate\Http\Response
+     */
+    public function showNew(PdfRequest $request, Application $application)
+    {
+        $content = json_decode($application->body, true);
+        $help = app()->user->resume;
+        $resume = json_decode($help->data);
+        if (is_null($help->signature)) {
+            $signature = base64_encode(file_get_contents($request->file('signature')));
+        }
+        else {
+            $signature = base64_encode($help->signature);
+        }
+        /*$signature = app()->user->resume
+         ? base64_encode(app()->user->resume->signature)
+         : base64_encode(file_get_contents($request->file('signature')));*/
+        $format = $request->all();
+        
+        $pdf = new Mpdf([
+            'tempDir' => sys_get_temp_dir(),
+            'default_font_size' => $request->textgroesse,
+            'default_font' => 'opensans',
+        ]);
+        $pdf->DefHTMLFooterByName('footer',
+            '<table style="width: 100%; border: none; border-top: 1px solid black;">
+    <tr style="border: none;">
+        <td style="border:none; text-align: right;">{PAGENO}/{nbpg}</td>
+    </tr>
+</table>');
+        $pdf->WriteHTML(view("bewerbungen.applications.pdfNew", compact("application", "content", "resume", "format", "signature"))->render());
+        $pdf->Output();
+        return view("bewerbungen.applications.pdfNew");
+    }
 
     private function helpKeywordSection($section, $tpl) {
         $text = "";
@@ -269,11 +307,11 @@ class ApplicationController extends Controller
             "body" => "required"
         ]);
 
-        $application->update([
+        return $application->update([
             "body" => json_encode($request->input("body"))
         ]);
 
-        return redirect()->route("bewerbungen.applications.edit", $application)->with("status", "Die Änderungen wurden erfolgreich gespeichert");
+        //return redirect()->route("bewerbungen.applications.edit", $application)->with("status", "Die Änderungen wurden erfolgreich gespeichert");
     }
 
     /**

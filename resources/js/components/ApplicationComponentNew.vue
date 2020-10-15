@@ -83,7 +83,7 @@
 
 <script>
 export default {
-	props: ["route", "saved", "user", "print_route", "version"],
+	props: ["route", "saved", "user", "version"],
 
 	data () {
 		return {
@@ -234,8 +234,26 @@ export default {
 			this.$forceUpdate();
         },
 
+		//Änderungen speichern
 		save() {
-			//TODO
+			let copy = Object.assign({}, this.data);
+			//drop the changed-field for each section
+			Object.keys(copy).forEach(key => {
+				delete copy[key].changed;
+			});
+
+			axios.post(this.route, {body: copy, _method: "patch"})
+                .then(response => response.data)
+                .then(data => {
+                    this.recentlySaved = data;
+
+                    setTimeout(() => {
+                        this.recentlySaved = false;
+                    }, 3000);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
 		}
 	}
 }

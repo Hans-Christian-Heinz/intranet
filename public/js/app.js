@@ -2294,7 +2294,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["route", "saved", "user", "print_route", "version"],
+  props: ["route", "saved", "user", "version"],
   data: function data() {
     return {
       templates: [],
@@ -2447,7 +2447,28 @@ __webpack_require__.r(__webpack_exports__);
 
       this.$forceUpdate();
     },
-    save: function save() {//TODO
+    //�nderungen speichern
+    save: function save() {
+      var _this3 = this;
+
+      var copy = Object.assign({}, this.data); //drop the changed-field for each section
+
+      Object.keys(copy).forEach(function (key) {
+        delete copy[key].changed;
+      });
+      axios.post(this.route, {
+        body: copy,
+        _method: "patch"
+      }).then(function (response) {
+        return response.data;
+      }).then(function (data) {
+        _this3.recentlySaved = data;
+        setTimeout(function () {
+          _this3.recentlySaved = false;
+        }, 3000);
+      })["catch"](function (error) {
+        console.log(error);
+      });
     }
   }
 });
