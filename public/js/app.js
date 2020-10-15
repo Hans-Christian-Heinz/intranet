@@ -2849,6 +2849,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     //F�ge der Vorlage einen neuen Abschnitt hinzu
     addSection: function addSection() {
+      var _this2 = this;
+
       this.nameError = "";
       var kw = document.getElementById('addSectionKeyword').checked;
       var name = $('#addSectionName').val();
@@ -2895,14 +2897,15 @@ __webpack_require__.r(__webpack_exports__);
             is_heading: false,
             choose_keywords: false,
             fix: false,
-            tpls: ["Bitte geben Sie ein Template an."]
+            tpls: ["Bitte geben Sie ein Template an."],
+            keywords: []
           };
         }
 
       temp.name = name;
       temp.number = this.templates.length - 1;
       this.templates.forEach(function (tpl) {
-        if (tpl.name === 'ending') {
+        if (tpl.number === _this2.templates.length - 1) {
           tpl.number++;
           tpl.changed++;
         }
@@ -2962,6 +2965,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     //Speichere die �nderungen an der Vorlage
     save: function save() {
+      var _this3 = this;
+
       var route = this.save_route;
       axios.post(route, {
         templates: this.templates,
@@ -2969,25 +2974,23 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         return response.data;
       }).then(function (data) {
-        /*if (data === false) {
-            this.saveFailed = true;
-            this.recentlySaved = false;
+        if (data === false) {
+          _this3.saveFailed = true;
+          _this3.recentlySaved = false;
+        } else {
+          _this3.recentlySaved = true;
+          _this3.saveFailed = false;
+          setTimeout(function () {
+            _this3.recentlySaved = false;
+          }, 3000);
         }
-        else {
-            this.recentlySaved = true;
-            this.saveFailed = false;
-              setTimeout(() => {
-                this.recentlySaved = false;
-            }, 3000);
-        }*/
-        console.log(data);
       })["catch"](function (error) {
         console.log(error);
       });
     },
     //Stelle die Standardvorlage wieder her
     restoreDefault: function restoreDefault() {
-      var _this2 = this;
+      var _this4 = this;
 
       var route = this.restore_default_route;
       axios.post(route, {
@@ -2996,26 +2999,26 @@ __webpack_require__.r(__webpack_exports__);
         return response.data;
       }).then(function (data) {
         if (data === false) {
-          _this2.saveFailed = true;
-          _this2.recentlySaved = false;
+          _this4.saveFailed = true;
+          _this4.recentlySaved = false;
         } else {
-          _this2.recentlySaved = true;
-          _this2.saveFailed = false;
-          _this2.templates = data;
+          _this4.recentlySaved = true;
+          _this4.saveFailed = false;
+          _this4.templates = data;
 
-          _this2.templates.forEach(function (tpl) {
+          _this4.templates.forEach(function (tpl) {
             tpl['changed'] = 0;
             tpl['keywords'].forEach(function (kw) {
               kw['changed'] = 0;
             });
-            _this2.cards[tpl['name']] = {
+            _this4.cards[tpl['name']] = {
               shown: false,
               number: tpl['number']
             };
           });
 
           setTimeout(function () {
-            _this2.recentlySaved = false;
+            _this4.recentlySaved = false;
           }, 3000);
         }
       })["catch"](function (error) {

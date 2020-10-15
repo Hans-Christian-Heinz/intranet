@@ -284,13 +284,14 @@ export default {
                     fix: false,
                     tpls: [
                         "Bitte geben Sie ein Template an."
-                    ]
+                    ],
+                    keywords: []
                 };
             }
             temp.name = name;
             temp.number = this.templates.length - 1;
             this.templates.forEach(tpl => {
-                if (tpl.name === 'ending') {
+                if (tpl.number === this.templates.length - 1) {
                     tpl.number++;
                     tpl.changed++;
                 }
@@ -356,7 +357,7 @@ export default {
             axios.post(route, {templates: this.templates, _method: "patch"})
                 .then(response => response.data)
                 .then(data => {
-                    /*if (data === false) {
+                    if (data === false) {
                         this.saveFailed = true;
                         this.recentlySaved = false;
                     }
@@ -367,8 +368,7 @@ export default {
                         setTimeout(() => {
                             this.recentlySaved = false;
                         }, 3000);
-                    }*/
-                    console.log(data);
+                    }
                 })
                 .catch(error => {
                     console.log(error);

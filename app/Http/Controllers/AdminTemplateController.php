@@ -59,6 +59,7 @@ class AdminTemplateController extends Controller
             
             //Schlüsselworte falls vorhanden
             foreach($tpl['keywords'] as $keyword) {
+                //TEST1234
                 $kw = json_decode(json_encode($keyword), true);
 
                 $kt = new KeywordTemplate([
