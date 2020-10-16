@@ -18,7 +18,7 @@ class CreateKeywordTplsTable extends Migration
             $table->unsignedBigInteger('tpl_id');
             $table->unsignedTinyInteger('number');
             $table->string('heading');
-            $table->string('conjunction', 10);
+            $table->string('conjunction', 10)->nullable(true);
             $table->json('tpls');
             
             $table->foreign("tpl_id")->references("id")->on("application_tpls")->onDelete("cascade");

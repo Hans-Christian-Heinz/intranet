@@ -224,35 +224,41 @@ class ApplicationController extends Controller
     public function showNew(PdfRequest $request, Application $application)
     {
         $content = json_decode($application->body, true);
+        $format = $request->all();
         $help = app()->user->resume;
         $resume = json_decode($help->data);
         if (is_null($help->signature)) {
-            $signature = base64_encode(file_get_contents($request->file('signature')));
+            $format['signature'] = base64_encode(file_get_contents($request->file('signature')));
         }
         else {
-            $signature = base64_encode($help->signature);
+            $format['signature'] = base64_encode($help->signature);
         }
-        /*$signature = app()->user->resume
-         ? base64_encode(app()->user->resume->signature)
-         : base64_encode(file_get_contents($request->file('signature')));*/
-        $format = $request->all();
         
         $pdf = new Mpdf([
             'tempDir' => sys_get_temp_dir(),
             'default_font_size' => $request->textgroesse,
             'default_font' => 'opensans',
         ]);
+        $pdf->debug = true;
         $pdf->DefHTMLFooterByName('footer',
             '<table style="width: 100%; border: none; border-top: 1px solid black;">
     <tr style="border: none;">
         <td style="border:none; text-align: right;">{PAGENO}/{nbpg}</td>
     </tr>
 </table>');
-        $pdf->WriteHTML(view("bewerbungen.applications.pdfNew", compact("application", "content", "resume", "format", "signature"))->render());
+        $pdf->WriteHTML(view("bewerbungen.applications.pdfNew", compact("application", "content", "resume", "format"))->render());
         $pdf->Output();
         return view("bewerbungen.applications.pdfNew");
+        //return view("bewerbungen.applications.pdfNew", compact("application", "content", "resume", "format"));
     }
 
+    /**
+     * Methode wird für den neuen Ansatz nicht benötigt.
+     * 
+     * @param unknown $section
+     * @param unknown $tpl
+     * @return string
+     */
     private function helpKeywordSection($section, $tpl) {
         $text = "";
         foreach($tpl['text'] as $i => $t) {

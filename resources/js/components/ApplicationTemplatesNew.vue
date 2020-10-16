@@ -3,10 +3,10 @@
 <template>
     <div class="row">
         <div class="col-md-12">
-            <div class="alert alert-info" v-if="recentlySaved">
+            <div class="alert alert-info fixed-top" v-if="recentlySaved">
                 Die Änderungen wurden erfolgreich gespeichert.
             </div>
-            <div class="alert alert-danger" v-if="saveFailed">
+            <div class="alert alert-danger fixed-top" v-if="saveFailed">
                 Beim Speichern ist ein Fehler aufgetreten
             </div>
         </div>
@@ -39,12 +39,23 @@
                                 <b>Schlüsselworte:</b>
                                 <div style="border: solid lightgrey 1px" class="mb-1" 
                                      v-for="(help, index) in temp['keywords']" :key="help['changed'] + '_kw_' + temp['name'] + index">
+                                    <!-- Zunächst die Überschrift der Kategorie an Schlüsselworten in dem Editor -->
                                     <div class="row">
                                         <label :for="'kw_heading' + index" class="col-11">Überschrift:</label>
                                         <a href="#" class="btn text-danger btn-link col-1" style="font-size: 1.2rem" @click.prevent="removeKwCat(temp, index)">&#128465;</a>
                                     </div>
                                     <input type="text" :id="'kw_heading' + index" class="form-control border-0" v-model="help['heading']"/>
                                     <hr>
+                                    <!-- Die Konjunktion, die aufezählte Schlüsselworte verbindet sowie die Reihenfolge der Kategorien -->
+                                    <label class="ml-2" :for="'number_' + temp['name'] + '_kw_' + index">Reihenfolge:</label>
+                                    <input type="number" class="border-0" style="width:3em" min="0" @change="changeKwCatNumber($event, temp, help)"
+                                           :max="temp['keywords'].length - 1" :id="'number_' + temp['name'] + '_kw_' + index" :value="help['number']"/>
+                                    <br/>
+                                    <label class="ml-2" :for="'conj_' + temp['name'] + '_kw_' + index">Konjunktion:</label>
+                                    <input type="text" style="border: 1px solid #ced4da; border-radius: 0.25rem;" maxlength="10" size="10"
+                                           :id="'conj_' + temp['name'] + '_kw_' + index" v-model="help['conjunction']"/>
+                                    <hr>
+                                    <!-- Die auswählbaren Schlüsselworte -->
                                     <ul>
                                         <li v-for="(kw, ind) in help['tpls']" :key="ind" class="row">
                                             <input type="text" class="form-control border-0 col-11" v-model="help['tpls'][ind]"/>
@@ -131,7 +142,13 @@ export default {
 
     computed: {
         orderedTpls: function () {
-            return _.orderBy(this.templates, 'number')
+            //return _.orderBy(this.templates, 'number');
+            let res = _.orderBy(this.templates, 'number');
+            res.forEach(tpl => {
+                tpl.keywords = _.orderBy(tpl.keywords, 'number');
+            });
+
+            return res;
         }
     },
     
@@ -346,6 +363,38 @@ export default {
                 }
 
                 tpl.number = newVal;
+                tpl.changed++;
+            }
+        },
+
+        
+        /**
+         * Ändere die Reihenfolge der Schlüsselwortkategorien in einem Abschnitt
+         * tpl: Der Abschnitt
+         * cat: Die Kategorie, die verschoben wird
+         */
+        changeKwCatNumber(e, tpl, cat) {
+            let old = cat.number;
+            let newVal = e.target.value;
+            if (newVal >= 0 && newVal < tpl.keywords.length) {
+                //nach unten verschieben
+                if (newVal > old) {
+                    tpl.keywords.forEach(help => {
+                        if (help.number > old && help.number <= newVal) {
+                            help.number--;
+                        }
+                    });
+                }
+                //nach oben verschieben
+                if (newVal < old) {
+                    tpl.keywords.forEach(help => {
+                        if (help.number < old && help.number >= newVal) {
+                            help.number++;
+                        }
+                    });
+                }
+
+                cat.number = newVal;
                 tpl.changed++;
             }
         },

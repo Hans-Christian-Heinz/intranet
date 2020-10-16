@@ -1,7 +1,7 @@
 <template>
     <div>
         <template v-if="statusMessage.length">
-            <div class="alert alert-info">
+            <div class="alert alert-info" id="header" v-bind:class="{ 'fixed-top': fixHeader }">
                 {{ statusMessage }}
             </div>
         </template>
@@ -246,22 +246,24 @@
             <div class="resume-card-body" :style="{ display: cards.passbild.collapsed ? 'block' : 'none' }">
                 <p>Hinweis: Das Hinzufügen eines Passbilds ist optional.</p>
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-4">
                         <div v-if="this.passbild">
                             <img style="height: 45mm; width: 35mm;" :src="'data:image/png;base64,' + this.passbild" alt="Kein Passbild hochgeladen"/>
                             <br/>
                             <a class="btn btn-outline-danger mt-2" data-toggle="modal" href="#deletePassbildModal">Passbild löschen</a>
                         </div>
                     </div>
-                    <div class="input-group col-6">
+                    <div class="input-group col-4">
+                        <div class="custom-file">
+                            <input type="file" id="passbild" name="passbild" class="custom-file-input"
+                                   accept="image/png" form="formPassbild"/>
+                            <label class="custom-file-label" for="passbild">Passbild</label>
+                        </div>
+                    </div>
+                    <div class="col-4">
                         <form class="form" method="post" id="formPassbild" :action="passbildroute" enctype="multipart/form-data">
                             <input type="hidden" name="_token" :value="csrf"/>
-                            <div class="custom-file" style="height: 45mm;">
-                                <input type="file" id="passbild" name="passbild" class="custom-file-input"
-                                       accept="image/png"/>
-                                <label class="custom-file-label" for="passbild">Passbild</label>
-                            </div>
-                            <input type="submit" class="btn btn-primary float-right mt-2" form="formPassbild" value="Hochladen"/>
+                            <input type="submit" class="btn btn-primary float-right" form="formPassbild" value="Hochladen"/>
                         </form>
                     </div>
                 </div>
@@ -294,22 +296,24 @@
                 	wird sie jedoch nicht in der Datenbank gespeichert.
                 </p>
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-4">
                         <div v-if="this.signature">
                             <img height="60" width="350" :src="'data:image/png;base64,' + this.signature" alt="Keine Signatur hochgeladen"/>
                             <br/>
                             <a class="btn btn-outline-danger mt-2" data-toggle="modal" href="#deleteSignatureModal">Signatur löschen</a>
                         </div>
                     </div>
-                    <div class="input-group col-6">
+                    <div class="col-4">
+                        <div class="custom-file">
+                            <input type="file" id="signature" name="signature" class="custom-file-input"
+                                   accept="image/png" form="formSignature"/>
+                            <label class="custom-file-label" for="signature">Signatur</label>
+                        </div>
+                    </div>
+                    <div class="col-4">
                         <form class="form" method="post" id="formSignature" :action="signatureroute" enctype="multipart/form-data">
                             <input type="hidden" name="_token" :value="csrf"/>
-                            <div class="custom-file" style="height: 45mm;">
-                                <input type="file" id="signature" name="signature" class="custom-file-input"
-                                       accept="image/png"/>
-                                <label class="custom-file-label" for="signature">Signatur</label>
-                            </div>
-                            <input type="submit" class="btn btn-primary float-right mt-2" form="formSignature" value="Hochladen"/>
+                            <input type="submit" class="btn btn-primary float-right" form="formSignature" value="Hochladen"/>
                         </form>
                     </div>
                 </div>
@@ -360,6 +364,18 @@ export default {
             throttleInterval: null,
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         };
+    },
+
+    computed: {
+        fixHeader() {
+            if ($('#header').length) {
+                console.log($('#header').offset().top);
+                return window.pageYOffset > $('#header').offset().top;
+            }
+            else {
+                return false;
+            }
+        }
     },
 
     mounted() {

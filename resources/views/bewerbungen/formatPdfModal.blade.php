@@ -86,7 +86,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-link text-secondary" data-dismiss="modal">Abbrechen</button>
 
-                    <form class="form" id="format_pdf" action="{{ $route }}" method="POST" target="_blank" enctype="multipart/form-data">
+					<form class="form" id="format_pdf" action="{{ $route }}" method="POST" target="_blank" enctype="multipart/form-data">
                         @csrf
                         <button type="submit" class="btn btn-primary">PDF erstellen</button>
                     </form>
