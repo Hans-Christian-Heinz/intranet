@@ -1,6 +1,7 @@
 <template>
     <div>
         <template v-if="statusMessage.length">
+            <div id="parent_header"></div>
             <div class="alert alert-info" id="header" v-bind:class="{ 'fixed-top': fixHeader }">
                 {{ statusMessage }}
             </div>
@@ -362,20 +363,9 @@ export default {
             statusMessage: "Die meisten Ã„nderungen werden automatisch gespeichert.\nBilder müssen explizit gespeichert werden.",
             timesSaved: 0,
             throttleInterval: null,
-            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            fixHeader: false
         };
-    },
-
-    computed: {
-        fixHeader() {
-            if ($('#header').length) {
-                console.log($('#header').offset().top);
-                return window.pageYOffset > $('#header').offset().top;
-            }
-            else {
-                return false;
-            }
-        }
     },
 
     mounted() {
@@ -397,6 +387,13 @@ export default {
             .catch(error => {
                 console.log(error);
             });
+    },
+
+    created() {
+        //lodash debounce: Methode wird nicht öfter als alle 100ms aufgerufen
+        //Wenn sie davor aufgerufen wird, wird das Ergebnis nicht neu berechnet
+        this.handleDebouncedScroll = _.debounce(this.handleScroll, 100);
+        window.addEventListener('scroll', this.handleDebouncedScroll);
     },
 
     watch: {
@@ -464,6 +461,12 @@ export default {
 
         removeCareerItem(index) {
             this.resume.careers.splice(index, 1);
+        },
+
+        handleScroll(e) {
+            if ($('#header').length) {
+                this.fixHeader = window.pageYOffset > $('#parent_header').offset().top;
+            }
         }
     }
 }

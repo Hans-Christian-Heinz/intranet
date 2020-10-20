@@ -3,10 +3,11 @@
 <template>
     <div class="row">
         <div class="col-md-12">
-            <div class="alert alert-info fixed-top" v-if="recentlySaved">
+            <div id="parent_header"></div>
+            <div class="alert alert-info kopfzeile" :class="{ 'fixed-top': fixHeader }" v-if="recentlySaved">
                 Die Änderungen wurden erfolgreich gespeichert.
             </div>
-            <div class="alert alert-danger fixed-top" v-if="saveFailed">
+            <div class="alert alert-danger kopfzeile" :class="{ 'fixed-top': fixHeader }" v-if="saveFailed">
                 Beim Speichern ist ein Fehler aufgetreten
             </div>
         </div>
@@ -136,7 +137,8 @@ export default {
             recentlySaved: false,
             saveFailed: false,
             nameError: "",
-            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            fixHeader: false
 		};
     },
 
@@ -152,6 +154,13 @@ export default {
         }
     },
     
+    created() {
+        //lodash debounce: Methode wird nicht öfter als alle 100ms aufgerufen
+        //Wenn sie davor aufgerufen wird, wird das Ergebnis nicht neu berechnet
+        this.handleDebouncedScroll = _.debounce(this.handleScroll, 100);
+        window.addEventListener('scroll', this.handleDebouncedScroll);
+    },
+
     mounted() {
 		//Lese zunächst die Templates aus der Datenbank aus
 		axios.get(`/bewerbungen/applications/templatesNew`)
@@ -459,6 +468,12 @@ export default {
                 .catch(error => {
                     console.log(error);
                 });
+        },
+
+        handleScroll(e) {
+            if ($('.kopfzeile').length) {
+                this.fixHeader = window.pageYOffset > $('#parent_header').offset().top;
+            }
         }
     }
 };

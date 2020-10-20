@@ -2298,6 +2298,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["route", "saved", "user", "version"],
   data: function data() {
@@ -2305,8 +2306,15 @@ __webpack_require__.r(__webpack_exports__);
       templates: [],
       data: {},
       recentlySaved: false,
-      saveFailed: false
+      saveFailed: false,
+      fixHeader: false
     };
+  },
+  created: function created() {
+    //lodash debounce: Methode wird nicht �fter als alle 100ms aufgerufen
+    //Wenn sie davor aufgerufen wird, wird das Ergebnis nicht neu berechnet
+    this.handleDebouncedScroll = _.debounce(this.handleScroll, 100);
+    window.addEventListener('scroll', this.handleDebouncedScroll);
   },
   mounted: function mounted() {
     var _this = this;
@@ -2476,6 +2484,11 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         console.log(error);
       });
+    },
+    handleScroll: function handleScroll(e) {
+      if ($('.kopfzeile').length) {
+        this.fixHeader = window.pageYOffset > $('#parent_header').offset().top;
+      }
     }
   }
 });
@@ -3034,6 +3047,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["save_route", "restore_default_route"],
   data: function data() {
@@ -3047,7 +3061,8 @@ __webpack_require__.r(__webpack_exports__);
       recentlySaved: false,
       saveFailed: false,
       nameError: "",
-      csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+      csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+      fixHeader: false
     };
   },
   computed: {
@@ -3060,6 +3075,12 @@ __webpack_require__.r(__webpack_exports__);
       });
       return res;
     }
+  },
+  created: function created() {
+    //lodash debounce: Methode wird nicht �fter als alle 100ms aufgerufen
+    //Wenn sie davor aufgerufen wird, wird das Ergebnis nicht neu berechnet
+    this.handleDebouncedScroll = _.debounce(this.handleScroll, 100);
+    window.addEventListener('scroll', this.handleDebouncedScroll);
   },
   mounted: function mounted() {
     var _this = this;
@@ -3355,6 +3376,11 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         console.log(error);
       });
+    },
+    handleScroll: function handleScroll(e) {
+      if ($('.kopfzeile').length) {
+        this.fixHeader = window.pageYOffset > $('#parent_header').offset().top;
+      }
     }
   }
 });
@@ -3731,6 +3757,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["user", "resumedata", "printroute", "passbildroute", "signatureroute", "passbild", "signature"],
   data: function data() {
@@ -3772,18 +3799,9 @@ __webpack_require__.r(__webpack_exports__);
       statusMessage: "Die meisten Änderungen werden automatisch gespeichert.\nBilder m�ssen explizit gespeichert werden.",
       timesSaved: 0,
       throttleInterval: null,
-      csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+      csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+      fixHeader: false
     };
-  },
-  computed: {
-    fixHeader: function fixHeader() {
-      if ($('#header').length) {
-        console.log($('#header').offset().top);
-        return window.pageYOffset > $('#header').offset().top;
-      } else {
-        return false;
-      }
-    }
   },
   mounted: function mounted() {
     var _this = this;
@@ -3805,6 +3823,12 @@ __webpack_require__.r(__webpack_exports__);
     })["catch"](function (error) {
       console.log(error);
     });
+  },
+  created: function created() {
+    //lodash debounce: Methode wird nicht �fter als alle 100ms aufgerufen
+    //Wenn sie davor aufgerufen wird, wird das Ergebnis nicht neu berechnet
+    this.handleDebouncedScroll = _.debounce(this.handleScroll, 100);
+    window.addEventListener('scroll', this.handleDebouncedScroll);
   },
   watch: {
     resume: {
@@ -3875,6 +3899,11 @@ __webpack_require__.r(__webpack_exports__);
     },
     removeCareerItem: function removeCareerItem(index) {
       this.resume.careers.splice(index, 1);
+    },
+    handleScroll: function handleScroll(e) {
+      if ($('#header').length) {
+        this.fixHeader = window.pageYOffset > $('#parent_header').offset().top;
+      }
     }
   }
 });
@@ -40756,20 +40785,36 @@ var render = function() {
   return _c("div", [
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col-md-12" }, [
+        _c("div", { attrs: { id: "parent_header" } }),
+        _vm._v(" "),
         _vm.recentlySaved
-          ? _c("div", { staticClass: "alert alert-info fixed-top" }, [
-              _vm._v(
-                "\n\t\t\t\tDie �nderungen wurden erfolgreich gespeichert.\n\t\t\t"
-              )
-            ])
+          ? _c(
+              "div",
+              {
+                staticClass: "alert alert-info kopfzeile",
+                class: { "fixed-top": _vm.fixHeader }
+              },
+              [
+                _vm._v(
+                  "\n\t\t\t\tDie �nderungen wurden erfolgreich gespeichert.\n\t\t\t"
+                )
+              ]
+            )
           : _vm._e(),
         _vm._v(" "),
         _vm.saveFailed
-          ? _c("div", { staticClass: "alert alert-danger fixed-top" }, [
-              _vm._v(
-                "\n\t\t\t\tBeim Speichern ist ein Fehler aufgetreten\n\t\t\t"
-              )
-            ])
+          ? _c(
+              "div",
+              {
+                staticClass: "alert alert-danger kopfzeile",
+                class: { "fixed-top": _vm.fixHeader }
+              },
+              [
+                _vm._v(
+                  "\n\t\t\t\tBeim Speichern ist ein Fehler aufgetreten\n\t\t\t"
+                )
+              ]
+            )
           : _vm._e()
       ]),
       _vm._v(" "),
@@ -42128,20 +42173,36 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "row" }, [
     _c("div", { staticClass: "col-md-12" }, [
+      _c("div", { attrs: { id: "parent_header" } }),
+      _vm._v(" "),
       _vm.recentlySaved
-        ? _c("div", { staticClass: "alert alert-info fixed-top" }, [
-            _vm._v(
-              "\n            Die �nderungen wurden erfolgreich gespeichert.\n        "
-            )
-          ])
+        ? _c(
+            "div",
+            {
+              staticClass: "alert alert-info kopfzeile",
+              class: { "fixed-top": _vm.fixHeader }
+            },
+            [
+              _vm._v(
+                "\n            Die �nderungen wurden erfolgreich gespeichert.\n        "
+              )
+            ]
+          )
         : _vm._e(),
       _vm._v(" "),
       _vm.saveFailed
-        ? _c("div", { staticClass: "alert alert-danger fixed-top" }, [
-            _vm._v(
-              "\n            Beim Speichern ist ein Fehler aufgetreten\n        "
-            )
-          ])
+        ? _c(
+            "div",
+            {
+              staticClass: "alert alert-danger kopfzeile",
+              class: { "fixed-top": _vm.fixHeader }
+            },
+            [
+              _vm._v(
+                "\n            Beim Speichern ist ein Fehler aufgetreten\n        "
+              )
+            ]
+          )
         : _vm._e()
     ]),
     _vm._v(" "),
@@ -42913,6 +42974,8 @@ var render = function() {
     [
       _vm.statusMessage.length
         ? [
+            _c("div", { attrs: { id: "parent_header" } }),
+            _vm._v(" "),
             _c(
               "div",
               {
