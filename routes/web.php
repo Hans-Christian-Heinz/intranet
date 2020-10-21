@@ -300,9 +300,9 @@ Route::group(['middleware' => 'admin'], function () {
             Route::patch('/default', 'AdminTemplateController@restoreDefault')->name('restoreDefault');
             Route::patch('/defaultNew', 'AdminTemplateController@restoreDefaultNew')->name('restoreDefaultNew');
             Route::get('/versionen', 'AdminTemplateController@versionen')->name('versionen');
-            Route::delete('/{tpl}', 'AdminTemplateController@delete')->name('delete');
             Route::delete('/unused', 'AdminTemplateController@deleteUnused')->name('deleteUnused');
             Route::delete('/all', 'AdminTemplateController@deleteAll')->name('deleteAll');
+            Route::delete('/versionen/{tpl}', 'AdminTemplateController@delete')->name('delete');
         });
     });
 

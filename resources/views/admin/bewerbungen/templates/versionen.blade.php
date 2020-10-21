@@ -32,8 +32,16 @@
             	@endforeach
             	<tr>
             		<td></td>
-            		<td>Alle ohne darauf basierendes Dokument löschen</td>
-            		<td>Alle bis auf die neueste löschen</td>
+            		<td>
+						<a data-toggle="modal" href="#deleteUnneededTplsModal" class="btn btn-small btn-outline-danger">
+							Alle Versionen ohne darauf basierende Dokumente löschen
+						</a>
+					</td>
+            		<td>
+            			<a data-toggle="modal" href="#deleteTplsModal" class="btn btn-small btn-outline-danger">
+							Alle bis auf die neueste löschen
+						</a>
+            		</td>
             	</tr>
             </tbody>
             </table>
@@ -70,7 +78,7 @@
             </x-slot>
     
             <x-slot name="footer">
-                <form action="{{ route("admin.bewerbungen.templates.deleteUnused" }}" method="POST">
+                <form action="{{ route("admin.bewerbungen.templates.deleteUnused") }}" method="POST">
                     @csrf
                     @method("DELETE")
                     <button type="button" class="btn btn-link text-secondary" data-dismiss="modal">Abbrechen</button>
@@ -89,7 +97,7 @@
             </x-slot>
     
             <x-slot name="footer">
-                <form action="{{ route("admin.bewerbungen.templates.deleteAll" }}" method="POST">
+                <form action="{{ route("admin.bewerbungen.templates.deleteAll") }}" method="POST">
                     @csrf
                     @method("DELETE")
                     <button type="button" class="btn btn-link text-secondary" data-dismiss="modal">Abbrechen</button>

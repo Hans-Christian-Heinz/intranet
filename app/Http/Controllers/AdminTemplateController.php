@@ -109,7 +109,7 @@ class AdminTemplateController extends Controller
     
     public function delete($tpl) {
         ApplicationTemplate::where('version', $tpl)->delete();
-        return redirect()->back();
+        return redirect()->back()->with('status', 'Die Versionen wurden erfolgreich gelöscht.');
     }
     
     public function deleteUnused() {
@@ -117,12 +117,12 @@ class AdminTemplateController extends Controller
             $query->selectRaw('distinct tpl_version')
                 ->from('applications');
         })->delete();
-        return redirect()->back();
+        return redirect()->back()->with('status', 'Die Versionen wurden erfolgreich gelöscht.');
     }
     
     public function deleteAll() {
         $max = DB::table('application_tpls')->max('version');
-        ApplicationTemplate::where('version', '<>', $tpl)->delete();
-        return redirect()->back();
+        ApplicationTemplate::where('version', '<>', $max)->delete();
+        return redirect()->back()->with('status', 'Die Versionen wurden erfolgreich gelöscht.');
     }
 }
