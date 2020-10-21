@@ -2,6 +2,7 @@
 	<div>
 		<div class="row">
 			<div class="col-md-12">
+				<!-- parent_header existiert, um die Standardposition der Kopfzeile zu behalten -->
 				<div id="parent_header"></div>
 				<div class="alert alert-info kopfzeile" :class="{ 'fixed-top': fixHeader }" v-if="recentlySaved">
 					Die Änderungen wurden erfolgreich gespeichert.

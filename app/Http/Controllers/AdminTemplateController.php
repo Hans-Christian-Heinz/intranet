@@ -92,4 +92,37 @@ class AdminTemplateController extends Controller
         $ac = new ApplicationController();
         return $ac->templatesNew();
     }
+    
+    public function versionen() {
+        //SELECT a.version, COUNT(DISTINCT b.id) FROM application_tpls AS a 
+        //LEFT JOIN applications AS b ON a.version=b.tpl_version GROUP BY a.version ORDER BY a.version;
+        $versionen =  DB::table('application_tpls')
+            ->leftJoin('applications', 'application_tpls.version', '=', 'applications.tpl_version')
+            ->select('application_tpls.version')
+            ->selectRaw('count(distinct applications.id) as anzahl')
+            ->groupBy('application_tpls.version')
+            ->orderBy('application_tpls.version')
+            ->get();
+        
+        return view('admin.bewerbungen.templates.versionen', compact('versionen'));
+    }
+    
+    public function delete($tpl) {
+        ApplicationTemplate::where('version', $tpl)->delete();
+        return redirect()->back();
+    }
+    
+    public function deleteUnused() {
+        ApplicationTemplate::whereNotIn('version', function ($query) {
+            $query->selectRaw('distinct tpl_version')
+                ->from('applications');
+        })->delete();
+        return redirect()->back();
+    }
+    
+    public function deleteAll() {
+        $max = DB::table('application_tpls')->max('version');
+        ApplicationTemplate::where('version', '<>', $tpl)->delete();
+        return redirect()->back();
+    }
 }

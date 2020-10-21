@@ -234,12 +234,19 @@ class ApplicationController extends Controller
             $format['signature'] = base64_encode($help->signature);
         }
         
-        $pdf = new Mpdf([
+        $pdf = new \Mpdf\Mpdf([
+            'mode' => 'utf-8',
+            'format' => 'A4',
+            
+            'margin_left' => 20,
+            'margin_right' => 20,
+            'margin_top' => 20,
+            'margin_bottom' => 20,
+            
             'tempDir' => sys_get_temp_dir(),
             'default_font_size' => $request->textgroesse,
             'default_font' => 'opensans',
         ]);
-        $pdf->debug = true;
         $pdf->DefHTMLFooterByName('footer',
             '<table style="width: 100%; border: none; border-top: 1px solid black;">
     <tr style="border: none;">
@@ -247,8 +254,8 @@ class ApplicationController extends Controller
     </tr>
 </table>');
         $pdf->WriteHTML(view("bewerbungen.applications.pdfNew", compact("application", "content", "resume", "format"))->render());
-        $pdf->Output();
-        return view("bewerbungen.applications.pdfNew");
+        return $pdf->Output("Bewerbungsanschreiben.pdf", 'I');
+        //return view("bewerbungen.applications.pdfNew");
         //return view("bewerbungen.applications.pdfNew", compact("application", "content", "resume", "format"));
     }
 

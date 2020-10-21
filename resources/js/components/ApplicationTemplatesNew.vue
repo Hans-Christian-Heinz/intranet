@@ -118,6 +118,7 @@
                 <div class="card-body">
                     <button type="button" class="btn btn-primary float-right mx-3" @click.prevent="save()">Speichern</button>
                     <button type="button" class="btn btn-outline-primary float-right mx-3" @click.prevent="restoreDefault()">Standard wiederherstellen</button>
+                    <a :href="version_route" class="btn btn-secondary float-right mx-3" >Versionen verwalten</a>
                 </div>
             </div>
         </div>
@@ -126,7 +127,7 @@
 
 <script>
 export default {
-	props: ["save_route", "restore_default_route"],
+	props: ["save_route", "restore_default_route", "version_route"],
 	
 	data() {
 		return {

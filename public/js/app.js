@@ -2298,7 +2298,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["route", "saved", "user", "version"],
   data: function data() {
@@ -2306,15 +2305,8 @@ __webpack_require__.r(__webpack_exports__);
       templates: [],
       data: {},
       recentlySaved: false,
-      saveFailed: false,
-      fixHeader: false
+      saveFailed: false
     };
-  },
-  created: function created() {
-    //lodash debounce: Methode wird nicht �fter als alle 100ms aufgerufen
-    //Wenn sie davor aufgerufen wird, wird das Ergebnis nicht neu berechnet
-    this.handleDebouncedScroll = _.debounce(this.handleScroll, 100);
-    window.addEventListener('scroll', this.handleDebouncedScroll);
   },
   mounted: function mounted() {
     var _this = this;
@@ -2484,11 +2476,6 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         console.log(error);
       });
-    },
-    handleScroll: function handleScroll(e) {
-      if ($('.kopfzeile').length) {
-        this.fixHeader = window.pageYOffset > $('#parent_header').offset().top;
-      }
     }
   }
 });
@@ -3048,8 +3035,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["save_route", "restore_default_route"],
+  props: ["save_route", "restore_default_route", "version_route"],
   data: function data() {
     return {
       templates: [],
@@ -3757,7 +3745,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["user", "resumedata", "printroute", "passbildroute", "signatureroute", "passbild", "signature"],
   data: function data() {
@@ -3803,6 +3790,17 @@ __webpack_require__.r(__webpack_exports__);
       fixHeader: false
     };
   },
+  computed: {
+    /*fixHeader() {
+        if ($('#header').length) {
+            console.log($('#header').offset().top);
+            return window.pageYOffset > $('#header').offset().top;
+        }
+        else {
+            return false;
+        }
+    }*/
+  },
   mounted: function mounted() {
     var _this = this;
 
@@ -3826,8 +3824,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     //lodash debounce: Methode wird nicht �fter als alle 100ms aufgerufen
-    //Wenn sie davor aufgerufen wird, wird das Ergebnis nicht neu berechnet
-    this.handleDebouncedScroll = _.debounce(this.handleScroll, 100);
+    this.handleDebouncedScroll = debounce(this.handleScroll, 100);
     window.addEventListener('scroll', this.handleDebouncedScroll);
   },
   watch: {
@@ -3901,8 +3898,10 @@ __webpack_require__.r(__webpack_exports__);
       this.resume.careers.splice(index, 1);
     },
     handleScroll: function handleScroll(e) {
+      console.log("method called");
+
       if ($('#header').length) {
-        this.fixHeader = window.pageYOffset > $('#parent_header').offset().top;
+        this.fixHeader = window.pageYOffset > $('#header').offset().top;
       }
     }
   }
@@ -40785,36 +40784,20 @@ var render = function() {
   return _c("div", [
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col-md-12" }, [
-        _c("div", { attrs: { id: "parent_header" } }),
-        _vm._v(" "),
         _vm.recentlySaved
-          ? _c(
-              "div",
-              {
-                staticClass: "alert alert-info kopfzeile",
-                class: { "fixed-top": _vm.fixHeader }
-              },
-              [
-                _vm._v(
-                  "\n\t\t\t\tDie �nderungen wurden erfolgreich gespeichert.\n\t\t\t"
-                )
-              ]
-            )
+          ? _c("div", { staticClass: "alert alert-info fixed-top" }, [
+              _vm._v(
+                "\n\t\t\t\tDie �nderungen wurden erfolgreich gespeichert.\n\t\t\t"
+              )
+            ])
           : _vm._e(),
         _vm._v(" "),
         _vm.saveFailed
-          ? _c(
-              "div",
-              {
-                staticClass: "alert alert-danger kopfzeile",
-                class: { "fixed-top": _vm.fixHeader }
-              },
-              [
-                _vm._v(
-                  "\n\t\t\t\tBeim Speichern ist ein Fehler aufgetreten\n\t\t\t"
-                )
-              ]
-            )
+          ? _c("div", { staticClass: "alert alert-danger fixed-top" }, [
+              _vm._v(
+                "\n\t\t\t\tBeim Speichern ist ein Fehler aufgetreten\n\t\t\t"
+              )
+            ])
           : _vm._e()
       ]),
       _vm._v(" "),
@@ -42844,6 +42827,15 @@ var render = function() {
               }
             },
             [_vm._v("Standard wiederherstellen")]
+          ),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              staticClass: "btn btn-secondary float-right mx-3",
+              attrs: { href: _vm.version_route }
+            },
+            [_vm._v("Versionen verwalten")]
           )
         ])
       ])
@@ -42974,8 +42966,6 @@ var render = function() {
     [
       _vm.statusMessage.length
         ? [
-            _c("div", { attrs: { id: "parent_header" } }),
-            _vm._v(" "),
             _c(
               "div",
               {
