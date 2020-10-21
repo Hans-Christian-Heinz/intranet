@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', "Bewerbungsanschreiben · ")
+
 @section('content')
 <div class="section">
     <div class="container">
@@ -21,7 +23,11 @@
                             <tr>
                                 <td>{{ $application->company->name }}</td>
                                 <td class="text-center">
+                                @if($application->editable)
                                     <a href="{{ route("bewerbungen.applications.edit", $application) }}" class="text-secondary">Bearbeiten</a>
+                                @else
+                                	<a class="text-secondary" data-toggle="modal" href="#formatPdf">Drucken</a>
+                                @endif
                                 </td>
                             </tr>
                         @empty
@@ -40,3 +46,9 @@
     </div>
 </div>
 @endsection
+
+@foreach ($applications as $a)
+	@if(!$a->editable)
+		@include('bewerbungen.formatPdfModal', ['route' => route("bewerbungen.applications.printNew", $a), 'signature' => $a->signature,])
+	@endif
+@endforeach

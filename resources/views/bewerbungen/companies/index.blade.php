@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', "Bewerbungen: Betriebe · ")
+
 @push('styles')
     <style>
         .pagination {

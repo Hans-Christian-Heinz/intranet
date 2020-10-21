@@ -107,12 +107,24 @@ class AdminTemplateController extends Controller
         return view('admin.bewerbungen.templates.versionen', compact('versionen'));
     }
     
+    /**
+     * Lösche eine Vorlage. (Alle Datensätze, die zur ausgewählten Version gehören)
+     * 
+     * @param unknown $tpl
+     * @return unknown
+     */
     public function delete($tpl) {
         ApplicationTemplate::where('version', $tpl)->delete();
-        return redirect()->back()->with('status', 'Die Versionen wurden erfolgreich gelöscht.');
+        return redirect()->back()->with('status', 'Die Version wurden erfolgreich gelöscht.');
     }
     
+    /**
+     * Lösche alle Vorlagen, auf denen keine tatsächlichen Bewerbungsanschreiben basieren
+     * 
+     * @return redirect
+     */
     public function deleteUnused() {
+        //DELETE FROM application_tpls WHERE NOT version IN (SELECT DISTINCT tpl_version FROM applications);
         ApplicationTemplate::whereNotIn('version', function ($query) {
             $query->selectRaw('distinct tpl_version')
                 ->from('applications');
@@ -120,6 +132,11 @@ class AdminTemplateController extends Controller
         return redirect()->back()->with('status', 'Die Versionen wurden erfolgreich gelöscht.');
     }
     
+    /**
+     * Lösche alle Vorlagen außer der neusten
+     * 
+     * @return redirect
+     */
     public function deleteAll() {
         $max = DB::table('application_tpls')->max('version');
         ApplicationTemplate::where('version', '<>', $max)->delete();
