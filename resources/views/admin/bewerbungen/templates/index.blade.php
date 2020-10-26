@@ -12,8 +12,6 @@
                     </div>
                 </div>
             </div>
-            {{--<app-tpl save_route="{{ route('admin.bewerbungen.templates.update') }}"
-                     restore_default_route="{{ route('admin.bewerbungen.templates.restoreDefault') }}" :tpl="{{ $templates }}"></app-tpl>--}}
             <app-tpl-new save_route="{{ route('admin.bewerbungen.templates.updateNew') }}" version_route="{{ route('admin.bewerbungen.templates.versionen') }}"
              		restore_default_route="{{ route('admin.bewerbungen.templates.restoreDefaultNew') }}"></app-tpl-new>
         </div>

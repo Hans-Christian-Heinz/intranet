@@ -193,9 +193,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get("/applications/{application}/edit", "ApplicationController@edit")->name("applications.edit");
         Route::patch("/applications/{application}", "ApplicationController@update")->name("applications.update");
         Route::delete("/applications/{application}", "ApplicationController@destroy")->name("applications.destroy");
-        Route::post("/applications/{application}/print", "ApplicationController@show")->name("applications.print");
         Route::post("/applications/{application}/printNew", "ApplicationController@showNew")->name("applications.printNew");
-        Route::get("/applications/templates", "ApplicationController@templates")->name("applications.templates");
         Route::get("/applications/templatesNew/{version?}", "ApplicationController@templatesNew")->name("applications.templatesNew");
     });
 });
@@ -295,9 +293,7 @@ Route::group(['middleware' => 'admin'], function () {
             'prefix' => '/templates',
         ], function() {
             Route::get('/', 'AdminTemplateController@index')->name('index');
-            Route::patch('/', 'AdminTemplateController@update')->name('update');
             Route::patch('/new', 'AdminTemplateController@updateNew')->name('updateNew');
-            Route::patch('/default', 'AdminTemplateController@restoreDefault')->name('restoreDefault');
             Route::patch('/defaultNew', 'AdminTemplateController@restoreDefaultNew')->name('restoreDefaultNew');
             Route::get('/versionen', 'AdminTemplateController@versionen')->name('versionen');
             Route::delete('/unused', 'AdminTemplateController@deleteUnused')->name('deleteUnused');

@@ -37,7 +37,7 @@
                                 <label :for="'full_text_' + temp['name']">Vorgeschriebener Text:</label>
                                 <textarea :id="'full_text_' + temp['name']" class="form-control border-0"
                                           @input="setKwText($event, temp)">{{ getKwText(temp) }}</textarea>
-                                <b>Schl�sselworte:</b>
+                                <b>Schlüsselworte:</b>
                                 <div style="border: solid lightgrey 1px" class="mb-1"
                                      v-for="(help, index) in temp['keywords']" :key="help['changed'] + '_kw_' + temp['name'] + index">
                                     <!-- Zunächst die Überschrift der Kategorie an Schlüsselworten in dem Editor -->

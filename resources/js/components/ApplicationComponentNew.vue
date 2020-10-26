@@ -251,7 +251,7 @@ export default {
 			this.$forceUpdate();
         },
 
-		//�nderungen speichern
+		//Änderungen speichern
 		save() {
 			let copy = Object.assign({}, this.data);
 			//drop the changed-field for each section

@@ -25,9 +25,7 @@ Vue.component('star-rating', require('./components/StarRating.vue').default);
 Vue.component('review-category-form', require('./components/ReviewCategoryForm.vue').default);
 Vue.component('review-form', require('./components/ReviewForm.vue').default);
 Vue.component('resume', require('./components/ResumeComponent.vue').default);
-Vue.component('application', require('./components/ApplicationComponent.vue').default);
 Vue.component('application-new', require('./components/ApplicationComponentNew.vue').default);
-Vue.component('app-tpl', require('./components/ApplicationTemplates.vue').default);
 Vue.component('app-tpl-new', require('./components/ApplicationTemplatesNew.vue').default);
 
 /**
