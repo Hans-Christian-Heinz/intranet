@@ -38,7 +38,7 @@
                                 <textarea :id="'full_text_' + temp['name']" class="form-control border-0"
                                           @input="setKwText($event, temp)">{{ getKwText(temp) }}</textarea>
                                 <b>Schlüsselworte:</b>
-                                <div style="border: solid lightgrey 1px" class="mb-1"
+                                <div style="border: solid #d3d3d3 1px" class="mb-1"
                                      v-for="(help, index) in temp['keywords']" :key="help['changed'] + '_kw_' + temp['name'] + index">
                                     <!-- Zunächst die Überschrift der Kategorie an Schlüsselworten in dem Editor -->
                                     <div class="row">
@@ -58,9 +58,9 @@
                                     <hr>
                                     <!-- Die auswählbaren Schlüsselworte -->
                                     <ul>
-                                        <li v-for="(kw, ind) in help['tpls']" :key="ind" class="row">
-                                            <input type="text" class="form-control border-0 col-11" v-model="help['tpls'][ind]"/>
-                                            <a href="#" class="btn text-danger btn-link col-1" style="font-size: 1.2rem" @click.prevent="removeKw(help, ind)">&#128465;</a>
+                                        <li v-for="(kw, ind) in help['tpls']" :key="ind">
+                                            <input type="text" class="form-control border-0 px-0 d-inline" style="width: 95%" v-model="help['tpls'][ind]"/>
+                                            <a href="#" class="btn text-danger btn-link d-inline" style="font-size: 1.2rem" @click.prevent="removeKw(help, ind)">&#128465;</a>
                                         </li>
                                         <li>
                                             <a href="#" @click.prevent="addKw(help)">Neues Schlüsselwort</a>
@@ -118,7 +118,7 @@
                 <div class="card-body">
                     <button type="button" class="btn btn-primary float-right mx-3" @click.prevent="save()">Speichern</button>
                     <button type="button" class="btn btn-outline-primary float-right mx-3" @click.prevent="restoreDefault()">Standard wiederherstellen</button>
-                    <a :href="version_route" class="btn btn-secondary float-right mx-3" >Versionen verwalten</a>
+                    <a :href="version_route" class="btn btn-secondary float-right mx-3">Versionen verwalten</a>
                 </div>
             </div>
         </div>
@@ -146,6 +146,7 @@ export default {
     computed: {
         orderedTpls: function () {
             //return _.orderBy(this.templates, 'number');
+            //_: lodash: Javascript utility library
             let res = _.orderBy(this.templates, 'number');
             res.forEach(tpl => {
                 tpl.keywords = _.orderBy(tpl.keywords, 'number');
@@ -182,7 +183,6 @@ export default {
 
     methods: {
         toggle(name) {
-            //card.shown = !card.shown;
             this.cards[name].shown = !this.cards[name].shown;
             //TODO ohne forceUpdate zum Laufen bringen
             this.$forceUpdate();

@@ -140,3 +140,7 @@ select#grade {
     margin-left: -3px!important;
     display: inline;
 }
+
+[contenteditable] {
+    outline: 0 solid transparent;
+}
