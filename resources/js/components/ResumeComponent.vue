@@ -254,12 +254,13 @@
                             <a class="btn btn-outline-danger mt-2" data-toggle="modal" href="#deletePassbildModal">Passbild löschen</a>
                         </div>
                     </div>
-                    <div class="input-group col-4">
-                        <div class="custom-file">
+                    <div class="col-4">
+                        <div class="custom-file w-100">
                             <input type="file" id="passbild" name="passbild" class="custom-file-input"
                                    accept="image/png" form="formPassbild"/>
                             <label class="custom-file-label" for="passbild">Passbild</label>
                         </div>
+                        <span class="small">Maximale Dateigröße: 2MB</span>
                     </div>
                     <div class="col-4">
                         <form class="form" method="post" id="formPassbild" :action="passbildroute" enctype="multipart/form-data">
@@ -305,11 +306,12 @@
                         </div>
                     </div>
                     <div class="col-4">
-                        <div class="custom-file">
+                        <div class="custom-file w-100">
                             <input type="file" id="signature" name="signature" class="custom-file-input"
                                    accept="image/png" form="formSignature"/>
                             <label class="custom-file-label" for="signature">Signatur</label>
                         </div>
+                        <span class="small">Maximale Dateigröße: 2MB</span>
                     </div>
                     <div class="col-4">
                         <form class="form" method="post" id="formSignature" :action="signatureroute" enctype="multipart/form-data">

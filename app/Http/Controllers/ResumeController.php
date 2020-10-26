@@ -118,7 +118,7 @@ class ResumeController extends Controller
     public function uploadPassbild(Request $request) {
         //Validate Filesize (Regel; max:x, wobei x die Dateigröße in kilo-Bytes ist)
         $request->validate([
-            'passbild' => 'required|image|mimes:png|max:50',
+            'passbild' => 'required|image|mimes:png|max:2048',
         ]);
 
         $resume = app()->user->resume;
@@ -138,28 +138,28 @@ class ResumeController extends Controller
 
         return redirect(route('bewerbungen.resumes.index'))->with('status', 'Das Passbild wurde erfolgreich gelöscht.');
     }
-    
+
     public function uploadSignature(Request $request) {
         //Validate Filesize (Regel; max:x, wobei x die Dateigröße in kilo-Bytes ist)
         $request->validate([
-            'signature' => 'required|image|mimes:png|max:50',
+            'signature' => 'required|image|mimes:png|max:2048',
         ]);
-        
+
         $resume = app()->user->resume;
         $resume->update([
             "signature" => file_get_contents($request->file('signature')),
         ]);
-        
+
         return redirect(route('bewerbungen.resumes.index'))->with('status', 'Die Signatur wurde erfolgreich gespeichert.');
     }
-    
+
     public function deleteSignature(User $user) {
         $resume = $user->resume;
-        
+
         $resume->update([
             "signature" => null,
         ]);
-        
+
         return redirect(route('bewerbungen.resumes.index'))->with('status', 'Die Signatur wurde erfolgreich gelöscht.');
     }
 }

@@ -70,14 +70,15 @@
                         	</tr>
                         	<tr>
                         		<td colspan="2">
-                        			<div class="custom-file" style="height: 45mm;">
+                        			<div class="custom-file">
                                 		<input type="file" id="signature" name="signature" class="custom-file-input"
                                        		accept="image/png" form="format_pdf" required/>
                                 		<label class="custom-file-label" for="signature">Signatur</label>
                             		</div>
+                                    <span class="small">Maximale Dateigröße: 2MB</span>
                             		@error("signature")
-                                    <p class="invalid-feedback">{{ $message }}</p>
-                                @enderror
+                                        <p class="invalid-feedback">{{ $message }}</p>
+                                    @enderror
                         		</td>
                         	</tr>
                         @endif

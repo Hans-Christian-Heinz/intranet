@@ -40,7 +40,7 @@ class PdfRequest extends FormRequest
         $rules['koerperHintergrund'] = 'nullable|regex:#^\#[0-9a-fA-F]{6}$#';
         $rules['koerperText'] = 'nullable|regex:#^\#[0-9a-fA-F]{6}$#';
         //Signatur wird ggf beim Drucken von Bewerbungsanschreiben hochgeladen
-        $rules['signature'] = 'nullable|image|mimes:png|max:50';
+        $rules['signature'] = 'nullable|image|mimes:png|max:2048';
 
         return $rules;
     }
