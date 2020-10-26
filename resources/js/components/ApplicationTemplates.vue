@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="alert alert-info" v-if="recentlySaved">
-                Die Änderungen wurden erfolgreich gespeichert.
+                Die Ã„nderungen wurden erfolgreich gespeichert.
             </div>
             <div class="alert alert-danger" v-if="saveFailed">
                 Beim Speichern ist ein Fehler aufgetreten

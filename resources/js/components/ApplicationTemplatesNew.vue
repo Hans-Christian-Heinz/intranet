@@ -1,27 +1,27 @@
-<!-- Formular zum earbeiten der Vorlage für ein Bewerbungsanschreiben -->
+<!-- Formular zum earbeiten der Vorlage fÃ¼r ein Bewerbungsanschreiben -->
 
 <template>
     <div class="row">
         <div class="col-md-12">
             <div id="parent_header"></div>
             <div class="alert alert-info kopfzeile" :class="{ 'fixed-top': fixHeader }" v-if="recentlySaved">
-                Die Änderungen wurden erfolgreich gespeichert.
+                Die Ã„nderungen wurden erfolgreich gespeichert.
             </div>
             <div class="alert alert-danger kopfzeile" :class="{ 'fixed-top': fixHeader }" v-if="saveFailed">
                 Beim Speichern ist ein Fehler aufgetreten
             </div>
         </div>
-        <!-- Editor für Templates -->
+        <!-- Editor fÃ¼r Templates -->
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <!-- Bearbeite Vorlagen für individuelle Abschnitte -->
+                    <!-- Bearbeite Vorlagen fÃ¼r individuelle Abschnitte -->
                     <div class="card" v-for="temp in orderedTpls" :key="temp['changed'] + temp['name'] + '_card'">
                         <div class="card-header">
                             <div class="row">
                                 <a href="#" class="col-11" @click.prevent="toggle(temp['name'])"><h5>Abschnitt {{ temp['name'] }}</h5></a>
-                                <!-- Link zum Löschen eines Abschnitts -->
-                                <a v-if="!temp['fix']" href="#" class="btn text-danger btn-link col-1" 
+                                <!-- Link zum LÃ¶schen eines Abschnitts -->
+                                <a v-if="!temp['fix']" href="#" class="btn text-danger btn-link col-1"
                                    style="font-size: 1.2rem" @click.prevent="removeSection(temp)">&#128465;</a>
                             </div>
                             <div v-if="!temp['fix']">
@@ -32,22 +32,22 @@
                         </div>
                         <div class="card-body" v-show="cards[temp['name']].shown" :key="cards[temp['name']].shown">
 
-                            <!-- fixer Text, in dem nur einige Schlüsselworte ausgewählt werden. -->
+                            <!-- fixer Text, in dem nur einige SchlÃ¼sselworte ausgewÃ¤hlt werden. -->
                             <div v-if="temp['choose_keywords']">
                                 <label :for="'full_text_' + temp['name']">Vorgeschriebener Text:</label>
                                 <textarea :id="'full_text_' + temp['name']" class="form-control border-0"
                                           @input="setKwText($event, temp)">{{ getKwText(temp) }}</textarea>
-                                <b>Schlüsselworte:</b>
-                                <div style="border: solid lightgrey 1px" class="mb-1" 
+                                <b>Schlï¿½sselworte:</b>
+                                <div style="border: solid lightgrey 1px" class="mb-1"
                                      v-for="(help, index) in temp['keywords']" :key="help['changed'] + '_kw_' + temp['name'] + index">
-                                    <!-- Zunächst die Überschrift der Kategorie an Schlüsselworten in dem Editor -->
+                                    <!-- ZunÃ¤chst die Ãœberschrift der Kategorie an SchlÃ¼sselworten in dem Editor -->
                                     <div class="row">
-                                        <label :for="'kw_heading' + index" class="col-11">Überschrift:</label>
+                                        <label :for="'kw_heading' + index" class="col-11">Ãœberschrift:</label>
                                         <a href="#" class="btn text-danger btn-link col-1" style="font-size: 1.2rem" @click.prevent="removeKwCat(temp, index)">&#128465;</a>
                                     </div>
                                     <input type="text" :id="'kw_heading' + index" class="form-control border-0" v-model="help['heading']"/>
                                     <hr>
-                                    <!-- Die Konjunktion, die aufezählte Schlüsselworte verbindet sowie die Reihenfolge der Kategorien -->
+                                    <!-- Die Konjunktion, die aufezÃ¤hlte SchlÃ¼sselworte verbindet sowie die Reihenfolge der Kategorien -->
                                     <label class="ml-2" :for="'number_' + temp['name'] + '_kw_' + index">Reihenfolge:</label>
                                     <input type="number" class="border-0" style="width:3em" min="0" @change="changeKwCatNumber($event, temp, help)"
                                            :max="temp['keywords'].length - 1" :id="'number_' + temp['name'] + '_kw_' + index" :value="help['number']"/>
@@ -56,22 +56,22 @@
                                     <input type="text" style="border: 1px solid #ced4da; border-radius: 0.25rem;" maxlength="10" size="10"
                                            :id="'conj_' + temp['name'] + '_kw_' + index" v-model="help['conjunction']"/>
                                     <hr>
-                                    <!-- Die auswählbaren Schlüsselworte -->
+                                    <!-- Die auswÃ¤hlbaren SchlÃ¼sselworte -->
                                     <ul>
                                         <li v-for="(kw, ind) in help['tpls']" :key="ind" class="row">
                                             <input type="text" class="form-control border-0 col-11" v-model="help['tpls'][ind]"/>
                                             <a href="#" class="btn text-danger btn-link col-1" style="font-size: 1.2rem" @click.prevent="removeKw(help, ind)">&#128465;</a>
                                         </li>
                                         <li>
-                                            <a href="#" @click.prevent="addKw(help)">Neues Schlüsselwort</a>
+                                            <a href="#" @click.prevent="addKw(help)">Neues SchlÃ¼sselwort</a>
                                         </li>
                                     </ul>
                                 </div>
-                                <a href="#" @click.prevent="addKwCat(temp)">Neue Schlüsselwortkategorie</a>
+                                <a href="#" @click.prevent="addKwCat(temp)">Neue SchlÃ¼sselwortkategorie</a>
                             </div>
                             <!-- Der gesamte Text ist variabel. -->
                             <div v-else>
-                                <label :for="'heading_' + temp['name']">Überschrift:</label>
+                                <label :for="'heading_' + temp['name']">Ãœberschrift:</label>
                                 <input type="text" :id="'heading_' + temp['name']" class="form-control border-0" v-model="temp['heading']"/>
 
                                 <p>Templates:</p>
@@ -87,11 +87,11 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Formular, um Abschnitte hinzuzufügen -->
+
+                    <!-- Formular, um Abschnitte hinzuzufÃ¼gen -->
                     <div class="card">
                         <div class="card-header">
-                            <a href="#" @click.prevent="toggle('addSection')"><h5>Abschnitt hinzufügen</h5></a>
+                            <a href="#" @click.prevent="toggle('addSection')"><h5>Abschnitt hinzufÃ¼gen</h5></a>
                         </div>
                         <div class="card-body" v-show="cards.addSection.shown">
                             <div class="form-group">
@@ -107,10 +107,10 @@
                             </div>
                             <div class="custom-control custom-radio">
                                 <input type="radio" class="custom-control-input" id="addSectionKeyword" name="addSectionType"/>
-                                <label class="custom-control-label" for="addSectionKeyword">Schlüsselwortabschnitt</label>
+                                <label class="custom-control-label" for="addSectionKeyword">SchlÃ¼sselwortabschnitt</label>
                             </div>
                             <div class="form-group text-right">
-                                <a href="#" class="btn btn-small btn-outline-primary" @click.prevent="addSection()">Abschnitt hinzufügen</a>
+                                <a href="#" class="btn btn-small btn-outline-primary" @click.prevent="addSection()">Abschnitt hinzufÃ¼gen</a>
                             </div>
                         </div>
                     </div>
@@ -128,7 +128,7 @@
 <script>
 export default {
 	props: ["save_route", "restore_default_route", "version_route"],
-	
+
 	data() {
 		return {
 			templates: [],
@@ -154,16 +154,16 @@ export default {
             return res;
         }
     },
-    
+
     created() {
-        //lodash debounce: Methode wird nicht öfter als alle 100ms aufgerufen
+        //lodash debounce: Methode wird nicht Ã¶fter als alle 100ms aufgerufen
         //Wenn sie davor aufgerufen wird, wird das Ergebnis nicht neu berechnet
         this.handleDebouncedScroll = _.debounce(this.handleScroll, 100);
         window.addEventListener('scroll', this.handleDebouncedScroll);
     },
 
     mounted() {
-		//Lese zunächst die Templates aus der Datenbank aus
+		//Lese zunÃ¤chst die Templates aus der Datenbank aus
 		axios.get(`/bewerbungen/applications/templatesNew`)
             .then(response => response.data).then(data => {
                 this.templates = data;
@@ -179,7 +179,7 @@ export default {
                 });
             });
     },
-    
+
     methods: {
         toggle(name) {
             //card.shown = !card.shown;
@@ -188,8 +188,8 @@ export default {
             this.$forceUpdate();
         },
 
-        //Der Text, in den in einem entsprechenden Abschnitt Schlüsselworte eingesetzt werden können,
-        //ist als Array gespeichert. (Getrennt an Stellen, an denen Schlüsselworte eingesetzt werden können.)
+        //Der Text, in den in einem entsprechenden Abschnitt SchlÃ¼sselworte eingesetzt werden kÃ¶nnen,
+        //ist als Array gespeichert. (Getrennt an Stellen, an denen SchlÃ¼sselworte eingesetzt werden kÃ¶nnen.)
         //Methode statt computed properties, da computed properties mir hier Probleme bereiten (im Setter)
         getKwText(tpl) {
             if (tpl['choose_keywords']) {
@@ -206,27 +206,27 @@ export default {
             }
         },
 
-        //Füge einem Abschnitt eine neue Vorlage hinzu
+        //FÃ¼ge einem Abschnitt eine neue Vorlage hinzu
         addTpl(tpl) {
             tpl.tpls.push("Bitte geben Sie eine neue Vorlage ein.");
             tpl.changed ++;
         },
 
-        //Entferne eine Vorlage für einen Abschnitt
+        //Entferne eine Vorlage fÃ¼r einen Abschnitt
         removeTpl(tpl, i) {
             tpl.tpls.splice(i, 1);
             tpl.changed ++;
         },
 
-        //Füge einem Abschnitt eine neue Schlüsselwortkategorie hinzu
+        //FÃ¼ge einem Abschnitt eine neue SchlÃ¼sselwortkategorie hinzu
         addKwCat(tpl) {
             if (tpl.choose_keywords) {
                 let cat = {
                     "number": tpl.keywords.length,
-                    "heading": "Bitte geben Sie eine Überschrift ein.",
+                    "heading": "Bitte geben Sie eine Ãœberschrift ein.",
                     "conjunction": "und",
                     "tpls": [
-                        "Bitte geben Sie ein Schlüsselwort ein."
+                        "Bitte geben Sie ein SchlÃ¼sselwort ein."
                     ]
                 };
                 tpl.keywords.push(cat);
@@ -234,7 +234,7 @@ export default {
             }
         },
 
-        //Entferne eine Schlüsselwortkategorie aus einem Abschnitt
+        //Entferne eine SchlÃ¼sselwortkategorie aus einem Abschnitt
         removeKwCat(tpl, i) {
             if (tpl.choose_keywords) {
                 tpl.keywords.splice(i, 1);
@@ -242,30 +242,30 @@ export default {
             }
         },
 
-        //Füge den auswählbaren Schlüsselworten in einer Kategorie eines Abschnitts ein neues Schlüsselwort hinzu
+        //FÃ¼ge den auswÃ¤hlbaren SchlÃ¼sselworten in einer Kategorie eines Abschnitts ein neues SchlÃ¼sselwort hinzu
         addKw(cat) {
-            cat.tpls.push("Bitte geben Sie ein Schlüsselwort ein.");
+            cat.tpls.push("Bitte geben Sie ein SchlÃ¼sselwort ein.");
             cat.changed ++;
         },
 
-        //Entferne ein Schlüsselwort aus einer Kategorie
+        //Entferne ein SchlÃ¼sselwort aus einer Kategorie
         removeKw(cat, i) {
             cat.tpls.splice(i, 1);
             cat.changed ++;
         },
 
-        //Füge der Vorlage einen neuen Abschnitt hinzu
+        //FÃ¼ge der Vorlage einen neuen Abschnitt hinzu
         addSection() {
             this.nameError = "";
 
             let kw = document.getElementById('addSectionKeyword').checked;
             let name = $('#addSectionName').val();
             let temp;
-            
+
             //name validieren
             let invalid = !name || !name.trim();
             if (invalid) {
-                this.nameError = "Bitte geben Sie einen Namen für den Abschnitt ein.";
+                this.nameError = "Bitte geben Sie einen Namen fÃ¼r den Abschnitt ein.";
                 return;
             }
             this.templates.forEach(tpl => {
@@ -276,7 +276,7 @@ export default {
                 return;
             }
 
-            //Erstelle einen neuen Schlüsselwortabschnitt
+            //Erstelle einen neuen SchlÃ¼sselwortabschnitt
             if (kw) {
                 temp = {
                     changed: 0,
@@ -285,17 +285,17 @@ export default {
                     fix: false,
                     choose_keywords: true,
                     tpls: [
-                        "Bitte geben Sie einen Text ein. (Platzhalter für Schlüsselworte:) ",
+                        "Bitte geben Sie einen Text ein. (Platzhalter fÃ¼r SchlÃ¼sselworte:) ",
                         " "
                     ],
                     keywords: [
                         {
                             changed: 0,
-                            heading: "Bitte fügen Sie eine Überschrift hinzu.",
+                            heading: "Bitte fÃ¼gen Sie eine Ãœberschrift hinzu.",
                             conjunction: "und",
                             number: 0,
                             tpls: [
-                                "Bitte fügen Sie ein Schlüsselwort hinzu."
+                                "Bitte fÃ¼gen Sie ein SchlÃ¼sselwort hinzu."
                             ]
                         }
                     ]
@@ -304,7 +304,7 @@ export default {
             //Erstelle einen neuen Standardabschnitt
             else {
                 temp = {
-                    heading: "Bitte geben Sie eine Überschrift an.",
+                    heading: "Bitte geben Sie eine Ãœberschrift an.",
                     changed: 0,
                     is_heading: false,
                     choose_keywords: false,
@@ -348,7 +348,7 @@ export default {
             }
         },
 
-        //Ändere die Reihenfolge der Abschnitte (Verschiebe einen Abschnitt und passe die Nummer der restlichen Abschnitte an)
+        //Ã„ndere die Reihenfolge der Abschnitte (Verschiebe einen Abschnitt und passe die Nummer der restlichen Abschnitte an)
         changeNumber(e, tpl) {
             let old = tpl.number;
             let newVal = e.target.value;
@@ -377,9 +377,9 @@ export default {
             }
         },
 
-        
+
         /**
-         * Ändere die Reihenfolge der Schlüsselwortkategorien in einem Abschnitt
+         * Ã„ndere die Reihenfolge der SchlÃ¼sselwortkategorien in einem Abschnitt
          * tpl: Der Abschnitt
          * cat: Die Kategorie, die verschoben wird
          */
@@ -409,7 +409,7 @@ export default {
             }
         },
 
-        //Speichere die Änderungen an der Vorlage
+        //Speichere die Ã„nderungen an der Vorlage
         save() {
             let route = this.save_route;
 

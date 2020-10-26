@@ -5,7 +5,7 @@
 				<!-- parent_header existiert, um die Standardposition der Kopfzeile zu behalten -->
 				<div id="parent_header"></div>
 				<div class="alert alert-info kopfzeile" :class="{ 'fixed-top': fixHeader }" v-if="recentlySaved">
-					Die Änderungen wurden erfolgreich gespeichert.
+					Die Ã„nderungen wurden erfolgreich gespeichert.
 				</div>
 				<div class="alert alert-danger kopfzeile" :class="{ 'fixed-top': fixHeader }" v-if="saveFailed">
 					Beim Speichern ist ein Fehler aufgetreten
@@ -21,7 +21,7 @@
 							<span v-else contenteditable @input="input($event, text)">{{ text.text }}</span>
 						</p>
 
-						<p>Mit freundlichen Grüßen</p>
+						<p>Mit freundlichen GrÃ¼ÃŸen</p>
 
 						<p class="mt-5">{{ this.user.full_name }}, {{ currentDate }}</p>
 					</div>
@@ -37,7 +37,7 @@
 									<h5>{{ cat.heading }}</h5>
 
 									<div v-for="(kw, j) in cat.tpls">
-										<input type="checkbox" :id="tpl.name + i + j" :value="kw" 
+										<input type="checkbox" :id="tpl.name + i + j" :value="kw"
 											v-model="kwValues[tpl['name']][i]" @change="applyKwText(tpl, kwValues[tpl['name']])"/>
 										<label :for="tpl.name + i + j">{{ kw }}</label>
 									</div>
@@ -78,10 +78,10 @@
 		</div>
 		<div class="row">
 			<div class="col-6">
-				<button type="button" class="btn btn-outline-danger mt-3" data-toggle="modal" data-target="#deleteApplicationModal">Löschen</button>
+				<button type="button" class="btn btn-outline-danger mt-3" data-toggle="modal" data-target="#deleteApplicationModal">LÃ¶schen</button>
 			</div>
 			<div class="col-6">
-				<button type="button" class="btn btn-primary float-right mt-3 mx-2" @click="save()">Änderungen speichern</button>
+				<button type="button" class="btn btn-primary float-right mt-3 mx-2" @click="save()">Ã„nderungen speichern</button>
 				<a class="btn btn-outline-info float-right mt-3 mx-2" data-toggle="modal" href="#formatPdf">Drucken</a>
 			</div>
 		</div>
@@ -104,19 +104,19 @@ export default {
 	},
 
 	created() {
-		//lodash debounce: Methode wird nicht öfter als alle 100ms aufgerufen
+		//lodash debounce: Methode wird nicht Ã¶fter als alle 100ms aufgerufen
         //Wenn sie davor aufgerufen wird, wird das Ergebnis nicht neu berechnet
         this.handleDebouncedScroll = _.debounce(this.handleScroll, 100);
         window.addEventListener('scroll', this.handleDebouncedScroll);
 	},
 
 	mounted() {
-		//Lese zunächst die Templates aus der Datenbank aus
+		//Lese zunÃ¤chst die Templates aus der Datenbank aus
 		axios.get(`/bewerbungen/applications/templatesNew/` + this.version)
             .then(response => response.data).then(data => {
 				this.templates = data;
-				
-				//Hinterlege einen Wert für den Körper des Bewerbungsanschreibens
+
+				//Hinterlege einen Wert fÃ¼r den KÃ¶rper des Bewerbungsanschreibens
 				this.templates.forEach(tpl => {
 					const key = tpl['name'];
 					if (this.saved[key]) {
@@ -130,12 +130,12 @@ export default {
 							let values = [];
 							for (let i = 0; i < tpl['keywords'].length; i++) {
 								values[i] = [];
-								//Standardauswahl: die ersten 3 Schlüsselworte
+								//Standardauswahl: die ersten 3 SchlÃ¼sselworte
 								for (let j = 0; j < Math.min(3, tpl['keywords'][i]['tpls'].length); j++) {
 									values[i].push(tpl['keywords'][i]['tpls'][j]);
 								}
 							}
-							text = this.keywordsText(tpl, values);	
+							text = this.keywordsText(tpl, values);
 						}
 						else {
 							text = tpl['tpls'][0];
@@ -162,8 +162,8 @@ export default {
 
             return dateString;
 		},
-		
-		//ausgewählte Schlüsselworte
+
+		//ausgewÃ¤hlte SchlÃ¼sselworte
 		kwValues() {
 			let res = {};
 			this.templates.forEach(tpl => {
@@ -191,14 +191,14 @@ export default {
 			section.text = e.target.innerText;
 		},
 
-		//Ermittle aus einem template und den ausgewählen Schlüsselworten den fertigen Text eines Abschnitts
-		//tpl: Das template für den Abschnitt
+		//Ermittle aus einem template und den ausgewÃ¤hlen SchlÃ¼sselworten den fertigen Text eines Abschnitts
+		//tpl: Das template fÃ¼r den Abschnitt
 		//values: mehrdimensionaler Array (keyword_cat => [kw_1, kw_2...])
 		keywordsText(tpl, values) {
 			let res = "";
-			
-            //Gehe den Array text im Template durch. (Der Text, in den Schlüsselworte einzusetzen sind, unterbrochen an
-            //den Stellen, an denen Schlüsselworte einzusetzen sind.
+
+            //Gehe den Array text im Template durch. (Der Text, in den SchlÃ¼sselworte einzusetzen sind, unterbrochen an
+            //den Stellen, an denen SchlÃ¼sselworte einzusetzen sind.
             for (let i = 0; i < tpl['tpls'].length; i++) {
                 res += tpl['tpls'][i] + " ";
                 if (i < values.length) {
@@ -216,8 +216,8 @@ export default {
                     res = res + " ";
                 }
 			}
-			//Falls mehr Schlüsselwortkategorien als Platzhalter vorliegen, werden die entsprechenden Schlüsselworte am Ende
-			//des Abschnitts eingefügt
+			//Falls mehr SchlÃ¼sselwortkategorien als Platzhalter vorliegen, werden die entsprechenden SchlÃ¼sselworte am Ende
+			//des Abschnitts eingefÃ¼gt
 			for (let i = tpl['tpls'].length; i < values.length; i++) {
 				for (let j = 0; j < values[i].length; j++){
                         res += values[i][j];
@@ -237,21 +237,21 @@ export default {
 		applyKwText(tpl, values) {
 			this.data[tpl['name']].text = this.keywordsText(tpl, values);
 			this.data[tpl.name].changed++;
-			//TODO Alternative für forceUpdate suchen
+			//TODO Alternative fÃ¼r forceUpdate suchen
 			this.$forceUpdate();
 		},
-		
+
 		//Wende ein Template auf einen Abschnitt an
 		//name: Name des Abschnitts
 		//temp anzuwendendes Template
 		useTemplate(name, temp) {
 			this.data[name].text = temp;
 			this.data[name].changed++;
-			//TODO Alternative für forceUpdate suchen
+			//TODO Alternative fÃ¼r forceUpdate suchen
 			this.$forceUpdate();
         },
 
-		//Änderungen speichern
+		//ï¿½nderungen speichern
 		save() {
 			let copy = Object.assign({}, this.data);
 			//drop the changed-field for each section

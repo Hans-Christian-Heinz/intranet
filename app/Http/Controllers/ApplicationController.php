@@ -123,7 +123,7 @@ class ApplicationController extends Controller
     public function index()
     {
         $applications = app()->user->applications()->paginate(14);
-        //Überprüfe, ob die Vorlage existiert; wenn nein, kan das Dokument nicht mehr bearbeitet werden.
+        //ï¿½berprï¿½fe, ob die Vorlage existiert; wenn nein, kan das Dokument nicht mehr bearbeitet werden.
         foreach ($applications as $a) {
             if (ApplicationTemplate::where('version', $a->tpl_version)->count() > 0) {
                 $a->editable = true;
@@ -231,7 +231,7 @@ class ApplicationController extends Controller
         $pdf->WriteHTML(view("bewerbungen.applications.pdf", compact("application", "res", "resume", "format", "signature"))->render());
         $pdf->Output();
     }
-    
+
     /**
      * Display the specified resource.
      *
@@ -250,16 +250,16 @@ class ApplicationController extends Controller
         else {
             $format['signature'] = base64_encode($help->signature);
         }
-        
+
         $pdf = new \Mpdf\Mpdf([
             'mode' => 'utf-8',
             'format' => 'A4',
-            
+
             'margin_left' => 20,
             'margin_right' => 20,
             'margin_top' => 20,
             'margin_bottom' => 20,
-            
+
             'tempDir' => sys_get_temp_dir(),
             'default_font_size' => $request->textgroesse,
             'default_font' => 'opensans',
@@ -277,8 +277,8 @@ class ApplicationController extends Controller
     }
 
     /**
-     * Methode wird für den neuen Ansatz nicht benötigt.
-     * 
+     * Methode wird fÃ¼r den neuen Ansatz nicht benÃ¶tigt.
+     *
      * @param unknown $section
      * @param unknown $tpl
      * @return string
@@ -320,7 +320,7 @@ class ApplicationController extends Controller
         else{
             $signature = false;
         }
-        
+
         return view("bewerbungen.applications.edit", compact("application", "signature"));
     }
 
@@ -376,9 +376,9 @@ class ApplicationController extends Controller
 
         return $templates;
     }
-    
+
     /**
-     * Gibt die Templates bzw. Textbausteine für Bewerbungsanschreiben als Array aus.
+     * Gibt die Templates bzw. Textbausteine fÃ¼r Bewerbungsanschreiben als Array aus.
      *
      * @return false|string
      */

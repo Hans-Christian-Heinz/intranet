@@ -10,14 +10,15 @@ use Illuminate\Support\Facades\DB;
 class AdminTemplateController extends Controller
 {
     public function index() {
-        $filename = storage_path('app/public/bewerbungen/templates.json');
+        /*$filename = storage_path('app/public/bewerbungen/templates.json');
         $templates = file_get_contents($filename);
         if (!$templates) {
             file_put_contents($filename, ApplicationController::STANDARD_TEMPLATES);
             $templates = ApplicationController::STANDARD_TEMPLATES;
         }
 
-        return view('admin.bewerbungen.templates.index', compact('templates'));
+        return view('admin.bewerbungen.templates.index', compact('templates'));*/
+        return view('admin.bewerbungen.templates.index');
     }
 
     public function update(Request $request) {
@@ -33,15 +34,15 @@ class AdminTemplateController extends Controller
             return false;
         }
     }
-    
+
     public function updateNew(Request $request) {
         $request->validate([
             'templates' => 'required',
         ]);
-        
+
         $version = DB::table('application_tpls')->max('version') + 1;
         $success = true;
-        
+
         foreach($request->templates as $temp) {
             //Damit das Format passt
             $tpl = json_decode(json_encode($temp), true);
@@ -56,8 +57,8 @@ class AdminTemplateController extends Controller
                 'name' => $tpl['name'],
             ]);
             $success = $success && $at->save();
-            
-            //Schl¸sselworte falls vorhanden
+
+            //Schl√ºsselworte falls vorhanden
             foreach($tpl['keywords'] as $keyword) {
                 //TEST1234
                 $kw = json_decode(json_encode($keyword), true);
@@ -71,7 +72,7 @@ class AdminTemplateController extends Controller
                 $success = $success && $at->keywords()->save($kt);
             }
         }
-        
+
         return $success;
     }
 
@@ -86,15 +87,15 @@ class AdminTemplateController extends Controller
             return false;
         }
     }
-    
+
     public function restoreDefaultNew() {
         ApplicationTemplate::restoreDefault();
         $ac = new ApplicationController();
         return $ac->templatesNew();
     }
-    
+
     public function versionen() {
-        //SELECT a.version, COUNT(DISTINCT b.id) FROM application_tpls AS a 
+        //SELECT a.version, COUNT(DISTINCT b.id) FROM application_tpls AS a
         //LEFT JOIN applications AS b ON a.version=b.tpl_version GROUP BY a.version ORDER BY a.version;
         $versionen =  DB::table('application_tpls')
             ->leftJoin('applications', 'application_tpls.version', '=', 'applications.tpl_version')
@@ -103,24 +104,24 @@ class AdminTemplateController extends Controller
             ->groupBy('application_tpls.version')
             ->orderBy('application_tpls.version')
             ->get();
-        
+
         return view('admin.bewerbungen.templates.versionen', compact('versionen'));
     }
-    
+
     /**
-     * Lˆsche eine Vorlage. (Alle Datens‰tze, die zur ausgew‰hlten Version gehˆren)
-     * 
+     * L√∂sche eine Vorlage. (Alle Datens√§tze, die zur ausgew√§hlten Version geh√∂ren)
+     *
      * @param unknown $tpl
      * @return unknown
      */
     public function delete($tpl) {
         ApplicationTemplate::where('version', $tpl)->delete();
-        return redirect()->back()->with('status', 'Die Version wurden erfolgreich gelˆscht.');
+        return redirect()->back()->with('status', 'Die Version wurden erfolgreich gel√∂scht.');
     }
-    
+
     /**
-     * Lˆsche alle Vorlagen, auf denen keine tats‰chlichen Bewerbungsanschreiben basieren
-     * 
+     * L√∂sche alle Vorlagen, auf denen keine tats√§chlichen Bewerbungsanschreiben basieren
+     *
      * @return redirect
      */
     public function deleteUnused() {
@@ -129,17 +130,17 @@ class AdminTemplateController extends Controller
             $query->selectRaw('distinct tpl_version')
                 ->from('applications');
         })->delete();
-        return redirect()->back()->with('status', 'Die Versionen wurden erfolgreich gelˆscht.');
+        return redirect()->back()->with('status', 'Die Versionen wurden erfolgreich gel√∂scht.');
     }
-    
+
     /**
-     * Lˆsche alle Vorlagen auﬂer der neusten
-     * 
-     * @return redirect
+     * L√∂sche alle Vorlagen au√üer der neusten
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function deleteAll() {
         $max = DB::table('application_tpls')->max('version');
         ApplicationTemplate::where('version', '<>', $max)->delete();
-        return redirect()->back()->with('status', 'Die Versionen wurden erfolgreich gelˆscht.');
+        return redirect()->back()->with('status', 'Die Versionen wurden erfolgreich gel√∂scht.');
     }
 }

@@ -8,7 +8,7 @@
             <div class="row mb-3">
                 <div class="col-md-12">
                     <div class="d-flex justify-content-between">
-                        <h3 class="my-auto">Versionen der Vorlage für Bewerbungsanschreiben</h3>
+                        <h3 class="my-auto">Versionen der Vorlage fÃ¼r Bewerbungsanschreiben</h3>
                     </div>
                 </div>
             </div>
@@ -27,7 +27,7 @@
             		<td>{{ $v->anzahl }}</td>
             		<td>
 						<a data-toggle="modal" href="#deleteTplModal{{ $v->version }}" class="btn btn-small btn-outline-danger">
-							Löschen
+							LÃ¶schen
 						</a>
 					</td>
             	</tr>
@@ -36,12 +36,12 @@
             		<td></td>
             		<td>
 						<a data-toggle="modal" href="#deleteUnneededTplsModal" class="btn btn-small btn-outline-danger">
-							Alle Versionen ohne darauf basierende Dokumente löschen
+							Alle Versionen ohne darauf basierende Dokumente lÃ¶schen
 						</a>
 					</td>
             		<td>
             			<a data-toggle="modal" href="#deleteTplsModal" class="btn btn-small btn-outline-danger">
-							Alle bis auf die neueste löschen
+							Alle bis auf die neueste lÃ¶schen
 						</a>
             		</td>
             	</tr>
@@ -53,14 +53,14 @@
 
 @push('modals')
 	@foreach($versionen as $v)
-		<x-modal id="deleteTplModal{{ $v->version }}" title="Version löschen">
+		<x-modal id="deleteTplModal{{ $v->version }}" title="Version lï¿½schen">
             <x-slot name="body">
                 <p class="text-center py-3">
-					Beachten Sie: Nachdem eine Version gelöscht wurde, können auf ihr basierende Dokumente nicht mehr
-					bearbeitet werden. Sie können nach wie vor ausgedruckt werden.
+					Beachten Sie: Nachdem eine Version gelÃ¶scht wurde, kÃ¶nnen auf ihr basierende Dokumente nicht mehr
+					bearbeitet werden. Sie kÃ¶nnen nach wie vor ausgedruckt werden.
 				</p>
             </x-slot>
-    
+
             <x-slot name="footer">
                 <form action="{{ route("admin.bewerbungen.templates.delete", $v->version) }}" method="POST">
                     @csrf
@@ -71,39 +71,39 @@
             </x-slot>
         </x-modal>
 	@endforeach
-	
-	<x-modal id="deleteUnneededTplsModal" title="Versionen löschen">
+
+	<x-modal id="deleteUnneededTplsModal" title="Versionen lï¿½schen">
             <x-slot name="body">
                 <p class="text-center py-3">
-					Sind Sie sicher, dass Sie alle Vorlagen löschen wollen, auf denen keine Dokumente basieren?
+					Sind Sie sicher, dass Sie alle Vorlagen lÃ¶schen wollen, auf denen keine Dokumente basieren?
 				</p>
             </x-slot>
-    
+
             <x-slot name="footer">
                 <form action="{{ route("admin.bewerbungen.templates.deleteUnused") }}" method="POST">
                     @csrf
                     @method("DELETE")
                     <button type="button" class="btn btn-link text-secondary" data-dismiss="modal">Abbrechen</button>
-                    <button type="submit" class="btn btn-danger">Vorlagen löschen</button>
+                    <button type="submit" class="btn btn-danger">Vorlagen lÃ¶schen</button>
                 </form>
             </x-slot>
         </x-modal>
-        
-        <x-modal id="deleteTplsModal" title="Versionen löschen">
+
+        <x-modal id="deleteTplsModal" title="Versionen lï¿½schen">
             <x-slot name="body">
                 <p class="text-center py-3">
-					Sind Sie sicher, dass Sie alle Versionen außer der neusten löschen wollen?<br/>
-					Beachten Sie: Nachdem eine Version gelöscht wurde, können auf ihr basierende Dokumente nicht mehr
-					bearbeitet werden. Sie können nach wie vor ausgedruckt werden.
+					Sind Sie sicher, dass Sie alle Versionen auÃŸer der neusten lÃ¶schen wollen?<br/>
+					Beachten Sie: Nachdem eine Version gelÃ¶scht wurde, kÃ¶nnen auf ihr basierende Dokumente nicht mehr
+					bearbeitet werden. Sie kÃ¶nnen nach wie vor ausgedruckt werden.
 				</p>
             </x-slot>
-    
+
             <x-slot name="footer">
                 <form action="{{ route("admin.bewerbungen.templates.deleteAll") }}" method="POST">
                     @csrf
                     @method("DELETE")
                     <button type="button" class="btn btn-link text-secondary" data-dismiss="modal">Abbrechen</button>
-                    <button type="submit" class="btn btn-danger">Vorlagen löschen</button>
+                    <button type="submit" class="btn btn-danger">Vorlagen lÃ¶schen</button>
                 </form>
             </x-slot>
         </x-modal>

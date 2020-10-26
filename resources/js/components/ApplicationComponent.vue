@@ -14,7 +14,7 @@
                         <span v-else>{{ keywordsText(key, data[key].values) }}</span>
                     </p>
 
-                    <p>Mit freundlichen Grüßen</p>
+                    <p>Mit freundlichen GrÃ¼ÃŸen</p>
 
                     <p class="mt-5">{{ this.user.full_name }}, {{ currentDate }}</p>
 

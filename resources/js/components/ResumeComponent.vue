@@ -270,7 +270,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="resume-card shadow-sm mb-3">
             <a href="#" class="resume-card-title" @click.prevent="toggle(cards.signature)">
                 <span>Signatur</span>
@@ -292,8 +292,8 @@
             <!-- signature body -->
             <div class="resume-card-body" :style="{ display: cards.signature.collapsed ? 'block' : 'none' }">
                 <p>
-                	Hinweis: Das Hinterlegen einer Signatur in der Datenbank ist optional. Ist keine Signatur hinterlegt, 
-                	so muss sie jedes Mal vor dem Drucken eines Bewerbungsanschreibens hochgeladen werden. In diesem Fall 
+                	Hinweis: Das Hinterlegen einer Signatur in der Datenbank ist optional. Ist keine Signatur hinterlegt,
+                	so muss sie jedes Mal vor dem Drucken eines Bewerbungsanschreibens hochgeladen werden. In diesem Fall
                 	wird sie jedoch nicht in der Datenbank gespeichert.
                 </p>
                 <div class="row">
@@ -360,7 +360,7 @@ export default {
                 careers: []
             },
 
-            statusMessage: "Die meisten Änderungen werden automatisch gespeichert.\nBilder m�ssen explizit gespeichert werden.",
+            statusMessage: "Die meisten Änderungen werden automatisch gespeichert.\nBilder müssen explizit gespeichert werden.",
             timesSaved: 0,
             throttleInterval: null,
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -390,7 +390,7 @@ export default {
     },
 
     created() {
-        //lodash debounce: Methode wird nicht �fter als alle 100ms aufgerufen
+        //lodash debounce: Methode wird nicht öfter als alle 100ms aufgerufen
         //Wenn sie davor aufgerufen wird, wird das Ergebnis nicht neu berechnet
         this.handleDebouncedScroll = _.debounce(this.handleScroll, 100);
         window.addEventListener('scroll', this.handleDebouncedScroll);

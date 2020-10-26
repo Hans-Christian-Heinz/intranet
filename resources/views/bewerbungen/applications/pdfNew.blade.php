@@ -61,7 +61,7 @@
     @endforeach
 </div>
 
-<p>Mit freundlichen Grüßen</p>
+<p>Mit freundlichen GrÃ¼ÃŸen</p>
 
 <img height="60" width="350" src="data:image/png;base64,{{ $format['signature'] }}" alt="Keine Signatur hochgeladen"/>
 
