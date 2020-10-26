@@ -72,7 +72,7 @@
                         		<td colspan="2">
                         			<div class="custom-file">
                                 		<input type="file" id="signature" name="signature" class="custom-file-input"
-                                       		accept="image/png" form="format_pdf" required/>
+                                       		accept="image/png|image/jpeg" form="format_pdf" required/>
                                 		<label class="custom-file-label" for="signature">Signatur</label>
                             		</div>
                                     <span class="small">Maximale Dateigröße: 2MB</span>

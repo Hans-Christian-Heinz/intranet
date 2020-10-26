@@ -74,9 +74,11 @@ class ApplicationController extends Controller
         $resume = json_decode($help->data);
         if (is_null($help->signature)) {
             $format['signature'] = base64_encode(file_get_contents($request->file('signature')));
+            $format['sig_datatype'] = $request->file('signature')->extension();
         }
         else {
             $format['signature'] = base64_encode($help->signature);
+            $format['sig_datatype'] = $help->sig_datatype;
         }
 
         $pdf = new \Mpdf\Mpdf([

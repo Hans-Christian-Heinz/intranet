@@ -64,7 +64,7 @@ class AdminTemplateController extends Controller
     }
 
     /**
-     * Zeige für jede Version der Vorlage an, wie viele Anschreibe darauf basieren
+     * Zeige für jede Version der Vorlage an, wie viele Anschreiben darauf basieren
      *
      * @return mixed
      */

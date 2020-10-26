@@ -89,6 +89,7 @@ class ResumeController extends Controller
         $resume = app()->user->resume;
         $content = json_decode($resume->data);
         $format = $request->all();
+        $pb_datatype = $resume->pb_datatype;
         if (! is_null($resume->passbild)) {
             $passbild = base64_encode($resume->passbild);
         }
@@ -109,7 +110,7 @@ class ResumeController extends Controller
     </tr>
 </table>');
 
-        $pdf->WriteHTML(view("bewerbungen.resumes.print", compact("content", "format", "passbild"))->render());
+        $pdf->WriteHTML(view("bewerbungen.resumes.print", compact("content", "format", "passbild", "pb_datatype"))->render());
         $pdf->Output();
         return view("bewerbungen.resumes.print");
         //return $pdf->Output('Lebenslauf_' . app()->user->full_name . '.pdf', 'I');
@@ -117,13 +118,18 @@ class ResumeController extends Controller
 
     public function uploadPassbild(Request $request) {
         //Validate Filesize (Regel; max:x, wobei x die Dateigröße in kilo-Bytes ist)
+        $mt = 'mimes:';
+        foreach(Resume::DATATYPES as $dt) {
+            $mt .= $dt . ',';
+        }
         $request->validate([
-            'passbild' => 'required|image|mimes:png|max:2048',
+            'passbild' => 'required|image|' . $mt . '|max:2048',
         ]);
 
         $resume = app()->user->resume;
         $resume->update([
             "passbild" => file_get_contents($request->file('passbild')),
+            "pb_datatype" => $request->file('passbild')->extension(),
         ]);
 
         return redirect(route('bewerbungen.resumes.index'))->with('status', 'Das Passbild wurde erfolgreich hochgeladen.');
@@ -141,13 +147,18 @@ class ResumeController extends Controller
 
     public function uploadSignature(Request $request) {
         //Validate Filesize (Regel; max:x, wobei x die Dateigröße in kilo-Bytes ist)
+        $mt = 'mimes:';
+        foreach(Resume::DATATYPES as $dt) {
+            $mt .= $dt . ',';
+        }
         $request->validate([
-            'signature' => 'required|image|mimes:png|max:2048',
+            'signature' => 'required|image|' . $mt . '|max:2048',
         ]);
 
         $resume = app()->user->resume;
         $resume->update([
             "signature" => file_get_contents($request->file('signature')),
+            "sig_datatype" => $request->file('signature')->extension(),
         ]);
 
         return redirect(route('bewerbungen.resumes.index'))->with('status', 'Die Signatur wurde erfolgreich gespeichert.');

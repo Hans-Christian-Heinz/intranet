@@ -39,7 +39,7 @@
         </td>
         @if($passbild)
             <td style="text-align: right">
-                <img style="height: 45mm; width: 35mm;" src="data:image/png;base64,{{ $passbild }}" alt="Kein Passbild hochgeladen"/>
+                <img style="height: 45mm; width: 35mm;" src="data:image/{{ $pb_datatype }};base64,{{ $passbild }}" alt="Kein Passbild hochgeladen"/>
             </td>
         @endif
     </tr>

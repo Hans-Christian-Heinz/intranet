@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Project;
+use App\Resume;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -40,7 +41,11 @@ class PdfRequest extends FormRequest
         $rules['koerperHintergrund'] = 'nullable|regex:#^\#[0-9a-fA-F]{6}$#';
         $rules['koerperText'] = 'nullable|regex:#^\#[0-9a-fA-F]{6}$#';
         //Signatur wird ggf beim Drucken von Bewerbungsanschreiben hochgeladen
-        $rules['signature'] = 'nullable|image|mimes:png|max:2048';
+        $mt = 'mimes:';
+        foreach(Resume::DATATYPES as $dt) {
+            $mt .= $dt . ',';
+        }
+        $rules['signature'] = 'nullable|image|' . $mt . '|max:2048';
 
         return $rules;
     }

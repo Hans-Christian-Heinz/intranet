@@ -257,7 +257,7 @@
                     <div class="col-4">
                         <div class="custom-file w-100">
                             <input type="file" id="passbild" name="passbild" class="custom-file-input"
-                                   accept="image/png" form="formPassbild"/>
+                                   accept="image/png|image/jpeg" form="formPassbild"/>
                             <label class="custom-file-label" for="passbild">Passbild</label>
                         </div>
                         <span class="small">Maximale Dateigröße: 2MB</span>
@@ -308,7 +308,7 @@
                     <div class="col-4">
                         <div class="custom-file w-100">
                             <input type="file" id="signature" name="signature" class="custom-file-input"
-                                   accept="image/png" form="formSignature"/>
+                                   accept="image/png|image/jpeg" form="formSignature"/>
                             <label class="custom-file-label" for="signature">Signatur</label>
                         </div>
                         <span class="small">Maximale Dateigröße: 2MB</span>
