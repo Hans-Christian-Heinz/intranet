@@ -285,8 +285,8 @@ export default {
                     fix: false,
                     choose_keywords: true,
                     tpls: [
-                        "Bitte geben Sie einen Text ein. (Platzhalter für Schlüsselworte:) ",
-                        " "
+                        "Bitte geben Sie einen Text ein. (Platzhalter für Schlüsselworte: ",
+                        ")"
                     ],
                     keywords: [
                         {

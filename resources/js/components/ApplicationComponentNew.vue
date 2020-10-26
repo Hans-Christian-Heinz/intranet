@@ -200,7 +200,10 @@ export default {
             //Gehe den Array text im Template durch. (Der Text, in den Schlüsselworte einzusetzen sind, unterbrochen an
             //den Stellen, an denen Schlüsselworte einzusetzen sind.
             for (let i = 0; i < tpl['tpls'].length; i++) {
-                res += tpl['tpls'][i] + " ";
+                //Stelle sicher, dass nicht null oder undefined oder ein ähnlicher Wert angezeigt wird.
+                if (tpl['tpls'][i]) {
+                    res += tpl['tpls'][i] + " ";
+                }
                 if (i < values.length) {
                     for (let j = 0; j < values[i].length; j++){
                         res += values[i][j];

@@ -63,6 +63,11 @@ class AdminTemplateController extends Controller
         return $ac->templatesNew();
     }
 
+    /**
+     * Zeige für jede Version der Vorlage an, wie viele Anschreibe darauf basieren
+     *
+     * @return mixed
+     */
     public function versionen() {
         //SELECT a.version, COUNT(DISTINCT b.id) FROM application_tpls AS a
         //LEFT JOIN applications AS b ON a.version=b.tpl_version GROUP BY a.version ORDER BY a.version;
