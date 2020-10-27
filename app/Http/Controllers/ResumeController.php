@@ -89,12 +89,17 @@ class ResumeController extends Controller
         $resume = app()->user->resume;
         $content = json_decode($resume->data);
         $format = $request->all();
-        $pb_datatype = $resume->pb_datatype;
         if (! is_null($resume->passbild)) {
             $passbild = base64_encode($resume->passbild);
+            $pb_datatype = $resume->pb_datatype;
+        }
+        elseif($request->passbild) {
+            $passbild = base64_encode(file_get_contents($request->file('passbild')));
+            $pb_datatype = $request->file('passbild')->extension();
         }
         else {
             $passbild = false;
+            $pb_datatype = $resume->pb_datatype;
         }
 
         $pdf = new \Mpdf\Mpdf([

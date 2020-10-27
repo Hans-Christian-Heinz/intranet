@@ -46,6 +46,7 @@ class PdfRequest extends FormRequest
             $mt .= $dt . ',';
         }
         $rules['signature'] = 'nullable|image|' . $mt . '|max:2048';
+        $rules['passbild'] = 'nullable|image|' . $mt . '|max:2048';
 
         return $rules;
     }

@@ -61,9 +61,34 @@
                                 @enderror
                             </td>
                         </tr>
+                        {{-- Beim Drucken von Lebensläufen kann ggf noch ein Passbild hochgeladen werden. --}}
+                        @if(request()->is("bewerbungen/resumes*") && $passbild === false)
+                            <tr>
+                                <th colspan="2" class="text-center">Passbild hochladen</th>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    Beachten Sie: Das Passbild wird nicht gespeichert.<br/>Das Passbild muss im Lebenslauf nicht vorhanden sein
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div class="custom-file">
+                                        <input type="file" id="passbild" name="passbild" class="custom-file-input"
+                                               accept="image/png|image/jpeg" form="format_pdf"/>
+                                        <label class="custom-file-label" for="passbild">Passbild</label>
+                                    </div>
+                                    <span class="small">Maximale Dateigröße: 2MB</span>
+                                    @error("passbild")
+                                        <p class="invalid-feedback">{{ $message }}</p>
+                                    @enderror
+                                </td>
+                            </tr>
+                        @endif
+                        {{-- Beim Drucken von Bewerbungsanschreiben muss ggf noch eine Signatur hochgeladen werden --}}
                         @if(request()->is("bewerbungen/applications*") && $signature === false)
                         	<tr>
-                        		<th colspan="2">Signatur hochladen</th>
+                        		<th colspan="2" class="text-center">Signatur hochladen</th>
                         	</tr>
                         	<tr>
                         		<td colspan="2">Beachten Sie: Die Signatur wird nicht gespeichert.</td>
