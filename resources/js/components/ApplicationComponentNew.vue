@@ -23,7 +23,14 @@
 
 						<p>Mit freundlichen Grüßen</p>
 
-						<p class="mt-5">{{ this.user.full_name }}, {{ currentDate }}</p>
+						<p>{{ this.user.full_name }}, {{ currentDate }}</p>
+
+                        <p class="mt-2"><b>Anlagen:</b></p>
+                        <ul style="list-style: none; padding-inline-start: 0" :key="'displayAtt' + attachments.changed">
+                            <li v-for="(att, i) in attachments.values">
+                                <input type="text" :id="'displayAtt_' + i" class="form-control border-0 px-0" v-model="attachments.values[i]">
+                            </li>
+                        </ul>
 					</div>
 				</div>
 			</div>
@@ -65,7 +72,20 @@
 							</div>
 
 							<hr>
+
 						</div>
+
+                        <h5>Anlagen</h5>
+                        <ul :key="attachments.changed">
+                            <li v-for="(att, i) in attachments.values">
+                                <input type="text" :id="'att_' + i" class="form-control border-0 px-0 w-75 d-inline" v-model="attachments.values[i]">
+                                <a href="#" class="btn text-danger btn-link d-inline" @click.prevent="removeAttachment(i)">&#128465;</a>
+                            </li>
+                            <li>
+                                <a href="#" @click.prevent="addAttachment()">Anlage hinzufügen</a>
+                            </li>
+                        </ul>
+                        <hr>
 					</div>
 					<div class="card-body d-flex justify-content-center">
 						<svg class="bi bi-arrow-down-short" width="1.2em" height="1.2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -96,10 +116,15 @@ export default {
 		return {
 			templates: [],
 			data: {},
+            attachments: {
+			    values: [],
+                changed: 0
+            },
 
 			recentlySaved: false,
 			saveFailed: false,
-			fixHeader: false
+			fixHeader: false,
+            test: "abc"
 		}
 	},
 
@@ -149,6 +174,13 @@ export default {
 					}
 				});
             });
+
+		if (this.saved.attachments) {
+		    this.attachments.values = this.saved.attachments;
+        }
+		else {
+		    this.attachments.values = ['Lebenslauf'];
+        }
 	},
 
 	computed: {
@@ -158,9 +190,7 @@ export default {
             let month = ("0" + (date.getMonth() + 1)).slice(-2);
             let year = date.getFullYear();
 
-            let dateString = `${day}.${month}.${year}`;
-
-            return dateString;
+            return `${day}.${month}.${year}`;
 		},
 
 		//ausgewählte Schlüsselworte
@@ -261,6 +291,7 @@ export default {
 			Object.keys(copy).forEach(key => {
 				delete copy[key].changed;
 			});
+			copy.attachments = this.attachments.values;
 
 			axios.post(this.route, {body: copy, _method: "patch"})
                 .then(response => response.data)
@@ -280,6 +311,16 @@ export default {
             if ($('.kopfzeile').length) {
                 this.fixHeader = window.pageYOffset > $('#parent_header').offset().top;
             }
+        },
+
+        addAttachment() {
+		    this.attachments.values.push('neue Analage');
+		    this.attachments.changed++;
+        },
+
+        removeAttachment(i) {
+		    this.attachments.values.splice(i, 1);
+		    this.attachments.changed++;
         }
 	}
 }

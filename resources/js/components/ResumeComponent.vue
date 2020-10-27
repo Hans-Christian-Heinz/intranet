@@ -2,7 +2,7 @@
     <div>
         <template v-if="statusMessage.length">
             <div id="parent_header"></div>
-            <div class="alert alert-info" id="header" v-bind:class="{ 'fixed-top': fixHeader }">
+            <div class="alert alert-info" id="header" :key="statusMessage" v-bind:class="{ 'fixed-top': fixHeader }">
                 {{ statusMessage }}
             </div>
         </template>

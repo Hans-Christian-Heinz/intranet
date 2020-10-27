@@ -30,41 +30,54 @@
     </style>
 </head>
 <body>
-<sethtmlpagefooter name="footer" value="on"/>
+    <sethtmlpagefooter name="footer" value="on"/>
 
-<table style="width: 100%;">
-    <tbody>
-    <tr>
-        <td>
-            <strong>{{ $application->company->name }}</strong><br>
-            {{ $application->company->address }}<br>
-            {{ $application->company->zip . " " . $application->company->city }}<br>
-        </td>
-        <td style="text-align: right;">
-            {{ $resume->personal->name }}<br>
-            {{ $resume->personal->address }}<br>
-            {{ $resume->personal->zip . " " . $resume->personal->city }}<br>
-            {{ $resume->personal->phone }}<br>
-            {{ $resume->personal->email }}
-        </td>
-    </tr>
-    </tbody>
-</table>
+    <table style="width: 100%;">
+        <tbody>
+        <tr>
+            <td>
+                <strong>{{ $application->company->name }}</strong><br>
+                {{ $application->company->address }}<br>
+                {{ $application->company->zip . " " . $application->company->city }}<br>
+            </td>
+            <td style="text-align: right;">
+                {{ $resume->personal->name }}<br>
+                {{ $resume->personal->address }}<br>
+                {{ $resume->personal->zip . " " . $resume->personal->city }}<br>
+                {{ $resume->personal->phone }}<br>
+                {{ $resume->personal->email }}
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-<div style="margin-top: 50px">
-    @foreach($content as $c)
-        @if($c['is_heading'])
-            <h2 class="heading">{{ $c['text'] }}</h2>
-        @else
-            <p>{{ $c['text'] }}</p>
-        @endif
-    @endforeach
-</div>
+    <div style="margin-top: 50px">
+        @foreach($content as $key => $c)
+            @unless($key == 'attachments')
+                @if($c['is_heading'])
+                    <h2 class="heading">{{ $c['text'] }}</h2>
+                @else
+                    <p>{{ $c['text'] }}</p>
+                @endif
+            @endunless
+        @endforeach
+    </div>
 
-<p>Mit freundlichen Grüßen</p>
+    <p>Mit freundlichen Grüßen</p>
 
-<img height="60" width="350" src="data:image/{{ $format['sig_datatype'] }};base64,{{ $format['signature'] }}" alt="Keine Signatur hochgeladen"/>
+    <img height="60" width="350" src="data:image/{{ $format['sig_datatype'] }};base64,{{ $format['signature'] }}" alt="Keine Signatur hochgeladen"/>
 
-<p>{{ $resume->personal->name }}, Winnenden, den {{ Carbon\Carbon::now()->format("d.m.Y") }}</p>
+    <p>{{ $resume->personal->name }}, Winnenden, den {{ Carbon\Carbon::now()->format("d.m.Y") }}</p>
+
+    @if($content['attachments'])
+        <div style="page-break-inside: avoid; font-size: 0.9rem;">
+            <b>Anlagen:</b>
+            <ul>
+                @foreach($content['attachments'] as $att)
+                    <li>{{ $att }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
 </body>

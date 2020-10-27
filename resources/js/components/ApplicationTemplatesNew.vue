@@ -275,6 +275,12 @@ export default {
             let name = $('#addSectionName').val();
             let temp;
 
+            //Stelle sicher, dass der Abschnitt nicht  "attachments" heißt
+            if(name === "attachments") {
+                this.nameError = 'Der Name "attachments" darf nicht verwendet werden.';
+                return;
+            }
+
             //name validieren
             let invalid = !name || !name.trim();
             if (invalid) {
