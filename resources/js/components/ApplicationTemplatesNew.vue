@@ -40,27 +40,31 @@
                                 <b>Schlüsselworte:</b>
                                 <div class="card mb-1"
                                      v-for="(help, index) in temp['keywords']" :key="help['changed'] + '_kw_' + temp['name'] + index">
-                                    <!-- Zunächst die Überschrift der Kategorie an Schlüsselworten in dem Editor -->
                                     <div class="card-header">
                                         <div class="d-flex">
-                                            <label :for="'kw_heading' + index" class="d-inline" style="width: 95%">Überschrift:</label>
+                                            <a href="#" @click.prevent="toggleKw(temp['name'], help['number'])" style="width: 95%" class="d-inline">
+                                                Schlüsselworte {{ help['number'] }}
+                                            </a>
                                             <a href="#" class="btn text-danger btn-link d-inline" style="font-size: 1.2rem"
-                                                @click.prevent="removeKwCat(temp, index)">&#128465;</a>
+                                               @click.prevent="removeKwCat(temp, index)">&#128465;</a>
                                         </div>
-                                        <input type="text" :id="'kw_heading' + index" class="form-control border-0" v-model="help['heading']"/>
-                                    </div>
-                                    <!-- Die Konjunktion, die aufezählte Schlüsselworte verbindet sowie die Reihenfolge der Kategorien -->
-                                    <div class="card-body border-bottom">
                                         <label class="ml-2" :for="'number_' + temp['name'] + '_kw_' + index">Reihenfolge:</label>
                                         <input type="number" class="border-0" style="width:3em" min="0" @change="changeKwCatNumber($event, temp, help)"
                                                :max="temp['keywords'].length - 1" :id="'number_' + temp['name'] + '_kw_' + index" :value="help['number']"/>
-                                        <br/>
+                                    </div>
+                                    <!-- Zunächst die Überschrift der Kategorie an Schlüsselworten in dem Editor -->
+                                    <div class="card-body border-bottom" v-show="cards[temp['name']]['kw' + help['number']]">
+                                        <label :for="temp['name'] + '_kw_heading' + index">Überschrift:</label>
+                                        <input type="text" :id="temp['name'] + '_kw_heading' + index" class="form-control border-0" v-model="help['heading']"/>
+                                    </div>
+                                    <!-- Die Konjunktion, die aufezählte Schlüsselworte verbindet -->
+                                    <div class="card-body border-bottom" v-show="cards[temp['name']]['kw' + help['number']]">
                                         <label class="ml-2" :for="'conj_' + temp['name'] + '_kw_' + index">Konjunktion:</label>
                                         <input type="text" style="border: 1px solid #ced4da; border-radius: 0.25rem;" maxlength="10" size="10"
                                                :id="'conj_' + temp['name'] + '_kw_' + index" v-model="help['conjunction']"/>
                                     </div>
                                     <!-- Die auswählbaren Schlüsselworte -->
-                                    <div class="card-body border-top">
+                                    <div class="card-body border-bottom" v-show="cards[temp['name']]['kw' + help['number']]">
                                         <ul>
                                             <li v-for="(kw, ind) in help['tpls']" :key="ind">
                                                 <input type="text" class="form-control border-0 px-0 d-inline" style="width: 95%" v-model="help['tpls'][ind]"/>
@@ -175,13 +179,13 @@ export default {
                 this.templates = data;
                 this.templates.forEach((tpl) => {
                     tpl['changed'] = 0;
+                    this.cards[tpl['name']] = {
+                        shown: false
+                    };
                     tpl['keywords'].forEach((kw) => {
                         kw['changed'] = 0;
+                        this.cards[tpl['name']]['kw' + kw['number']] = false;
                     });
-                    this.cards[tpl['name']] = {
-                        shown: false,
-                        number: tpl['number']
-                    };
                 });
             });
     },
@@ -190,6 +194,10 @@ export default {
         toggle(name) {
             this.cards[name].shown = !this.cards[name].shown;
             //TODO ohne forceUpdate zum Laufen bringen
+            this.$forceUpdate();
+        },
+        toggleKw(name, number) {
+            this.cards[name]['kw' + number] = !this.cards[name]['kw' + number];
             this.$forceUpdate();
         },
 
@@ -364,6 +372,7 @@ export default {
                         if (temp.number > old && temp.number <= newVal) {
                             temp.number--;
                             temp.changed++;
+                            this.cards[temp.name].shown = false;
                         }
                     });
                 }
@@ -373,10 +382,12 @@ export default {
                         if (temp.number < old && temp.number >= newVal) {
                             temp.number++;
                             temp.changed++;
+                            this.cards[temp.name].shown = false;
                         }
                     });
                 }
 
+                this.cards[tpl.name].shown = false;
                 tpl.number = newVal;
                 tpl.changed++;
             }
@@ -391,11 +402,13 @@ export default {
         changeKwCatNumber(e, tpl, cat) {
             let old = cat.number;
             let newVal = e.target.value;
+            this.cards[tpl.name]['kw' + old] = false;
             if (newVal >= 0 && newVal < tpl.keywords.length) {
                 //nach unten verschieben
                 if (newVal > old) {
                     tpl.keywords.forEach(help => {
                         if (help.number > old && help.number <= newVal) {
+                            this.cards[tpl.name]['kw' + help.number] = false;
                             help.number--;
                         }
                     });
@@ -404,6 +417,7 @@ export default {
                 if (newVal < old) {
                     tpl.keywords.forEach(help => {
                         if (help.number < old && help.number >= newVal) {
+                            this.cards[tpl.name]['kw' + help.number] = false;
                             help.number++;
                         }
                     });
@@ -461,8 +475,7 @@ export default {
                                 kw['changed'] = 0;
                             });
                             this.cards[tpl['name']] = {
-                                shown: false,
-                                number: tpl['number']
+                                shown: false
                             };
                         });
 
