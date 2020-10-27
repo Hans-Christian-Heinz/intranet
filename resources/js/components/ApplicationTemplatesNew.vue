@@ -38,34 +38,39 @@
                                 <textarea :id="'full_text_' + temp['name']" class="form-control border-0"
                                           @input="setKwText($event, temp)">{{ getKwText(temp) }}</textarea>
                                 <b>Schlüsselworte:</b>
-                                <div style="border: solid #d3d3d3 1px" class="mb-1"
+                                <div class="card mb-1"
                                      v-for="(help, index) in temp['keywords']" :key="help['changed'] + '_kw_' + temp['name'] + index">
                                     <!-- Zunächst die Überschrift der Kategorie an Schlüsselworten in dem Editor -->
-                                    <div class="row">
-                                        <label :for="'kw_heading' + index" class="col-11">Überschrift:</label>
-                                        <a href="#" class="btn text-danger btn-link col-1" style="font-size: 1.2rem" @click.prevent="removeKwCat(temp, index)">&#128465;</a>
+                                    <div class="card-header">
+                                        <div class="d-flex">
+                                            <label :for="'kw_heading' + index" class="d-inline" style="width: 95%">Überschrift:</label>
+                                            <a href="#" class="btn text-danger btn-link d-inline" style="font-size: 1.2rem"
+                                                @click.prevent="removeKwCat(temp, index)">&#128465;</a>
+                                        </div>
+                                        <input type="text" :id="'kw_heading' + index" class="form-control border-0" v-model="help['heading']"/>
                                     </div>
-                                    <input type="text" :id="'kw_heading' + index" class="form-control border-0" v-model="help['heading']"/>
-                                    <hr>
                                     <!-- Die Konjunktion, die aufezählte Schlüsselworte verbindet sowie die Reihenfolge der Kategorien -->
-                                    <label class="ml-2" :for="'number_' + temp['name'] + '_kw_' + index">Reihenfolge:</label>
-                                    <input type="number" class="border-0" style="width:3em" min="0" @change="changeKwCatNumber($event, temp, help)"
-                                           :max="temp['keywords'].length - 1" :id="'number_' + temp['name'] + '_kw_' + index" :value="help['number']"/>
-                                    <br/>
-                                    <label class="ml-2" :for="'conj_' + temp['name'] + '_kw_' + index">Konjunktion:</label>
-                                    <input type="text" style="border: 1px solid #ced4da; border-radius: 0.25rem;" maxlength="10" size="10"
-                                           :id="'conj_' + temp['name'] + '_kw_' + index" v-model="help['conjunction']"/>
-                                    <hr>
+                                    <div class="card-body border-bottom">
+                                        <label class="ml-2" :for="'number_' + temp['name'] + '_kw_' + index">Reihenfolge:</label>
+                                        <input type="number" class="border-0" style="width:3em" min="0" @change="changeKwCatNumber($event, temp, help)"
+                                               :max="temp['keywords'].length - 1" :id="'number_' + temp['name'] + '_kw_' + index" :value="help['number']"/>
+                                        <br/>
+                                        <label class="ml-2" :for="'conj_' + temp['name'] + '_kw_' + index">Konjunktion:</label>
+                                        <input type="text" style="border: 1px solid #ced4da; border-radius: 0.25rem;" maxlength="10" size="10"
+                                               :id="'conj_' + temp['name'] + '_kw_' + index" v-model="help['conjunction']"/>
+                                    </div>
                                     <!-- Die auswählbaren Schlüsselworte -->
-                                    <ul>
-                                        <li v-for="(kw, ind) in help['tpls']" :key="ind">
-                                            <input type="text" class="form-control border-0 px-0 d-inline" style="width: 95%" v-model="help['tpls'][ind]"/>
-                                            <a href="#" class="btn text-danger btn-link d-inline" style="font-size: 1.2rem" @click.prevent="removeKw(help, ind)">&#128465;</a>
-                                        </li>
-                                        <li>
-                                            <a href="#" @click.prevent="addKw(help)">Neues Schlüsselwort</a>
-                                        </li>
-                                    </ul>
+                                    <div class="card-body border-top">
+                                        <ul>
+                                            <li v-for="(kw, ind) in help['tpls']" :key="ind">
+                                                <input type="text" class="form-control border-0 px-0 d-inline" style="width: 95%" v-model="help['tpls'][ind]"/>
+                                                <a href="#" class="btn text-danger btn-link d-inline" style="font-size: 1.2rem" @click.prevent="removeKw(help, ind)">&#128465;</a>
+                                            </li>
+                                            <li>
+                                                <a href="#" @click.prevent="addKw(help)">Neues Schlüsselwort</a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                                 <a href="#" @click.prevent="addKwCat(temp)">Neue Schlüsselwortkategorie</a>
                             </div>
