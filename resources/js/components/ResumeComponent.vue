@@ -245,7 +245,11 @@
 
             <!-- Passbild body -->
             <div class="resume-card-body" :style="{ display: cards.passbild.collapsed ? 'block' : 'none' }">
-                <p>Hinweis: Das Hinzufügen eines Passbilds ist optional.</p>
+                <p>
+                    Hinweis: Das Hinterlegen eines Passbilds in der Datenbank ist optional. Ist kein Passbild hinterlegt,
+                    so kann es jedes Mal vor dem Drucken des Lebenslauf hochgeladen werden. (Wieder optional)
+                    In diesem Falls wird es jedoch nicht in der Datenbank gespeichert.
+                </p>
                 <div class="row">
                     <div class="col-4">
                         <div v-if="this.passbild">

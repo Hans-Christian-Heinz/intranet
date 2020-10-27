@@ -68,7 +68,7 @@
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    Beachten Sie: Das Passbild wird nicht gespeichert.<br/>Das Passbild muss im Lebenslauf nicht vorhanden sein
+                                    Beachten Sie: Das Passbild wird nicht gespeichert.<br/>Das Passbild muss im Lebenslauf nicht vorhanden sein.
                                 </td>
                             </tr>
                             <tr>
@@ -86,7 +86,7 @@
                             </tr>
                         @endif
                         {{-- Beim Drucken von Bewerbungsanschreiben muss ggf noch eine Signatur hochgeladen werden --}}
-                        @if(request()->is("bewerbungen/applications*") && $signature === false)
+                        @if((request()->is("bewerbungen/resumes*") || request()->is("bewerbungen/applications*")) && $signature === false)
                         	<tr>
                         		<th colspan="2" class="text-center">Signatur hochladen</th>
                         	</tr>

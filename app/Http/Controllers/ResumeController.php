@@ -89,17 +89,27 @@ class ResumeController extends Controller
         $resume = app()->user->resume;
         $content = json_decode($resume->data);
         $format = $request->all();
-        if (! is_null($resume->passbild)) {
-            $passbild = base64_encode($resume->passbild);
-            $pb_datatype = $resume->pb_datatype;
-        }
-        elseif($request->passbild) {
-            $passbild = base64_encode(file_get_contents($request->file('passbild')));
-            $pb_datatype = $request->file('passbild')->extension();
+        //Falls keine Signatur hinterlegt ist, wird sie direkt beim Drucken hochgeladen
+        if (is_null($resume->signature)) {
+            $format['signature'] = base64_encode(file_get_contents($request->file('signature')));
+            $format['sig_datatype'] = $request->file('signature')->extension();
         }
         else {
-            $passbild = false;
-            $pb_datatype = $resume->pb_datatype;
+            $format['signature'] = base64_encode($resume->signature);
+            $format['sig_datatype'] = $resume->sig_datatype;
+        }
+        //Falls kein Passbild hinterlegt ist, kann es beim Drucken hochgeladen werden
+        if (! is_null($resume->passbild)) {
+            $format['passbild'] = base64_encode($resume->passbild);
+            $format['pb_datatype'] = $resume->pb_datatype;
+        }
+        elseif($request->passbild) {
+            $format['passbild'] = base64_encode(file_get_contents($request->file('passbild')));
+            $format['pb_datatype'] = $request->file('passbild')->extension();
+        }
+        else {
+            $format['passbild'] = false;
+            $format['pb_datatype'] = $resume->pb_datatype;
         }
 
         $pdf = new \Mpdf\Mpdf([
@@ -115,7 +125,7 @@ class ResumeController extends Controller
     </tr>
 </table>');
 
-        $pdf->WriteHTML(view("bewerbungen.resumes.print", compact("content", "format", "passbild", "pb_datatype"))->render());
+        $pdf->WriteHTML(view("bewerbungen.resumes.print", compact("content", "format"))->render());
         $pdf->Output();
         return view("bewerbungen.resumes.print");
         //return $pdf->Output('Lebenslauf_' . app()->user->full_name . '.pdf', 'I');

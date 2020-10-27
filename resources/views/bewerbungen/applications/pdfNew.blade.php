@@ -65,6 +65,6 @@
 
 <img height="60" width="350" src="data:image/{{ $format['sig_datatype'] }};base64,{{ $format['signature'] }}" alt="Keine Signatur hochgeladen"/>
 
-<p>{{ $resume->personal->name }}, {{ Carbon\Carbon::now()->format("d.m.Y") }}</p>
+<p>{{ $resume->personal->name }}, Winnenden, den {{ Carbon\Carbon::now()->format("d.m.Y") }}</p>
 
 </body>

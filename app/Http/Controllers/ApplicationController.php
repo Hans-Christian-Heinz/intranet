@@ -72,6 +72,7 @@ class ApplicationController extends Controller
         $format = $request->all();
         $help = app()->user->resume;
         $resume = json_decode($help->data);
+        //Falls keine Signatur hinterlegt ist, wurde sie direkt beim Drucken hochgeladen
         if (is_null($help->signature)) {
             $format['signature'] = base64_encode(file_get_contents($request->file('signature')));
             $format['sig_datatype'] = $request->file('signature')->extension();
