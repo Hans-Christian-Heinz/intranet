@@ -69,7 +69,7 @@
 
     <p>{{ $resume->personal->name }}, Winnenden, den {{ Carbon\Carbon::now()->format("d.m.Y") }}</p>
 
-    @if($content['attachments'])
+    @if(isset($content['attachments']) && $content['attachments'])
         <div style="page-break-inside: avoid; font-size: 0.9rem;">
             <b>Anlagen:</b>
             <ul>

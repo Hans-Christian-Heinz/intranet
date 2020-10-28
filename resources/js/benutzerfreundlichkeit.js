@@ -60,6 +60,8 @@ $(document).ready(function() {
                 return $(this).attr('data-toggle') === 'collapse';
             }).attr('href')).collapse('hide');
         });
+
+        $(this).parents('.collapse').collapse('show');
     });
 
     //Beim Auswählen eines Bildes addImageModal soll das Bild danach angezeigt sein
@@ -75,16 +77,19 @@ $(document).ready(function() {
     //momentan geöffnete Abschnitt ausgewählt ist
     //Weiterhin: Beim Vergleich zweier Versionen eines Dokuments: Wenn ein Abschnitt auf der einen Version geöffnet wird,
     //soll er, wen möglich, auch auf der anderen geöffnet werden.
-    $('.nav-tabs > li > a').on('shown.bs.tab', function() {
+    $('.nav-tabs > li > a.navigationlink').on('shown.bs.tab', function() {
         //Stelle sicher, dass alle angezeigten Überschriften breit genug sind
         sectionHeadingsWidth();
 
         let link_id = $(this).attr('id');
-        let name = link_id.substr(0, link_id.indexOf('_tab'));
+        /*let name = link_id.substr(0, link_id.indexOf('_tab'));
         let parent_id = $(this).closest('ul.nav').attr('id');
 
         //Speichere den geöffneten Abschnitt in einem cookie
-        document.cookie = 'TAB_' + parent_id + '=' + link_id + '; ' + 3600000;
+        document.cookie = 'TAB_' + parent_id + '=' + link_id + '; ' + 3600000;*/
+
+        document.cookie = 'TAB=' + link_id + '; ' + 3600000;
+
         //addImageModal: der geöffnete Abschnitt ist ausgewählt (als Standard)
         $('option#section_image_' + name).attr("selected", "selected");
         //Beim Vergleich zweier Versionen: Öffne, wenn möglich, den selben Abschnitt der anderen Version
@@ -148,15 +153,23 @@ $(document).ready(function() {
             $('a#title_tab').addClass('fehler');
         }
 
-        let tabpane = $('a.nav-link.fehler').parents('.tab-pane');
+        //alte Gestaltung; einfacher
+        /*let tabpane = $('a.nav-link.fehler').parents('.tab-pane');
         tabpane.each(function() {
             let link = $(this).attr('aria-labelledby');
             $('a#' + link).addClass('fehler');
-        })
+        });*/
+
+        //neue Gestaltung
+        let collapse = $('a.nav-link.fehler').parents('.collapse');
+        collapse.each(function() {
+            let link = $(this).siblings('a.nav-link');
+            link.addClass('fehler');
+        });
     }
 
     //get the tabs that are supposed to be open from the cookie
-    function getOpenTabs() {
+    /*function getOpenTabs() {
         const cookieArray = document.cookie.split(';');
         let tabs = [];
         for (let i = 0; i < cookieArray.length; i++) {
@@ -171,13 +184,34 @@ $(document).ready(function() {
         }
 
         return tabs;
+    }*/
+
+    function getOpenTabNew() {
+        const cookieArray = document.cookie.split(';');
+        let tab = '';
+        for (let i = 0; i < cookieArray.length; i++) {
+            const cookie = cookieArray[i];
+            const end = cookie.indexOf('=');
+            if (end === -1) {
+                continue;
+            }
+            if (cookie.substring(0, end).trim() === 'TAB') {
+                tab = (cookie.substr(end + 1));
+                break;
+            }
+        }
+
+        return tab;
     }
+
 
     sectionHeadingsWidth();
     showErrors();
 
-    let tabs = getOpenTabs();
-    tabs.forEach(tab => $('a#' + tab).tab('show'));
+    let tab = getOpenTabNew();
+    if (tab) {
+        $('a#' + tab).tab('show');
+    }
 
     $('[data-toggle="tooltip"]').tooltip();
 });

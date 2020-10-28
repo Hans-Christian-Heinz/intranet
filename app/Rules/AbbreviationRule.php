@@ -49,6 +49,6 @@ class AbbreviationRule implements Rule
      */
     public function message()
     {
-        return 'Die Kostenstellen müssen im vorgegebenen Format hinterlegt werden.';
+        return 'Die Abkürzungen müssen im vorgegebenen Format hinterlegt werden.';
     }
 }
