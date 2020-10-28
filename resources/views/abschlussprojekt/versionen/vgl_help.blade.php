@@ -1,23 +1,42 @@
-{{----}}
+{{-- Das Formular für ein Dokument; wird 2 mal angezeigt beim Vergleich von Versionen --}}
 
 <h4>Version: {{ $version->updated_at }}, geändert von {{ $version->user->full_name }}</h4>
-@if($doc_type == 'antrag')
-    {{-- Navigationsleiste der Version --}}
+
+<div class="row">
+    @if($doc_type == 'antrag')
+        <div class="col-3">
+            @include('abschlussprojekt.sections.sectionNavigation', ['proposal' => $document, 's' => $document, 'name' => '', 'disable' => true])
+        </div>
+        <div class="col-9 tab-content">
+            @include('abschlussprojekt.sections.tabinhaltNeu', ['proposal' => $document, 'disable' => true, 's' => $document, 'form' => '',])
+        </div>
+    @else
+        <div class="col-3">
+            @include('abschlussprojekt.sections.sectionNavigation', ['documentation' => $document, 's' => $document, 'name' => '', 'disable' => true])
+        </div>
+        <div class="col-9 tab-content">
+            @include('abschlussprojekt.sections.tabinhaltNeu', ['documentation' => $document, 'disable' => true, 's' => $document, 'form' => '',])
+        </div>
+    @endif
+</div>
+
+{{--@if($doc_type == 'antrag')
+    {{-- Navigationsleiste der Version -}}
     @include('abschlussprojekt.antrag.navigationsleiste', ['disable' => true, 'proposal' => $document,])
-    {{-- Tabinhalt Version 0 --}}
+    {{-- Tabinhalt Version 0 -}}
     @include('abschlussprojekt.antrag.tabinhalt', [
         'disable' => true,
         'proposal' => $document,
      ])
 @else
-    {{-- Navigationsleiste der Version --}}
+    {{-- Navigationsleiste der Version -}}
     @include('abschlussprojekt.dokumentation.navigationsleiste', ['disable' => true, 'documentation' => $document])
-    {{-- Tabinhalt Version 0 --}}
+    {{-- Tabinhalt Version 0 -}}
     @include('abschlussprojekt.dokumentation.tabinhalt', [
         'disable' => true,
         'documentation' => $document,
      ])
-@endif
+@endif--}}
 <div class="row">
     {{-- Link zum Löschen der Version --}}
     <div class="col-6 text-left p-3">

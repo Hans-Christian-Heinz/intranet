@@ -95,6 +95,16 @@ $(document).ready(function() {
             $('a#' + link_id.replace('v1', 'v0')).tab('show');
         }
     });
+    //Wenn ein Unterabschnitt geöffnet wird: Im Versionenvergleich denselben Unterabschnitt der anderen Version öffnen
+    coll.on('shown.bs.collapse', function() {
+        let id = $(this).attr('id');
+        if (id.startsWith('v0')) {
+            $('#' + id.replace('v0', 'v1')).collapse('show');
+        }
+        if (id.startsWith('v1')) {
+            $('#' + id.replace('v1', 'v0')).collapse('show');
+        }
+    });
 
     //Nachrichten: Wähle alle Nachrichten zum Löschen
     $('button#chooseAllMessages').click(function() {

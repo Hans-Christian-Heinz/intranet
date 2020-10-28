@@ -1,6 +1,9 @@
 {{-- Navigationsleiste, ggf verschachtelt --}}
 
-<ul class="nav nav-tabs flex-column" @if(! $s instanceof App\Section)style="max-height: 40rem; overflow-y: scroll; flex-wrap: nowrap;" @endif
+@php
+    request()->is('*vergleich') ? $mh = '20rem' : $mh = '40rem';
+@endphp
+<ul class="nav nav-tabs flex-column" @if(! $s instanceof App\Section)style="max-height: {{ $mh }}; overflow-y: scroll; flex-wrap: nowrap;" @endif
     id="{{ $v_name . $name }}Tab" role="tablist">
     @foreach($s->getSections($version) as $section)
         <li class="nav-item border">
@@ -33,7 +36,7 @@
     @endif
 </ul>
 
-@if(request()->is('*dokumentation') && ! $disable)
+@if(request()->is('*dokumentation') && ! $disable && ($s instanceof App\Documentation))
     @include('abschlussprojekt.sections.dokumentation.addSectionModal', ['section' => null,])
 @endif
 

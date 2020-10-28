@@ -59,7 +59,11 @@ ul.scrollnav {
     li.nav-item {
         max-height: 5em;
         min-width: 190px;
+    }
+}
 
+ul {
+    li.nav-item {
         .nav-link {
             color: black;
             background-color: rgba(0, 0, 0, 0.05);
