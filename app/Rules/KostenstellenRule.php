@@ -2,6 +2,7 @@
 
 namespace App\Rules;
 
+use App\Section;
 use Illuminate\Contracts\Validation\Rule;
 
 class KostenstellenRule implements Rule
@@ -25,7 +26,7 @@ class KostenstellenRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        //einzelne Kostenstellen werden durch ; abgegrenzt.
+        /*//einzelne Kostenstellen werden durch ; abgegrenzt.
         $values = explode(';', $value);
         //Stelle sicher, dass jede Kostenstelle im korrekten Format hinterlegt wird:
         foreach ($values as $v) {
@@ -41,7 +42,34 @@ class KostenstellenRule implements Rule
             }
         }
 
-        return true;
+        return true;*/
+
+        $valid = true;
+        $tpls = Section::TABLETPLS['kostenstellen'];
+        $val = json_decode($value, true);
+        foreach ($val as $v) {
+            foreach($tpls as $tpl) {
+                if ($tpl['required']) {
+                    $valid = $valid && isset($v[$tpl['name']]);
+                }
+                if (isset($val[$tpl['name']])) {
+                    switch ($tpl['type']) {
+                        case 'text':
+                            break;
+                        case 'number':
+                            if (isset($tpl['step']) && is_int($tpl['step'])) {
+                                $valid = $valid && is_int($v[$tpl['name']]);
+                            }
+                            else {
+                                $valid = $valid && is_numeric($v[$tpl['name']]);
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+
+        return $valid;
     }
 
     /**

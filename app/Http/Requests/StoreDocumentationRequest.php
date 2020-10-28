@@ -39,7 +39,10 @@ class StoreDocumentationRequest extends FormRequest
         $rules['test'] = 'int|min:0';
         $rules['abnahme'] = 'int|min:0';
         //Abkürzungsverzeichnis
-        $rules['abbreviations'] = new AbbreviationRule();
+        $rules['abbreviations'] = [
+            'json',
+            new AbbreviationRule(),
+        ];
         //Der Rest ist optionaler Text: es wird keine Validierung benötigt.
 
         return $rules;

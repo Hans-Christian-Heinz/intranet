@@ -60,6 +60,15 @@ class Section extends Model
             ['name' => 'Phasenname', 'type' => 'text', 'required' => true, 'def' => 'Phasenname'],
             ['name' => 'Dauer', 'type' => 'number', 'step' => 1, 'min' => 1, 'required' => true, 'def' => 1],
         ],
+        'abbr' => [
+            ['name' => 'Abkürzung', 'type' => 'text', 'required' => true, 'def' => 'Abkürzung'],
+            ['name' => 'Ausgeschrieben', 'type' => 'text', 'required' => true, 'def' => 'Ausgeschrieben'],
+        ],
+        'kostenstellen' => [
+            ['name' => 'Name', 'type' => 'text', 'required' => true, 'def' => 'Name'],
+            ['name' => 'Beschreibung', 'type' => 'text', 'required' => false, 'def' => 'Beschreibung'],
+            ['name' => 'Kosten', 'type' => 'number', 'step' => 0.1, 'min' => 0, 'required' => true, 'def' => 0.00],
+        ],
     ];
 
     use HasSections;

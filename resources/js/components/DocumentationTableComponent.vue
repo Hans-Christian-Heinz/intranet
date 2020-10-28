@@ -15,12 +15,12 @@
                 <!-- Reihenfolge der Einträge liegt immer vor -->
                 <td>
                     <input type="number" class="form-control" style="width: 4em" min="0" @change="changeNumber($event, v)"
-                           :max="values.length - 1" :value="v.number" :disabled="!!disable" required/>
+                           :max="values.length - 1" :form="form" :value="v.number" :disabled="!!disable" required/>
                 </td>
                 <td v-for="t in tpl">
                     <input v-if="t.type === 'number'" :disabled="!!disable" :step="t.step" :min="t.min"
-                           :type="t.type" class="form-control" v-model="v[t.name]" :required="t.required"/>
-                    <input v-else :type="t.type" :disabled="!!disable" class="form-control" v-model="v[t.name]" :required="t.required"/>
+                           :type="t.type" class="form-control" :form="form" v-model="v[t.name]" :required="t.required"/>
+                    <input v-else :type="t.type" :form="form" :disabled="!!disable" class="form-control" v-model="v[t.name]" :required="t.required"/>
                 </td>
                 <!-- Löschen eines Eintrags liegt immer vor -->
                 <td>

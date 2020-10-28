@@ -172,13 +172,20 @@ class Documentation extends Model
                     continue;
                 }
                 $res[$subsection->heading] = [];
-                $text = $subsection->text;
+                $vals = json_decode($subsection->text, true);
+                usort($vals, function($a, $b) {
+                    return $a['number'] - $b['number'];
+                });
+                foreach ($vals as $v) {
+                    array_push($res[$subsection->heading], new Kostenstelle($v['Name'], $v['Beschreibung'], $v['Kosten']));
+                }
+                /*$text = $subsection->text;
                 foreach (explode(';', $text) as $data) {
                     if (empty(trim($data))) {
                         continue;
                     }
                     array_push($res[$subsection->heading], Kostenstelle::create($data));
-                }
+                }*/
             }
         }
 
@@ -220,13 +227,20 @@ class Documentation extends Model
         $abbreviations = $this->findCurrentSection('abbreviations');
 
         if ($abbreviations) {
-            $abbr = $abbreviations->text;
+            /*$abbr = $abbreviations->text;
             $abbr_array = explode(';', $abbr);
             foreach($abbr_array as $abk) {
                 $tmp = array_map('trim', explode('=>', $abk));
                 if (count($tmp) == 2) {
                     $res[$tmp[0]] = $tmp[1];
                 }
+            }*/
+            $abbr = json_decode($abbreviations->text, true);
+            usort($abbr, function($a, $b) {
+                return $a['number'] - $b['number'];
+            });
+            foreach ($abbr as $abk) {
+                $res[$abk['Abkürzung']] = $abk['Ausgeschrieben'];
             }
         }
 
