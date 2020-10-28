@@ -6,7 +6,7 @@
         </td>
         <td>
             <input type="date" id="start" class="form-control @error('start') is-invalid @enderror" @if($disable) disabled @endif
-                   name="start" form="{{ $form }}" @isset($proposal->start) value="{{ $proposal->getStart($version) }}" @endisset/>
+                   name="start" form="{{ $form }}" @isset($proposal->start) value="{{ old("start") ?:$proposal->getStart($version) }}" @endisset/>
 
             @error("start") <p class="invalid-feedback">{{ $message }}</p> @enderror
         </td>
@@ -17,7 +17,7 @@
         </td>
         <td>
             <input type="date" id="end" class="form-control @error('end') is-invalid @enderror" @if($disable) disabled @endif
-                   name="end" form="{{ $form }}" @isset($proposal->end) value="{{ $proposal->getEnd($version) }}" @endisset/>
+                   name="end" form="{{ $form }}" @isset($proposal->end) value="{{ old("end") ?:$proposal->getEnd($version) }}" @endisset/>
 
             @error("end") <p class="invalid-feedback">{{ $message }}</p> @enderror
         </td>

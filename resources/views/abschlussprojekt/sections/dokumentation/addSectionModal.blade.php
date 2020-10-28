@@ -24,9 +24,12 @@
                 </p>
                 {{-- Name --}}
                 <div class="form-group mt-3 mb-3">
-                    <label class="control-label" for="section_name{{ $section ? $section->id : '' }}">(Vairablen-)Name des Abschnitts</label>
+                    <label class="control-label" for="section_name{{ $section ? $section->id : '' }}">
+                        (Vairablen-)Name des Abschnitts; Einstellung kann im Normalfall ignoriert werden.
+                    </label>
                     <input class="form-control" type="text" size="100" id="section_name{{ $section ? $section->id : '' }}" name="name"
-                           form="formAddSection{{ $section ? $section->id : '' }}" placeholder="eindeutiger Variablenname" required/>
+                           form="formAddSection{{ $section ? $section->id : '' }}" placeholder="eindeutiger Variablenname"
+                           required value="section{{ App\Section::nextId() }}"/>
                 </div>
                 {{-- Überschrift des Abschnitts --}}
                 <div class="form-group mt-3 mb-3">
@@ -39,7 +42,7 @@
                 {{-- Name des Templates --}}
                 <div class="form-group mt-3 mb-3">
                     <label class="control-label" for="section_tpl{{ $section ? $section->id : '' }}">
-                        Das zu verwendende Template
+                        Das zu verwendende Template; Einstellung kann im Normalfall ignoriert werden.
                     </label>
                     <select class="form-control" form="formAddSection{{ $section ? $section->id : '' }}" name="tpl"
                             id="section_tpl{{ $section ? $section->id : '' }}">
@@ -51,7 +54,7 @@
                 {{-- Welcher Nummerierung gehört der Abschnitt an? (keine, normales Inhaltsverzeichnis, Anhang --}}
                 <div class="form-group mt-3 mb-3">
                     <label class="control-label" for="section_counter{{ $section ? $section->id : '' }}">
-                        Die gültige Nummerierung
+                        Die gültige Nummerierung; Einstellung kann im Normalfall ignoriert werden.
                     </label>
                     <select class="form-control" @if($section) disabled @endif form="formAddSection{{ $section ? $section->id : '' }}"
                             name="counter" id="section_counter{{ $section ? $section->id : '' }}">

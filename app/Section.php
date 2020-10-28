@@ -10,6 +10,7 @@ use App\Structs\Phase;
 use App\Structs\Table;
 use App\Traits\HasSections;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Section extends Model
 {
@@ -95,6 +96,15 @@ class Section extends Model
         'images',
         //'sections',
     ];
+
+    /**
+     * Die id
+     *
+     * @return int
+     */
+    public static function nextId() {
+        return DB::table('sections')->max('id') + 1;
+    }
 
     /**
      * Ersetze alle Platzhalter in einem Abschnitt durch entsprechende Structs (App\Structs). Beim Generieren eines PDF-Dokuments

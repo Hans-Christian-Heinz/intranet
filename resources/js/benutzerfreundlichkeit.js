@@ -152,6 +152,12 @@ $(document).ready(function() {
         if ($('input#shortTitle').hasClass('is-invalid') || $('input#longTitle').hasClass('is-invalid')) {
             $('a#title_tab').addClass('fehler');
         }
+        if ($('input#planung_input').hasClass('is-invalid') || $('input#entwurf_input').hasClass('is-invalid')
+            || $('input#implementierung_input').hasClass('is-invalid') || $('input#test_input').hasClass('is-invalid')
+            || $('input#abnahme_input').hasClass('is-invalid')) {
+            $('a#soll_ist_vgl_tab').addClass('fehler');
+        }
+
 
         //alte Gestaltung; einfacher
         /*let tabpane = $('a.nav-link.fehler').parents('.tab-pane');

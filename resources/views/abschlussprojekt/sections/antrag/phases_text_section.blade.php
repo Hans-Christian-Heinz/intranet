@@ -1,6 +1,6 @@
 {{-- Das Textfeld für die Phasen hat einen anderen Platzhalter. --}}
 
-<documentation-table class="mb-5" name="Phase" template="{{ json_encode(App\Section::TABLETPLS['phases']) }}" val="{{ $s->text }}"
+<documentation-table class="mb-5" name="Phase" template="{{ json_encode(App\Section::TABLETPLS['phases']) }}" val="{{ old($s->name) ?:$s->text }}"
                      section_name="{{ $s->name }}" form="{{ $form }}" disable="{{ $disable ? 'true' : null }}"></documentation-table>
 
 @if(request()->is('*antrag') || request()->is('*antrag'))

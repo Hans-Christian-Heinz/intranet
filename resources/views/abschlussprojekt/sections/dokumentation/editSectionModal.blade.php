@@ -12,7 +12,9 @@
             <div class="modal-body">
                 {{-- Name --}}
                 <div class="form-group mt-3 mb-3">
-                    <label class="control-label" for="edit_name{{ $section->id }}">(Vairablen-)Name des Abschnitts</label>
+                    <label class="control-label" for="edit_name{{ $section->id }}">
+                        (Vairablen-)Name des Abschnitts; Einstellung kann im Normalfall ignoriert werden.
+                    </label>
                     <input class="form-control" type="text" size="100" id="edit_name{{ $section->id }}" name="name"
                            form="formEditSection{{ $section->id }}" placeholder="eindeutiger Variablenname"
                            required value="{{ $section->name }}"/>
@@ -26,7 +28,7 @@
                 {{-- Name des Templates --}}
                 <div class="form-group mt-3 mb-3">
                     <label class="control-label" for="edit_tpl{{ $section->id }}">
-                        Das zu verwendende Template
+                        Das zu verwendende Template; Einstellung kann im Normalfall ignoriert werden.
                     </label>
                     <select class="form-control" form="formEditSection{{ $section->id }}" name="tpl" id="edit_tpl{{ $section->id }}">
                         @foreach(\App\Section::TEMPLATES as $tpl)
@@ -37,7 +39,7 @@
                 {{-- Welcher Nummerierung gehört der Abschnitt an? (keine, normales Inhaltsverzeichnis, Anhang --}}
                 <div class="form-group mt-3 mb-3">
                     <label class="control-label" for="edit_counter{{ $section->id }}">
-                        Die gültige Nummerierung
+                        Die gültige Nummerierung; Einstellung kann im Normalfall ignoriert werden.
                     </label>
                     <select class="form-control" @if($section->getParent() instanceof App\Section) disabled @endif
                             form="formEditSection{{ $section->id }}" name="counter" id="edit_counter{{ $section->id }}">

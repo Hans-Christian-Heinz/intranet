@@ -3,7 +3,7 @@
 @php($zeitplanung = $documentation->getZeitplanung($version))
 
 <textarea id="{{ $s->name }}_text" name="{{ $s->name }}" @if($disable) disabled @else placeholder="{{ $s->heading }}" @endif
-          class="form-control mt-2 @error($s->name) is-invalid @enderror" form="{{ $form }}">{{ $zeitplanung['text'] }}</textarea>
+          class="form-control mt-2 @error($s->name) is-invalid @enderror" form="{{ $form }}">{{ old($s->name) ?: $zeitplanung['text'] }}</textarea>
 
 @error($s->name) <p class="invalid-feedback">{{ $message }}</p> @enderror
 
@@ -24,7 +24,7 @@
                 <td>
                     <input type="number" style="width: 4rem; display: inline-block;" step="1" min="0" form="{{ $form }}" id="{{ $name }}_input" name="{{ $name }}"
                            @if($disable) disabled @endif
-                           class="form-control @error($name) is-invalid @enderror" value="{{ intval($zeitplanung[$name]) }}"/>
+                           class="form-control @error($name) is-invalid @enderror" value="{{ old($name) ?: intval($zeitplanung[$name]) }}"/>
                     @error($name) <p class="invalid-feedback">{{ $message }}</p> @enderror
                     <label for="{{ $name }}_input">h</label>
                 </td>

@@ -24,6 +24,11 @@ class ProposalController extends Controller
         if (! $proposal) {
             return redirect(route('abschlussprojekt.antrag.create', $project));
         }
+
+        if (session()->has('errors')) {
+            session()->flash('danger', 'Das Speichern schlug fehl!');
+        }
+
         return view('abschlussprojekt.antrag.index', [
             'proposal' => $proposal,
             'version' => $proposal->latestVersion(),
