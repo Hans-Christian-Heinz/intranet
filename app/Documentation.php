@@ -55,7 +55,7 @@ class Documentation extends Model
             ['name' => 'datenmodell', 'heading' => 'Datenmodell', 'sequence' => 3,],
             ['name' => 'geschaeftslogik', 'heading' => 'Geschäftslogik', 'sequence' => 4,],
             ['name' => 'qualitaetssicherung', 'heading' => 'Maßnahmen zur Qualitätssicherung', 'sequence' => 5,],
-            ['name' => 'pflichtenheft', 'heading' => 'Pflichtenheft/Datenverarbeitungskonzept', 'sequence' => 6,],
+            ['name' => 'pflichtenheft', 'heading' => 'Pflichtenheft', 'sequence' => 6,],
         ],],
         //Implementierungsphase
         ['name' => 'impl_phase', 'heading' => 'Implementierungsphase', 'sequence' => 6, 'tpl' => 'parent_section', 'sections' => [

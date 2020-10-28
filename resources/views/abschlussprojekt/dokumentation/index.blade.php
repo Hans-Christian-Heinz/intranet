@@ -15,8 +15,17 @@
                         'route_prefix' => 'abschlussprojekt.dokumentation',
                         'route_param' => 'documentation',
                     ])
-                    @include('abschlussprojekt.dokumentation.navigationsleiste', ['v_name' => '',])
-                    @include('abschlussprojekt.dokumentation.tabinhalt', ['v_name' => '', 'disable' => $disable])
+                    <div class="row">
+                        <div class="col-3">
+                            @include('abschlussprojekt.sections.sectionNavigation', ['v_name' => '', 's' => $documentation, 'name' => 'documentation'])
+                        </div>
+                        <div class="col-9 tab-content">
+                            @include('abschlussprojekt.sections.tabinhaltNeu', ['v_name' => '', 'disable' => $disable, 's' => $documentation, 'form' => 'formDokumentation',])
+                        </div>
+                    </div>
+
+                    {{--@include('abschlussprojekt.dokumentation.navigationsleiste', ['v_name' => '',])
+                    @include('abschlussprojekt.dokumentation.tabinhalt', ['v_name' => '', 'disable' => $disable])--}}
                 </div>
                 {{-- Link zum Veränderungsverlauf --}}
                 <div class="mr-auto p-3">

@@ -15,8 +15,17 @@
                         'route_prefix' => 'abschlussprojekt.antrag',
                         'route_param' => 'proposal',
                     ])
-                    @include('abschlussprojekt.antrag.navigationsleiste', ['v_name' => '',])
-                    @include('abschlussprojekt.antrag.tabinhalt', ['v_name' => '', 'disable' => $disable])
+                    <div class="row">
+                        <div class="col-3">
+                            @include('abschlussprojekt.sections.sectionNavigation', ['v_name' => '', 's' => $proposal, 'name' => 'proposal'])
+                        </div>
+                        <div class="col-9 tab-content">
+                            @include('abschlussprojekt.sections.tabinhaltNeu', ['v_name' => '', 'disable' => $disable, 's' => $proposal, 'form' => 'formAntrag',])
+                        </div>
+                    </div>
+
+                    {{--@include('abschlussprojekt.antrag.navigationsleiste', ['v_name' => '',])
+                    @include('abschlussprojekt.antrag.tabinhalt', ['v_name' => '', 'disable' => $disable])--}}
                 </div>
                 {{-- Link zum Veränderungsverlauf --}}
                 <div class="mr-auto p-3">

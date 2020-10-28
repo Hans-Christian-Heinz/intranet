@@ -1,11 +1,67 @@
 /*
- * Einige Methoden zur Benutzerfreundlichkeit.
+ * Einige Methoden zur Benutzerfreundlichkeit:
+ *
  * remember which tab is supposed to be opened
  * Im Formular zum Hinzufügen von Bildern (addImageModal) soll das ausgewählte Bild angezeigt werden
  * In der Auflistung aller Nachrichten (route user.nachrichten) sollen durch Knopfdruck alle Nachrichten zum Löschen markiert werden
+ * Navigationsleiste von Dokumentationen und Anträgen: sauberes Verhalten bzgl. collpase
  */
 
 $(document).ready(function() {
+    //Navigationsleiste Doku und Antrag:
+    //sehr umständlich, da die neu erwartete Gestaltung nicht dem ursprünglichen Ansatz entspricht
+    //ggf. vllt. sogar sinnvoller, das Formular von vorne neu zu erstellen.
+    let coll = $('.navigation-collapse');
+    //Wenn ein Unterabschnitt aufgeklappt wird, werden alle anderen auf gleicher Ebene zugeklappt
+    coll.on('show.bs.collapse', function() {
+        const el = $(this);
+        let list = $(this).closest('ul');
+        let li = list.children('li');
+        li.children('.navigation-collapse').filter(function() {
+            return !$(this).is(el);
+        }).collapse('hide');
+    });
+    //Wenn ein Unterabschnitt aufgeklappt wird, wird er als aktiv markiert
+    coll.on('show.bs.collapse', function() {
+        const active = $(this).prevAll('a.nav-link');
+        active.addClass('active');
+        let list = $(this).parent('li').siblings('li');
+        list.children('a.nav-link').filter(function() {
+            return !$(this).is(active);
+        }).removeClass('active');
+    });
+    //Wenn ein Unterabschnitt aufgeklappt wurde, soll einer seiner Abschnitte ausgewählt werden
+    coll.on('shown.bs.collapse', function(e) {
+        //Problem bisher: Unterabschnitte werden wieder zugeklappt
+        let list = $(this).children('ul').first();
+        let li = list.children('li');
+        let navlink = li.first().children('a.nav-link').first();
+        li.each(function() {
+            if ($(this).children('a.nav-link').first().hasClass('active')) {
+                navlink = $(this).children('a.nav-link').first();
+            }
+        });
+
+        if (navlink.attr('data-toggle') === 'collapse') {
+            //$(navlink.attr('href')).collapse('show');
+            $(navlink.attr('href')).trigger('shown.bs.collapse');
+        }
+        else {
+            navlink.removeClass('active');
+            navlink.click();
+        }
+        e.stopPropagation();
+    });
+    //Wenn ein Abschnit angezeigt wird, sollen alle Unterabschnitte auf der selben Ebene in der Navigationsleiste zugeklappt werden.
+    $('a.navigationlink').on('shown.bs.tab', function() {
+        let li = $(this).parent('li').siblings('li');
+        li.each(function() {
+            $($(this).children('a').filter(function() {
+                return $(this).attr('data-toggle') === 'collapse';
+            }).attr('href')).collapse('hide');
+        });
+    });
+
     //Beim Auswählen eines Bildes addImageModal soll das Bild danach angezeigt sein
     $('input[type="radio"].radioImage').change(function() {
         // data-radio: id des img-tags _ dateipfad des bildes
