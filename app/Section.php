@@ -52,6 +52,16 @@ class Section extends Model
         //'##DOCUMENT(',
     ];
 
+    /**
+     * Vorlagen, auf denen die Tabellen in Projektdokumentation und -antrag beruhen
+     */
+    const TABLETPLS = [
+        'phases' => [
+            ['name' => 'Phasenname', 'type' => 'text', 'required' => true, 'def' => 'Phasenname'],
+            ['name' => 'Dauer', 'type' => 'number', 'step' => 1, 'min' => 1, 'required' => true, 'def' => 1],
+        ],
+    ];
+
     use HasSections;
 
     /**
@@ -325,6 +335,7 @@ class Section extends Model
     /**
      * Gebe die Unterphasen einer Phase als Array aus.
      * Beachte: Es wird davon ausgegeangen, dass diese Methode nur auf einem passenden Abschnitt aufgerufen wird.
+     * TODO abschaffen, sobald Alternative fertig implementiert ist
      *
      * @return array
      */
@@ -343,6 +354,28 @@ class Section extends Model
         $phases['gesamt'] = new Phase('Gesamt', $gesamtDauer);
 
         return $phases;
+    }
+
+    /**
+     * Gebe die Unterphasen einer Phase als Array aus.
+     * Beachte: Es wird davon ausgegeangen, dass diese Methode nur auf einem passenden Abschnitt aufgerufen wird.
+     *
+     * @return array
+     */
+    public function getPhasesNew() {
+        $val = json_decode($this->text, true);
+        $res = [];
+        usort($val, function($a, $b) {
+            return $a['number'] - $b['number'];
+        });
+        $gesamt = 0;
+        foreach ($val as $v) {
+            array_push($res, new Phase($v['Phasenname'], $v['Dauer']));
+            $gesamt += $v['Dauer'];
+        }
+        $res['gesamt'] = new Phase('Gesamt', $gesamt);
+
+        return $res;
     }
 
     /**

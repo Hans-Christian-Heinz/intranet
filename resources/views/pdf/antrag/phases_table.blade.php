@@ -5,7 +5,7 @@
     <table>
         <caption>Tabelle {{ $table_nr->getNumber() }}: grobe Zeitplanung</caption>
         @foreach($version->sections()->where('sections.section_id', $section->id)->orderBy('sequence')->get() as $phase)
-            @php($help = $phase->getPhases())
+            @php($help = $phase->getPhasesNew())
 
             <tr class="bgHeader">
                 <th>{{ $phase->heading }}</th>

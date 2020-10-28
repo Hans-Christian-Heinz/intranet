@@ -33,6 +33,7 @@ class StoreProposalRequest extends FormRequest
         $rules['end'] = 'nullable|date|after:start';
         foreach(Proposal::PHASES as $phase) {
             $rules[$phase['name']] = [
+                'json',
                 $phasesRule,
             ];
         }

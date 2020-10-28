@@ -26,6 +26,7 @@ Vue.component('review-form', require('./components/ReviewForm.vue').default);
 Vue.component('resume', require('./components/ResumeComponent.vue').default);
 Vue.component('application-new', require('./components/ApplicationComponentNew.vue').default);
 Vue.component('app-tpl-new', require('./components/ApplicationTemplatesNew.vue').default);
+Vue.component('documentation-table', require('./components/DocumentationTableComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
