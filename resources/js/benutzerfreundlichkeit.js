@@ -210,6 +210,33 @@ $(document).ready(function() {
         return tab;
     }
 
+    //Löschen von Kommentaren: Asynchron
+    $('a.deleteComment').click(function(e) {
+        e.preventDefault();
+        const parent = $(this).parent();
+        axios.delete($(this).attr('href'))
+            .then(response => response.data)
+            .then(data => {
+                if (data) {
+                    parent.remove();
+                }
+            })
+    });
+
+    $('form.formAddComment').submit(function(e) {
+        e.preventDefault();
+        const form = $(this);
+        $.ajax(form.attr('action'),{
+            type: 'POST',
+            data: form.serialize(),
+            success: function(response) {
+                if (response) {
+                    $(response).insertBefore(form);
+                }
+            }
+        });
+    });
+
 
     sectionHeadingsWidth();
     showErrors();
