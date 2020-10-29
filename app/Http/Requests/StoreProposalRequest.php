@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Project;
 use App\Proposal;
+use App\Rules\DocumentationTableRule;
 use App\Rules\PhasesRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -26,7 +27,8 @@ class StoreProposalRequest extends FormRequest
      */
     public function rules()
     {
-        $phasesRule = new PhasesRule();
+        //$phasesRule = new PhasesRule();
+        $phasesRule = new DocumentationTableRule('phases');
 
         $rules = [];
         $rules['start'] = 'nullable|date';

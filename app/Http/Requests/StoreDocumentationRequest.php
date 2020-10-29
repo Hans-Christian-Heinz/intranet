@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Rules\AbbreviationRule;
+use App\Rules\DocumentationTableRule;
 use App\Rules\KostenstellenRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -25,7 +26,8 @@ class StoreDocumentationRequest extends FormRequest
      */
     public function rules()
     {
-        $kostenstellenRule = new KostenstellenRule();
+        //$kostenstellenRule = new KostenstellenRule();
+        $kostenstellenRule = new DocumentationTableRule('kostenstellen');
 
         $rules = [];
         //Abschnitt Ressourcenplanung: Gehe dabon aus, dass die Abschnitte nicht umbenannt werden
@@ -41,7 +43,8 @@ class StoreDocumentationRequest extends FormRequest
         //Abkürzungsverzeichnis
         $rules['abbreviations'] = [
             'json',
-            new AbbreviationRule(),
+            //new AbbreviationRule(),
+            new DocumentationTableRule('abbr'),
         ];
         //Der Rest ist optionaler Text: es wird keine Validierung benötigt.
 

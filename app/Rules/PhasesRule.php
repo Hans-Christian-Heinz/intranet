@@ -5,6 +5,12 @@ namespace App\Rules;
 use App\Section;
 use Illuminate\Contracts\Validation\Rule;
 
+/**
+ * Klasse wird nicht mehr verwendet
+ *
+ * Class PhasesRule
+ * @package App\Rules
+ */
 class PhasesRule implements Rule
 {
     /**
@@ -27,7 +33,7 @@ class PhasesRule implements Rule
     public function passes($attribute, $value)
     {
         //alte Version, nicht mehr gültig.
-        /*//einzelne Phasen werden durch ; abgegrenzt.
+        //einzelne Phasen werden durch ; abgegrenzt.
         $values = explode(';', $value);
         //Stelle sicher, dass jede Phase im korrekten Format hinterlegt wird:
         foreach ($values as $v) {
@@ -42,34 +48,7 @@ class PhasesRule implements Rule
             }
         }
 
-        return true;*/
-
-        $valid = true;
-        $tpls = Section::TABLETPLS['phases'];
-        $val = json_decode($value, true);
-        foreach ($val as $v) {
-            foreach($tpls as $tpl) {
-                if ($tpl['required']) {
-                    $valid = $valid && isset($v[$tpl['name']]);
-                }
-                if (isset($val[$tpl['name']])) {
-                    switch ($tpl['type']) {
-                        case 'text':
-                            break;
-                        case 'number':
-                            if (isset($tpl['step']) && is_int($tpl['step'])) {
-                                $valid = $valid && is_int($v[$tpl['name']]);
-                            }
-                            else {
-                                $valid = $valid && is_numeric($v[$tpl['name']]);
-                            }
-                            break;
-                    }
-                }
-            }
-        }
-
-        return $valid;
+        return true;
     }
 
     /**
