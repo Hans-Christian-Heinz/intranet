@@ -22,15 +22,6 @@
                     gelöscht wurde. Wenn nur Standard-Abschnitte (Textfeld oder Navigationsleiste für Unterabschnitte)
                     erstellt werden sollen, kann die Option ignoriert werden.
                 </p>
-                {{-- Name --}}
-                <div class="form-group mt-3 mb-3">
-                    <label class="control-label" for="section_name{{ $section ? $section->id : '' }}">
-                        (Vairablen-)Name des Abschnitts; Einstellung kann im Normalfall ignoriert werden.
-                    </label>
-                    <input class="form-control" type="text" size="100" id="section_name{{ $section ? $section->id : '' }}" name="name"
-                           form="formAddSection{{ $section ? $section->id : '' }}" placeholder="eindeutiger Variablenname"
-                           required value="section{{ App\Section::nextId() }}"/>
-                </div>
                 {{-- Überschrift des Abschnitts --}}
                 <div class="form-group mt-3 mb-3">
                     <label class="control-label" for="section_heading{{ $section ? $section->id : '' }}">
@@ -38,6 +29,15 @@
                     </label>
                     <input class="form-control" type="text" id="section_heading{{ $section ? $section->id : '' }}" name="heading"
                            placeholder="endgültige Überschrift" required form="formAddSection{{ $section ? $section->id : '' }}"/>
+                </div>
+                <b>Die folgenden Einstellungen können im Normalfall ignoriert werden.</b>
+                {{-- Name --}}
+                <div class="form-group mt-3 mb-3">
+                    <label class="control-label" for="section_name{{ $section ? $section->id : '' }}">
+                        (Vairablen-)Name des Abschnitts; Einstellung kann im Normalfall ignoriert werden.
+                    </label>
+                    <input class="form-control" type="text" size="100" id="section_name{{ $section ? $section->id : '' }}" name="name"
+                           form="formAddSection{{ $section ? $section->id : '' }}" placeholder="eindeutiger Variablenname"/>
                 </div>
                 {{-- Name des Templates --}}
                 <div class="form-group mt-3 mb-3">

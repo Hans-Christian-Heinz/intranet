@@ -10,6 +10,22 @@
                 </button>
             </div>
             <div class="modal-body">
+                {{-- Überschrift des Abschnitts --}}
+                <div class="form-group mt-3 mb-3">
+                    <label class="control-label" for="edit_heading{{ $section->id }}">(Endgültige) Überschrift des Abschnitts</label>
+                    <input class="form-control" type="text" id="edit_heading{{ $section->id }}" name="heading" value="{{ $section->heading }}"
+                           placeholder="endgültige Überschrift" required form="formEditSection{{ $section->id }}"/>
+                </div>
+                {{-- Position des Abschnitts --}}
+                <div class="form-group mt-3 mb-3">
+                    <label class="control-label" for="edit_sequence{{ $section->id }}">
+                        Die Position des Abschnitts
+                    </label>
+                    <input type="number" class="form-control" form="formEditSection{{ $section->id }}" name="sequence"
+                           id="edit_sequence{{ $section->id }}" value="{{ $section->pivot->sequence }}" min="0"
+                           step="1" max="{{ $section->getParent()->getSections($version)->count() - 1 }}"/>
+                </div>
+                <b>Die folgenden Einstellungen können im Normalfall ignoriert werden.</b>
                 {{-- Name --}}
                 <div class="form-group mt-3 mb-3">
                     <label class="control-label" for="edit_name{{ $section->id }}">
@@ -18,12 +34,6 @@
                     <input class="form-control" type="text" size="100" id="edit_name{{ $section->id }}" name="name"
                            form="formEditSection{{ $section->id }}" placeholder="eindeutiger Variablenname"
                            required value="{{ $section->name }}"/>
-                </div>
-                {{-- Überschrift des Abschnitts --}}
-                <div class="form-group mt-3 mb-3">
-                    <label class="control-label" for="edit_heading{{ $section->id }}">(Endgültige) Überschrift des Abschnitts</label>
-                    <input class="form-control" type="text" id="edit_heading{{ $section->id }}" name="heading" value="{{ $section->heading }}"
-                           placeholder="endgültige Überschrift" required form="formEditSection{{ $section->id }}"/>
                 </div>
                 {{-- Name des Templates --}}
                 <div class="form-group mt-3 mb-3">
@@ -51,15 +61,6 @@
                     @if($section->getParent() instanceof App\Section)
                         <input type="hidden" name="counter" value="{{ $section->getParent()->counter }}" form="formEditSection{{ $section->id }}"/>
                     @endif
-                </div>
-                {{-- Position des Abschnitts --}}
-                <div class="form-group mt-3 mb-3">
-                    <label class="control-label" for="edit_sequence{{ $section->id }}">
-                        Die Position des Abschnitts
-                    </label>
-                    <input type="number" class="form-control" form="formEditSection{{ $section->id }}" name="sequence"
-                           id="edit_sequence{{ $section->id }}" value="{{ $section->pivot->sequence }}" min="0"
-                           step="1" max="{{ $section->getParent()->getSections($version)->count() - 1 }}"/>
                 </div>
             </div>
             <div class="modal-footer">

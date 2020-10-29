@@ -32,7 +32,7 @@ class EditSectionRequest extends FormRequest
         $version = $project->documentation->latestVersion();
         $rules = [];
         $rules['name'] = [
-            'required',
+            'nullable',
             new SectionNameRule($version, $section->name),
         ];
         $rules['heading'] = [

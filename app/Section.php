@@ -107,6 +107,35 @@ class Section extends Model
     }
 
     /**
+     * accessor for name
+     *
+     * @param $value
+     * @return string
+     */
+    public function getNameAttribute($value) {
+        if ($value) {
+            return $value;
+        }
+        else {
+            return 'section' . $this->id;
+        }
+    }
+
+    /**
+     * mutator for name
+     *
+     * @param $value
+     */
+    public function setNameAttribute($value) {
+        if ($value === 'section' . $this->id) {
+            $this->attributes['name'] = null;
+        }
+        else {
+            $this->attributes['name'] = $value;
+        }
+    }
+
+    /**
      * Ersetze alle Platzhalter in einem Abschnitt durch entsprechende Structs (App\Structs). Beim Generieren eines PDF-Dokuments
      * werden die Structs dann durch passende HTML-Syntax ersetzt.
      *

@@ -31,7 +31,7 @@ class CreateSectionRequest extends FormRequest
         $version = $project->documentation->latestVersion();
         $rules = [];
         $rules['name'] = [
-            'required',
+            'nullable',
             new SectionNameRule($version),
         ];
         $rules['heading'] = [
