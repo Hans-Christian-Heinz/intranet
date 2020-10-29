@@ -1,6 +1,7 @@
 {{----}}
 
-@include('pdf.section_text', ['section_text' => $zeitplanung['text'],])
+@php($section->text = $zeitplanung['text'])
+@include('pdf.section_text')
 
 <div style="page-break-inside: avoid">
     <tocentry content="Tabelle {{ $table_nr->nextNumber() }}: Vgl.: geplanter und tatsächlicher Zeitaufwand" name="toc_tables"/>
