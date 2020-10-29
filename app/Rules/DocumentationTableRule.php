@@ -46,8 +46,10 @@ class DocumentationTableRule implements Rule
                         case 'text':
                             break;
                         case 'number':
+                            //ctype_digit: positive ganze Zahlen und 0
+                            //ltrim: left trim
                             if (isset($tpl['step']) && ctype_digit(ltrim($tpl['step']))) {
-                                $valid = $valid && ctype_digit(ltrim($v[$tpl['name']], '-'));
+                                $valid = $valid && ctype_digit(ltrim($v[$tpl['name']], ' -'));
                                 if (!$valid) {
                                     $this->message = 'Der Wert ' . $tpl['name'] . ' muss in jeder Zeile ganzzahlig sein';
                                     return false;

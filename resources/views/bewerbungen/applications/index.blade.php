@@ -15,6 +15,7 @@
                     <thead>
                         <tr>
                             <th>Firma</th>
+                            <th class="text-center" style="width: 10%;">Vorlage</th>
                             <th class="text-center" style="width: 10%;">Aktionen</th>
                         </tr>
                     </thead>
@@ -23,12 +24,19 @@
                             <tr>
                                 <td>{{ $application->company->name }}</td>
                                 <td class="text-center">
+                                    @if(is_null($application->tpl_version))
+                                        -
+                                    @else
+                                        Version {{ $application->tpl_version }}
+                                    @endif
+                                </td>
+                                <td class="text-center">
                                     <a href="{{ route("bewerbungen.applications.edit", $application) }}" class="text-secondary">Bearbeiten</a>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td>Noch keine Bewerbungen geschrieben</td>
+                                <td colspan="2">Noch keine Bewerbungen geschrieben</td>
                                 <td class="text-center">
                                     <a href="{{ route("bewerbungen.companies.index") }}" class="text-secondary">Zur Firmenübersicht</a>
                                 </td>

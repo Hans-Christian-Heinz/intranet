@@ -19,6 +19,10 @@
             <application-new route="{{ route("bewerbungen.applications.update", $application) }}" version="{{ $application->tpl_version }}"
                              :user="{{ app()->user }}" :saved="{{ $application->body ?: json_encode([]) }}"></application-new>
         @else
+            <p class="text-center"><b>
+                Die Vorlage, auf der dieses Anschreiben basiert, existiert nicht mehr.
+                Dieses Anschreiben kann nur noch eingeschränkt bearbeitet werden.
+            </b></p>
             <application-no-tpl route="{{ route("bewerbungen.applications.update", $application) }}"
                              :user="{{ app()->user }}" :saved="{{ $application->body ?: json_encode([]) }}"></application-no-tpl>
         @endif

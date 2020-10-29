@@ -1,3 +1,5 @@
+<!-- Komponente zum Erstellen und Bearbeiten von Bewerbungsanschreiben basierend auf einer Vorlage -->
+
 <template>
 	<div>
 		<div class="row">

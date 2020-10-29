@@ -26,6 +26,7 @@ class CustomNotification extends Notification
 
     /**
      * CustomNotification constructor.
+     *
      * @param string $absender
      * @param string $betreff
      * @param string $inhalt
