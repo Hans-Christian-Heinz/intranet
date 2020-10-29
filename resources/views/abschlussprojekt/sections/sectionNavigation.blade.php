@@ -3,7 +3,7 @@
 @php
     request()->is('*vergleich') ? $mh = '20rem' : $mh = '40rem';
 @endphp
-<ul class="nav nav-tabs flex-column" @if(! $s instanceof App\Section)style="max-height: {{ $mh }}; overflow-y: scroll; flex-wrap: nowrap;" @endif
+<ul class="nav nav-tabs flex-column sectionNav" @if(! $s instanceof App\Section)style="max-height: {{ $mh }}; overflow-y: scroll; flex-wrap: nowrap;" @endif
     id="{{ $v_name . $name }}Tab" role="tablist">
     @foreach($s->getSections($version) as $section)
         <li class="nav-item border">

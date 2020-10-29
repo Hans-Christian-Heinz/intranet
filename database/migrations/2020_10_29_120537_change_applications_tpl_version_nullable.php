@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class ChangeSectionsNameNullable extends Migration
+class ChangeApplicationsTplVersionNullable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class ChangeSectionsNameNullable extends Migration
      */
     public function up()
     {
-        Schema::table('sections', function (Blueprint $table) {
-            $table->string('name')->nullable(true)->change();
+        Schema::table('applications', function (Blueprint $table) {
+            $table->unsignedSmallInteger('tpl_version')->nullable(true)->change();
         });
     }
 
@@ -25,8 +25,8 @@ class ChangeSectionsNameNullable extends Migration
      */
     public function down()
     {
-        Schema::table('sections', function (Blueprint $table) {
-            $table->string('name')->nullable(false)->change();
+        Schema::table('applications', function (Blueprint $table) {
+            $table->unsignedSmallInteger('tpl_version')->nullable(false)->change();
         });
     }
 }

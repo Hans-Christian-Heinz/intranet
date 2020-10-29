@@ -85,11 +85,13 @@ class AdminTemplateController extends Controller
     /**
      * Lösche eine Vorlage. (Alle Datensätze, die zur ausgewählten Version gehören)
      *
-     * @param unknown $tpl
+     * @param $tpl
      * @return unknown
      */
     public function delete($tpl) {
         ApplicationTemplate::where('version', $tpl)->delete();
+        //Falls später eine andere Vorlage mit der gleichen Versionsnummer erstellt wird.
+        DB::table('applications')->where('tpl_version', $tpl)->update(['tpl_version' => null]);
         return redirect()->back()->with('status', 'Die Version wurden erfolgreich gelöscht.');
     }
 

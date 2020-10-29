@@ -11,6 +11,12 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
+    /**
+     * @param AddCommentRequest $request
+     * @param Project $project
+     * @param Proposal $proposal
+     * @return array|false
+     */
     public function addToProposal(AddCommentRequest $request, Project $project, Proposal $proposal) {
         $comment = new Comment($request->all());
         $comment->user()->associate(app()->user);
@@ -25,6 +31,12 @@ class CommentController extends Controller
         }
     }
 
+    /**
+     * @param AddCommentRequest $request
+     * @param Project $project
+     * @param Documentation $documentation
+     * @return array|false
+     */
     public function addToDocumentation(AddCommentRequest $request, Project $project, Documentation $documentation) {
         $comment = new Comment($request->all());
         $comment->user()->associate(app()->user);
@@ -39,6 +51,10 @@ class CommentController extends Controller
         }
     }
 
+    /**
+     * @param Comment $comment
+     * @return mixed
+     */
     public function delete(Comment $comment) {
         $this->authorize('delete', $comment);
         return $comment->delete();

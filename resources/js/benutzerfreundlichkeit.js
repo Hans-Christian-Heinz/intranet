@@ -79,7 +79,7 @@ $(document).ready(function() {
     //soll er, wen möglich, auch auf der anderen geöffnet werden.
     $('.nav-tabs > li > a.navigationlink').on('shown.bs.tab', function() {
         //Stelle sicher, dass alle angezeigten Überschriften breit genug sind
-        sectionHeadingsWidth();
+        //sectionHeadingsWidth();
 
         let link_id = $(this).attr('id');
         /*let name = link_id.substr(0, link_id.indexOf('_tab'));
@@ -133,7 +133,7 @@ $(document).ready(function() {
     //In der Navigationsleiste von Antrag und Dokumentation sind manche Überschriften bzw. Tabs nicht breit genug
     //Keine CSS-Lösung gefunden => überprüfe: Overflow vorhanden? Wenn ja: Breiter machen
     //Methode funktioniert nur für Tabs bzw. Überschriften, die im Moment angezeigt werden (andere haben display:none)
-    function sectionHeadingsWidth() {
+    /*function sectionHeadingsWidth() {
         const headings = $('ul.scrollnav').find('li.nav-item');
         headings.each(function() {
             let sw = $(this).prop('scrollWidth');
@@ -141,7 +141,7 @@ $(document).ready(function() {
                 $(this).css('min-width', sw + 15);
             }
         });
-    }
+    }*/
 
     //Wenn die Validierung eines Feldes fehlschägt (Projektantrag oder -dokumentation), hebe die entsprechenden Überschriften hervor
     function showErrors() {
@@ -213,6 +213,7 @@ $(document).ready(function() {
     //Löschen von Kommentaren: Asynchron
     $('a.deleteComment').click(deleteComment);
 
+    //Löschen von Kommentaren
     function deleteComment(e) {
         e.preventDefault();
         const parent = $(this).parent();
@@ -235,6 +236,7 @@ $(document).ready(function() {
             success: function(response) {
                 if (response) {
                     $(response.html).insertBefore(form);
+                    //Wichtig: Event-Listener hinzufügen
                     $('a#deleteComment' + response.id).click(deleteComment);
                 }
             }
@@ -242,7 +244,7 @@ $(document).ready(function() {
     });
 
 
-    sectionHeadingsWidth();
+    //sectionHeadingsWidth();
     showErrors();
 
     let tab = getOpenTabNew();
