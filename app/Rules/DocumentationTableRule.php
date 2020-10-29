@@ -35,7 +35,7 @@ class DocumentationTableRule implements Rule
         foreach ($val as $v) {
             foreach($this->tpls as $tpl) {
                 if ($tpl['required']) {
-                    $valid = $valid && isset($v[$tpl['name']]) && ($v[$tpl['name']] || $v[$tpl['name']] === 0);
+                    $valid = $valid && isset($v[$tpl['name']]) && ($v[$tpl['name']] || $v[$tpl['name']] === 0 || $v[$tpl['name']] === '0');
                     if (! $valid) {
                         $this->message = 'Der Wert ' . $tpl['name'] . ' muss in jeder Zeile vorhanden sein.';
                         return false;

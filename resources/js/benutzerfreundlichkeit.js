@@ -211,7 +211,9 @@ $(document).ready(function() {
     }
 
     //Löschen von Kommentaren: Asynchron
-    $('a.deleteComment').click(function(e) {
+    $('a.deleteComment').click(deleteComment);
+
+    function deleteComment(e) {
         e.preventDefault();
         const parent = $(this).parent();
         axios.delete($(this).attr('href'))
@@ -220,9 +222,10 @@ $(document).ready(function() {
                 if (data) {
                     parent.remove();
                 }
-            })
-    });
+            });
+    }
 
+    //Speichern von Kommentaren: Asynchron
     $('form.formAddComment').submit(function(e) {
         e.preventDefault();
         const form = $(this);
@@ -231,7 +234,8 @@ $(document).ready(function() {
             data: form.serialize(),
             success: function(response) {
                 if (response) {
-                    $(response).insertBefore(form);
+                    $(response.html).insertBefore(form);
+                    $('a#deleteComment' + response.id).click(deleteComment);
                 }
             }
         });

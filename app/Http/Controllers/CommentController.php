@@ -15,7 +15,10 @@ class CommentController extends Controller
         $comment = new Comment($request->all());
         $comment->user()->associate(app()->user);
         if($proposal->comments()->save($comment)) {
-            return view('abschlussprojekt.sections.kommentarHelp', compact('comment'))->render();
+            return [
+                'html' => view('abschlussprojekt.sections.kommentarHelp', compact('comment'))->render(),
+                'id' => $comment->id,
+            ];
         }
         else {
             return false;
