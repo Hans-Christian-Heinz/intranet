@@ -26,6 +26,7 @@ Vue.component('review-form', require('./components/ReviewForm.vue').default);
 Vue.component('resume', require('./components/ResumeComponent.vue').default);
 Vue.component('application-new', require('./components/ApplicationComponentNew.vue').default);
 Vue.component('app-tpl-new', require('./components/ApplicationTemplatesNew.vue').default);
+Vue.component('application-no-tpl',  require('./components/ApplicationComponentNoTpl.vue').default);
 Vue.component('documentation-table', require('./components/DocumentationTableComponent.vue').default);
 
 /**

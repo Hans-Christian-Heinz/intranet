@@ -20,24 +20,6 @@ class ApplicationController extends Controller
     public function index()
     {
         $applications = app()->user->applications()->paginate(14);
-        //Überprüfe, ob die Vorlage existiert; wenn nein, kan das Dokument nicht mehr bearbeitet werden.
-        foreach ($applications as $a) {
-            if (ApplicationTemplate::where('version', $a->tpl_version)->count() > 0) {
-                $a->editable = true;
-            }
-            else {
-                $a->editable = false;
-                //Signatur wird beim Drucken verwendet
-                $resume = $a->user->resume;
-                if ($resume && $resume->signature) {
-                    $a->signature = $resume->signatute;
-                }
-                else {
-                    $a->signature = false;
-                }
-            }
-        }
-
         return view("bewerbungen.applications.index", compact("applications"));
     }
 

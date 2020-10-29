@@ -56,7 +56,7 @@
 		<x-modal id="deleteTplModal{{ $v->version }}" title="Version l�schen">
             <x-slot name="body">
                 <p class="text-center py-3">
-					Beachten Sie: Nachdem eine Version gelöscht wurde, können auf ihr basierende Dokumente nicht mehr
+					Beachten Sie: Nachdem eine Version gelöscht wurde, können auf ihr basierende Dokumente nur noch eingeschränkt
 					bearbeitet werden. Sie können nach wie vor ausgedruckt werden.
 				</p>
             </x-slot>
@@ -93,7 +93,7 @@
             <x-slot name="body">
                 <p class="text-center py-3">
 					Sind Sie sicher, dass Sie alle Versionen außer der neusten löschen wollen?<br/>
-					Beachten Sie: Nachdem eine Version gelöscht wurde, können auf ihr basierende Dokumente nicht mehr
+					Beachten Sie: Nachdem eine Version gelöscht wurde, können auf ihr basierende Dokumente nur noch eingeschränkt
 					bearbeitet werden. Sie können nach wie vor ausgedruckt werden.
 				</p>
             </x-slot>

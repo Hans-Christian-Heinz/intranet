@@ -15,8 +15,13 @@
                 </div>
             </div>
         </div>
-        <application-new route="{{ route("bewerbungen.applications.update", $application) }}" version="{{ $application->tpl_version }}"
-                     :user="{{ app()->user }}" :saved="{{ $application->body ?: json_encode([]) }}"></application-new>
+        @if (App\ApplicationTemplate::where('version', $application->tpl_version)->count() > 0)
+            <application-new route="{{ route("bewerbungen.applications.update", $application) }}" version="{{ $application->tpl_version }}"
+                             :user="{{ app()->user }}" :saved="{{ $application->body ?: json_encode([]) }}"></application-new>
+        @else
+            <application-no-tpl route="{{ route("bewerbungen.applications.update", $application) }}"
+                             :user="{{ app()->user }}" :saved="{{ $application->body ?: json_encode([]) }}"></application-no-tpl>
+        @endif
     </div>
 </div>
 

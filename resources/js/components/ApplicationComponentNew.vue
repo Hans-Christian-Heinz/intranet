@@ -13,7 +13,7 @@
 			</div>
 			<div class="col-md-8">
 				<div class="card">
-					<div class="card-body" style="max-height: 100vh; overflow-y: scroll;">
+					<div class="card-body" style="max-height: 75vh; overflow-y: scroll;">
 						<p v-for="(text, name) in data" :key="name + text.changed">
 							<b v-if="text.is_heading">
 								<span contenteditable @input="input($event, text)">{{ text.text }}</span>
@@ -36,7 +36,7 @@
 			</div>
 			<div class="col-md-4">
 				<div class="card">
-					<div class="card-body" style="max-height: 76vh; overflow-y: scroll;">
+					<div class="card-body" style="max-height: 70vh; overflow-y: scroll;">
 
 						<div class="form-group" v-for="(tpl) in this.templates">
 							<div v-if="tpl.choose_keywords">
@@ -123,8 +123,7 @@ export default {
 
 			recentlySaved: false,
 			saveFailed: false,
-			fixHeader: false,
-            test: "abc"
+			fixHeader: false
 		}
 	},
 
