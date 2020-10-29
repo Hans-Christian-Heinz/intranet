@@ -27,10 +27,6 @@ class DocumentationController extends Controller
             return redirect(route('abschlussprojekt.dokumentation.create', $project));
         }
 
-        if (session()->has('errors')) {
-            session()->flash('danger', 'Das Speichern schlug fehl!');
-        }
-
         return view('abschlussprojekt.dokumentation.index', [
             'documentation' => $documentation,
             'version' => $documentation->latestVersion(),

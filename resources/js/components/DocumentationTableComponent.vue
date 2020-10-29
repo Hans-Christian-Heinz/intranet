@@ -63,6 +63,9 @@ export default {
     },
 
     methods: {
+        /**
+         * Füge einen Eintrag bzw. eine Tabellenzeile hinzu
+         */
         addValue() {
             let v = {};
             this.tpl.forEach(function(t) {
@@ -73,6 +76,12 @@ export default {
             this.values.push(v);
         },
 
+        /**
+         * Verschiebe einen Eintrag bzw. eine Tabellenzeile
+         *
+         * @param e event
+         * @param val zu verschiebende Zeile
+         */
         changeNumber(e, val) {
             let old = val.number;
             let newVal = e.target.value;
@@ -98,6 +107,11 @@ export default {
             }
         },
 
+        /**
+         * Entferne einen Eintrag bzw. eine Tabellenzeile
+         * 
+         * @param v
+         */
         removeValue(v) {
             let index;
             let number = v.number;
