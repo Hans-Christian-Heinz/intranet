@@ -29,8 +29,8 @@ class ReviewController extends Controller
      */
     public function store(Request $request, Company $company)
     {
-        $validationRules = ["comment" => "required"];
-        $validationMessages = ["comment.required" => "Bitte erklären Sie Ihre Bewertung."];
+        $validationRules = [];
+        $validationMessages = [];
 
         foreach (Category::all() as $category) {
             $validationRules["category-{$category->id}-stars"] = "required|numeric|between:0.5,5";
@@ -94,8 +94,8 @@ class ReviewController extends Controller
             return abort(403);
         }
 
-        $validationRules = ["comment" => "required"];
-        $validationMessages = ["comment.required" => "Bitte erklären Sie Ihre Bewertung."];
+        $validationRules = [];
+        $validationMessages = [];
 
         foreach (Category::all() as $category) {
             $validationRules["category-{$category->id}-stars"] = "required|numeric|between:0.5,5";

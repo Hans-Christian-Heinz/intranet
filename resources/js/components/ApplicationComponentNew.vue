@@ -130,10 +130,10 @@ export default {
 	},
 
 	created() {
-		//lodash debounce: Methode wird nicht öfter als alle 100ms aufgerufen
+        //lodash throttle: Methode wird nicht öfter als alle 100ms aufgerufen
         //Wenn sie davor aufgerufen wird, wird das Ergebnis nicht neu berechnet
-        this.handleDebouncedScroll = _.debounce(this.handleScroll, 100);
-        window.addEventListener('scroll', this.handleDebouncedScroll);
+        this.handleThrottledScroll = _.throttle(this.handleScroll, 100);
+        window.addEventListener('scroll', this.handleThrottledScroll);
 	},
 
 	mounted() {
