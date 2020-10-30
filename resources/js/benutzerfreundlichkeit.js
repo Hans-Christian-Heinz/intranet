@@ -243,6 +243,18 @@ $(document).ready(function() {
         });
     });
 
+    $('input#accept-rules').change(function(e) {
+        let submit = $('button#accept-submit');
+        if ($(e.target).is(':checked')) {
+            submit.removeClass('btn-outline-primary disabled');
+            submit.addClass('btn-primary');
+        }
+        else {
+            submit.removeClass('btn-primary');
+            submit.addClass('btn-outline-primary disabled');
+        }
+    });
+
 
     //sectionHeadingsWidth();
     showErrors();

@@ -42,7 +42,7 @@
                                           </div>
                                     </div>
                                     <div class="form-group ml-5 mr-auto">
-                                        <button type="submit" class="btn btn-outline-secondary disabled" id="accept-submit">Absenden</button>
+                                        <button type="submit" class="btn btn-outline-primary disabled" id="accept-submit">Absenden</button>
                                     </div>
                                 </form>
                                 @endif
@@ -57,17 +57,18 @@
 
 @section('scripts')
     <script>
-        let checkbox = document.getElementById('accept-rules');
+        //Wird in benutzerfreundlichkeit.js erledigt.
+        /*let checkbox = document.getElementById('accept-rules');
         let submitButton = document.getElementById('accept-submit');
 
         function toggleButton() {
             if (checkbox.checked) {
-                submitButton.classList.remove('btn-outline-secondary', 'disabled');
+                submitButton.classList.remove('btn-outline-primary', 'disabled');
                 submitButton.classList.add('btn-primary')
             } else {
                 submitButton.classList.remove('btn-primary');
-                submitButton.classList.add('btn-outline-secondary', 'disabled');
+                submitButton.classList.add('btn-outline-primary', 'disabled');
             }
-        }
+        }*/
     </script>
 @endsection
