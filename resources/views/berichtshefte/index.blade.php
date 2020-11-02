@@ -16,7 +16,9 @@
                         </div>
                         <table class="table table-striped table-bordered text-center">
                             <tr>
-                                <th>Wochen seit Ausbildungsbeginn</th>
+                                <th data-toggle="tooltip" data-placement="bottom" title="Ausbildungsbeginn hier: Früheste Woche, für die ein Wochenbericht hinterlegt ist.">
+                                    Wochen seit Ausbildungsbeginn
+                                </th>
                                 <th>Vorhandene Berichtshefte</th>
                                 <th>Fehlende Berichtshefte</th>
                             </tr>
@@ -24,13 +26,27 @@
                                 @if($criteria)
                                     <td>{{ $criteria['dauer'] }}</td>
                                     <td>{{ $criteria['anzahl'] }}</td>
-                                    <td>{{ $criteria['fehlend'] }}</td>
+                                    <td @if($criteria['fehlend'] > 0) class="text-danger" @endif>{{ $criteria['fehlend'] }}</td>
                                 @else
                                     <td colspan="3">Es wurden noch keine Berichtshefte angelegt.</td>
                                 @endif
                             </tr>
                         </table>
-                        <table class="table table-striped table-bordered table-hover">
+
+                        {{-- fehlende Wochen --}}
+                    @if(count($criteria['missing']))
+                        <a class="text-danger" data-toggle="collapse" href="#missingWeeks" role="button" aria-expanded="false"
+                           aria-controls="missingWeeks">Fehlende Wochen</a>
+                        <div class="collapse" id="missingWeeks">
+                            <ul>
+                                @foreach($criteria['missing'] as $missing)
+                                    <li>{{ $missing->format("Y-W") }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                        <table class="table table-striped table-bordered table-hover mt-2">
                             <thead>
                                 <tr>
                                     <th class="text-center text-strong" style="width: 2%;">#</th>

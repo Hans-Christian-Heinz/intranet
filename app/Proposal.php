@@ -85,7 +85,7 @@ class Proposal extends Model
             foreach ($version->sections->where('section_id', $phasesSection->id) as $phase) {
                 $p = [];
                 /*//Text der Unterabschnitte liegt im Format "phasenname : dauer; phasenname : dauer; ..." vor
-                //Hier wird avon ausgegangen, dass das Format stimmt. (Bei der Eingabe findet eine Validierung statt)
+                //Hier wird davon ausgegangen, dass das Format stimmt. (Bei der Eingabe findet eine Validierung statt)
                 foreach (explode(';', $phase->text) as $t) {
                     if (empty(trim($t))) {
                         continue;
@@ -93,6 +93,9 @@ class Proposal extends Model
                     array_push($p, Phase::create($t));
                 }*/
                 $val = json_decode($phase->text, true);
+                if (is_null($val)) {
+                    $val = [];
+                }
                 usort($val, function($a, $b) {
                     return $a['number'] - $b['number'];
                 });

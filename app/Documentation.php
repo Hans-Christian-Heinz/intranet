@@ -173,6 +173,9 @@ class Documentation extends Model
                 }
                 $res[$subsection->heading] = [];
                 $vals = json_decode($subsection->text, true);
+                if (is_null($vals)) {
+                    $vals = [];
+                }
                 usort($vals, function($a, $b) {
                     return $a['number'] - $b['number'];
                 });
@@ -236,6 +239,9 @@ class Documentation extends Model
                 }
             }*/
             $abbr = json_decode($abbreviations->text, true);
+            if (is_null($abbr)) {
+                $abbr = [];
+            }
             usort($abbr, function($a, $b) {
                 return $a['number'] - $b['number'];
             });

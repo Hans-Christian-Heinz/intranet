@@ -32,7 +32,7 @@
                                 @else
                                     <td>{{ $azubi->criteria['dauer'] }}</td>
                                     <td>{{ $azubi->criteria['anzahl'] }}</td>
-                                    <td>{{ $azubi->criteria['fehlend'] }}</td>
+                                    <td @if($azubi->criteria['fehlend'] > 0) class="text-danger" @endif>{{ $azubi->criteria['fehlend'] }}</td>
                                 @endif
                                 <td>
                                     <a class="btn btn-sm btn-secondary" href="{{ route('admin.berichtshefte.liste', $azubi) }}">Ansehen</a>

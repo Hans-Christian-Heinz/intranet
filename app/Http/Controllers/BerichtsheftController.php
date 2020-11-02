@@ -21,6 +21,7 @@ class BerichtsheftController extends Controller
     {
         $user = app()->user;
         $now = Carbon::now()->startOfWeek();
+
         $beginn = $user->ausbildungsbeginn;
         if (! is_null($beginn)) {
             //Die Dauer der Ausbildung wird als Differenz in Wochen zwischen Ausbildungsbeginn und Minimum von jetzt und Ausbildungsende berechnet
@@ -32,10 +33,31 @@ class BerichtsheftController extends Controller
                 $helpDate = $now;
             }
 
-            $dauer = $helpDate->diffInWeeks($beginn);
+            //+1 wegen angefangener Wochen.
+            $dauer = $helpDate->diffInWeeks($beginn) + 1;
             $anzahl = $user->berichtshefte()->count();
             $fehlend = $dauer - $anzahl;
-            $criteria = compact('beginn', 'dauer', 'anzahl', 'fehlend');
+
+            //Erstelle eine Liste der fehlenden Wochen:
+            if ($fehlend > 0) {
+                $dates = DB::table('berichtshefte')->select('week')->where('user_id', $user->id)->orderBy('week')->get()->all();
+                $missing = [];
+                for($i = 1; $i < count($dates); $i++) {
+                    $w1 = Carbon::create($dates[$i - 1]->week);
+                    $w2 = Carbon::create($dates[$i]->week);
+                    //Falls mehr als eine Woche Unterschied vorliegt, fehlt die nächste Woche (von $w1)
+                    if ($w1->diffInWeeks($w2) > 1) {
+                        array_push($missing, $w1->addWeek());
+                        $dates[$i-1]->week = $w1->toString();
+                        $i--;
+                    }
+                }
+            }
+            else {
+                $missing = [];
+            }
+
+            $criteria = compact('beginn', 'dauer', 'anzahl', 'fehlend', 'missing');
         }
         else {
             $criteria = [];
