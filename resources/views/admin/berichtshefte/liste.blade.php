@@ -13,6 +13,25 @@
                         <h3>Berichtshefte {{ $azubi->full_name }}</h3>
                     </div>
                     @if ($berichtshefte->count())
+                        <table class="table table-striped table-bordered text-center">
+                            <tr>
+                                <th data-toggle="tooltip" data-placement="bottom" title="Ausbildungsbeginn hier: Früheste Woche, für die ein Wochenbericht hinterlegt ist.">
+                                    Wochen seit Ausbildungsbeginn
+                                </th>
+                                <th>Vorhandene Berichtshefte</th>
+                                <th>Fehlende Berichtshefte</th>
+                            </tr>
+                            <tr>
+                                @if($criteria)
+                                    <td>{{ $criteria['dauer'] }}</td>
+                                    <td>{{ $criteria['anzahl'] }}</td>
+                                    <td @if($criteria['fehlend'] > 0) class="text-danger" @endif>{{ $criteria['fehlend'] }}</td>
+                                @else
+                                    <td colspan="3">Es wurden noch keine Berichtshefte angelegt.</td>
+                                @endif
+                            </tr>
+                        </table>
+
                         <table class="table table-striped table-bordered table-hover">
                             <thead>
                             <tr>

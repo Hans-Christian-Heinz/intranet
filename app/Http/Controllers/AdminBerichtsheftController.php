@@ -36,7 +36,7 @@ class AdminBerichtsheftController extends Controller
 
             $beginn = Carbon::create($azubi->ausbildungsbeginn);
             //Max-Value, damit beim Sortieren diejenigen Auszubildenden zuerst aufgeführt werden, die noch keine Berichtshefte angelegt haben
-            is_null($beginn) ? $dauer = PHP_INT_MAX : $dauer = $helpDate->diffInWeeks($beginn);
+            is_null($beginn) ? $dauer = PHP_INT_MAX : $dauer = $helpDate->diffInWeeks($beginn) + 1;
             $anzahl = $azubi->berichtshefte()->count();
             $fehlend = $dauer - $anzahl;
             $azubi->criteria = compact('beginn', 'dauer', 'anzahl', 'fehlend');
@@ -154,9 +154,32 @@ class AdminBerichtsheftController extends Controller
      * @return mixed
      */
     public function liste(User $azubi) {
+        $now = Carbon::now()->startOfWeek();
+        $beginn = $azubi->ausbildungsbeginn;
+        if (! is_null($beginn)) {
+            //Die Dauer der Ausbildung wird als Differenz in Wochen zwischen Ausbildungsbeginn und Minimum von jetzt und Ausbildungsende berechnet
+            $ausbildungsende = $azubi->ausbildungsende;
+            if ($ausbildungsende && $now > $ausbildungsende) {
+                $helpDate = Carbon::create($ausbildungsende);
+            } else {
+                $helpDate = $now;
+            }
+
+            //+1 wegen angefangener Wochen.
+            $dauer = $helpDate->diffInWeeks($beginn) + 1;
+            $anzahl = $azubi->berichtshefte()->count();
+            $fehlend = $dauer - $anzahl;
+
+            $criteria = compact('dauer', 'anzahl', 'fehlend');
+        }
+        else {
+            $criteria = [];
+        }
+
         return view('admin.berichtshefte.liste', [
             'berichtshefte' => $azubi->berichtshefte()->orderBy('week', 'DESC')->paginate(10),
             'azubi' => $azubi,
+            'criteria' => $criteria,
         ]);
     }
 }
