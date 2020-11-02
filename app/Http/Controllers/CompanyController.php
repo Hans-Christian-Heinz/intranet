@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CompanyController extends Controller
 {
@@ -16,13 +17,20 @@ class CompanyController extends Controller
     {
         // Get search query terms
         $q = request()->input("q", "");
+        $s = request()->input("standort", "");
 
         // Get all companies filtered by search query from database and paginate in 10. steps
         //$companies = Company::where("name", "LIKE", "%{$q}%")->orderBy("created_at", "DESC")->paginate(request("perPage", 10));
-        $companies = Company::where("name", "LIKE", "%{$q}%")->orderBy("name")->paginate(request("perPage", 10));
+        if ($s) {
+            $companies = Company::where("name", "LIKE", "%{$q}%")->where("city", $s)->orderBy("name")->paginate(request("perPage", 10));
+        }
+        else {
+            $companies = Company::where("name", "LIKE", "%{$q}%")->orderBy("name")->paginate(request("perPage", 10));
+        }
+        $standorte = DB::table('companies')->select('city')->distinct()->orderBy('city')->get();
 
         // Return companies overview page/view
-        return view("bewerbungen.companies.index", compact("companies", "q"));
+        return view("bewerbungen.companies.index", compact("companies", "q", "standorte", "s"));
     }
 
     /**

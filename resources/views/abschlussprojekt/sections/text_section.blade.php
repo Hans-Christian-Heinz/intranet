@@ -1,5 +1,6 @@
 {{-- Ein Abschnitt, der durch ein Textfeld beschrieben wird --}}
 
+{{--todo--}}
 @php
     request()->is('*vergleich') ? $mh = '20rem' : $mh = '40rem';
 @endphp

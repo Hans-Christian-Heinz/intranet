@@ -76,22 +76,6 @@
                             </address>
                         </div>
                     </div>
-
-                    {{-- Interns list --}}
-                    <div class="card mt-3">
-                        <div class="card-body">
-                            <label class="text-secondary">Praktikanten</label>
-                            @php
-                                $interns = [];
-                                foreach($company->reviews as $review) {
-                                    $interns[$review->user->id] = $review->user->full_name;
-                                }
-                            @endphp
-                            @foreach ($interns as $intern)
-                                <li>{{ $intern }}</li>
-                            @endforeach
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

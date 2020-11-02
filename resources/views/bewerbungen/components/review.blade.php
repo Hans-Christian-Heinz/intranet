@@ -7,7 +7,7 @@
 
                 {{-- User and Review Info --}}
                 <div class="rating-author-info ml-1 my-auto">
-                    <h5 class="my-auto">{{ $review->user->name }}</h5>
+                    <h5 class="my-auto">{{ $review->user->full_name }}</h5>
                     <p class="text-secondary mb-0">
                         <star-rating-preview :stars="{{ $review->rating() }}"></star-rating-preview> · <small>{{ $review->created_at->format("d.m.Y") }}</small>
                     </p>
