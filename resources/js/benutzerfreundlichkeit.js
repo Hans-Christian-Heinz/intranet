@@ -264,5 +264,15 @@ $(document).ready(function() {
         $('a#' + tab).tab('show');
     }
 
+    if ($('ul#proposalTab').length > 0) {
+        $('textarea.sectiontext').css('height', $('ul#proposalTab').first().height() - 30);
+    }
+    else if ($('ul#documentationTab').length > 0) {
+        $('textarea.sectiontext').css('height', $('ul#documentationTab').first().height() - 30);
+    }
+    else {
+        $('textarea.sectiontext').css('height', "18rem");
+    }
+
     $('[data-toggle="tooltip"]').tooltip();
 });

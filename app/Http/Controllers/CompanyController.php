@@ -20,7 +20,6 @@ class CompanyController extends Controller
         $s = request()->input("standort", "");
 
         // Get all companies filtered by search query from database and paginate in 10. steps
-        //$companies = Company::where("name", "LIKE", "%{$q}%")->orderBy("created_at", "DESC")->paginate(request("perPage", 10));
         if ($s) {
             $companies = Company::where("name", "LIKE", "%{$q}%")->where("city", $s)->orderBy("name")->paginate(request("perPage", 10));
         }

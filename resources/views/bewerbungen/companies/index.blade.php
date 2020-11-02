@@ -24,9 +24,7 @@
                         <div class="card mt-3">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between">
-                                    <form action="{{ route("bewerbungen.companies.index") }}" method="get" class="my-auto">
-                                        <input type="hidden" name="standort" value="{{ $s }}"/>
-                                        <input type="hidden" name="q" value="{{ $q }}"/>
+                                    <form action="{{ route("bewerbungen.companies.index") }}" id="formCompany" method="get" class="my-auto">
                                         Zeige
                                         <select name="perPage" onchange="this.form.submit();">
                                             @foreach ([10, 25, 50, 75, 100] as $count)
@@ -35,22 +33,18 @@
                                         </select> Firmen pro Seite
                                     </form>
 
-                                    <form action="{{ route("bewerbungen.companies.index") }}" method="get" onchange="this.submit();">
-                                        <input type="hidden" name="perPage" value="{{ $companies->perPage() }}"/>
-                                        <input type="hidden" name="q" value="{{ $q }}"/>
-                                        <select class="form-control mx-2" name="standort">
+                                    <div>
+                                        <select onchange="this.form.submit();" form="formCompany" class="form-control" name="standort">
                                             <option value="">Alle Standorte</option>
                                             @foreach($standorte as $ort)
                                                 <option {{ $ort->city == $s ? "selected" : "" }} value="{{ $ort->city }}">{{ $ort->city }}</option>
                                             @endforeach
                                         </select>
-                                    </form>
+                                    </div>
 
-                                    <form action="{{ route("bewerbungen.companies.index") }}" method="get" onchange="this.form.submit();">
-                                        <input type="hidden" name="perPage" value="{{ $companies->perPage() }}"/>
-                                        <input type="hidden" name="standort" value="{{ $s }}"/>
-                                        <input type="text" class="form-control" name="q" placeholder="Suchen..." value="{{ request()->input("q") }}" autofocus>
-                                    </form>
+                                    <div>
+                                        <input onchange="this.form.subimt();" form="formCompany" type="text" class="form-control" name="q" placeholder="Suchen..." value="{{ request()->input("q") }}" autofocus>
+                                    </div>
                                 </div>
 
                                 <table class="table table-hover mt-3">

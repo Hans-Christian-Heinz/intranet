@@ -35,23 +35,23 @@ class AuthServiceProvider extends ServiceProvider
         //erster Parameter der closure ist der Benutzer, der bei der Authentifizierung herauskommt; er wird aber nicht verwendet
         Gate::define('delete-user', function(LdapUser $user, User $toDelete) {
             if (! app()->user->is_admin) {
-                return abort(403, 'Nur Ausbilder dÃ¼rfen Benutzerprofile lÃ¶schen.');
+                return abort(403, 'Nur Ausbilder dürfen Benutzerprofile löschen.');
             }
             return ($toDelete->is(app()->user))
-                //? Response::deny('Sie dÃ¼rfen nicht Ihr eigenes Benutezrprofil lÃ¶schen.')
-                ? abort(403, 'Sie dÃ¼rfen nicht Ihr eigenes Benutzerprofil lÃ¶schen.')
+                //? Response::deny('Sie dürfen nicht Ihr eigenes Benutezrprofil löschen.')
+                ? abort(403, 'Sie dürfen nicht Ihr eigenes Benutzerprofil löschen.')
                 : Response::allow();
         });
 
         //custom auth_guard for single sign on
         Auth::viaRequest('sso', function ($request) {
-            //Es wÃ¤re wahrscheinlich sauberer, eine config-Datei anzulegen oder weitere Werte zur config/auth.php hinzuzufÃ¼gen,
+            //Es wäre wahrscheinlich sauberer, eine config-Datei anzulegen oder weitere Werte zur config/auth.php hinzuzufügen,
             //anstatt in der Programmlogik unmittelbar auf env-Variablen zuzugreifen.
             $username = $request->server(env('SERVER_USERNAME_FIELD', 'REMOTE_USER'));
 
             if (session()->get('auth_guard', 'sso') === 'sso' && $username) {
 
-                //Falls in der Server-Variable die DomÃ¤ne im Benutzernamen gespeichert ist, entferne diese:
+                //Falls in der Server-Variable die Domäne im Benutzernamen gespeichert ist, entferne diese:
                 //(username@domain wird zu username)
                 $length_help = strpos($username, env('KERBEROS_DOMAIN', ''));
                 if ($length_help) {
@@ -81,7 +81,7 @@ class AuthServiceProvider extends ServiceProvider
                 ]);
             }
             else {
-                //Wenn die Kerberos-Anmeldung nicht funktioniert oder sonst manuelle Anmeldung erwÃ¼nscht ist, verwende
+                //Wenn die Kerberos-Anmeldung nicht funktioniert oder sonst manuelle Anmeldung erwünscht ist, verwende
                 //auth-guard web.
                 return Auth::guard('web')->user();
             }
