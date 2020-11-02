@@ -83,6 +83,10 @@ class User extends Authenticatable
         return $this->fachrichtung == 'Ausbilder';
     }
 
+    public function getAusbildungsbeginnAttribute() {
+        return $this->berichtshefte()->min('week');
+    }
+
     public function getAddress() {
         return new Adresse($this->strasse, $this->hausnr, $this->plz, $this->ort);
     }

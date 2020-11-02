@@ -79,10 +79,10 @@ class BerichtsheftController extends Controller
 
         $berichtsheft = $user->berichtshefte()->create($attributes);
         //Aktualisiere ggf. den Ausbildungsbeginn des Benutzers
-        if (is_null($user->ausbildungsbeginn) || $week < $user->ausbildungsbeginn) {
+        /*if (is_null($user->ausbildungsbeginn) || $week < $user->ausbildungsbeginn) {
             $user->ausbildungsbeginn = $week;
             $user->save();
-        }
+        }*/
 
         return redirect()->route('berichtshefte.edit', $berichtsheft)->with('status', 'Das Berichtsheft wurde erfolgreich hinzugefügt.');
     }
@@ -169,10 +169,10 @@ class BerichtsheftController extends Controller
 
         $berichtsheft->update($attributes);
         //Aktualisiere ggf. den Ausbildungsbeginn des Benutzers
-        if (is_null($user->ausbildungsbeginn) || $week < $user->ausbildungsbeginn) {
+        /*if (is_null($user->ausbildungsbeginn) || $week < $user->ausbildungsbeginn) {
             $user->ausbildungsbeginn = $week;
             $user->save();
-        }
+        }*/
 
         if (! $user->is(app()->user)) {
             $user->notify(new CustomNotification(app()->user->full_name, 'Wochenbericht geändert',
@@ -193,17 +193,17 @@ class BerichtsheftController extends Controller
         $this->authorize('destroy', $berichtsheft);
 
         $user = $berichtsheft->owner;
-        $beginn_anpassen = $berichtsheft->week == DB::table('berichtshefte')->where('user_id', $user->id)->min('week');
+        //$beginn_anpassen = $berichtsheft->week == DB::table('berichtshefte')->where('user_id', $user->id)->min('week');
 
         $berichtsheft->delete();
         //beim Löschen des ersten Berichtshefts wird der hinterlegte Ausbildungsbeginn angepasst.
-        if ($beginn_anpassen) {
+        /*if ($beginn_anpassen) {
             $help = DB::table('berichtshefte')->where('user_id', $user->id)->min('week');
             is_null($help)
                 ? $user->ausbildungsbeginn = null
                 : $user->ausbildungsbeginn = Carbon::create(DB::table('berichtshefte')->where('user_id', $user->id)->min('week'));
             $user->save();
-        }
+        }*/
 
         if (! $user->is(app()->user)) {
             $user->notify(new CustomNotification(app()->user->full_name, 'Wochenbericht gelöscht',

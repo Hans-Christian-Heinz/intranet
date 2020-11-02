@@ -58,6 +58,7 @@
 @section('scripts')
     <script>
         //Wird in benutzerfreundlichkeit.js erledigt.
+        //Das hier hat wegen der bootstrap custom-checkbox Funktionalität nicht funktioniert.
         /*let checkbox = document.getElementById('accept-rules');
         let submitButton = document.getElementById('accept-submit');
 
