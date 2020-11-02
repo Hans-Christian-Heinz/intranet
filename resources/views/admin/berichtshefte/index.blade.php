@@ -17,7 +17,9 @@
                         <thead>
                         <tr>
                             <th>Auszubildene(r)</th>
-                            <th>Wochen seit Ausbildungsbeginn</th>
+                            <th data-toggle="tooltip" data-placement="bottom" title="Ausbildungsbeginn hier: Früheste Woche, für die ein Wochenbericht hinterlegt ist.">
+                                Wochen seit Ausbildungsbeginn
+                            </th>
                             <th>Vorhandene Berichtshefte</th>
                             <th>Fehlende Berichtshefte</th>
                             <th>Berichtshefte ansehen</th>

@@ -17,7 +17,7 @@ class CompanyController extends Controller
     {
         // Get search query terms
         $q = request()->input("q", "");
-        $s = request()->input("standort", "");
+        $s = request()->input("s", "");
 
         // Get all companies filtered by search query from database and paginate in 10. steps
         if ($s) {

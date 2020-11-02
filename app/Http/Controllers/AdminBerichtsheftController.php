@@ -170,7 +170,26 @@ class AdminBerichtsheftController extends Controller
             $anzahl = $azubi->berichtshefte()->count();
             $fehlend = $dauer - $anzahl;
 
-            $criteria = compact('dauer', 'anzahl', 'fehlend');
+            //Erstelle eine Liste der fehlenden Wochen:
+            if ($fehlend > 0) {
+                $dates = DB::table('berichtshefte')->select('week')->where('user_id', $azubi->id)->orderBy('week')->get()->all();
+                $missing = [];
+                for($i = 1; $i < count($dates); $i++) {
+                    $w1 = Carbon::create($dates[$i - 1]->week);
+                    $w2 = Carbon::create($dates[$i]->week);
+                    //Falls mehr als eine Woche Unterschied vorliegt, fehlt die nächste Woche (von $w1)
+                    if ($w1->diffInWeeks($w2) > 1) {
+                        array_push($missing, $w1->addWeek());
+                        $dates[$i-1]->week = $w1->toString();
+                        $i--;
+                    }
+                }
+            }
+            else {
+                $missing = [];
+            }
+
+            $criteria = compact('dauer', 'anzahl', 'fehlend', 'missing');
         }
         else {
             $criteria = [];

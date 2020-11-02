@@ -35,6 +35,7 @@ class ResumeController extends Controller
         }
         else {
             $passbild = false;
+            $signature= false;
             $resume = false;
         }
 

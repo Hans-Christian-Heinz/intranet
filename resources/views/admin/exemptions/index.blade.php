@@ -51,7 +51,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                    @else
+                    @elseif (! $pastExemptions->count())
                         <div class="card">
                             <div class="card-body text-center p-5">
                                 <h3>Keine Freistellungen vorhanden</h3>
@@ -63,7 +63,7 @@
             </div>
             @if ($pastExemptions->count())
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-12 bg-white">
                             <div class="d-flex pb-3">
                                 <h3 class="mr-auto mt-4">vergangene Freistellungen</h3>
                             </div>

@@ -34,7 +34,7 @@
                                     </form>
 
                                     <div>
-                                        <select onchange="this.form.submit();" form="formCompany" class="form-control" name="standort">
+                                        <select onchange="this.form.submit();" form="formCompany" class="form-control" name="s">
                                             <option value="">Alle Standorte</option>
                                             @foreach($standorte as $ort)
                                                 <option {{ $ort->city == $s ? "selected" : "" }} value="{{ $ort->city }}">{{ $ort->city }}</option>

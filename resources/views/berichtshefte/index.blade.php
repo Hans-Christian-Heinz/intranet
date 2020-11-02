@@ -34,17 +34,17 @@
                         </table>
 
                         {{-- fehlende Wochen --}}
-                    @if(count($criteria['missing']))
-                        <a class="text-danger" data-toggle="collapse" href="#missingWeeks" role="button" aria-expanded="false"
-                           aria-controls="missingWeeks">Fehlende Wochen</a>
-                        <div class="collapse" id="missingWeeks">
-                            <ul>
-                                @foreach($criteria['missing'] as $missing)
-                                    <li>{{ $missing->format("Y-W") }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
+                        @if(count($criteria['missing']))
+                            <a class="text-danger" data-toggle="collapse" href="#missingWeeks" role="button" aria-expanded="false"
+                               aria-controls="missingWeeks">Fehlende Wochen</a>
+                            <div class="collapse" id="missingWeeks">
+                                <ul>
+                                    @foreach($criteria['missing'] as $missing)
+                                        <li>{{ $missing->format("Y-W") }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
 
                         <table class="table table-striped table-bordered table-hover mt-2">
                             <thead>
@@ -52,6 +52,7 @@
                                     <th class="text-center text-strong" style="width: 2%;">#</th>
                                     <th>Lehrjahr</th>
                                     <th class="text-center" style="width: 13%;">KW</th>
+                                    <th class="text-center" style="width: 13%;">Zeitraum</th>
                                     <th class="text-center" style="width: 11%;">Optionen</th>
                                 </tr>
                             </thead>
@@ -61,6 +62,9 @@
                                         <td class="text-center">{{ $berichtsheft->id }}</td>
                                         <td>{{ $berichtsheft->grade }}</td>
                                         <td class="text-center">{{ $berichtsheft->week->format("Y-W") }}</td>
+                                        <td class="text-center">
+                                            {{ $berichtsheft->week->startOfWeek()->format("d.m.Y") }} - {{ $berichtsheft->week->endOfWeek()->format("d.m.Y") }}
+                                        </td>
                                         <td>
                                             <a href="{{ route("berichtshefte.edit", $berichtsheft) }}" class="btn btn-sm btn-secondary">
                                                 <span class="fa fa-pencil-square-o mr-1" aria-hidden="true"></span>Bearbeiten
