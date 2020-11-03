@@ -51,7 +51,7 @@
                                 <th class="text-center text-strong" style="width: 2%;">#</th>
                                 <th>Lehrjahr</th>
                                 <th class="text-center" style="width: 13%;">KW</th>
-                                <th class="text-center" style="width: 13%;">Zeitraum</th>
+                                <th class="text-center" style="width: 20%;">Zeitraum</th>
                                 <th class="text-center" style="width: 11%;"></th>
                             </tr>
                             </thead>

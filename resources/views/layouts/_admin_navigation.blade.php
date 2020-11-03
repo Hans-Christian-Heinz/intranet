@@ -53,6 +53,9 @@
                 <li class="nav-item {{ (request()->is("admin/rules*")) ? 'active' : '' }}">
                     <a href="{{ route("admin.rules.edit") }}" class="nav-link">Werkstattregeln</a>
                 </li>
+                <li class="nav-item {{ (request()->is("admin/speiseplan*")) ? 'active' : '' }}">
+                    <a href="{{ route("admin.speiseplan.index") }}" class="nav-link">Speiseplan</a>
+                </li>
                 <li class="nav-item {{ (request()->is("admin/users*")) ? 'active' : '' }}">
                     <a href="{{ route("admin.users.index") }}" class="nav-link">Benutzer</a>
                 </li>

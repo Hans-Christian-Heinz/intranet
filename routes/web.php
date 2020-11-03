@@ -20,6 +20,16 @@ Route::post('login', 'Auth\LoginController@login');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::group(['middleware' => 'auth'], function () {
+    //Route für den Speiseplan
+    Route::get('/speiseplan', function() {
+        if(! Storage::disk('public')->exists('speiseplan.pdf')) {
+            return view('noSpeiseplan');
+        }
+        else {
+            return response()->file(Storage::disk('public')->path('speiseplan.pdf'));
+        }
+    })->name('speiseplan');
+
     //Routen für die Benutzerverwaltung
     Route::group([
         'prefix' => 'user',
@@ -203,6 +213,15 @@ Route::group(['middleware' => 'admin'], function () {
 
     Route::get('/admin/rules', 'AdminRulesController@edit')->name('admin.rules.edit');
     Route::patch('/admin/rules', 'AdminRulesController@update')->name('admin.rules.update');
+
+    //Routen für den Speiseplan
+    Route::group([
+        'as' => 'admin.speiseplan.',
+        'prefix' => '/admin/speiseplan',
+    ], function() {
+        Route::get('/', 'AdminSpeiseplanController@index')->name('index');
+        Route::post('/', 'AdminSpeiseplanController@save')->name('save');
+    });
 
     Route::group([
         'as' => 'admin.berichtshefte.',
