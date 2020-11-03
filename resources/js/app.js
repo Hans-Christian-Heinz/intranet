@@ -28,6 +28,8 @@ Vue.component('application-new', require('./components/ApplicationComponentNew.v
 Vue.component('app-tpl-new', require('./components/ApplicationTemplatesNew.vue').default);
 Vue.component('application-no-tpl',  require('./components/ApplicationComponentNoTpl.vue').default);
 Vue.component('documentation-table', require('./components/DocumentationTableComponent.vue').default);
+Vue.component('section-text', require('./components/SectionTextComponent.vue').default);
+Vue.component('table-component', require('./components/SectionText/TableComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
