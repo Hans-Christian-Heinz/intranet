@@ -3,9 +3,17 @@
 <template>
     <div>
         <table class="table">
-            <tr v-for="row in table.rows">
-                <td v-for="col in row.cols">
+            <tr v-for="(row, i) in table.rows">
+                <td class="flex-column">
+                    <div>
+                        <input type="checkbox" :id="'is_header_' + i" v-model="row.is_header"/>
+                        <label :for="'is_header_' + i">Kopfzeile</label>
+                    </div>
+                    <a href="#" @click.prevent="removeRow(i)" class="text-danger">Zeile entfernen</a>
+                </td>
+                <td v-for="(col, j) in row.cols" class="flex-column">
                     <input class="form-control" type="text" v-model="col.text"/>
+                    <a href="#" @click.prevent="removeColumn(row, j)" class="text-danger">Spalte entfernen</a>
                 </td>
                 <td>
                     <a href="#" @click.prevent="addColumn(row)">Spalte hinzufügen</a>
