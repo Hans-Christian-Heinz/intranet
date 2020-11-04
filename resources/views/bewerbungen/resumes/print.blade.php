@@ -39,7 +39,7 @@
         </td>
         @if($format['passbild'])
             <td style="text-align: right">
-                <img style="height: 45mm; width: 35mm;" src="data:image/{{ $format['pb_datatype'] }};base64,{{ $format['passbild'] }}" alt="Kein Passbild hochgeladen"/>
+                <img style="height: 45mm; width: 35mm;" src="{{ storage_path('app/temp/' . $format['passbild']) }}" alt="Kein Passbild hochgeladen"/>
             </td>
         @endif
     </tr>
@@ -107,7 +107,7 @@
     </tbody>
 </table>
 
-<img style="margin-top: 10mm" height="60" width="350" src="data:image/{{ $format['sig_datatype'] }};base64,{{ $format['signature'] }}" alt="Keine Signatur hochgeladen"/>
+<img style="margin-top: 10mm" height="60" width="350" src="{{ storage_path('app/temp/' . $format['signature']) }}" alt="Keine Signatur hochgeladen"/>
 
 <p>{{ $content->personal->name }}, Winnenden, den {{ Carbon\Carbon::now()->format("d.m.Y") }}</p>
 

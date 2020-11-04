@@ -65,7 +65,8 @@
 
     <p>Mit freundlichen Grüßen</p>
 
-    <img height="60" width="350" src="data:image/{{ $format['sig_datatype'] }};base64,{{ $format['signature'] }}" alt="Keine Signatur hochgeladen"/>
+    {{--<img height="60" width="350" src="data:image/{{ $format['sig_datatype'] }};base64,{{ $format['signature'] }}" alt="Keine Signatur hochgeladen"/>--}}
+    <img height="60" width="350" src="{{ storage_path('app/temp/' . $format['signature']) }}" alt="Keine Signatur hochgeladen"/>
 
     <p>{{ $resume->personal->name }}, Winnenden, den {{ Carbon\Carbon::now()->format("d.m.Y") }}</p>
 

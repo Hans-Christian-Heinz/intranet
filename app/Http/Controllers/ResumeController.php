@@ -92,26 +92,37 @@ class ResumeController extends Controller
         $format = $request->all();
         //Falls keine Signatur hinterlegt ist, wird sie direkt beim Drucken hochgeladen
         if (is_null($resume->signature)) {
-            $format['signature'] = base64_encode(file_get_contents($request->file('signature')));
-            $format['sig_datatype'] = $request->file('signature')->extension();
+            //$format['signature'] = base64_encode(file_get_contents($request->file('signature')));
+            //$format['sig_datatype'] = $request->file('signature')->extension();
+            $sigfile = uniqid() . '.' . $request->file('signature')->extension();
+            file_put_contents(storage_path('app/temp/' . $sigfile), file_get_contents($request->file('signature')));
         }
         else {
-            $format['signature'] = base64_encode($resume->signature);
-            $format['sig_datatype'] = $resume->sig_datatype;
+            //$format['signature'] = base64_encode($resume->signature);
+            //$format['sig_datatype'] = $resume->sig_datatype;
+            $sigfile = uniqid() . '.' . $resume->sig_datatype;
+            file_put_contents(storage_path('app/temp/' . $sigfile), $resume->signature);
         }
         //Falls kein Passbild hinterlegt ist, kann es beim Drucken hochgeladen werden
         if (! is_null($resume->passbild)) {
-            $format['passbild'] = base64_encode($resume->passbild);
-            $format['pb_datatype'] = $resume->pb_datatype;
+            //$format['passbild'] = base64_encode($resume->passbild);
+            //$format['pb_datatype'] = $resume->pb_datatype;
+            $pbfile = uniqid() . '.' . $resume->pb_datatype;
+            file_put_contents(storage_path('app/temp/' . $pbfile), $resume->passbild);
         }
         elseif($request->passbild) {
-            $format['passbild'] = base64_encode(file_get_contents($request->file('passbild')));
-            $format['pb_datatype'] = $request->file('passbild')->extension();
+            //$format['passbild'] = base64_encode(file_get_contents($request->file('passbild')));
+            //$format['pb_datatype'] = $request->file('passbild')->extension();
+            $pbfile = uniqid() . '.' . $request->file('passbild')->extension();
+            file_put_contents(storage_path('app/temp/' . $pbfile), file_get_contents($request->file('passbild')));
         }
         else {
-            $format['passbild'] = false;
-            $format['pb_datatype'] = $resume->pb_datatype;
+            //$format['passbild'] = false;
+            //$format['pb_datatype'] = $resume->pb_datatype;
+            $pbfile = false;
         }
+        $format['passbild'] = $pbfile;
+        $format['signature'] = $sigfile;
 
         $pdf = new \Mpdf\Mpdf([
             'tempDir' => sys_get_temp_dir(),
@@ -128,6 +139,8 @@ class ResumeController extends Controller
 
         $pdf->WriteHTML(view("bewerbungen.resumes.print", compact("content", "format"))->render());
         $pdf->Output();
+        unlink(storage_path('app/temp/' . $sigfile));
+        unlink(storage_path('app/temp/' . $pbfile));
         return view("bewerbungen.resumes.print");
         //return $pdf->Output('Lebenslauf_' . app()->user->full_name . '.pdf', 'I');
     }

@@ -55,14 +55,22 @@ class ApplicationController extends Controller
         $help = app()->user->resume;
         $resume = json_decode($help->data);
         //Falls keine Signatur hinterlegt ist, wurde sie direkt beim Drucken hochgeladen
+        //Erstelle ine temporäre Datei für die Signatur; sie wird gelöscht, sobald das PDF-Dokument vorliegt
+        //nötig, das Mpdf sehr lange html-strings (vgl. blob) nicht verträt
+
         if (is_null($help->signature)) {
-            $format['signature'] = base64_encode(file_get_contents($request->file('signature')));
-            $format['sig_datatype'] = $request->file('signature')->extension();
+            //$format['signature'] = base64_encode(file_get_contents($request->file('signature')));
+            //$format['sig_datatype'] = $request->file('signature')->extension();
+            $filename = uniqid() . '.' . $request->file('signature')->extension();
+            file_put_contents(storage_path('app/temp/' . $filename), file_get_contents($request->file('signature')));
         }
         else {
-            $format['signature'] = base64_encode($help->signature);
-            $format['sig_datatype'] = $help->sig_datatype;
+            //$format['signature'] = base64_encode($help->signature);
+            //$format['sig_datatype'] = $help->sig_datatype;
+            $filename = uniqid() . '.' . $help->sig_datatype;
+            file_put_contents(storage_path('app/temp/' . $filename), $help->signature);
         }
+        $format['signature'] = $filename;
 
         $pdf = new \Mpdf\Mpdf([
             'mode' => 'utf-8',
@@ -85,6 +93,7 @@ class ApplicationController extends Controller
 </table>');
 
         $pdf->WriteHTML(view("bewerbungen.applications.pdfNew", compact("application", "content", "resume", "format"))->render());
+        unlink(storage_path('app/temp/' . $filename));
         return $pdf->Output("Bewerbungsanschreiben.pdf", 'I');
         //return view("bewerbungen.applications.pdfNew");
         //return view("bewerbungen.applications.pdfNew", compact("application", "content", "resume", "format"));
