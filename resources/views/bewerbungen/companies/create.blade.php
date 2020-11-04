@@ -66,6 +66,45 @@
                                     </div>
                                 </div>
 
+                                <div class="form-group row">
+                                    <div class="col-md-6">
+                                        <label for="contact">Ansprechpartner</label>
+                                        <input type="text" class="form-control @error("contact") is-invalid @enderror" name="contact"
+                                               id="contact" placeholder="Ansprechpartner" value="{{ old("contact") }}">
+                                        @error("contact")
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="function">Tätigkeit</label>
+                                        <input type="text" class="form-control @error("function") is-invalid @enderror"
+                                               name="function" id="function" placeholder="Tätigkeit des Ansprechpartners" value="{{ old("function") }}">
+                                        @error("function")
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md-6">
+                                        <label for="email">Email</label>
+                                        <input type="email" class="form-control @error("email") is-invalid @enderror" name="email"
+                                               id="email" placeholder="Email des Ansprechpartners" value="{{ old("email") }}">
+                                        @error("email")
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="phone">Telephon</label>
+                                        <input type="text" class="form-control @error("phone") is-invalid @enderror"
+                                               name="phone" id="phone" placeholder="Telephonnummer des Ansprechparnters" value="{{ old("phone") }}">
+                                        @error("phone")
+                                        <p class="text-danger">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+
                                 <div class="form-group">
                                     <label for="description">Firmen Beschreibung</label>
                                     <textarea class="form-control @error("description") is-invalid @enderror" name="description" id="description" rows="10">{{ old("description") }}</textarea>

@@ -265,6 +265,7 @@
                             <label class="custom-file-label" for="passbild">Passbild</label>
                         </div>
                         <span class="small">Maximale Dateigröße: 2MB</span>
+                        <p class="text-danger">{{ pb_error }}</p>
                     </div>
                     <div class="col-4">
                         <form class="form" method="post" id="formPassbild" :action="passbildroute" enctype="multipart/form-data">
@@ -316,6 +317,7 @@
                             <label class="custom-file-label" for="signature">Signatur</label>
                         </div>
                         <span class="small">Maximale Dateigröße: 2MB</span>
+                        <p class="text-danger">{{ sig_error }}</p>
                     </div>
                     <div class="col-4">
                         <form class="form" method="post" id="formSignature" :action="signatureroute" enctype="multipart/form-data">
@@ -335,7 +337,7 @@
 
 <script>
 export default {
-    props: ["user", "resumedata", "printroute", "passbildroute", "signatureroute", "passbild", "signature"],
+    props: ["user", "resumedata", "printroute", "passbildroute", "signatureroute", "passbild", "signature", "sig_error", "pb_error"],
 
     data() {
         return {
@@ -375,6 +377,13 @@ export default {
     },
 
     mounted() {
+        if (this.sig_error) {
+            this.cards.signature.collapsed = true;
+        }
+        if (this.pb_error) {
+            this.cards.passbild.collapsed = true;
+        }
+
         axios.get(`/bewerbungen/resumes/${this.user.id}`)
             .then(response => response.data)
             .then(data => {

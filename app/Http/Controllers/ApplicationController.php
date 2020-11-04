@@ -83,6 +83,7 @@ class ApplicationController extends Controller
         <td style="border:none; text-align: right;">{PAGENO}/{nbpg}</td>
     </tr>
 </table>');
+
         $pdf->WriteHTML(view("bewerbungen.applications.pdfNew", compact("application", "content", "resume", "format"))->render());
         return $pdf->Output("Bewerbungsanschreiben.pdf", 'I');
         //return view("bewerbungen.applications.pdfNew");

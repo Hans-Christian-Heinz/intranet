@@ -60,6 +60,10 @@ class CompanyController extends Controller
             "state" => ["required", "max:255"],
             "country" => ["required", "max:255"],
             "description" => ["required"],
+            "contact" => ["nullable", "max:255"],
+            "function" => ["nullable", "max:255"],
+            "email" => ["nullable", "email"],
+            "phone" => ["nullable", "numeric"],
         ]);
 
         // Persist company into database
@@ -114,6 +118,10 @@ class CompanyController extends Controller
             "state" => ["required", "max:255"],
             "country" => ["required", "max:255"],
             "description" => ["required"],
+            "contact" => ["nullable", "max:255"],
+            "function" => ["nullable", "max:255"],
+            "email" => ["nullable", "email"],
+            "phone" => ["nullable", "numeric"],
         ]);
 
         // Persist changes on company model

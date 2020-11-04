@@ -15,6 +15,10 @@ class Company extends Model
         "state",
         "zip",
         "country",
+        "contact",
+        "function",
+        "email",
+        "phone",
     ];
 
     public function reviews()

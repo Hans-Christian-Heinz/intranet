@@ -46,7 +46,7 @@
 									<h5>{{ cat.heading }}</h5>
 
 									<div v-for="(kw, j) in cat.tpls">
-										<input type="checkbox" :id="tpl.name + i + j" :value="kw"
+										<input type="checkbox" :id="tpl.name + i + j" :value="kw" @click="ensureKeyword($event, tpl, i)"
 											v-model="kwValues[tpl['name']][i]" @change="applyKwText(tpl, kwValues[tpl['name']])"/>
 										<label :for="tpl.name + i + j">{{ kw }}</label>
 									</div>
@@ -274,6 +274,13 @@ export default {
 			//TODO Alternative für forceUpdate suchen
 			this.$forceUpdate();
 		},
+
+        ensureKeyword(e, tpl, catNr) {
+            //Wenn nur ein Schlüsselwort in der Kategorie ausgewählt ist, bleibt es auf jeden Fall ausgewählt.
+            if(this.kwValues[tpl['name']][catNr].length === 1 && !e.target.checked) {
+                e.preventDefault();
+            }
+        },
 
 		//Wende ein Template auf einen Abschnitt an
 		//name: Name des Abschnitts

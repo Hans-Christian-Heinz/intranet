@@ -12,7 +12,8 @@
             <div class="col-md-12">
                 <resume :user="{{ $user }}" passbildroute="{{ route("bewerbungen.resumes.uploadPassbild", app()->user) }}"
                         passbild="{{ $passbild }}" printroute="{{ route("bewerbungen.resumes.print") }}" signature="{{ $signature }}"
-                        signatureroute="{{ route('bewerbungen.resumes.uploadSignature', app()->user) }}"></resume>
+                        signatureroute="{{ route('bewerbungen.resumes.uploadSignature', app()->user) }}"
+                        @error('signature') sig_error="{{ $message }}" @enderror @error('passbild') pb_error="{{ $message }}" @enderror></resume>
             </div>
         </div>
     </div>
@@ -43,7 +44,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="modal fade" id="deleteSignatureModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
