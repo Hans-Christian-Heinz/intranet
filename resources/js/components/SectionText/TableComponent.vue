@@ -6,20 +6,20 @@
             <tr v-for="(row, i) in table.rows">
                 <td class="flex-column">
                     <div>
-                        <input type="checkbox" :id="name + number + 'table_is_header_' + i" v-model="row.is_header"/>
+                        <input :disabled="!!disable" type="checkbox" :id="name + number + 'table_is_header_' + i" v-model="row.is_header"/>
                         <label :for="name + number + 'table_is_header_' + i">Kopfzeile</label>
                     </div>
-                    <a href="#" @click.prevent="removeRow(i)" class="text-danger">Zeile entfernen</a>
+                    <a v-if="!disable" href="#" @click.prevent="removeRow(i)" class="text-danger">Zeile entfernen</a>
                 </td>
                 <td v-for="(col, j) in row.cols" class="flex-column">
-                    <input class="form-control" type="text" v-model="col.text"/>
-                    <a href="#" @click.prevent="removeColumn(row, j)" class="text-danger">Spalte entfernen</a>
+                    <input :disabled="!!disable" class="form-control" type="text" v-model="col.text"/>
+                    <a v-if="!disable" href="#" @click.prevent="removeColumn(row, j)" class="text-danger">Spalte entfernen</a>
                 </td>
-                <td>
+                <td v-if="!disable">
                     <a href="#" @click.prevent="addColumn(row)">Spalte hinzufügen</a>
                 </td>
             </tr>
-            <tr>
+            <tr v-if="!disable">
                 <td>
                     <a href="#" @click.prevent="addRow()">Zeile hinzufügen</a>
                 </td>
@@ -29,7 +29,7 @@
 </template>
 <script>
 export default {
-    props: ["val", "name", "number"],
+    props: ["val", "name", "number", "disable"],
 
     data() {
         return {

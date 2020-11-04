@@ -35,7 +35,7 @@ class Section extends Model
     ];
 
     /**
-     * Objekte, die in Abschnitte eingefügt werden können. Konstante wird im Template abschlussprojekt.insertModal.inserModal verwendet
+     * Objekte, die in Abschnitte eingefügt werden können. Konstante wird im Template abschlussprojekt.insertModal.insertModal verwendet
      */
     const INSERT = [
         'tabelle',

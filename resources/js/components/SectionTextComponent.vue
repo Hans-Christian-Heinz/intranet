@@ -2,14 +2,18 @@
 <!-- Kann Text, Tabellen, Listen und Links enthalten -->
 <!-- Nicht fertig; wird im Moment nicht verwendet -->
 
+<!-- todo fertigstellen -->
 <template>
     <div>
+        <!-- Der Wert, der tatsächlich in der Datenbnak hinterlegt wird -->
+        <input type="hidden" :form="form" :name="name" v-model="encodedValue"/>
+
         <div v-for="(val, i) in orderedComponents" class="my-2">
-            <div v-if="val.type==='text'" class="card">
+            <div v-if="val.type==='text'" class="card" :key="name + i + val.changed">
                 <div class="card-header">
                     <div class="d-flex justify-content-between">
-                        <a href="#" @click.prevent="val.show = !val.show;">Text anzeigen</a>
-                        <div>
+                        <a href="#" @click.prevent="showCard(val)">Text anzeigen</a>
+                        <div v-if="!disable">
                             <label :for="name + i + 'Sequence'">Reihenfolge: </label>
                             <input type="number" class="border-0" style="width:3em" min="0" @change="changeSequence($event, val)"
                                    :max="value.length - 1" :id="name + i + 'Sequence'" :value="val.sequence"/>
@@ -17,14 +21,14 @@
                     </div>
                 </div>
                 <div class="card-body" v-show="val.show">
-                    <textarea class="form-control" v-model="val.val"/>
+                    <textarea class="form-control" :disabled="!!disable" v-model="val.val"/>
                 </div>
             </div>
             <div v-else-if="val.type==='table'" class="card">
                 <div class="card-header">
                     <div class="d-flex justify-content-between">
-                        <a href="#" @click.prevent="val.show = !val.show;">Tabelle anzeigen</a>
-                        <div>
+                        <a href="#" @click.prevent="showCard(val)">Tabelle anzeigen</a>
+                        <div v-if="!disable">
                             <label :for="name + i + 'Sequence'">Reihenfolge: </label>
                             <input type="number" class="border-0" style="width:3em" min="0" @change="changeSequence($event, val)"
                                    :max="value.length - 1" :id="name + i + 'Sequence'" :value="val.sequence"/>
@@ -32,18 +36,18 @@
                     </div>
                     <div class="d-flex justify-content-between">
                         <label class="mr-2" :for="name + 'TableCaption' + i">Tabellenname:</label>
-                        <input type="text" class="form-control ml-2" :id="name + 'TableCaption' + i" v-model="val.caption"/>
+                        <input type="text" class="form-control ml-2" :disabled="!!disable" :id="name + 'TableCaption' + i" v-model="val.caption"/>
                     </div>
                 </div>
                 <div class="card-body" v-show="val.show">
-                    <table-component :val="val" :name="name" :number="i"></table-component>
+                    <table-component :disable="disable" :val="val" :name="name" :number="i"></table-component>
                 </div>
             </div>
             <div v-else-if="val.type==='list'" class="card">
                 <div class="card-header">
                     <div class="d-flex justify-content-between">
-                        <a href="#" @click.prevent="val.show = !val.show;">Liste anzeigen</a>
-                        <div>
+                        <a href="#" @click.prevent="showCard(val)">Liste anzeigen</a>
+                        <div v-if="!disable">
                             <label :for="name + i + 'Sequence'">Reihenfolge: </label>
                             <input type="number" class="border-0" style="width:3em" min="0" @change="changeSequence($event, val)"
                                    :max="value.length - 1" :id="name + i + 'Sequence'" :value="val.sequence"/>
@@ -51,7 +55,7 @@
                     </div>
                     <div class="d-flex justify-content-between">
                         <label class="mr-2" :for="name + 'ListOrder' + i">Aufzählungsart:</label>
-                        <select class="form-control ml-2" :id="name + 'ListOrder' + i" v-model="val.order">
+                        <select :disabled="!!disable" class="form-control ml-2" :id="name + 'ListOrder' + i" v-model="val.order">
                             <!-- todo variable Aufzählung -->
                             <option value="unordered">Ungeordnet</option>
                             <option value="1">1</option>
@@ -63,14 +67,14 @@
                     </div>
                 </div>
                 <div class="card-body" v-show="val.show">
-                    <list-component :val="val" :name="name" :number="i"></list-component>
+                    <list-component :disable="disable" :val="val" :name="name" :number="i"></list-component>
                 </div>
             </div>
             <div v-else-if="val.type==='link'" class="card">
                 <div class="card-header">
                     <div class="d-flex justify-content-between">
-                        <a href="#" @click.prevent="val.show = !val.show;">Link anzeigen</a>
-                        <div>
+                        <a href="#" @click.prevent="showCard(val)">Link anzeigen</a>
+                        <div v-if="!disable">
                             <label :for="name + i + 'Sequence'">Reihenfolge: </label>
                             <input type="number" class="border-0" style="width:3em" min="0" @change="changeSequence($event, val)"
                                    :max="value.length - 1" :id="name + i + 'Sequence'" :value="val.sequence"/>
@@ -78,14 +82,14 @@
                     </div>
                 </div>
                 <div class="card-body" v-show="val.show">
-                    <link-component :val="val" :name="name" :number="i" :available_sections="available_sections"></link-component>
+                    <link-component :disable="disable" :val="val" :name="name" :number="i" :available_sections="available_sections"></link-component>
                 </div>
             </div>
             <div v-else-if="val.type==='img'" class="card">
                 <div class="card-header">
                     <div class="d-flex justify-content-between">
-                        <a href="#" @click.prevent="val.show = !val.show;">Bild anzeigen</a>
-                        <div>
+                        <a href="#" @click.prevent="showCard(val)">Bild anzeigen</a>
+                        <div v-if="!disable">
                             <label :for="name + i + 'Sequence'">Reihenfolge: </label>
                             <input type="number" class="border-0" style="width:3em" min="0" @change="changeSequence($event, val)"
                                    :max="value.length - 1" :id="name + i + 'Sequence'" :value="val.sequence"/>
@@ -93,14 +97,14 @@
                     </div>
                 </div>
                 <div class="card-body" v-show="val.show">
-                    <image-component :val="val" :name="name" :number="i" :available_images="available_images"></image-component>
+                    <image-component :disable="disable" :val="val" :name="name" :number="i" :available_images="available_images"></image-component>
                 </div>
             </div>
 
-            <a href="#" class="text-danger" @click.prevent="removeVal(i)">Komponente entfernen</a>
+            <a href="#" v-if="!disable" class="text-danger" @click.prevent="removeVal(i)">Komponente entfernen</a>
             <hr>
         </div>
-        <div class="d-flex justify-content-end my-2">
+        <div v-if="!disable" class="d-flex justify-content-end my-2">
             <!-- todo variable Aufzählung -->
             <select :id="name + 'SelectContentType'" class="form-control w-25 mx-2" v-model="typeToAdd">
                 <option value="text">Text</option>
@@ -115,7 +119,7 @@
 </template>
 <script>
 export default {
-    props: ["text", "available_images", "available_sections", "name"],
+    props: ["text", "available_images", "available_sections", "name", "form", "disable"],
 
     data() {
         return {
@@ -130,20 +134,41 @@ export default {
             for (let i = 0; i < this.value.length; i++) {
                 this.value[i].show = i === 0;
                 this.value[i].sequence = i;
+                this.value[i].changed = 0;
             }
         }
         else {
-            this.value = [{type: "text", val: "", show: true, sequence: 0}];
+            this.value = [{type: "text", val: "", show: true, sequence: 0, changed: 0}];
         }
     },
 
     computed: {
         orderedComponents: function() {
             return _.orderBy(this.value, 'sequence');
-        }
+        },
+
+        encodedValue: function() {
+            let res = [];
+            this.orderedComponents.forEach(function(comp) {
+                res.push(Object.assign({}, comp));
+            });
+
+            res.forEach(function(val) {
+                delete val.show;
+                delete val.sequence;
+            });
+            return JSON.stringify(res);
+        },
     },
 
     methods: {
+        showCard(val) {
+            val.show = !val.show;
+            val.changed++;
+            //nicht sicer, warum das :key Attr nicht funktioniert;
+            this.$forceUpdate();
+        },
+
         addVal() {
             switch (this.typeToAdd) {
                 case "text":
@@ -190,8 +215,8 @@ export default {
                         show: false,
                         path: "",
                         footnote: "",
-                        height: "10mm",
-                        width: "10mm",
+                        height: 10,
+                        width: 10,
                         sequence: this.value.length
                     });
                     break;
@@ -199,19 +224,26 @@ export default {
         },
 
         removeVal(i) {
+            let seq = this.value[i].sequence;
             this.value.splice(i, 1);
+            this.value.forEach(function(val) {
+                if (val.sequence > seq) {
+                    val.sequence--;
+                }
+            })
         },
 
         changeSequence(e, val) {
             let old = val.sequence;
             let newVal = e.target.value;
-            if (newVal >= 0 && newVal < this.value.length - 1) {
+            if (newVal >= 0 && newVal < this.value.length) {
                 //nach unten verschieben
                 if (newVal > old) {
                     this.value.forEach(temp => {
                         if (temp.sequence > old && temp.sequence <= newVal) {
                             temp.sequence--;
                             temp.show = false;
+                            temp.changed++;
                         }
                     });
                 }
@@ -221,12 +253,15 @@ export default {
                         if (temp.sequence < old && temp.sequence >= newVal) {
                             temp.sequence++;
                             temp.show = false;
+                            temp.changed++;
                         }
                     });
                 }
 
                 val.show = false;
                 val.sequence = newVal;
+                val.changed++;
+                this.$forceUpdate();
             }
             else {
                 e.target.value = old;
