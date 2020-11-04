@@ -26,7 +26,7 @@
 </template>
 <script>
 export default {
-    props: ["val"],
+    props: ["val", "name", "number"],
 
     data() {
         return {

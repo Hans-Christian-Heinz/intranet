@@ -43,12 +43,15 @@
                 </button>
                 <div class="dropdown-menu  @error('img') is-invalid @enderror" aria-labelledby="dropdownImageButton">
                     @foreach(app()->user->getImageFiles() as $i => $file)
+                    {{--@foreach($availableImages as $i => $file)--}}
                         <div class="dropdown-item radio-group">
                             <input type="radio" name="path" form="insertImageForm" value="{{ $file }}"
                                    class="radioImage" required id="radio_{{ $i }}"/>
                             <label for="radio_{{ $i }}">
                                 <img src="{{ asset('storage/' . $file) }}" height="150" width="240"
                                      alt="Im gespeicherten Dateipfad liegt keine Bilddatei." id="img_{{ $i }}"/>
+                                {{--<img src="{{ $file }}" height="150" width="240"
+                                     alt="Im gespeicherten Dateipfad liegt keine Bilddatei." id="img_{{ $i }}"/>--}}
                             </label>
                         </div>
                     @endforeach

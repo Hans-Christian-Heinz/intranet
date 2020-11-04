@@ -32,6 +32,7 @@ Vue.component('section-text', require('./components/SectionTextComponent.vue').d
 Vue.component('table-component', require('./components/SectionText/TableComponent.vue').default);
 Vue.component('list-component', require('./components/SectionText/ListComponent.vue').default);
 Vue.component('link-component', require('./components/SectionText/LinkComponent.vue').default);
+Vue.component('image-component', require('./components/SectionText/ImageComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

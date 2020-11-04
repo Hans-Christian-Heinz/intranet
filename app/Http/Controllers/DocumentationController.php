@@ -14,6 +14,8 @@ use App\Traits\ControllsDocuments;
 use App\Traits\SavesSections;
 use App\Version;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class DocumentationController extends Controller
 {
@@ -27,10 +29,25 @@ class DocumentationController extends Controller
             return redirect(route('abschlussprojekt.dokumentation.create', $project));
         }
 
+        $version = $documentation->latestVersion();
+        //Name und Überschrift aller Abschnitte dieser Version
+        $availableSections = DB::table('versions')
+            ->join('sections_versions', 'versions.id', '=', 'sections_versions.version_id')
+            ->join('sections', 'sections_versions.section_id', '=', 'sections.id')
+            ->select('sections.name', 'sections.heading')
+            ->where('versions.id', $version->id)
+            ->orderBy('sections.heading')
+            ->get()
+            ->all();
+
         return view('abschlussprojekt.dokumentation.index', [
             'documentation' => $documentation,
             'version' => $documentation->latestVersion(),
             'disable' => app()->user->isNot($documentation->lockedBy),
+            'availableImages' => array_map(function($val) {
+                    return Storage::disk('public')->url($val);
+                }, app()->user->getImageFiles()),
+            'availableSections' => $availableSections,
         ]);
     }
 

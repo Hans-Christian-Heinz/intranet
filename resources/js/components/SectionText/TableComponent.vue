@@ -6,8 +6,8 @@
             <tr v-for="(row, i) in table.rows">
                 <td class="flex-column">
                     <div>
-                        <input type="checkbox" :id="'is_header_' + i" v-model="row.is_header"/>
-                        <label :for="'is_header_' + i">Kopfzeile</label>
+                        <input type="checkbox" :id="name + number + 'table_is_header_' + i" v-model="row.is_header"/>
+                        <label :for="name + number + 'table_is_header_' + i">Kopfzeile</label>
                     </div>
                     <a href="#" @click.prevent="removeRow(i)" class="text-danger">Zeile entfernen</a>
                 </td>
@@ -29,7 +29,7 @@
 </template>
 <script>
 export default {
-    props: ["val"],
+    props: ["val", "name", "number"],
 
     data() {
         return {
