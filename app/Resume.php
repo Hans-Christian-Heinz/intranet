@@ -8,7 +8,7 @@ class Resume extends Model
 {
     public const DATATYPES = ["png", "jpg", "jpeg"];
 
-    protected $fillable = ["user_id", "data", "passbild", "signature", "pb_datatype", "sig_datatype"];
+    protected $fillable = ["user_id", "data",];
 
     public function user()
     {

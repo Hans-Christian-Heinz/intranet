@@ -225,109 +225,10 @@
             </div>
         </div>
 
-        <div class="resume-card shadow-sm mb-3">
-            <a href="#" class="resume-card-title" @click.prevent="toggle(cards.passbild)">
-                <span>Passbild</span>
-                <span class="resume-card-icon">
-                    <template v-if="cards.passbild.collapsed">
-                        <svg class="bi bi-caret-up" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" d="M3.204 11L8 5.519 12.796 11H3.204zm-.753-.659l4.796-5.48a1 1 0 011.506 0l4.796 5.48c.566.647.106 1.659-.753 1.659H3.204a1 1 0 01-.753-1.659z" clip-rule="evenodd"/>
-                        </svg>
-                    </template>
-                    <template v-else>
-                        <svg class="bi bi-caret-down" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" d="M3.204 5L8 10.481 12.796 5H3.204zm-.753.659l4.796 5.48a1 1 0 001.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 00-.753 1.659z" clip-rule="evenodd"/>
-                        </svg>
-                    </template>
-                </span>
-            </a>
-
-
-            <!-- Passbild body -->
-            <div class="resume-card-body" :style="{ display: cards.passbild.collapsed ? 'block' : 'none' }">
-                <p>
-                    Hinweis: Das Hinterlegen eines Passbilds in der Datenbank ist optional. Ist kein Passbild hinterlegt,
-                    so kann es jedes Mal vor dem Drucken des Lebenslauf hochgeladen werden. (Wieder optional)
-                    In diesem Falls wird es jedoch nicht in der Datenbank gespeichert.
-                </p>
-                <div class="row">
-                    <div class="col-4">
-                        <div v-if="this.passbild">
-                            <img style="height: 45mm; width: 35mm;" :src="'data:image/png;base64,' + this.passbild" alt="Kein Passbild hochgeladen"/>
-                            <br/>
-                            <a class="btn btn-outline-danger mt-2" data-toggle="modal" href="#deletePassbildModal">Passbild löschen</a>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="custom-file w-100">
-                            <input type="file" id="passbild" name="passbild" class="custom-file-input"
-                                   accept="image/png|image/jpeg" form="formPassbild"/>
-                            <label class="custom-file-label" for="passbild">Passbild</label>
-                        </div>
-                        <span class="small">Maximale Dateigröße: 2MB</span>
-                        <p class="text-danger">{{ pb_error }}</p>
-                    </div>
-                    <div class="col-4">
-                        <form class="form" method="post" id="formPassbild" :action="passbildroute" enctype="multipart/form-data">
-                            <input type="hidden" name="_token" :value="csrf"/>
-                            <input type="submit" class="btn btn-primary float-right" form="formPassbild" value="Hochladen"/>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="resume-card shadow-sm mb-3">
-            <a href="#" class="resume-card-title" @click.prevent="toggle(cards.signature)">
-                <span>Signatur</span>
-                <span class="resume-card-icon">
-                    <template v-if="cards.signature.collapsed">
-                        <svg class="bi bi-caret-up" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" d="M3.204 11L8 5.519 12.796 11H3.204zm-.753-.659l4.796-5.48a1 1 0 011.506 0l4.796 5.48c.566.647.106 1.659-.753 1.659H3.204a1 1 0 01-.753-1.659z" clip-rule="evenodd"/>
-                        </svg>
-                    </template>
-                    <template v-else>
-                        <svg class="bi bi-caret-down" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" d="M3.204 5L8 10.481 12.796 5H3.204zm-.753.659l4.796 5.48a1 1 0 001.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 00-.753 1.659z" clip-rule="evenodd"/>
-                        </svg>
-                    </template>
-                </span>
-            </a>
-
-
-            <!-- signature body -->
-            <div class="resume-card-body" :style="{ display: cards.signature.collapsed ? 'block' : 'none' }">
-                <p>
-                	Hinweis: Das Hinterlegen einer Signatur in der Datenbank ist optional. Ist keine Signatur hinterlegt,
-                	so muss sie jedes Mal vor dem Drucken eines Bewerbungsanschreibens hochgeladen werden. In diesem Fall
-                	wird sie jedoch nicht in der Datenbank gespeichert.
-                </p>
-                <div class="row">
-                    <div class="col-4">
-                        <div v-if="this.signature">
-                            <img height="60" width="350" :src="'data:image/png;base64,' + this.signature" alt="Keine Signatur hochgeladen"/>
-                            <br/>
-                            <a class="btn btn-outline-danger mt-2" data-toggle="modal" href="#deleteSignatureModal">Signatur löschen</a>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="custom-file w-100">
-                            <input type="file" id="signature" name="signature" class="custom-file-input"
-                                   accept="image/png|image/jpeg" form="formSignature"/>
-                            <label class="custom-file-label" for="signature">Signatur</label>
-                        </div>
-                        <span class="small">Maximale Dateigröße: 2MB</span>
-                        <p class="text-danger">{{ sig_error }}</p>
-                    </div>
-                    <div class="col-4">
-                        <form class="form" method="post" id="formSignature" :action="signatureroute" enctype="multipart/form-data">
-                            <input type="hidden" name="_token" :value="csrf"/>
-                            <input type="submit" class="btn btn-primary float-right" form="formSignature" value="Hochladen"/>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <p>
+            Beachten Sie: Beim Drucken des Lebenslaufs können Sie ein Passbild sowie eine Signatur hochladen, wenn  Sie möchten.
+            Diese (Bild-)Dateien werden von dieser Applikation nicht gespeichert.
+        </p>
 
         <div class="form-group d-flex">
             <a class="btn btn-outline-primary ml-auto" data-toggle="modal" href="#formatPdf">Drucken</a>
@@ -337,7 +238,7 @@
 
 <script>
 export default {
-    props: ["user", "resumedata", "printroute", "passbildroute", "signatureroute", "passbild", "signature", "sig_error", "pb_error"],
+    props: ["user", "resumedata", "printroute"],
 
     data() {
         return {
@@ -346,8 +247,6 @@ export default {
                 education: { collapsed: false },
                 skills: { collapsed: false },
                 career: { collapsed: false },
-                passbild: { collapsed: false},
-                signature: { collapsed: false}
             },
 
             resume: {
@@ -377,13 +276,6 @@ export default {
     },
 
     mounted() {
-        if (this.sig_error) {
-            this.cards.signature.collapsed = true;
-        }
-        if (this.pb_error) {
-            this.cards.passbild.collapsed = true;
-        }
-
         axios.get(`/bewerbungen/resumes/${this.user.id}`)
             .then(response => response.data)
             .then(data => {

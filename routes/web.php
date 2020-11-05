@@ -192,10 +192,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post("/resumes/print", "ResumeController@print")->name("resumes.print");
         Route::post("/resumes/{user}", "ResumeController@store")->name("resumes.store");
         Route::get("/resumes/{user}", "ResumeController@show")->name("resumes.show");
-        Route::post("/resumes/{user}/passbild", "ResumeController@uploadPassbild")->name("resumes.uploadPassbild");
-        Route::delete("/resumes/{user}/passbild", "ResumeController@deletePassbild")->name("resumes.deletePassbild");
-        Route::post("/resumes/{user}/signature", "ResumeController@uploadSignature")->name("resumes.uploadSignature");
-        Route::delete("/resumes/{user}/signature", "ResumeController@deleteSignature")->name("resumes.deleteSignature");
 
         // Application Routes
         Route::get("/applications", "ApplicationController@index")->name("applications.index");

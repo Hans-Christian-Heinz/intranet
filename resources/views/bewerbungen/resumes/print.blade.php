@@ -107,8 +107,10 @@
     </tbody>
 </table>
 
-<img style="margin-top: 10mm" height="60" width="350" src="{{ storage_path('app/temp/' . $format['signature']) }}" alt="Keine Signatur hochgeladen"/>
+@if($format['signature'])
+    <img style="margin-top: 10mm" height="60" width="350" src="{{ storage_path('app/temp/' . $format['signature']) }}" alt="Keine Signatur hochgeladen"/>
+@endif
 
-<p>{{ $content->personal->name }}, Winnenden, den {{ Carbon\Carbon::now()->format("d.m.Y") }}</p>
+<p @unless($format['signature']) style="margin-top: 60px;"  @endunless>{{ $content->personal->name }}, Winnenden, den {{ Carbon\Carbon::now()->format("d.m.Y") }}</p>
 
 </body>

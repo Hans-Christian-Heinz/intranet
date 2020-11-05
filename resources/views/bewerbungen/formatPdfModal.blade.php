@@ -62,7 +62,7 @@
                             </td>
                         </tr>
                         {{-- Beim Drucken von Lebensläufen kann ggf noch ein Passbild hochgeladen werden. --}}
-                        @if(request()->is("bewerbungen/resumes*") && $passbild === false)
+                        @if(request()->is("bewerbungen/resumes*"))
                             <tr>
                                 <th colspan="2" class="text-center">Passbild hochladen</th>
                             </tr>
@@ -85,19 +85,19 @@
                                 </td>
                             </tr>
                         @endif
-                        {{-- Beim Drucken von Bewerbungsanschreiben muss ggf noch eine Signatur hochgeladen werden --}}
-                        @if((request()->is("bewerbungen/resumes*") || request()->is("bewerbungen/applications*")) && $signature === false)
+                        {{-- Beim Drucken von Bewerbungsanschreiben und Lebensläufen kann ggf noch eine Signatur hochgeladen werden --}}
+                        @if((request()->is("bewerbungen/resumes*") || request()->is("bewerbungen/applications*")))
                         	<tr>
                         		<th colspan="2" class="text-center">Signatur hochladen</th>
                         	</tr>
                         	<tr>
-                        		<td colspan="2">Beachten Sie: Die Signatur wird nicht gespeichert.</td>
+                        		<td colspan="2">Beachten Sie: Die Signatur wird nicht gespeichert.<br/>Die Signatur muss nicht hochgeladen werden.</td>
                         	</tr>
                         	<tr>
                         		<td colspan="2">
                         			<div class="custom-file">
                                 		<input type="file" id="signature" name="signature" class="custom-file-input"
-                                       		accept="image/png|image/jpeg" form="format_pdf" required/>
+                                       		accept="image/png|image/jpeg" form="format_pdf"/>
                                 		<label class="custom-file-label" for="signature">Signatur</label>
                             		</div>
                                     <span class="small">Maximale Dateigröße: 2MB</span>

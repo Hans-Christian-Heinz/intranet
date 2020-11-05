@@ -34,15 +34,15 @@ $(document).ready(function() {
 
         return '' +
             '<div class="d-flex justify-content-between">' +
-                '<p class="w-25">Betriebliche Tätigkeiten</p>' +
+                '<p class="w-25">Betriebliche Tätigkeiten:</p>' +
                 '<p class="w-75">' + wa + "</p>" +
             "</div>" +
             '<div class="d-flex justify-content-between">' +
-                '<p class="w-25">Unterweisungen</p>' +
+                '<p class="w-25">Unterweisungen:</p>' +
                 '<p class="w-75">' + instr + "</p>" +
             "</div>" +
             '<div class="d-flex justify-content-between">' +
-                '<p class="w-25">Berufsschule</p>' +
+                '<p class="w-25">Berufsschule:</p>' +
                 '<p class="w-75">' + school + "</p>" +
             "</div>";
     }

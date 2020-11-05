@@ -15,6 +15,37 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
+                    <!-- todo Stelle Variablen für die Templates zur Verfügung -->
+                    <!--<div class="card mb-5">
+                        <div class="card-header">
+                            <a href="#" @click.prevent="toggle('variables')">Variablen</a>
+                        </div>
+                        <div class="card-body border-bottom" v-show="cards.variables.shown">
+                            <p>
+                                Um eine Variable zu verwenden, geben Sie in einer Vorlage <i>##(variableName)</i> ein.<br/>
+                                Um einen Standardwert einzugeben, der von einer konkreten Bewerbung abhängt, geben Sie
+                                im Feld Standardwert <i>##(property)</i> ein, wobei <i>property</i> ein Feld
+                                eines Application-Objekts ist. (Bsp. Firmenname: <i>##(.company.name)</i>
+                            </p>
+                        </div>
+                        <div class="card-body" v-show="cards.variables.shown">
+                            <div class="d-flex justify-content-between" v-for="(v, i) in variables">
+                                <div style="width: 40%;">
+                                    <label :for="'variableName' + i">Variablenname</label>
+                                    <input :id="'variableName' + i" type="text" class="form-control" v-model="v.name"/>
+                                </div>
+                                <div style="width: 40%;">
+                                    <label :for="'variableStd' + i">Standardwert</label>
+                                    <input :id="'variableStd' + i" type="text" class="form-control" v-model="v.std"/>
+                                </div>
+                                <div style="width: 10%;">
+                                    <a href="#" class="btn text-danger btn-link col-1"
+                                       style="font-size: 1.2rem" @click.prevent="removeVariable(i)">&#128465;</a>
+                                </div>
+                            </div>
+                            <a href="#" @click.prevent="addVariable()">Neue Variable</a>
+                        </div>
+                    </div>-->
                     <!-- Bearbeite Vorlagen für individuelle Abschnitte -->
                     <div class="card" v-for="temp in orderedTpls" :key="temp['changed'] + temp['name'] + '_card'">
                         <div class="card-header">
@@ -142,8 +173,10 @@ export default {
 		return {
 			templates: [],
             cards: {
+			    variables: {shown: false},
                 addSection: {shown: false}
             },
+            variables: [],
             recentlySaved: false,
             saveFailed: false,
             nameError: "",
@@ -365,6 +398,17 @@ export default {
 
                 this.templates.splice(index, 1);
             }
+        },
+
+        addVariable() {
+            this.variables.push({
+                name: "",
+                std: ""
+            });
+        },
+
+        removeVariable(i) {
+            this.variables.splice(i, 1);
         },
 
         //Ändere die Reihenfolge der Abschnitte (Verschiebe einen Abschnitt und passe die Nummer der restlichen Abschnitte an)
