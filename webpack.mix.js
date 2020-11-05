@@ -20,6 +20,7 @@ mix.js('resources/js/app.js', 'public/js')
     .scripts([
         'resources/js/benutzerfreundlichkeit.js',
         'resources/js/generatePlaceholders.js',
+        'resources/js/popover.js',
     ], 'public/js/benutzerfreundlichkeit.js');
 
 

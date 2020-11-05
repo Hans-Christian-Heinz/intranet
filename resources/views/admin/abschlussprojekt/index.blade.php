@@ -12,11 +12,11 @@
                     </div>
                     @if($projects)
                         {{-- Navigationsleiste --}}
-                        <ul class="nav nav-pills" id="projectsTab" role="tablist">
+                        <ul class="nav nav-tabs" id="projectsTab" role="tablist">
                             @foreach($projects as $jahr => $fachrichtungen)
                                 <li class="nav-item">
                                     {{-- Beim Vergleich zweier Versionen werden Unterschiede hervorgehoben --}}
-                                    <a class="nav-link @if($loop->first) active @endif"
+                                    <a class="nav-link @if($loop->last) active @endif"
                                        aria-selected="false" role="tab" id="projects_{{ $jahr }}_tab" data-toggle="tab"
                                        aria-controls="projects_{{ $jahr }}" href="#projects_{{ $jahr }}">
                                         @if($jahr == "0")

@@ -31,6 +31,8 @@ class AdminProjectController extends Controller
             }
         }
 
+        ksort($projects);
+
         return view('admin.abschlussprojekt.index', compact('projects'));
     }
 }

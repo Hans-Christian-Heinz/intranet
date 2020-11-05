@@ -57,7 +57,8 @@
                             </thead>
                             <tbody>
                             @foreach ($berichtshefte as $berichtsheft)
-                                <tr>
+                                <tr class="wb-popover" data-wb="{{ $berichtsheft }}"
+                                    data-title="{{ $berichtsheft->week->startOfWeek()->format("d.m.Y") }} - {{ $berichtsheft->week->endOfWeek()->format("d.m.Y") }}">
                                     <td class="text-center">{{ $berichtsheft->id }}</td>
                                     <td>{{ $berichtsheft->grade }}</td>
                                     <td class="text-center">{{ $berichtsheft->week->format("Y-W") }}</td>

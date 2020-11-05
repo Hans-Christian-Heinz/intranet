@@ -41,11 +41,11 @@
                 {{ $application->company->zip . " " . $application->company->city }}<br>
             </td>
             <td style="text-align: right;">
-                {{ $resume->personal->name }}<br>
-                {{ $resume->personal->address }}<br>
-                {{ $resume->personal->zip . " " . $resume->personal->city }}<br>
-                {{ $resume->personal->phone }}<br>
-                {{ $resume->personal->email }}
+                {{ $resume->personal->name ?:'' }}<br>
+                {{ $resume->personal->address ?:'' }}<br>
+                {{ $resume->personal->zip ?:'' }}  {{ $resume->personal->city ?:'' }}<br>
+                {{ $resume->personal->phone ?:'' }}<br>
+                {{ $resume->personal->email ?:'' }}
             </td>
         </tr>
         </tbody>
