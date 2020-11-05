@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\TplVersion;
 use Illuminate\Http\Request;
 use App\ApplicationTemplate;
 use App\KeywordTemplate;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 class AdminTemplateController extends Controller
 {
     public function index() {
-        if (ApplicationTemplate::count() === 0) {
+        if (TplVersion::count() === 0) {
             $this->restoreDefaultNew();
         }
         return view('admin.bewerbungen.templates.index');
@@ -19,16 +20,18 @@ class AdminTemplateController extends Controller
     public function updateNew(Request $request) {
         $request->validate([
             'templates' => 'required',
+            'variables' => 'nullable|array',
         ]);
 
-        $version = DB::table('application_tpls')->max('version') + 1;
+        //$version = DB::table('application_tpls')->max('version') + 1;
+        $tplVersion = TplVersion::create();
         $success = true;
 
         foreach($request->templates as $temp) {
             //Damit das Format passt
             $tpl = json_decode(json_encode($temp), true);
             $at = new ApplicationTemplate([
-                'version' => $version,
+                //'version' => $version,
                 'fix' => $tpl['fix'],
                 'is_heading' => $tpl['is_heading'],
                 'choose_keywords' => $tpl['choose_keywords'],
@@ -37,7 +40,8 @@ class AdminTemplateController extends Controller
                 'tpls' => $tpl['tpls'],
                 'name' => $tpl['name'],
             ]);
-            $success = $success && $at->save();
+            //$success = $success && $at->save();
+            $success = $success && $tplVersion->applicationTpls()->save($at);
 
             //Schlüsselworte falls vorhanden
             foreach($tpl['keywords'] as $keyword) {
@@ -52,6 +56,13 @@ class AdminTemplateController extends Controller
                 ]);
                 $success = $success && $at->keywords()->save($kt);
             }
+        }
+        foreach ($request->variables as $v) {
+            $var = json_decode(json_encode($v), true);
+            $success = $success && $tplVersion->tplVariables()->create([
+                'name' => $var['name'],
+                'standard' => $var['standard'],
+            ]);
         }
 
         return $success;
@@ -89,9 +100,10 @@ class AdminTemplateController extends Controller
      * @return unknown
      */
     public function delete($tpl) {
-        ApplicationTemplate::where('version', $tpl)->delete();
+        TplVersion::where('id', $tpl)->delete();
+        //ApplicationTemplate::where('version', $tpl)->delete();
         //Falls später eine andere Vorlage mit der gleichen Versionsnummer erstellt wird.
-        DB::table('applications')->where('tpl_version', $tpl)->update(['tpl_version' => null]);
+        //DB::table('applications')->where('tpl_version', $tpl)->update(['tpl_version' => null]);
         return redirect()->back()->with('status', 'Die Version wurden erfolgreich gelöscht.');
     }
 
@@ -102,7 +114,7 @@ class AdminTemplateController extends Controller
      */
     public function deleteUnused() {
         //DELETE FROM application_tpls WHERE NOT version IN (SELECT DISTINCT tpl_version FROM applications);
-        ApplicationTemplate::whereNotIn('version', function ($query) {
+        Tplversion::whereNotIn('id', function ($query) {
             $query->selectRaw('distinct tpl_version')
                 ->from('applications');
         })->delete();
@@ -115,8 +127,10 @@ class AdminTemplateController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function deleteAll() {
-        $max = DB::table('application_tpls')->max('version');
-        ApplicationTemplate::where('version', '<>', $max)->delete();
+        //$max = DB::table('application_tpls')->max('version');
+        //ApplicationTemplate::where('version', '<>', $max)->delete();
+        $max = DB::table('tpl_versions')->max('updated_at');
+        TplVersion::where('updated_at', '<>', $max)->delete();
         return redirect()->back()->with('status', 'Die Versionen wurden erfolgreich gelöscht.');
     }
 }

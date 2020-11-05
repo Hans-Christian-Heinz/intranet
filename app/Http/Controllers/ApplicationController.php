@@ -6,6 +6,7 @@ use App\Application;
 use App\ApplicationTemplate;
 use App\Company;
 use App\Http\Requests\PdfRequest;
+use App\TplVariable;
 use Illuminate\Http\Request;
 use Mpdf\Mpdf;
 use Illuminate\Support\Facades\DB;
@@ -157,5 +158,12 @@ class ApplicationController extends Controller
             $version = DB::table('application_tpls')->max('version');
         }
         return ApplicationTemplate::where('version', $version)->orderBy('number')->get()->toArray();
+    }
+
+    public function variables(int $version = null) {
+        if (is_null($version)) {
+            $version = DB::table('application_tpls')->max('version');
+        }
+        return TplVariable::where('version', $version)->get()->toArray();
     }
 }

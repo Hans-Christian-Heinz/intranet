@@ -32,12 +32,14 @@
                     </form>
                 </td>
                 <td>
-                    <a class="btn btn-secondary" href="{{ route('admin.abschlussprojekt.antrag.index', ['project' => $project]) }}">
+                    <a class="btn btn-secondary" @isset($project->proposal) href="{{ route('admin.abschlussprojekt.antrag.index', $project) }}"
+                       @else href="{{ route('admin.abschlussprojekt.antrag.create', $project) }}" @endisset>
                         Antrag
                     </a>
                 </td>
                 <td>
-                    <a class="btn btn-secondary" href="{{ route('admin.abschlussprojekt.dokumentation.index', ['project' => $project]) }}">
+                    <a class="btn btn-secondary" @isset($project->documentation) href="{{ route('admin.abschlussprojekt.dokumentation.index', $project) }}"
+                       @else href="{{ route('admin.abschlussprojekt.dokumentation.create', $project) }}" @endisset>
                         Dokumentation
                     </a>
                 </td>

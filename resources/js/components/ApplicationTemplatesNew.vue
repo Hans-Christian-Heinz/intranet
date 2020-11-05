@@ -15,8 +15,8 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <!-- todo Stelle Variablen für die Templates zur Verfügung -->
-                    <!--<div class="card mb-5">
+                    <!-- Stelle Variablen für die Templates zur Verfügung -->
+                    <div class="card mb-5">
                         <div class="card-header">
                             <a href="#" @click.prevent="toggle('variables')">Variablen</a>
                         </div>
@@ -25,27 +25,41 @@
                                 Um eine Variable zu verwenden, geben Sie in einer Vorlage <i>##(variableName)</i> ein.<br/>
                                 Um einen Standardwert einzugeben, der von einer konkreten Bewerbung abhängt, geben Sie
                                 im Feld Standardwert <i>##(property)</i> ein, wobei <i>property</i> ein Feld
-                                eines Application-Objekts ist. (Bsp. Firmenname: <i>##(.company.name)</i>
+                                eines Application-Objekts ist. (Bsp. Firmenname: <i>##(company.name)</i>)
                             </p>
                         </div>
                         <div class="card-body" v-show="cards.variables.shown">
-                            <div class="d-flex justify-content-between" v-for="(v, i) in variables">
+                            <div class="my-2 d-flex justify-content-between" v-for="(v, i) in variables">
                                 <div style="width: 40%;">
-                                    <label :for="'variableName' + i">Variablenname</label>
-                                    <input :id="'variableName' + i" type="text" class="form-control" v-model="v.name"/>
+                                    <label class="d-inline-block">Variablenname</label>
+                                    <span class="form-control disabled d-block">{{ v.name }}</span>
                                 </div>
                                 <div style="width: 40%;">
                                     <label :for="'variableStd' + i">Standardwert</label>
-                                    <input :id="'variableStd' + i" type="text" class="form-control" v-model="v.std"/>
+                                    <input :id="'variableStd' + i" type="text" class="form-control" v-model="v.standard"/>
                                 </div>
                                 <div style="width: 10%;">
                                     <a href="#" class="btn text-danger btn-link col-1"
                                        style="font-size: 1.2rem" @click.prevent="removeVariable(i)">&#128465;</a>
                                 </div>
                             </div>
-                            <a href="#" @click.prevent="addVariable()">Neue Variable</a>
+                            <hr>
+                            <div class="d-flex justify-content-between">
+                                <div style="width: 40%">
+                                    <label for="variableName">Variablenname</label>
+                                    <input type="text" class="form-control" id="variableName"/>
+                                    <span class="invalid-feedback d-block" v-show="variableError" :key="variableError" role="alert">
+                                        <strong>{{ variableError }}</strong>
+                                    </span>
+                                </div>
+                                <div style="width: 40%">
+                                    <label class="d-block invisible">test</label>
+                                    <button class="btn btn-outline-primary" @click.prevent="addVariable()">Variable hinzufügen</button>
+                                </div>
+                            </div>
                         </div>
-                    </div>-->
+                    </div>
+
                     <!-- Bearbeite Vorlagen für individuelle Abschnitte -->
                     <div class="card" v-for="temp in orderedTpls" :key="temp['changed'] + temp['name'] + '_card'">
                         <div class="card-header">
@@ -180,6 +194,7 @@ export default {
             recentlySaved: false,
             saveFailed: false,
             nameError: "",
+            variableError: "",
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             fixHeader: false
 		};
@@ -221,6 +236,11 @@ export default {
                     });
                 });
             });
+		//Lese nun die Variablen aus der Datenbank aus
+        axios.get(`/bewerbungen/applications/variables`)
+            .then(response => response.data).then(data => {
+            this.variables = data;
+        });
     },
 
     methods: {
@@ -401,9 +421,25 @@ export default {
         },
 
         addVariable() {
+            let app = this;
+            let name = document.getElementById('variableName').value;
+            this.variableError = "";
+
+            if (!name || !name.trim()) {
+                this.variableError = "Bitte geben Sie einen eindeutigen Vairablennamen ein.";
+            }
+            this.variables.forEach(function(v) {
+                if (name === v.name) {
+                    app.variableError = "Es existiert bereits eine Variable mit dem eingegebenen Namen.";
+                }
+            });
+            if (this.variableError) {
+                return;
+            }
+
             this.variables.push({
-                name: "",
-                std: ""
+                name: name,
+                standard: ""
             });
         },
 
@@ -482,7 +518,7 @@ export default {
         save() {
             let route = this.save_route;
 
-            axios.post(route, {templates: this.templates, _method: "patch"})
+            axios.post(route, {templates: this.templates, variables: this.variables, _method: "patch"})
                 .then(response => response.data)
                 .then(data => {
                     if (data === false) {

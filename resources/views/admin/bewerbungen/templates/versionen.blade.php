@@ -53,7 +53,7 @@
 
 @push('modals')
 	@foreach($versionen as $v)
-		<x-modal id="deleteTplModal{{ $v->version }}" title="Version l�schen">
+		<x-modal id="deleteTplModal{{ $v->version }}" title="Version löschen">
             <x-slot name="body">
                 <p class="text-center py-3">
 					Beachten Sie: Nachdem eine Version gelöscht wurde, können auf ihr basierende Dokumente nur noch eingeschränkt
@@ -72,7 +72,7 @@
         </x-modal>
 	@endforeach
 
-	<x-modal id="deleteUnneededTplsModal" title="Versionen l�schen">
+	<x-modal id="deleteUnneededTplsModal" title="Versionen löschen">
             <x-slot name="body">
                 <p class="text-center py-3">
 					Sind Sie sicher, dass Sie alle Vorlagen löschen wollen, auf denen keine Dokumente basieren?
@@ -89,7 +89,7 @@
             </x-slot>
         </x-modal>
 
-        <x-modal id="deleteTplsModal" title="Versionen l�schen">
+        <x-modal id="deleteTplsModal" title="Versionen löschen">
             <x-slot name="body">
                 <p class="text-center py-3">
 					Sind Sie sicher, dass Sie alle Versionen außer der neusten löschen wollen?<br/>

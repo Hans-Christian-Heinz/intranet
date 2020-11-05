@@ -17,4 +17,8 @@ class Application extends Model
     {
         return $this->belongsTo(Company::class);
     }
+
+    public function tplVersion() {
+        return $this->belongsTo(TplVersion::class, 'tpl_version');
+    }
 }

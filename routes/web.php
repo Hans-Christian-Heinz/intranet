@@ -201,6 +201,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete("/applications/{application}", "ApplicationController@destroy")->name("applications.destroy");
         Route::post("/applications/{application}/printNew", "ApplicationController@showNew")->name("applications.printNew");
         Route::get("/applications/templatesNew/{version?}", "ApplicationController@templatesNew")->name("applications.templatesNew");
+        Route::get("/applications/variables/{version?}", "ApplicationController@variables")->name("applications.variables");
     });
 });
 

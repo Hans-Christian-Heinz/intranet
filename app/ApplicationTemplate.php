@@ -10,7 +10,7 @@ class ApplicationTemplate extends Model
     public $timestamps = false;
 
     protected $table = 'application_tpls';
-    
+
     protected $with = ['keywords'];
     protected $casts = [
         'tpls' => 'array',
@@ -25,20 +25,22 @@ class ApplicationTemplate extends Model
         'version',
         'name',
     ];
-    
+
     private static $at_table = 'application_tpls';
     private static $kw_table = 'keyword_tpls';
-    
+
     /**
      * Hinterlege in der Datenbank die Standardwerte (mit der höchsten Versionsnummer)
      */
     public static function restoreDefault() {
         $table = self::$at_table;
         $kw_table = self::$kw_table;
-        
-        $version = DB::table($table)->max('version');
-        is_null($version) ? $version = 0 : $version++;
-        
+
+        $tplVersion = TplVersion::create();
+        //$version = DB::table($table)->max('version');
+        //is_null($version) ? $version = 0 : $version++;
+        $version = $tplVersion->id;
+
         DB::table($table)->insert([
             ['name' => 'heading', 'heading' => 'Überschrift', 'version' => $version, 'fix' => true, 'is_heading' => true, 'choose_keywords' => false, 'tpls' => '["Bewerbung auf die Stelle als Musterstelle", "Bewerbung auf die ausgeschriebene Stelle 12345"]', 'number' => 0,],
             ['name' => 'greeting', 'heading' => 'Anrede', 'version' => $version, 'fix' => true, 'is_heading' => false, 'choose_keywords' => false, 'tpls' => '["Sehr geehrte Damen und Herren,", "Sehr geehrte Frau Musterfrau,", "Sehr geehrter Herr Mustermann,"]', 'number' => 1,],
@@ -48,16 +50,20 @@ class ApplicationTemplate extends Model
             ['name' => 'workAndSkills', 'fix' => false, 'is_heading' => false, 'choose_keywords' => true, 'heading' => null, 'tpls' => '["In eine neue Aufgabe bei Ihnen kann ich verschiedene Stärken einbringen. So bin ich meine Aufgaben sehr", "angegangen. Mit mir gewinnt Ihr Unternehmen einen Mitarbeiter, der", "ist. Außerdem habe ich in früheren Projekten insbesondere ausgeprägte Kommunikationsstärke, hohe Lernbereitschaft und viel Kreativität unter Beweis stellen können."]', 'version' => $version, 'number' => 5,],
             ['name' => 'ending', 'fix' => true, 'is_heading' => false, 'choose_keywords' => false, 'heading' => 'Schlusswort', 'version' => $version, 'tpls' => '["Konnte ich Sie mit dieser Bewerbung überzeugen? Ich bin für einen Einstieg zum nächstmöglichen Zeitpunkt verfügbar. Einen vertiefenden Eindruck gebe ich Ihnen gerne in einem persönlichen Gespräch. Ich freue mich über Ihre Einladung!", "Ich danke Ihnen für das Interesse an meiner Bewerbung. Zum nächstmöglichen Zeitpunkt bin ich verfügbar. Wenn Sie mehr von mir erfahren möchten, freue ich mich über eine Einladung zum Vorstellungsgespräch.", "Ich hoffe, dass Sie einen ersten Eindruck von mir gewinnen konnten. Ein Einstieg zum nächstmöglichen Zeitpunkt ist für mich möglich. Ich freue mich, weitere Details und offene Fragen in einem persönlichen Gespräch auszutauschen."]', 'number' => 6,],
         ]);
-        
+
         $ws_id = DB::table($table)->select('id')->where('version', $version)->where('name', 'workAndSkills')->first()->id;
-        
+
         DB::table($kw_table)->insert([
             ['tpl_id' => $ws_id, 'number' => 0, 'heading' => 'Was zeichnet deine Arbeitsweise aus?', 'conjunction' => 'und', 'tpls' => '["zuverlässig", "verantwortungsbewusst", "präzise", "engagiert", "gewissenhaft", "ausdauernd"]',],
             ['tpl_id' => $ws_id, 'number' => 1, 'heading' => 'Welche Begriffe bezeichnen am besten deine persönlichen Kompetenzen?', 'conjunction' => 'und', 'tpls' => '["flexibel", "motiviert", "teamorientiert", "belastbar", "selbsständig", "aufgeschlossen", "begeisterungsfähig"]',],
         ]);
     }
-    
+
     public function keywords() {
         return $this->hasMany(KeywordTemplate::class, 'tpl_id')->orderBy('number');
+    }
+
+    public function tplVersion() {
+        return $this->belongsTo(TplVersion::class, 'version');
     }
 }

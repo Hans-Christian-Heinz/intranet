@@ -23,7 +23,10 @@ class DocumentationController extends Controller
 
     public function index(Project $project) {
         $documentation = $project->documentation()->with('comments')->first();
+        $user = app()->user;
         $this->authorize('index', $documentation);
+        /*abort_if(! ($user->is($documentation->project->user) || $user->is_admin),
+            403, 'Sofern Sie kein Ausbilder sind, dürfen Sie nur Ihre eigenen Dokumente ansehen.');*/
 
         if (! $documentation) {
             return redirect(route('abschlussprojekt.dokumentation.create', $project));
