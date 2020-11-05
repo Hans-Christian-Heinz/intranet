@@ -17,7 +17,7 @@
         </div>
         @if (App\ApplicationTemplate::where('version', $application->tpl_version)->count() > 0)
             <application-new route="{{ route("bewerbungen.applications.update", $application) }}" version="{{ $application->tpl_version }}"
-                             :user="{{ app()->user }}" :saved="{{ $application->body ?: json_encode([]) }}"></application-new>
+                             application="{{ $application }}" :user="{{ app()->user }}" :saved="{{ $application->body ?: json_encode([]) }}"></application-new>
         @else
             <p class="text-center"><b>
                 Die Vorlage, auf der dieses Anschreiben basiert, existiert nicht mehr.

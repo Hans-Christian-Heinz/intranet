@@ -39,6 +39,15 @@
 			<div class="col-md-4">
 				<div class="card">
 					<div class="card-body" style="max-height: 70vh; overflow-y: scroll;">
+                        <div class="form-group">
+                            <h5>Variablen</h5>
+                            <div v-for="(v, i) in variables">
+                                <label :for="'variable' + i">{{ v.name }}</label>
+                                <input :id="'variable' + i" type="text" class="form-control" v-model="v.value"/>
+                            </div>
+                        </div>
+
+                        <hr>
 
 						<div class="form-group" v-for="(tpl) in this.templates">
 							<div v-if="tpl.choose_keywords">
@@ -142,11 +151,12 @@
 
 <script>
 export default {
-	props: ["route", "saved", "user", "version"],
+	props: ["route", "saved", "user", "version", "application"],
 
 	data () {
 		return {
 			templates: [],
+            variables: [],
 			data: {},
             attachments: {
 			    values: [],
@@ -167,7 +177,7 @@ export default {
 	},
 
 	mounted() {
-		//Lese zunächst die Templates aus der Datenbank aus
+        //Lese zunächst die Templates aus der Datenbank aus
 		axios.get(`/bewerbungen/applications/templatesNew/` + this.version)
             .then(response => response.data).then(data => {
 				this.templates = data;
@@ -205,6 +215,28 @@ export default {
 					}
 				});
             });
+		//Lese nun die Variablen aus der Datenbank aus
+        //Lese nun die Variablen aus der Datenbank aus
+        axios.get(`/bewerbungen/applications/variables`)
+            .then(response => response.data).then(data => {
+            this.variables = data;
+            const app = this;
+            this.variables.forEach(function (v) {
+                //Format ##(property) wird aufgelöst; die entsprechende Eigenschaft von application (vgl. props) wird übernommen
+                if (v.standard.substr(0, 3) === "##(") {
+                    let help = v.standard.substr(3, v.standard.length - 4);
+                    let properties = help.split('.');
+                    let res = JSON.parse(app.application);
+                    for (let i = 0; i < properties.length; i++) {
+                        res = res[properties[i]];
+                    }
+                    v.value = res;
+                }
+                else {
+                    v.value = v.standard;
+                }
+            });
+        });
 
 		if (this.saved.attachments) {
 		    this.attachments.values = this.saved.attachments;
