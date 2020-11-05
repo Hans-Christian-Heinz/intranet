@@ -153,5 +153,7 @@ select#grade {
 }
 
 .popover {
-    max-width: 100% !important;
+    max-width: 100%;
+    min-width: 50em;
+    width: 70%;
 }

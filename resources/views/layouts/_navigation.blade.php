@@ -51,7 +51,7 @@
                     </li>
                     <li class="nav-item {{ (request()->is('rules')) ? 'active' : '' }}">
                         <a href="{{ route("rules.index") }}"
-                           class="nav-link @if(is_null(app()->user->accepted_rules_at)) text-danger @endif">Werkstattregeln</a>
+                           class="nav-link @if(! app()->user->hasAcceptedRules()) text-danger @endif">Werkstattregeln</a>
                     </li>
                     <li class="nav-item {{ (request()->is('speiseplan')) ? 'active' : '' }}">
                         <a class="nav-link" target="_blank" href="{{ route("speiseplan") }}">Speiseplan</a>

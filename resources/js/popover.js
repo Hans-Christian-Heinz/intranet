@@ -7,7 +7,7 @@ $(document).ready(function() {
     const wbTpl = '' +
             '<div class="popover" style="min-width: 100em; width: 100em;" role="tooltip">' +
                 '<div class="arrow"></div>' +
-                '<h3 class="popover-header"></h3>' +
+                '<h3 class="popover-header text-center"></h3>' +
                 '<div class="popover-body"></div>' +
             '</div>';
 
@@ -15,8 +15,7 @@ $(document).ready(function() {
         placement: "bottom",
         content: wbContent,
         html: true,
-        template: wbTpl,
-        container: "body"
+        template: wbTpl
     });
     wbPopover.hover(
         function() {

@@ -60,7 +60,7 @@
 								<div class="input-group">
 									<input type="text" class="form-control" v-model="data[tpl.name].text">
 									<div class="input-group-append">
-										<button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<!--<button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 											<span class="sr-only">Toggle Dropdown</span>
 										</button>
 										<div class="dropdown-menu" style="width: 100%; overflow-y: scroll; max-height:30rem;">
@@ -68,9 +68,39 @@
 												v-for="temp in tpl.tpls" @click.prevent="useTemplate(tpl.name, temp)">
 												<span style="word-wrap: break-word; white-space: normal;">{{ temp }}</span>
 											</a>
-										</div>
+										</div>-->
+                                        <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="modal" :data-target="'#chooseTplModal' + tpl.name">
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
 									</div>
 								</div>
+
+                                <!-- modales Fenster zur Auswahl eines Templates -->
+                                <div class="modal fade" :id="'chooseTplModal' + tpl.name" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Template auswählen</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <ul style="list-style-type: none;">
+                                                    <li>
+                                                        <a class="dropdown-item" style="border-bottom: solid 1px grey" href="#"
+                                                           v-for="temp in tpl.tpls" @click.prevent="useTemplate(tpl.name, temp)">
+                                                            <span style="word-wrap: break-word; white-space: normal;">{{ temp }}</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-link text-secondary" data-dismiss="modal">Abbrechen</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 							</div>
 
 							<hr>
