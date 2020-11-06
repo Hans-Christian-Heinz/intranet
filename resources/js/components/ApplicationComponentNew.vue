@@ -169,16 +169,9 @@ export default {
 		}
 	},
 
-	created() {
-        //lodash throttle: Methode wird nicht öfter als alle 100ms aufgerufen
-        //Wenn sie davor aufgerufen wird, wird das Ergebnis nicht neu berechnet
-        this.handleThrottledScroll = _.throttle(this.handleScroll, 100);
-        window.addEventListener('scroll', this.handleThrottledScroll);
-	},
-
 	mounted() {
         //Lese zunächst die Templates aus der Datenbank aus
-		axios.get(`/bewerbungen/applications/templatesNew/` + this.version)
+		/*axios.get(`/bewerbungen/applications/templatesNew/` + this.version)
             .then(response => response.data).then(data => {
 				this.templates = data;
 
@@ -214,9 +207,8 @@ export default {
 						};
 					}
 				});
-            });
-		//Lese nun die Variablen aus der Datenbank aus
-        //Lese nun die Variablen aus der Datenbank aus
+            });*/
+        //Lese die Variablen aus der Datenbank aus
         axios.get(`/bewerbungen/applications/variables`)
             .then(response => response.data).then(data => {
             this.variables = data;
@@ -236,7 +228,52 @@ export default {
                     v.value = v.standard;
                 }
             });
-        });
+        })
+            //lese nun die Templates aus der Datenbank aus
+            .then(() => axios.get(`/bewerbungen/applications/templatesNew/` + this.version)
+                .then(response => response.data).then(data => {
+                    this.templates = data;
+                    const variables = this.variables;
+
+                    //Hinterlege einen Wert für den Körper des Bewerbungsanschreibens
+                    this.templates.forEach(tpl => {
+                        const key = tpl['name'];
+                        if (this.saved[key]) {
+                            this.data[key] = this.saved[key];
+                            this.data[key].changed = 0;
+                        }
+                        else {
+                            const is_heading = tpl['is_heading'];
+                            let text;
+                            if(tpl['choose_keywords']) {
+                                let values = [];
+                                for (let i = 0; i < tpl['keywords'].length; i++) {
+                                    values[i] = [];
+                                    //Standardauswahl: die ersten 3 Schlüsselworte
+                                    for (let j = 0; j < Math.min(3, tpl['keywords'][i]['tpls'].length); j++) {
+                                        values[i].push(tpl['keywords'][i]['tpls'][j]);
+                                    }
+                                }
+                                text = this.keywordsText(tpl, values);
+                            }
+                            else {
+                                text = tpl['tpls'][0];
+                            }
+
+                            //Ersetze nun alle Variablen durch ihre Werte dem anzuwendenden Text
+                            variables.forEach(function(v) {
+                                let help = "##(" + v.name.trim() + ")";
+                                text = text.replaceAll(help, v.value.trim());
+                            });
+
+                            this.data[key] = {
+                                is_heading: is_heading,
+                                text: text,
+                                changed: 0
+                            };
+                        }
+                    });
+                }));
 
 		if (this.saved.attachments) {
 		    this.attachments.values = this.saved.attachments;
@@ -244,6 +281,13 @@ export default {
 		else {
 		    this.attachments.values = ['Lebenslauf'];
         }
+	},
+
+	created() {
+        //lodash throttle: Methode wird nicht öfter als alle 100ms aufgerufen
+        //Wenn sie davor aufgerufen wird, wird das Ergebnis nicht neu berechnet
+        this.handleThrottledScroll = _.throttle(this.handleScroll, 100);
+        window.addEventListener('scroll', this.handleThrottledScroll);
 	},
 
 	computed: {
@@ -331,7 +375,14 @@ export default {
 		},
 
 		applyKwText(tpl, values) {
-			this.data[tpl['name']].text = this.keywordsText(tpl, values);
+		    let text = this.keywordsText(tpl, values);
+            //Ersetze nun alle Variablen durch ihre Werte dem anzuwendenden Text
+            this.variables.forEach(function(v) {
+                let help = "##(" + v.name.trim() + ")";
+                text = text.replaceAll(help, v.value.trim());
+            });
+
+			this.data[tpl['name']].text = text;
 			this.data[tpl.name].changed++;
 			//TODO Alternative für forceUpdate suchen
 			this.$forceUpdate();
@@ -348,7 +399,14 @@ export default {
 		//name: Name des Abschnitts
 		//temp anzuwendendes Template
 		useTemplate(name, temp) {
-			this.data[name].text = temp;
+		    let text = temp;
+            //Ersetze nun alle Variablen durch ihre Werte dem anzuwendenden Text
+            this.variables.forEach(function(v) {
+                let help = "##(" + v.name.trim() + ")";
+                text = text.replaceAll(help, v.value.trim());
+            });
+
+			this.data[name].text = text;
 			this.data[name].changed++;
 			//TODO Alternative für forceUpdate suchen
 			this.$forceUpdate();
