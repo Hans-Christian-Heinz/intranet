@@ -48,7 +48,7 @@
 <table style="width: 100%; margin-top: 10px;">
     <tbody>
     <tr>
-        <td>
+        <td style="width: 50%;">
             {{-- Left Side --}}
             <h3 class="heading">Persönliche Daten</h3>
             <hr>
@@ -68,40 +68,86 @@
             <p><strong>geb.</strong></p>
             <p>{{ (new Carbon\Carbon($content->personal->birthday))->format("d.m.Y") }}</p>
 
-            <br><br>
-            <h3 class="heading">Ausbildung</h3>
-            <hr>
-            @foreach ($content->education as $index => $education)
-                <p><strong>{{ $education->time }}</strong></p>
-                <p>{{ $education->description }}</p>
-                @if ($index !== count($content->education) - 1)
-                    <br>
-                @endif
-            @endforeach
+            @if($content->school)
+                <br><br>
+                <h3 class="heading">Schulische Laufbahn</h3>
+                <hr>
+                @foreach ($content->school as $index => $school)
+                    <p><strong>{{ $school->time }}</strong></p>
+                    <p>{{ $school->school }}: {{ $school->abschluss }}</p>
+                    @if ($index !== count($content->education) - 1)
+                        <br>
+                    @endif
+                @endforeach
+            @endif
 
-            <br><br>
-            <h3 class="heading">Kenntnisse & Fähigkeiten</h3>
-            <hr>
-            @foreach ($content->skills as $index => $skill)
-                <p><strong>{{ $skill->title }}</strong></p>
-                <p>{{ $skill->description }}</p>
-                @if ($index !== count($content->skills) - 1)
-                    <br>
-                @endif
-            @endforeach
+
+            @if($content->education)
+                <br><br>
+                <h3 class="heading">Ausbildung</h3>
+                <hr>
+                @foreach ($content->education as $index => $education)
+                    <p><strong>{{ $education->time }}</strong></p>
+                    <p>{{ $education->description }}</p>
+                    @if ($index !== count($content->education) - 1)
+                        <br>
+                    @endif
+                @endforeach
+            @endif
+
+            @if($content->careers)
+                <br><br>
+                <h3 class="heading">Berufliche Laufbahn</h3>
+                <hr>
+                @foreach ($content->careers as $index => $career)
+                    <p><strong>{{ $career->time }}</strong></p>
+                    <p><strong>{{ $career->company }}</strong></p>
+                    <p>{{ $career->description }}</p>
+                    @if ($index !== count($content->skills) - 1)
+                        <br>
+                    @endif
+                @endforeach
+            @endif
         </td>
-        <td valign="top">
+        <td valign="top" style="width: 50%;">
             {{-- Right Side --}}
-            <h3 class="heading">Berufliche Laufbahn</h3>
-            <hr>
-            @foreach ($content->careers as $index => $career)
-                <p><strong>{{ $career->time }}</strong></p>
-                <p><strong>{{ $career->company }}</strong></p>
-                <p>{{ $career->description }}</p>
-                @if ($index !== count($content->skills) - 1)
-                    <br>
-                @endif
-            @endforeach
+            @if($content->internships)
+                <h3 class="heading">Praktika</h3>
+                <hr>
+                @foreach ($content->internships as $index => $internship)
+                    <p><strong>{{ $internship->time }}</strong></p>
+                    <p><strong>{{ $internship->company }}</strong></p>
+                    <p>{{ $internship->description }}</p>
+                    @if ($index !== count($content->skills) - 1)
+                        <br>
+                    @endif
+                @endforeach
+            @endif
+
+            @if($content->skills)
+                <br><br>
+                <h3 class="heading">Kenntnisse & Fähigkeiten</h3>
+                <hr>
+                @foreach ($content->skills as $index => $skill)
+                    <p><strong>{{ $skill->title }}</strong></p>
+                    <p>{{ $skill->description }}</p>
+                    @if ($index !== count($content->skills) - 1)
+                        <br>
+                    @endif
+                @endforeach
+            @endif
+
+            @if($content->interests)
+                <br><br>
+                <h3 class="heading">Interessen</h3>
+                <hr>
+                @foreach ($content->interests as $index => $interest)
+                    <p>{{ $interest->interest }}</p>
+                    @if ($index !== count($content->skills) - 1)
+                        <br>
+                    @endif
+                @endforeach
+            @endif
         </td>
     </tr>
     </tbody>

@@ -233,7 +233,6 @@ export default {
             .then(() => axios.get(`/bewerbungen/applications/templatesNew/` + this.version)
                 .then(response => response.data).then(data => {
                     this.templates = data;
-                    const variables = this.variables;
 
                     //Hinterlege einen Wert für den Körper des Bewerbungsanschreibens
                     this.templates.forEach(tpl => {
@@ -261,10 +260,7 @@ export default {
                             }
 
                             //Ersetze nun alle Variablen durch ihre Werte dem anzuwendenden Text
-                            variables.forEach(function(v) {
-                                let help = "##(" + v.name.trim() + ")";
-                                text = text.replaceAll(help, v.value.trim());
-                            });
+                            text = this.replaceVariables(text);
 
                             this.data[key] = {
                                 is_heading: is_heading,
@@ -377,12 +373,7 @@ export default {
 		applyKwText(tpl, values) {
 		    let text = this.keywordsText(tpl, values);
             //Ersetze nun alle Variablen durch ihre Werte dem anzuwendenden Text
-            this.variables.forEach(function(v) {
-                let help = "##(" + v.name.trim() + ")";
-                text = text.replaceAll(help, v.value.trim());
-            });
-
-			this.data[tpl['name']].text = text;
+			this.data[tpl['name']].text = this.replaceVariables(text);
 			this.data[tpl.name].changed++;
 			//TODO Alternative für forceUpdate suchen
 			this.$forceUpdate();
@@ -399,17 +390,22 @@ export default {
 		//name: Name des Abschnitts
 		//temp anzuwendendes Template
 		useTemplate(name, temp) {
-		    let text = temp;
-            //Ersetze nun alle Variablen durch ihre Werte dem anzuwendenden Text
+		    this.data[name].text = this.replaceVariables(temp);
+			this.data[name].changed++;
+			//TODO Alternative für forceUpdate suchen
+			this.$forceUpdate();
+        },
+
+        /**
+         * Ersetzt im übergebenen Text alle Variablen mit ihrem Wert
+         */
+        replaceVariables(text) {
             this.variables.forEach(function(v) {
                 let help = "##(" + v.name.trim() + ")";
                 text = text.replaceAll(help, v.value.trim());
             });
 
-			this.data[name].text = text;
-			this.data[name].changed++;
-			//TODO Alternative für forceUpdate suchen
-			this.$forceUpdate();
+            return text;
         },
 
 		//Änderungen speichern

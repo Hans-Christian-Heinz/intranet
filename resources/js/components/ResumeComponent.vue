@@ -61,6 +61,64 @@
 
 
         <div class="resume-card shadow-sm mb-3">
+            <a href="#" class="resume-card-title" @click.prevent="toggle(cards.school)">
+                <span>Schulische Laufbahn</span>
+                <span class="resume-card-icon">
+                    <template v-if="cards.school.collapsed">
+                        <svg class="bi bi-caret-up" width="1em" height="1em" viewBox="0 0 17 17" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M3.204 11L8 5.519 12.796 11H3.204zm-.753-.659l4.796-5.48a1 1 0 011.506 0l4.796 5.48c.566.647.106 1.659-.753 1.659H3.204a1 1 0 01-.753-1.659z" clip-rule="evenodd"/>
+                        </svg>
+                    </template>
+                    <template v-else>
+                        <svg class="bi bi-caret-down" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M3.204 5L8 10.481 12.796 5H3.204zm-.753.659l4.796 5.48a1 1 0 001.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 00-.753 1.659z" clip-rule="evenodd"/>
+                        </svg>
+                    </template>
+                </span>
+            </a>
+
+            <!-- School body -->
+            <div class="resume-card-body" :style="{ display: cards.school.collapsed ? 'block' : 'none' }">
+                <table class="table table-hover table-borderless mb-0">
+                    <thead>
+                    <tr>
+                        <th style="width: 30%;">Zeitraum</th>
+                        <th style="width: 30%">Schule</th>
+                        <th style="width: 30%">Abschluss</th>
+                        <th style="width: 5%;"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(schule, index) in resume.school" :key="index">
+                        <td>
+                            <input type="text" name="time" id="sch_time" class="form-control" placeholder="2019 - heute" v-model="schule.time">
+                        </td>
+                        <td>
+                            <textarea name="schule" id="sch_schule" class="form-control" rows="1" placeholder="Schule" v-model="schule.school"></textarea>
+                        </td>
+                        <td>
+                            <textarea name="abschluss" id="sch_abschluss" class="form-control" rows="1" placeholder="Abschluss" v-model="schule.abschluss"></textarea>
+                        </td>
+                        <td>
+                            <a href="#" class="btn text-danger btn-link" @click.prevent="removeSchoolItem(index)">
+                                <svg class="bi bi-trash" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5.5 5.5A.5.5 0 016 6v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm2.5 0a.5.5 0 01.5.5v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm3 .5a.5.5 0 00-1 0v6a.5.5 0 001 0V6z"/>
+                                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 01-1 1H13v9a2 2 0 01-2 2H5a2 2 0 01-2-2V4h-.5a1 1 0 01-1-1V2a1 1 0 011-1H6a1 1 0 011-1h2a1 1 0 011 1h3.5a1 1 0 011 1v1zM4.118 4L4 4.059V13a1 1 0 001 1h6a1 1 0 001-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" clip-rule="evenodd"/>
+                                </svg>
+                            </a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="4">Neuen Eintrag <a href="#" @click.prevent="addSchoolItem">Hinzufügen</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="resume-card shadow-sm mb-3">
             <a href="#" class="resume-card-title" @click.prevent="toggle(cards.education)">
                 <span>Ausbildung</span>
                 <span class="resume-card-icon">
@@ -108,6 +166,64 @@
                         <tr>
                             <td colspan="3">Neuen Eintrag <a href="#" @click.prevent="addEducationItem">Hinzufügen</a></td>
                         </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="resume-card shadow-sm mb-3">
+            <a href="#" class="resume-card-title" @click.prevent="toggle(cards.internships)">
+                <span>Praktika</span>
+                <span class="resume-card-icon">
+                    <template v-if="cards.internships.collapsed">
+                        <svg class="bi bi-caret-up" width="1em" height="1em" viewBox="0 0 17 17" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M3.204 11L8 5.519 12.796 11H3.204zm-.753-.659l4.796-5.48a1 1 0 011.506 0l4.796 5.48c.566.647.106 1.659-.753 1.659H3.204a1 1 0 01-.753-1.659z" clip-rule="evenodd"/>
+                        </svg>
+                    </template>
+                    <template v-else>
+                        <svg class="bi bi-caret-down" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M3.204 5L8 10.481 12.796 5H3.204zm-.753.659l4.796 5.48a1 1 0 001.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 00-.753 1.659z" clip-rule="evenodd"/>
+                        </svg>
+                    </template>
+                </span>
+            </a>
+
+            <!-- Internships body -->
+            <div class="resume-card-body" :style="{ display: cards.internships.collapsed ? 'block' : 'none' }">
+                <table class="table table-hover table-borderless mb-0">
+                    <thead>
+                    <tr>
+                        <th style="width: 25%;">Zeitraum</th>
+                        <th>Firma</th>
+                        <th>Beschreibung</th>
+                        <th style="width: 5%;"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(internship, index) in resume.internships" :key="index">
+                        <td>
+                            <input type="text" name="time" id="int_time" class="form-control" placeholder="2019 - 2020" v-model="internship.time">
+                        </td>
+                        <td>
+                            <input type="text" name="company" id="int_company" class="form-control" placeholder="Praktikumsbetrieb" v-model="internship.company">
+                        </td>
+                        <td>
+                            <textarea name="description" id="internship" class="form-control" rows="1" placeholder="Praktikumsinhalt" v-model="internship.description"></textarea>
+                        </td>
+                        <td>
+                            <a href="#" class="btn text-danger btn-link" @click.prevent="removeInternshipItem(index)">
+                                <svg class="bi bi-trash" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5.5 5.5A.5.5 0 016 6v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm2.5 0a.5.5 0 01.5.5v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm3 .5a.5.5 0 00-1 0v6a.5.5 0 001 0V6z"/>
+                                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 01-1 1H13v9a2 2 0 01-2 2H5a2 2 0 01-2-2V4h-.5a1 1 0 01-1-1V2a1 1 0 011-1H6a1 1 0 011-1h2a1 1 0 011 1h3.5a1 1 0 011 1v1zM4.118 4L4 4.059V13a1 1 0 001 1h6a1 1 0 001-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" clip-rule="evenodd"/>
+                                </svg>
+                            </a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="3">Neuen Eintrag <a href="#" @click.prevent="addInternshipItem">Hinzufügen</a></td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -225,6 +341,56 @@
             </div>
         </div>
 
+        <div class="resume-card shadow-sm mb-3">
+            <a href="#" class="resume-card-title" @click.prevent="toggle(cards.interests)">
+                <span>Interessen</span>
+                <span class="resume-card-icon">
+                    <template v-if="cards.interests.collapsed">
+                        <svg class="bi bi-caret-up" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M3.204 11L8 5.519 12.796 11H3.204zm-.753-.659l4.796-5.48a1 1 0 011.506 0l4.796 5.48c.566.647.106 1.659-.753 1.659H3.204a1 1 0 01-.753-1.659z" clip-rule="evenodd"/>
+                        </svg>
+                    </template>
+                    <template v-else>
+                        <svg class="bi bi-caret-down" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M3.204 5L8 10.481 12.796 5H3.204zm-.753.659l4.796 5.48a1 1 0 001.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 00-.753 1.659z" clip-rule="evenodd"/>
+                        </svg>
+                    </template>
+                </span>
+            </a>
+
+
+            <!-- interests body -->
+            <div class="resume-card-body" :style="{ display: cards.interests.collapsed ? 'block' : 'none' }">
+                <table class="table table-hover table-borderless mb-0">
+                    <thead>
+                    <tr>
+                        <th>Interesse</th>
+                        <th style="width: 5%;"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(interest, index) in resume.interests" :key="index">
+                        <td>
+                            <textarea name="interest" id="interest" class="form-control" rows="1" placeholder="Interesse" v-model="interest.interest"></textarea>
+                        </td>
+                        <td>
+                            <a href="#" class="btn text-danger btn-link" @click.prevent="removeInterestItem(index)">
+                                <svg class="bi bi-trash" width="1.4em" height="1.4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5.5 5.5A.5.5 0 016 6v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm2.5 0a.5.5 0 01.5.5v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm3 .5a.5.5 0 00-1 0v6a.5.5 0 001 0V6z"/>
+                                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 01-1 1H13v9a2 2 0 01-2 2H5a2 2 0 01-2-2V4h-.5a1 1 0 01-1-1V2a1 1 0 011-1H6a1 1 0 011-1h2a1 1 0 011 1h3.5a1 1 0 011 1v1zM4.118 4L4 4.059V13a1 1 0 001 1h6a1 1 0 001-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" clip-rule="evenodd"/>
+                                </svg>
+                            </a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2">Neuen Eintrag <a href="#" @click.prevent="addInterestItem">Hinzufügen</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <p>
             Beachten Sie: Beim Drucken des Lebenslaufs können Sie ein Passbild sowie eine Signatur hochladen, wenn  Sie möchten.
             Diese (Bild-)Dateien werden von dieser Applikation nicht gespeichert.
@@ -244,9 +410,12 @@ export default {
         return {
             cards: {
                 personalData: { collapsed: false },
+                school: { collapsed: false },
                 education: { collapsed: false },
+                internships: { collapsed: false },
                 skills: { collapsed: false },
                 career: { collapsed: false },
+                interests: { collapsed: false }
             },
 
             resume: {
@@ -260,11 +429,17 @@ export default {
                     birthday: ""
                 },
 
+                school: [],
+
                 education: [],
+
+                internships: [],
 
                 skills: [],
 
-                careers: []
+                careers: [],
+
+                interests: [],
             },
 
             statusMessage: "Die meisten Änderungen werden automatisch gespeichert.\nBilder müssen explizit gespeichert werden.",
@@ -346,12 +521,28 @@ export default {
             card.collapsed = !card.collapsed;
         },
 
+        addSchoolItem() {
+            this.resume.school.push({time: "", school: "", abschluss: ""});
+        },
+
+        removeSchoolItem(index) {
+            this.resume.school.splice(index, 1);
+        },
+
         addEducationItem() {
             this.resume.education.push({time: "", description: ""});
         },
 
         removeEducationItem(index) {
             this.resume.education.splice(index, 1);
+        },
+
+        addInternshipItem() {
+            this.resume.internships.push({time: "", company: "", description: ""});
+        },
+
+        removeInternshipItem(index) {
+            this.resume.internships.splice(index, 1);
         },
 
         addSkillItem() {
@@ -368,6 +559,14 @@ export default {
 
         removeCareerItem(index) {
             this.resume.careers.splice(index, 1);
+        },
+
+        addInterestItem() {
+            this.resume.interests.push({interest: ""});
+        },
+
+        removeInterestItem(index) {
+            this.resume.interests.splice(index, 1);
         },
 
         handleScroll(e) {
