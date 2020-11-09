@@ -39,7 +39,7 @@
 </template>
 <script>
 export default {
-    props: ["val", "available_images", "name", "number", "disable"],
+    props: ["val", "available_images", "name", "number", "disable", "prefix"],
 
     data() {
         return {
@@ -49,17 +49,13 @@ export default {
                 height: 10,
                 width: 10
             },
-            images: [],
-            prefix: ""
+            images: []
         };
     },
 
     mounted() {
         this.img = this.val;
         this.images = JSON.parse(this.available_images);
-        if (this.images.length > 0) {
-            this.prefix = this.images[0].url.substring(0, this.images[0].url.indexOf('images/'));
-        }
     },
 
     methods:{

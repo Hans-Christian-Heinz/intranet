@@ -52,6 +52,9 @@ class VersionController extends Controller
         }
         $this->authorize('vergleich', $versionen[0]);
 
+        $versionen[0]->availableSections = Version::sectionNameHeadings($versionen[0]->id);
+        $versionen[1]->availableSections = Version::sectionNameHeadings($versionen[1]->id);
+
         //Suche nach Unterschieden: Suche nach Section-Instanzen, die zu einer der beiden Versionen gehören, nicht zu beiden
         //Suche in beiden Richtungen nach Unterschieden, falls zwei Versionen verschiedene Abschnitte haben
         $diff_sect = collect([]);

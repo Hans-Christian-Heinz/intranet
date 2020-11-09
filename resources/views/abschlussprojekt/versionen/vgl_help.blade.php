@@ -8,14 +8,31 @@
             @include('abschlussprojekt.sections.sectionNavigation', ['proposal' => $document, 's' => $document, 'name' => '', 'disable' => true])
         </div>
         <div class="col-9 tab-content">
-            @include('abschlussprojekt.sections.tabinhaltNeu', ['proposal' => $document, 'disable' => true, 's' => $document, 'form' => '',])
+            @include('abschlussprojekt.sections.tabinhaltNeu', [
+                'proposal' => $document,
+                'disable' => true,
+                's' => $document,
+                'form' => '',
+                'availableSections' => $version->availableSections,
+            ])
         </div>
     @else
         <div class="col-3">
-            @include('abschlussprojekt.sections.sectionNavigation', ['documentation' => $document, 's' => $document, 'name' => '', 'disable' => true])
+            @include('abschlussprojekt.sections.sectionNavigation', [
+                'documentation' => $document,
+                's' => $document,
+                'name' => '',
+                'disable' => true,
+            ])
         </div>
         <div class="col-9 tab-content">
-            @include('abschlussprojekt.sections.tabinhaltNeu', ['documentation' => $document, 'disable' => true, 's' => $document, 'form' => '',])
+            @include('abschlussprojekt.sections.tabinhaltNeu', [
+                'documentation' => $document,
+                'disable' => true,
+                's' => $document,
+                'form' => '',
+                'availableSections' => $version->availableSections,
+            ])
         </div>
     @endif
 </div>

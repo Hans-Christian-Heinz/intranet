@@ -101,7 +101,8 @@
                     </div>
                 </div>
                 <div class="card-body" v-show="val.show">
-                    <image-component :disable="disable" :val="val" :name="name" :number="i" :available_images="available_images"></image-component>
+                    <image-component :disable="disable" :val="val" :name="name" :number="i"
+                                     :prefix="img_prefix" :available_images="available_images"></image-component>
                 </div>
             </div>
 
@@ -123,7 +124,7 @@
 </template>
 <script>
 export default {
-    props: ["text", "available_images", "available_sections", "name", "form", "disable"],
+    props: ["text", "available_images", "available_sections", "name", "form", "disable", "img_prefix"],
 
     data() {
         return {
