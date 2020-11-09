@@ -3,12 +3,30 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Version extends Model
 {
     protected $with = [
         'sections',
     ];
+
+    /**
+     * Gebe Name und Überschrift aller Abschnitte der übergebenen Version (der Version mit der übergebenen id) aus
+     *
+     * @param $id
+     * @return array
+     */
+    public static function sectionNameHeadings($id) {
+        return DB::table('versions')
+            ->join('sections_versions', 'versions.id', '=', 'sections_versions.version_id')
+            ->join('sections', 'sections_versions.section_id', '=', 'sections.id')
+            ->select('sections.name', 'sections.heading')
+            ->where('versions.id', $id)
+            ->orderBy('sections.heading')
+            ->get()
+            ->all();
+    }
 
     public function delete() {
         //Überprüfe für alle dieser Version zugeordneten Abschnitte, ob sie einer anderen Version zugeordnet sind.

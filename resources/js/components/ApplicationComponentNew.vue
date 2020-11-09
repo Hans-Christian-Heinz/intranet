@@ -170,44 +170,6 @@ export default {
 	},
 
 	mounted() {
-        //Lese zunächst die Templates aus der Datenbank aus
-		/*axios.get(`/bewerbungen/applications/templatesNew/` + this.version)
-            .then(response => response.data).then(data => {
-				this.templates = data;
-
-				//Hinterlege einen Wert für den Körper des Bewerbungsanschreibens
-				this.templates.forEach(tpl => {
-					const key = tpl['name'];
-					if (this.saved[key]) {
-						this.data[key] = this.saved[key];
-						this.data[key].changed = 0;
-					}
-					else {
-						const is_heading = tpl['is_heading'];
-						let text;
-						if(tpl['choose_keywords']) {
-							let values = [];
-							for (let i = 0; i < tpl['keywords'].length; i++) {
-								values[i] = [];
-								//Standardauswahl: die ersten 3 Schlüsselworte
-								for (let j = 0; j < Math.min(3, tpl['keywords'][i]['tpls'].length); j++) {
-									values[i].push(tpl['keywords'][i]['tpls'][j]);
-								}
-							}
-							text = this.keywordsText(tpl, values);
-						}
-						else {
-							text = tpl['tpls'][0];
-						}
-
-						this.data[key] = {
-							is_heading: is_heading,
-							text: text,
-							changed: 0
-						};
-					}
-				});
-            });*/
         //Lese die Variablen aus der Datenbank aus
         axios.get(`/bewerbungen/applications/variables`)
             .then(response => response.data).then(data => {
@@ -230,6 +192,7 @@ export default {
             });
         })
             //lese nun die Templates aus der Datenbank aus
+            //nach dem Auslesen der Variablen, da diese ggf schon verwendet werden.
             .then(() => axios.get(`/bewerbungen/applications/templatesNew/` + this.version)
                 .then(response => response.data).then(data => {
                     this.templates = data;

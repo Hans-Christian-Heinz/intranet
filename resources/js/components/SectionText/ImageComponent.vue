@@ -10,7 +10,7 @@
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownImgButton">
                     <div v-for="(image, i) in images" class="dropdown-item radio-group">
-                        <input type="radio" v-model="img.path" :value="image" class="radioImage" :id="name + number + 'radio' + i"/>
+                        <input type="radio" v-model="img.path" :value="pathDb(image)" class="radioImage" :id="name + number + 'radio' + i"/>
                         <label :for="name + number + 'radio' + i">
                             <img :src="image" height="150" width="240" alt="Im gespeicherten Dateipfad liegt keine Bilddatei."/>
                         </label>
@@ -19,7 +19,7 @@
             </div>
             <div v-else class="col-4"></div>
             <div class="col-8">
-                <img :src="img.path" height="200" width="400" alt="kein Bild ausgewählt"/>
+                <img :src="url(img.path)" height="200" width="400" alt="kein Bild ausgewählt"/>
             </div>
         </div>
         <div class="row my-1">
@@ -48,13 +48,28 @@ export default {
                 height: 10,
                 width: 10
             },
-            images: []
+            images: [],
+            prefix: ""
         };
     },
 
     mounted() {
         this.img = this.val;
         this.images = JSON.parse(this.available_images);
+        if (this.images.length > 0) {
+            this.prefix = this.images[0].substring(0, this.images[0].indexOf('images/'));
+        }
+    },
+
+    methods:{
+        //In der DB wird ein relativer Pfad statt einer URL gespeichert
+        pathDb(url) {
+            return url.substr(url.indexOf('images/'));
+        },
+
+        url(path) {
+            return this.prefix + path;
+        }
     }
 };
 </script>

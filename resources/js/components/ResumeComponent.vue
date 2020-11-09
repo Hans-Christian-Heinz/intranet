@@ -442,7 +442,7 @@ export default {
                 interests: [],
             },
 
-            statusMessage: "Die meisten Änderungen werden automatisch gespeichert.\nBilder müssen explizit gespeichert werden.",
+            statusMessage: "Änderungen werden automatisch gespeichert.",
             timesSaved: 0,
             throttleInterval: null,
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),

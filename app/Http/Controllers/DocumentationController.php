@@ -34,21 +34,22 @@ class DocumentationController extends Controller
 
         $version = $documentation->latestVersion();
         //Name und Überschrift aller Abschnitte dieser Version
-        $availableSections = DB::table('versions')
-            ->join('sections_versions', 'versions.id', '=', 'sections_versions.version_id')
-            ->join('sections', 'sections_versions.section_id', '=', 'sections.id')
-            ->select('sections.name', 'sections.heading')
-            ->where('versions.id', $version->id)
-            ->orderBy('sections.heading')
-            ->get()
-            ->all();
+        $availableSections = Version::sectionNameHeadings($version->id);
 
         return view('abschlussprojekt.dokumentation.index', [
             'documentation' => $documentation,
             'version' => $documentation->latestVersion(),
             'disable' => app()->user->isNot($documentation->lockedBy),
             'availableImages' => array_map(function($val) {
-                    return Storage::disk('public')->url($val);
+                    //TODO std.size
+                    /*$imageSize = getimagesize(storage_path('app/public/') . $val);
+                    //Speichere Breite und Höhe in mm
+                    //Maximalgröße: 170mm x 247mm
+                    //Standard dpi (dots per inch): 96
+                    //1inch = 25,4mm
+                    $width_mm = min($imageSize[0] / 96 * 25.4, 170);
+                    $height_mm = min($imageSize[1] / 96 * 25.4, 247);*/
+                    return str_replace('http://', 'https://', Storage::disk('public')->url($val));
                 }, app()->user->getImageFiles()),
             'availableSections' => $availableSections,
         ]);

@@ -5,6 +5,8 @@ namespace App\Http\Requests;
 use App\Rules\AbbreviationRule;
 use App\Rules\DocumentationTableRule;
 use App\Rules\KostenstellenRule;
+use App\Rules\SectionTextComponentRule;
+use App\Version;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreDocumentationRequest extends FormRequest
@@ -26,8 +28,15 @@ class StoreDocumentationRequest extends FormRequest
      */
     public function rules()
     {
+        $project = $this->route()->parameter('project');
+        $version = $project->documentation->latestVersion();
+        $sectionNames = array_map(function($s) {
+            return $s->name;
+        }, Version::sectionNameHeadings($version->id));
+
         //$kostenstellenRule = new KostenstellenRule();
         $kostenstellenRule = new DocumentationTableRule('kostenstellen');
+        $stcRule = new SectionTextComponentRule($sectionNames, $project->user);
 
         $rules = [];
         //Abschnitt Ressourcenplanung: Gehe dabon aus, dass die Abschnitte nicht umbenannt werden
@@ -46,6 +55,17 @@ class StoreDocumentationRequest extends FormRequest
             //new AbbreviationRule(),
             new DocumentationTableRule('abbr'),
         ];
+        //vue Komponente section-text: versteckter input: $name . '_is_stc'
+        foreach (array_keys($this->all()) as  $name) {
+            $isStc = $name . '_is_stc';
+            if ($this->$isStc) {
+                $rules[$name] = [
+                    'json',
+                    $stcRule,
+                ];
+            }
+        }
+
         //Der Rest ist optionaler Text: es wird keine Validierung benötigt.
 
         return $rules;

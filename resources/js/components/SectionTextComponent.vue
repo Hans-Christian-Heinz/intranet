@@ -3,10 +3,14 @@
 <!-- Nicht fertig; wird im Moment nicht verwendet -->
 
 <!-- todo fertigstellen -->
+<!-- Komponente selbst ist eigentlich fertig; das entsprechende Ergebnis muss noch auf Serverseite verwendet werden. -->
+<!-- (Validierung und Formatieren beim Drucken) -->
 <template>
     <div>
         <!-- Der Wert, der tatsächlich in der Datenbnak hinterlegt wird -->
         <input type="hidden" :form="form" :name="name" v-model="encodedValue"/>
+        <!-- input, der dem Validator sagt, dass diese vue-Komponente verwendet wurde -->
+        <input type="hidden" :form="form" :name="name + '_is_stc'" value="1"/>
 
         <div v-for="(val, i) in orderedComponents" class="my-2">
             <div v-if="val.type==='text'" class="card" :key="name + i + val.changed">
@@ -156,6 +160,7 @@ export default {
             res.forEach(function(val) {
                 delete val.show;
                 delete val.sequence;
+                delete val.changed;
             });
             return JSON.stringify(res);
         },
