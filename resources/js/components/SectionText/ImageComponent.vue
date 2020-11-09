@@ -10,9 +10,10 @@
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownImgButton">
                     <div v-for="(image, i) in images" class="dropdown-item radio-group">
-                        <input type="radio" v-model="img.path" :value="pathDb(image)" class="radioImage" :id="name + number + 'radio' + i"/>
+                        <input type="radio" v-model="img.path" :value="pathDb(image.url)" :data-height="image.height"
+                               :data-width="image.width" @change="setDefaultSize($event)" class="radioImage" :id="name + number + 'radio' + i"/>
                         <label :for="name + number + 'radio' + i">
-                            <img :src="image" height="150" width="240" alt="Im gespeicherten Dateipfad liegt keine Bilddatei."/>
+                            <img :src="image.url" height="150" width="240" alt="Im gespeicherten Dateipfad liegt keine Bilddatei."/>
                         </label>
                     </div>
                 </div>
@@ -57,7 +58,7 @@ export default {
         this.img = this.val;
         this.images = JSON.parse(this.available_images);
         if (this.images.length > 0) {
-            this.prefix = this.images[0].substring(0, this.images[0].indexOf('images/'));
+            this.prefix = this.images[0].url.substring(0, this.images[0].url.indexOf('images/'));
         }
     },
 
@@ -69,6 +70,12 @@ export default {
 
         url(path) {
             return this.prefix + path;
+        },
+
+        //Beim Auswählen eines Bilds solll dessen Standardgröße eingestellt werden.
+        setDefaultSize(e) {
+            this.img.height = e.target.getAttribute('data-height');
+            this.img.width = e.target.getAttribute('data-width');
         }
     }
 };

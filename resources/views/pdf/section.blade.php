@@ -24,8 +24,9 @@
         @break
 @endswitch
 
-
-@if($section->name == 'phases')
+@if($section->tpl == 'text_section_new')
+    @include('pdf.section_text_new')
+@elseif($section->name == 'phases')
     @include('pdf.antrag.phases_table')
 @elseif($section->name == 'deadline')
     @include('pdf.antrag.deadline')

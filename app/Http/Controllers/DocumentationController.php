@@ -41,15 +41,16 @@ class DocumentationController extends Controller
             'version' => $documentation->latestVersion(),
             'disable' => app()->user->isNot($documentation->lockedBy),
             'availableImages' => array_map(function($val) {
-                    //TODO std.size
-                    /*$imageSize = getimagesize(storage_path('app/public/') . $val);
+                    $imageSize = getimagesize(storage_path('app/public/') . $val);
                     //Speichere Breite und Höhe in mm
                     //Maximalgröße: 170mm x 247mm
                     //Standard dpi (dots per inch): 96
                     //1inch = 25,4mm
-                    $width_mm = min($imageSize[0] / 96 * 25.4, 170);
-                    $height_mm = min($imageSize[1] / 96 * 25.4, 247);*/
-                    return str_replace('http://', 'https://', Storage::disk('public')->url($val));
+                    //Standardgröße:
+                    $width = min($imageSize[0] / 96 * 25.4, 170);
+                    $height = min($imageSize[1] / 96 * 25.4, 247);
+                    $url = str_replace('http://', 'https://', Storage::disk('public')->url($val));
+                    return compact('url', 'width', 'height');
                 }, app()->user->getImageFiles()),
             'availableSections' => $availableSections,
         ]);
