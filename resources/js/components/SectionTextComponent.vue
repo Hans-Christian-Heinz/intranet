@@ -1,10 +1,7 @@
 <!-- Komponente für den Text eines Abschnitts von Projektantrag oder -dokumentation -->
-<!-- Kann Text, Tabellen, Listen und Links enthalten -->
+<!-- Kann Text, Tabellen, Listen, Links und Bilder (Unterkomponenten) enthalten -->
 <!-- Nicht fertig; wird im Moment nicht verwendet -->
 
-<!-- todo fertigstellen -->
-<!-- Komponente selbst ist eigentlich fertig; das entsprechende Ergebnis muss noch auf Serverseite verwendet werden. -->
-<!-- (Validierung und Formatieren beim Drucken) -->
 <template>
     <div>
         <!-- Der Wert, der tatsächlich in der Datenbnak hinterlegt wird -->

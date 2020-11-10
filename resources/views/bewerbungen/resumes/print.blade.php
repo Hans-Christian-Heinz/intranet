@@ -88,7 +88,7 @@
                 <hr>
                 @foreach ($content->education as $index => $education)
                     <p><strong>{{ $education->time }}</strong></p>
-                    <p>{{ $education->description }}</p>
+                    <p>{{ $education->description }}{{ isset($education->abschluss) ? ' Abschluss: ' . $education->abschluss :'' }}</p>
                     @if ($index !== count($content->education) - 1)
                         <br>
                     @endif

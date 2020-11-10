@@ -142,6 +142,7 @@
                         <tr>
                             <th style="width: 25%;">Zeitraum</th>
                             <th>Beschreibung</th>
+                            <th>Abschluss</th>
                             <th style="width: 5%;"></th>
                         </tr>
                     </thead>
@@ -152,6 +153,9 @@
                             </td>
                             <td>
                                 <textarea name="description" id="description" class="form-control" rows="1" placeholder="Beschreibung" v-model="education.description"></textarea>
+                            </td>
+                            <td>
+                                <textarea name="abschluss" id="abschluss" class="form-control" rows="1" placeholder="Abschluss" v-model="education.abschluss"></textarea>
                             </td>
                             <td>
                                 <a href="#" class="btn text-danger btn-link" @click.prevent="removeEducationItem(index)">
@@ -456,6 +460,11 @@ export default {
             .then(data => {
                 if (data) {
                     this.resume = data;
+                    this.resume.education.forEach(function(edu) {
+                        if (! edu.abschluss) {
+                            edu.abschluss = "";
+                        }
+                    });
                 } else {
                     this.resume.personal.name = this.user.full_name;
                     this.resume.personal.address = this.user.strasse + " " + this.user.hausnr;
@@ -530,7 +539,7 @@ export default {
         },
 
         addEducationItem() {
-            this.resume.education.push({time: "", description: ""});
+            this.resume.education.push({time: "", description: "", abschluss: ""});
         },
 
         removeEducationItem(index) {
