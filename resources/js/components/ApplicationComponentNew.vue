@@ -171,7 +171,7 @@ export default {
 
 	mounted() {
         //Lese die Variablen aus der Datenbank aus
-        axios.get(`/bewerbungen/applications/variables`)
+        axios.get(`/bewerbungen/applications/variables/` + this.version)
             .then(response => response.data).then(data => {
             this.variables = data;
             const app = this;
@@ -364,8 +364,9 @@ export default {
          */
         replaceVariables(text) {
             this.variables.forEach(function(v) {
-                let help = "##(" + v.name.trim() + ")";
-                text = text.replaceAll(help, v.value.trim());
+                //text = text.replaceAll(help, v.value.trim());
+                let re = new RegExp("\\#\\#\\(" + v.name.trim() + "\\)", 'g');
+                text = text.replace(re, v.value.trim());
             });
 
             return text;

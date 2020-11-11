@@ -69,11 +69,22 @@
                             <p><strong>{{ $company->name }}</strong></p>
 
                             <label for="address" class="text-secondary">Adresse</label>
-                            <address class="mb-0" id="address">
+                            <address id="address">
                                 {{ $company->address }}<br>
                                 {{ $company->zip }} {{ $company->city }}<br>
                                 {{ $company->state }} {{ $company->country }}
                             </address>
+
+                            <label for="ansprechpartner" class="text-secondary">Ansprechpartner</label>
+                            <p class="mb-0" id="ansprechpartner">
+                                @if($company->contract)
+                                    {{ $company->contact }}, {{ $company->function }}<br>
+                                    {{ $company->email }}<br>
+                                    {{ $company->phone }}
+                                @else
+                                    Kein Ansprechpartner angegeben
+                                @endif
+                            </p>
                         </div>
                     </div>
                 </div>

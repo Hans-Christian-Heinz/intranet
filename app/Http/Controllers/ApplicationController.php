@@ -151,6 +151,7 @@ class ApplicationController extends Controller
     /**
      * Gibt die Templates bzw. Textbausteine für Bewerbungsanschreiben als Array aus.
      *
+     * @param int|null $version
      * @return false|string
      */
     public function templatesNew(int $version = null) {
