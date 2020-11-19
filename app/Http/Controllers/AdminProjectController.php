@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ChooseSupervisorRequest;
 use App\Project;
 use Illuminate\Http\Request;
+use App\User;
 
 class AdminProjectController extends Controller
 {
@@ -33,6 +35,16 @@ class AdminProjectController extends Controller
 
         ksort($projects);
 
-        return view('admin.abschlussprojekt.index', compact('projects'));
+        $admins = User::where('fachrichtung', 'Ausbilder')->get();
+
+        return view('admin.abschlussprojekt.index', compact('projects', 'admins'));
+    }
+
+    public function betreuer(ChooseSupervisorRequest $request, Project $project) {
+        $project->supervisor()->associate(User::find($request->supervisor_id));
+        $project->save();
+
+        return redirect()->back()->with('status', 'Dem Projekt von ' . $project->user->full_name
+            . ' wurde ein neuer Betreuer zugeteilt.');
     }
 }

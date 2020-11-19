@@ -248,12 +248,7 @@ Route::group(['middleware' => 'admin'], function () {
         'as' => 'admin.abschlussprojekt.',
     ], function() {
         Route::get('/', 'AdminProjectController@index')->name('index');
-        Route::patch('/{project}', function (Project $project) {
-            $project->supervisor()->associate(app()->user);
-            $project->save();
-
-            return redirect()->back()->with('status', 'Sie wurden zu dem Projekt als Betreuer eingetragen.');
-        })->name('betreuer');
+        Route::patch('/{project}', 'AdminProjectController@betreuer')->name('betreuer');
 
         Route::group([
             'prefix' => '/{project}/antrag',

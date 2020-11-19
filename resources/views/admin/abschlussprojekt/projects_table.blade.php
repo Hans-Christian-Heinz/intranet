@@ -24,11 +24,17 @@
                 <td>{{ $project->user->fachrichtung }}</td>
                 <td>{{ $project->topic }}</td>
                 <td>
-                    {{ $project->supervisor ? $project->supervisor->full_name : 'Nicht zugewiesen' }}
                     <form action="{{ route('admin.abschlussprojekt.betreuer', $project) }}" method="post">
                         @csrf
                         @method('patch')
-                        <input type="submit" class="btn btn-outline-primary" value="Mir zuweisen"/>
+                        <select class="form-control" name="supervisor_id" onchange="$(this).parent('form').submit();">
+                            <option value="0" class="text-center" @if(! $project->supervisor) selected @endif>-</option>
+                            @foreach ($admins as $admin)
+                                <option value="{{ $admin->id }}" @if($admin->is($project->supervisor)) selected @endif>
+                                    {{ $admin->full_name }}
+                                </option>
+                            @endforeach
+                        </select>
                     </form>
                 </td>
                 <td>
