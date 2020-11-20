@@ -5,7 +5,7 @@
 $(document).ready(function() {
     const wbPopover = $('tr.wb-popover');
     const wbTpl = '' +
-            '<div class="popover" style="min-width: 100em; width: 100em;" role="tooltip">' +
+            '<div class="popover" style="min-width: 100em; width: 100em; pointer-events: none;" role="tooltip">' +
                 '<div class="arrow"></div>' +
                 '<h3 class="popover-header text-center"></h3>' +
                 '<div class="popover-body"></div>' +
@@ -15,16 +15,17 @@ $(document).ready(function() {
         placement: "bottom",
         content: wbContent,
         html: true,
-        template: wbTpl
+        template: wbTpl,
+        trigger: "hover"
     });
-    wbPopover.hover(
+    /*wbPopover.hover(
         function() {
             $(this).popover('show');
         },
         function() {
             $(this).popover('hide');
         }
-    );
+    );*/
 
     function wbContent() {
         const wb = JSON.parse($(this).attr('data-wb'));
