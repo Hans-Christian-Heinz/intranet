@@ -35,9 +35,16 @@
 
                         {{-- fehlende Wochen --}}
                         @if(count($criteria['missing']))
-                            <a class="text-danger" data-toggle="collapse" href="#missingWeeks" role="button" aria-expanded="false"
-                               aria-controls="missingWeeks">Fehlende Wochen</a>
-                            <div class="collapse" id="missingWeeks">
+                            {{--<a class="text-danger" data-toggle="collapse" href="#missingWeeks" role="button" aria-expanded="false"
+                               aria-controls="missingWeeks">Fehlende Wochen</a>--}}
+                            {{-- Weil bootstrap collapse nicht funktioniert. (Fehler wahrsch. in JQuery --}}
+                            <a class="text-danger" href="#missingWeeks" role="button"
+                               onclick="
+                                event.preventDefault();
+                                $('#missingWeeks').css('display') == 'none' ? $('#missingWeeks').css('display', 'block') : $('#missingWeeks').css('display', 'none');
+                               ">Fehlende Wochen</a>
+                            <div id="missingWeeks" style="display: none;">
+                            {{--<div class="collapse" id="missingWeeks">--}}
                                 <ul>
                                     @foreach($criteria['missing'] as $missing)
                                         <li>{{ $missing->format("Y-W") }}</li>
