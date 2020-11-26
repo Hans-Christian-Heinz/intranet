@@ -157,4 +157,9 @@ select#grade {
     min-width: 50em;
     width: 70%;
     pointer-events: none;
+
+    .wb-popover-section {
+        max-height: 6rem;
+        overflow-y: hidden;
+    }
 }

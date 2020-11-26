@@ -29,22 +29,33 @@ $(document).ready(function() {
 
     function wbContent() {
         const wb = JSON.parse($(this).attr('data-wb'));
-        const wa = wb.work_activities ? wb.work_activities : '';
-        const instr = wb.instructions ? wb.instructions : '';
-        const school = wb.school ? wb.school : '';
+        const wa = wb.work_activities ? nl2br(wb.work_activities) : '';
+        const instr = wb.instructions ? nl2br(wb.instructions) : '';
+        const school = wb.school ? nl2br(wb.school) : '';
 
         return '' +
-            '<div class="d-flex justify-content-between">' +
+            '<div class="d-flex justify-content-between wb-popover-section">' +
                 '<p class="w-25">Betriebliche Tätigkeiten:</p>' +
                 '<p class="w-75">' + wa + "</p>" +
             "</div>" +
-            '<div class="d-flex justify-content-between">' +
+            '<div class="d-flex justify-content-between wb-popover-section">' +
                 '<p class="w-25">Unterweisungen:</p>' +
                 '<p class="w-75">' + instr + "</p>" +
             "</div>" +
-            '<div class="d-flex justify-content-between">' +
+            '<div class="d-flex justify-content-between wb-popover-section">' +
                 '<p class="w-25">Berufsschule:</p>' +
                 '<p class="w-75">' + school + "</p>" +
             "</div>";
     }
+
+    //Wenn der Inhalt eines Abschnitts zu lange für die Vorschau ist
+    wbPopover.on('shown.bs.popover', function() {
+        let section = $('div.wb-popover-section');
+        section.each(function() {
+            //clientHeight < scrollHeight => overflow?
+            if ($(this).prop("clientHeight") < $(this).prop("scrollHeight")) {
+                $('<span class="mt-0 pt-0" style="margin-left: 25%; display: block;">...</span>').insertAfter($(this));
+            }
+        });
+    });
 });
