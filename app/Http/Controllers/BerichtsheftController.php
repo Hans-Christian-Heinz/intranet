@@ -53,14 +53,22 @@ class BerichtsheftController extends Controller
                     }
                 }
                 //Vom größten vorhandenen Datum bis zu min(ausbildungsende, now)
-                $w = Carbon::create($dates[count($dates) - 1]->week);
                 //helpDate: min(ausbildungsende, now)
+                $w = Carbon::create($dates[count($dates) - 1]->week);
                 $wEnd = $helpDate->startOfWeek();
                 //lt lesser than
                 while($w->lt($wEnd)) {
                     $w = $w->addWeek();
                     array_push($missing, $w);
                 }
+                /*$index = count($dates) - 1;
+                while($index >= 0 && $wNow->ne($dates[$index])) {
+                    array_push($missing, $wNow);
+                    $wNow = $wNow->subWeek();
+                }*/
+                /*if ($wEnd->ne($dates[count($dates) - 1])) {
+                    array_push($missing, $wEnd);
+                }*/
             }
             else {
                 $missing = [];
