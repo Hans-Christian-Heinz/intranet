@@ -5,6 +5,7 @@
  */
 
 require('./bootstrap');
+window.nl2br = require('locutus/php/strings/nl2br')
 
 window.Vue = require('vue');
 

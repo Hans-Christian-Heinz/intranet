@@ -184,6 +184,15 @@ class AdminBerichtsheftController extends Controller
                         $i--;
                     }
                 }
+                //Vom größten vorhandenen Datum bis zu min(ausbildungsende, now)
+                $w = Carbon::create($dates[count($dates) - 1]->week);
+                //helpDate: min(ausbildungsende, now)
+                $wEnd = $helpDate->startOfWeek();
+                //lt lesser than
+                while($w->lt($wEnd)) {
+                    $w = $w->addWeek();
+                    array_push($missing, $w);
+                }
             }
             else {
                 $missing = [];
