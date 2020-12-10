@@ -12,6 +12,7 @@ class AdminUserController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function index($id = 0)
@@ -40,7 +41,6 @@ class AdminUserController extends Controller
 
     public function search(string $text = '') {
         $text = htmlspecialchars($text);
-        //Ich weiß nicht, warum die auskommentierte Abfrage einen Fehler auslöst.
         return DB::table('users')->select('id', 'full_name')
             ->where('full_name', 'like', '%' . $text . '%')
             ->orWhere('ldap_username', 'like', '%' . $text . '%')
