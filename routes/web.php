@@ -239,8 +239,9 @@ Route::group(['middleware' => 'admin'], function () {
     Route::patch('/admin/exemptions/{exemption}', 'AdminExemptionController@update')->name('admin.exemptions.update');
     Route::delete('/admin/exemptions/{exemption}', 'AdminExemptionController@destroy')->name('admin.exemptions.destroy');
 
-    Route::get('/admin/users', 'AdminUserController@index')->name('admin.users.index');
+    Route::get('/admin/users/{id?}', 'AdminUserController@index')->name('admin.users.index');
     Route::delete('/admin/users/{user}', 'AdminUserController@delete')->name('admin.users.delete');
+    Route::get('/admin/users/search/{search?}', 'AdminUserController@search')->name('admin.users.search');
 
     //Routen für das Abschlussprojekt auf Ausbilderseite
     Route::group([

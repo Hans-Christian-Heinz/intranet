@@ -11,6 +11,9 @@
                 <div class="col-md-12 bg-white">
                     <div class="d-flex pb-3">
                         <h3 class="mr-auto">Alle Auszubildenden</h3>
+                        <div class="ml-auto w-25, pt-1">
+                            @include('components.searchUsers', ['url' => route('admin.berichtshefte.liste', '_id')])
+                        </div>
                     </div>
 
                     <table class="table table-striped text-center">

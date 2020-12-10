@@ -9,6 +9,9 @@
                 <div class="col-md-12 bg-white">
                     <div class="d-flex pb-3">
                         <h3 class="mr-auto">Benutzer</h3>
+                        <div class="ml-auto w-25, pt-1">
+                            @include('components.searchUsers', ['url' => route('admin.users.index') . '/_id'])
+                        </div>
                     </div>
                     <table class="table table-striped table-bordered table-hover">
                         <thead>
@@ -41,6 +44,8 @@
                             @endforeach
                         </tbody>
                     </table>
+
+                    {{ $users->links() }}
                 </div>
             </div>
         </div>
