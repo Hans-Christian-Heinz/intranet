@@ -241,7 +241,7 @@ Route::group(['middleware' => 'admin'], function () {
 
     Route::get('/admin/users/{id?}', 'AdminUserController@index')->name('admin.users.index');
     Route::delete('/admin/users/{user}', 'AdminUserController@delete')->name('admin.users.delete');
-    Route::get('/admin/users/search/{search?}', 'AdminUserController@search')->name('admin.users.search');
+    Route::get('/admin/users/search/search/{text?}', 'AdminUserController@search')->name('admin.users.search');
 
     //Routen für das Abschlussprojekt auf Ausbilderseite
     Route::group([

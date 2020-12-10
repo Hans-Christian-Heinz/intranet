@@ -47,13 +47,5 @@ class AdminUserController extends Controller
             ->orderBy('ldap_username')
             ->get()
             ->all();
-
-        /*return User::where('full_name', 'like', '%' . $text . '%')
-            ->orWhere('ldap_username', 'like', '%' . $text . '%')
-            ->orderBy('ldap_username')
-            ->get()
-            ->all();*/
-
-        //return $users;
     }
 }
