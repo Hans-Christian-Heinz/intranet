@@ -191,7 +191,7 @@ class AdminBerichtsheftController extends Controller
                 //lt lesser than
                 while($w->lt($wEnd)) {
                     $w = $w->addWeek();
-                    array_push($missing, $w);
+                    array_push($missing, $w->copy());
                 }
             }
             else {
