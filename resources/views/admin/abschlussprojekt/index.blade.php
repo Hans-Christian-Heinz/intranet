@@ -31,7 +31,7 @@
                         {{-- Tabinhalt --}}
                         <div class="tab-content" id="projectsTabContent">
                             @foreach($projects as $jahr => $fachrichtungen)
-                                <div class="tab-pane @if($loop->first) active show @endif mt-2" id="projects_{{ $jahr }}"
+                                <div class="tab-pane @if($loop->last) active show @endif mt-2" id="projects_{{ $jahr }}"
                                      role="tabpanel" aria-labelledby="projects_{{ $jahr }}_tab">
                                     @include('admin.abschlussprojekt.projects_table')
                                 </div>
