@@ -2,6 +2,14 @@
      bearbeitet werden kann. --}}
 
 <div class="mb-3">
+    {{--<p class="text-center">
+        <b>
+            Beachten Sie: In regelmäßigen Abständen werden diejenigen Dokumente, die länger als 30 min nicht aktualisiert
+            wurden, freigegeben. Nicht gespeicherte Änderungen gehen verloren.
+        </b>
+        <br/>
+        Lösungen sind noch zu implementieren.
+    </p>--}}
     @if(app()->user->is($document->lockedBy))
         <p class="text-center">
             Das Dokument wird im Moment von Ihnen bearbeitet. Es ist für andere Benutzer gesperrt.
