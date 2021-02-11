@@ -29,8 +29,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-        //Alle 30 Minuten: Alle Dokumente, die nicht innerhalb der letzten 30 Minuten geändert wurden, werden freigegeben.
+        // Alle 30 Minuten: Alle Dokumente, die nicht innerhalb der letzten 30 Minuten geändert wurden, werden freigegeben.
         // $schedule->command(ClearDocumentLocks::class)->everyThirtyMinutes();
+        // daily: every day at midnight
         $schedule->command(ClearDocumentLocks::class)->daily();
     }
 

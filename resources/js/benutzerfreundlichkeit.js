@@ -212,6 +212,17 @@ $(document).ready(function() {
 
     //Löschen von Kommentaren: Asynchron
     $('a.deleteComment').click(deleteComment);
+    $( document ).on( "change", ":checkbox.acknowledge-comment", function (e) {
+        let target = e.originalEvent.target;
+        axios.patch(target.dataset.url, {
+            acknowledge: target.checked
+        })
+            .then(resp => {
+                if (!resp.data) {
+                    target.checked = !target.checked;
+                }
+            });
+    });
 
     //Löschen von Kommentaren
     function deleteComment(e) {

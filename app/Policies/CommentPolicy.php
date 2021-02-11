@@ -18,4 +18,12 @@ class CommentPolicy
             ? Response::allow()
             : Response::deny('Sie können nur Kommentare löschen, die Sie entweder verfasst haben oder die zu einem Dokument gehören, das Ihnen gehört.');
     }
+
+    public function acknowledge(LdapUser $ldapUser, Comment $comment)
+    {
+        $user = app()->user;
+        return $user->is($comment->getDocument()->project->user)
+            ? Response::allow()
+            : Response::deny("Sie können nur Kommentare abhaken, die zu einem Dokument gehören, das Ihnen gehört.");
+    }
 }

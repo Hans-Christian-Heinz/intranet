@@ -9,6 +9,13 @@
           </advancedOptions>
         </fileTransfer>
       </webServer>
+      <webServer id="2daffae2-f8e0-47ef-b503-680c365bf455" name="portal_entwicklung" url="http://192.168.122.247">
+        <fileTransfer accessType="SFTP" host="192.168.122.247" port="22" sshConfigId="bebfdcc6-4076-4ddd-98b3-3d2cf564fe5f" sshConfig="root@192.168.122.247:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
     </option>
   </component>
 </project>

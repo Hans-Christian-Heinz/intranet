@@ -51,6 +51,14 @@ class CommentController extends Controller
         }
     }
 
+    public function acknowledge(Request $request, Comment $comment) {
+        $request->validate([
+            'acknowledge' => 'required|boolean',
+        ]);
+
+        return $comment->update(["acknowledged" => $request->acknowledge]);
+    }
+
     /**
      * @param Comment $comment
      * @return mixed

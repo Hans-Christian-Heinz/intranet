@@ -10,6 +10,7 @@ class Comment extends Model
     protected $fillable = [
         'text',
         'section_name',
+        'acknowledged',
     ];
 
     public function getCommentAttribute() {

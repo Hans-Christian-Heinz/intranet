@@ -48,8 +48,10 @@ export default {
     },
 
     mounted() {
-        this.tpl = JSON.parse(this.template);
-        this.values = JSON.parse(this.val);
+        // this.tpl = JSON.parse(this.template);
+        // this.values = JSON.parse(this.val);
+        this.tpl = this.parse_json(this.template);
+        this.values = this.parse_json(this.val);
     },
 
     computed: {
@@ -109,7 +111,7 @@ export default {
 
         /**
          * Entferne einen Eintrag bzw. eine Tabellenzeile
-         * 
+         *
          * @param v
          */
         removeValue(v) {
@@ -126,6 +128,13 @@ export default {
             });
 
             this.values.splice(index, 1);
+        },
+
+        parse_json(val) {
+            if(val)
+                return JSON.parse(val);
+            else
+                return {};
         }
     }
 }
