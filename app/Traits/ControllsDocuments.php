@@ -42,7 +42,7 @@ trait ControllsDocuments
             $document->save();
 
             return redirect()->back()
-                ->with('status', 'Das Dokument wurde für freigegeben. Sie können es nicht mehr bearbeiten.');
+                ->with('status', 'Das Dokument wurde für andere Benutzer freigegeben. Sie können es nicht mehr bearbeiten.');
         }
         else {
             return redirect()->back()

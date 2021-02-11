@@ -14,9 +14,9 @@ class CommentPolicy
     public function delete(LdapUser $ldapUser, Comment $comment)
     {
         $user = app()->user;
-        return $user->is($comment->user) || $user->is($comment->getDocument()->project->user)
+        return $user->is($comment->user)
             ? Response::allow()
-            : Response::deny('Sie können nur Kommentare löschen, die Sie entweder verfasst haben oder die zu einem Dokument gehören, das Ihnen gehört.');
+            : Response::deny('Sie können nur Kommentare löschen, die Sie selbst verfasst haben.');
     }
 
     public function acknowledge(LdapUser $ldapUser, Comment $comment)
