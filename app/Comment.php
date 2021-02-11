@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
-    protected $with = ['user'];
+    protected $with = ['user', 'answers'];
     protected $fillable = [
         'text',
         'section_name',
@@ -18,6 +18,9 @@ class Comment extends Model
     }
 
     public function getDocument() {
+        if ($this->parentComment) {
+            return $this->parentComment->getDocument();
+        }
         if ($this->proposal) {
             return $this->proposal;
         }
@@ -36,5 +39,13 @@ class Comment extends Model
 
     public function documentation() {
         return $this->belongsTo(Documentation::class);
+    }
+
+    public function parentComment() {
+        return $this->belongsTo(Comment::class, 'comment_id', 'id');
+    }
+
+    public function answers() {
+        return $this->hasMany(Comment::class);
     }
 }

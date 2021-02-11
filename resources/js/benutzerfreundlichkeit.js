@@ -212,6 +212,7 @@ $(document).ready(function() {
 
     //Löschen von Kommentaren: Asynchron
     $('a.deleteComment').click(deleteComment);
+    $('a.answerComment').click(showAnswerForm);
     $( document ).on( "change", ":checkbox.acknowledge-comment", function (e) {
         let target = e.originalEvent.target;
         axios.patch(target.dataset.url, {
@@ -223,6 +224,21 @@ $(document).ready(function() {
                 }
             });
     });
+
+    function showAnswerForm(e) {
+        e.preventDefault();
+        let form = $(e.target.getAttribute("href"));
+        switch(form.css("display")) {
+            case "none":
+                form.css("display", "block");
+                let input = e.target.getAttribute("id").replace("Comment", "");
+                document.getElementById(input).focus();
+                break;
+            case "block":
+                form.css("display", "none");
+                break;
+        }
+    }
 
     //Löschen von Kommentaren
     function deleteComment(e) {
@@ -238,21 +254,50 @@ $(document).ready(function() {
     }
 
     //Speichern von Kommentaren: Asynchron
-    $('form.formAddComment').submit(function(e) {
+    $('form.formAddComment').submit(submitAddForm);
+
+    function submitAddForm(e) {
         e.preventDefault();
         const form = $(this);
+        const input = document.getElementById($(this).attr("id").replace("form", "").toLowerCase());
         $.ajax(form.attr('action'),{
             type: 'POST',
             data: form.serialize(),
             success: function(response) {
                 if (response) {
                     $(response.html).insertBefore(form);
+                    input.value = "";
                     //Wichtig: Event-Listener hinzufügen
                     $('a#deleteComment' + response.id).click(deleteComment);
+                    $('a#answerComment' + response.id).click(showAnswerForm);
+                    $("form#formAnswer" + response.id).submit(submitAnswerForm);
                 }
             }
         });
-    });
+    }
+
+    $('form.formAnswer').submit(submitAnswerForm);
+
+    function submitAnswerForm(e) {
+        e.preventDefault();
+        const form = $(this);
+        const container = document.getElementById($(this).data("container"))
+        const input = document.getElementById($(this).attr("id").replace("form", "").toLowerCase());
+        $.ajax(form.attr('action'),{
+            type: 'POST',
+            data: form.serialize(),
+            success: function(response) {
+                if (response) {
+                    container.innerHTML += response.html;
+                    input.value = "";
+                    //Wichtig: Event-Listener hinzufügen
+                    $('a#deleteComment' + response.id).click(deleteComment);
+                    $('a#answerComment' + response.id).click(showAnswerForm);
+                    $("form#formAnswer" + response.id).submit(submitAnswerForm);
+                }
+            }
+        });
+    }
 
     $('input#accept-rules').change(function(e) {
         let submit = $('button#accept-submit');

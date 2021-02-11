@@ -7,7 +7,7 @@
     @endforeach
 
     {{-- Formular für neue Kommentare --}}
-    <form method="post" class="form-horizontal formAddComment mt-4" @if(request()->is('*antrag'))
+    <form method="post" class="form-horizontal formAddComment mt-4" id="formComment{{ $section->id }}" @if(request()->is('*antrag'))
           action="{{ route('abschlussprojekt.antrag.comment', ['project' => $proposal->project, 'proposal' => $proposal,]) }}"
           @else action="{{ route('abschlussprojekt.dokumentation.comment',
                     ['project' => $documentation->project, 'documentation' => $documentation,]) }}" @endif>

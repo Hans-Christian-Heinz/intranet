@@ -60,6 +60,33 @@ class CommentController extends Controller
     }
 
     /**
+     * Füge einem Kommentar einen Unterkommentar hinzu.
+     *
+     * @param Request $request
+     * @param Comment $comment
+     */
+    public function answer(Request $request, Comment $comment) {
+        $request->validate([
+            'text' => 'required|string|max:255',
+        ]);
+        $answer = new Comment([
+            "text" => $request->text,
+            "section_name" => "none",
+        ]);
+        $answer->user()->associate(app()->user);
+        // return $comment->answers()->save($answer);
+        if($comment->answers()->save($answer)) {
+            return [
+                'html' => view('abschlussprojekt.sections.kommentarHelp', ["comment" => $answer])->render(),
+                'id' => $answer->id,
+            ];
+        }
+        else {
+            return false;
+        }
+    }
+
+    /**
      * @param Comment $comment
      * @return mixed
      */

@@ -73,6 +73,7 @@ Route::group(['middleware' => 'auth'], function () {
         //Route::post('/create', 'ProjectController@create')->name('create');
         Route::delete('/comment/{comment}', 'CommentController@delete')->name('delete_comment');
         Route::patch('/comment/{comment}', 'CommentController@acknowledge')->name('acknowledge_comment');
+        Route::post('comment/{comment}', 'CommentController@answer')->name('answer_comment');
 
         Route::post('/abschnitte/{section}/sperren', 'SectionController@lock')->name('sections.lock');
 
