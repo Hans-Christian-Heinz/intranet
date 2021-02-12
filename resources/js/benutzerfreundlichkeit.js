@@ -224,6 +224,23 @@ $(document).ready(function() {
                 }
             });
     });
+    $(document).on("click", "a.restoreComment", e => {
+        let target = e.originalEvent.target;
+        e.originalEvent.preventDefault();
+        axios.patch(target.getAttribute("href"))
+            .then(resp => resp.data)
+            .then(data => {
+                $("div#showComment" + data.id).replaceWith(data.html);
+                $('a#deleteComment' + data.id).click(deleteComment);
+                $('a#answerComment' + data.id).click(showAnswerForm);
+                $("form#formAnswer" + data.id).submit(submitAnswerForm);
+            })
+            .catch(error => {
+                console.log(error);
+                if(error.response)
+                    console.log(error.response.data);
+            });
+    });
 
     function showAnswerForm(e) {
         e.preventDefault();
@@ -298,6 +315,19 @@ $(document).ready(function() {
             }
         });
     }
+
+    $('a.showDeletedComments').click(e => {
+        e.preventDefault();
+        const container = document.getElementById(e.target.dataset.container);
+        axios.get(e.target.getAttribute("href"))
+            .then(resp => resp.data)
+            .then(data => {
+                container.innerHTML = data;
+                $('a.deleteComment').click(deleteComment);
+                $('a.answerComment').click(showAnswerForm);
+                $("form.formAnswer").submit(submitAnswerForm);
+            });
+    })
 
     $('input#accept-rules').change(function(e) {
         let submit = $('button#accept-submit');

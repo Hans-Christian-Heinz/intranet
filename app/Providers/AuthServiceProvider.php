@@ -10,6 +10,7 @@ use Illuminate\Auth\Access\Response;
 use Illuminate\Auth\Access\AuthorizationException;
 use App\User;
 use JotaEleSalinas\AdminlessLdap\LdapUser;
+use Illuminate\Support\Facades\DB;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -40,6 +41,12 @@ class AuthServiceProvider extends ServiceProvider
             return ($toDelete->is(app()->user))
                 //? Response::deny('Sie dürfen nicht Ihr eigenes Benutezrprofil löschen.')
                 ? abort(403, 'Sie dürfen nicht Ihr eigenes Benutzerprofil löschen.')
+                : Response::allow();
+        });
+
+        Gate::define("update-deleted-comment", function(LdapUser $ldapUser, $id) {
+            return (int) DB::table("comments")->select("user_id")->where("id", $id)->first()->user_id !== (int) app()->user->id
+                ? abort(403, "Sie dürfen nur Kommentare bearbeiten, die Sie auch selbst verfasst haben.")
                 : Response::allow();
         });
 

@@ -3,15 +3,27 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Comment extends Model
 {
+    use SoftDeletes;
+
     protected $with = ['user', 'answers'];
     protected $fillable = [
         'text',
         'section_name',
         'acknowledged',
     ];
+
+    public function loadAnswersWithTrashed() {
+        $this->answers = $this->answers()->without("answers")->withTrashed()->get();
+        $this->parentComment = $this->parentComment()->withTrashed()->first();
+        foreach ($this->answers as $answer) {
+            $answer->loadAnswersWithTrashed();
+        }
+
+    }
 
     public function getCommentAttribute() {
         return $this->user->full_name . ': ' . $this->text;

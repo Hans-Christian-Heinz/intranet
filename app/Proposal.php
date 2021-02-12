@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Structs\Phase;
+use App\Traits\HasComments;
 use App\Traits\HasSections;
 use Illuminate\Database\Eloquent\Model;
 
@@ -29,7 +30,7 @@ class Proposal extends Model
         ['name' => 'abnahme', 'heading' => 'Abnahme und Dokumentation', 'sequence' => 4, 'tpl' => 'antrag.phases_text_section',],
     ];
 
-    use HasSections;
+    use HasSections, HasComments;
 
     /**
      * The relationships that should always be loaded.

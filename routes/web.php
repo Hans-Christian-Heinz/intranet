@@ -72,8 +72,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/', 'ProjectController@index')->name('index');
         //Route::post('/create', 'ProjectController@create')->name('create');
         Route::delete('/comment/{comment}', 'CommentController@delete')->name('delete_comment');
+        Route::delete('/comment/{id}/force', 'CommentController@forceDelete')->name('force_delete_comment');
+        Route::patch('/comment/{id}/restore', 'CommentController@restore')->name('restore_comment');
         Route::patch('/comment/{comment}', 'CommentController@acknowledge')->name('acknowledge_comment');
-        Route::post('comment/{comment}', 'CommentController@answer')->name('answer_comment');
+        Route::post('/comment/{comment}', 'CommentController@answer')->name('answer_comment');
 
         Route::post('/abschnitte/{section}/sperren', 'SectionController@lock')->name('sections.lock');
 
@@ -89,6 +91,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/', 'ProposalController@store')->name('store');
             Route::post('pdf', 'ProposalController@pdf')->name('pdf');
             Route::post('/{proposal}/comment', 'CommentController@addToProposal')->name('comment');
+            Route::get('/{proposal}/abschnitte/{section}/deleted_comments', 'CommentController@showDeleted_Proposal')->name('sections.deletedComments');
 
             Route::fallback(function($project) {
                 return redirect(route('abschlussprojekt.antrag.index', $project));
@@ -107,6 +110,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/', 'DocumentationController@store')->name('store');
             Route::post('pdf', 'DocumentationController@pdf')->name('pdf');
             Route::post('/{documentation}/comment', 'CommentController@addToDocumentation')->name('comment');
+            Route::get('/{documentation}/abschnitte/{section}/deleted_comments', 'CommentController@showDeleted_Documentation')->name('sections.deletedComments');
             //Routen für die Abschnitte der Dokumentation
             Route::group([
                 'prefix' => '/abschnitte',

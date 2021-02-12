@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Structs\Kostenstelle;
+use App\Traits\HasComments;
 use App\Traits\HasSections;
 use Illuminate\Database\Eloquent\Model;
 
@@ -93,7 +94,7 @@ class Documentation extends Model
         ],],
     ];
 
-    use HasSections;
+    use HasSections, HasComments;
 
     /**
      * The attributes that are mass assignable.

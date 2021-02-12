@@ -7,7 +7,9 @@ use App\Documentation;
 use App\Http\Requests\AddCommentRequest;
 use App\Project;
 use App\Proposal;
+use App\Section;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class CommentController extends Controller
 {
@@ -86,6 +88,18 @@ class CommentController extends Controller
         }
     }
 
+    public function showDeleted_Proposal(Project $project, Proposal $proposal, Section $section) {
+        $comments = $proposal->getCommentsWithDeleted($section->name);
+
+        return view('abschlussprojekt.sections.kommentar', compact('section', 'comments', 'proposal'))->render();
+    }
+
+    public function showDeleted_Documentation(Project $project, Documentation $documentation, Section $section) {
+        $comments = $documentation->getCommentsWithDeleted($section->name);
+
+        return view('abschlussprojekt.sections.kommentar', compact('section', 'comments', 'documentation'))->render();
+    }
+
     /**
      * @param Comment $comment
      * @return mixed
@@ -93,5 +107,27 @@ class CommentController extends Controller
     public function delete(Comment $comment) {
         $this->authorize('delete', $comment);
         return $comment->delete();
+    }
+
+    public function forceDelete($id) {
+        if(Gate::allows("update-deleted-comment", $id)) {
+            return Comment::where("id", $id)->forceDelete();
+        }
+        return false;
+    }
+
+    public function restore($id) {
+        if(Gate::allows("update-deleted-comment", $id)) {
+            if (Comment::where('id', $id)->restore()) {
+                return [
+                    'id' => $id,
+                    'html' => view('abschlussprojekt.sections.kommentarHelp', ["comment" => Comment::find($id)])->render(),
+                ];
+            }
+            else {
+                return false;
+            }
+        }
+        return false;
     }
 }
