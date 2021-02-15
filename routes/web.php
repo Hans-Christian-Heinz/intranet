@@ -263,6 +263,7 @@ Route::group(['middleware' => 'admin'], function () {
         ], function() {
             Route::get('/', 'ProposalController@index')->name('index');
             Route::get('/create', 'ProposalController@create')->name('create');
+            Route::get("/{proposal}/vorschau", "AdminProjectController@previewProposal")->name("vorschau");
         });
 
         Route::group([
@@ -271,6 +272,7 @@ Route::group(['middleware' => 'admin'], function () {
         ], function() {
             Route::get('/', 'DocumentationController@index')->name('index');
             Route::get('/create', 'DocumentationController@create')->name('create');
+            Route::get("/{documentation}/vorschau", "AdminProjectController@previewDocumentation")->name("vorschau");
         });
 
         //Routen für das Verwalten von Versionen
