@@ -375,4 +375,11 @@ $(document).ready(function() {
     }
 
     $('[data-toggle="tooltip"]').tooltip();
+
+    //Beim Speichern eines Dokuments (Antrag und Dokumentation) wird der Submit-Button deaktiviert.
+    $('input[type=submit].save-document').click(function(e) {
+        e.preventDefault();
+        e.target.parentNode.submit();
+        e.target.disabled = true;
+    });
 });

@@ -48,7 +48,7 @@
                     <a class="btn btn-secondary mx-2" data-toggle="modal" href="#insertPlaceholders">Einfügen</a>
                     {{-- Link zum Erstellen eines PDF-Dokuments --}}
                     <a class="btn btn-secondary mx-2" data-toggle="modal" id="formatPdfModal" href="#formatPdf">PDF erstellen</a>
-                    <input class="btn btn-primary mx-2" type="submit" form="formAntrag" id="speichern"
+                    <input class="btn btn-primary save-document mx-2" type="submit" form="formAntrag" id="speichern"
                            value="Speichern" @if($disable) disabled @endif/>
                 </form>
             </div>
