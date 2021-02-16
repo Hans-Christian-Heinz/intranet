@@ -5,7 +5,7 @@
         <table class="table border-0">
             <thead>
             <tr>
-                <th>Drag-<br/>Drop</th>
+                <th v-if="!disable">Drag-<br/>Drop</th>
                 <th>Reihenfolge</th>
                 <th v-for="t in tpl">{{ t.name }}</th>
                 <th>Löschen</th>
@@ -14,7 +14,7 @@
             <tbody>
             <tr v-for="v in orderedValues">
                 <!-- Reihenfolge der Einträge liegt immer vor -->
-                <td class="bg-secondary draggable" :data-order="v.number" v-on:mousedown="drag_mousedown($event, v)"></td>
+                <td v-if="!disable" class="bg-secondary draggable" :data-order="v.number" v-on:mousedown="drag_mousedown($event, v)"></td>
                 <td>
                     <input type="number" class="form-control" style="width: 4em" min="0" @change="changeNumber($event, v)"
                            :max="values.length - 1" :value="v.number" :disabled="!!disable" required/>
@@ -83,6 +83,9 @@ export default {
                 v[t.name] = t.def;
             })
             v.number = this.values.length;
+
+            console.log(this.val)
+            console.log(this.values);
 
             this.values.push(v);
         },
