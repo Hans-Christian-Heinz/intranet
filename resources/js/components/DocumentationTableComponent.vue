@@ -5,6 +5,7 @@
         <table class="table border-0">
             <thead>
             <tr>
+                <th>Drag-<br/>Drop</th>
                 <th>Reihenfolge</th>
                 <th v-for="t in tpl">{{ t.name }}</th>
                 <th>Löschen</th>
@@ -13,6 +14,7 @@
             <tbody>
             <tr v-for="v in orderedValues">
                 <!-- Reihenfolge der Einträge liegt immer vor -->
+                <td class="bg-secondary draggable" :data-order="v.number" v-on:mousedown="drag_mousedown($event, v)"></td>
                 <td>
                     <input type="number" class="form-control" style="width: 4em" min="0" @change="changeNumber($event, v)"
                            :max="values.length - 1" :value="v.number" :disabled="!!disable" required/>
@@ -43,7 +45,8 @@ export default {
     data() {
         return {
             values: [],
-            tpl: []
+            tpl: [],
+            dragging: {}
         };
     },
 
@@ -52,6 +55,12 @@ export default {
         // this.values = JSON.parse(this.val);
         this.tpl = this.parse_json(this.template);
         this.values = this.parse_json(this.val);
+    },
+
+    created() {
+        const throttledMouseMove = _.throttle(this.drag_mousemove, 50);
+        window.addEventListener('mousemove', throttledMouseMove);
+        window.addEventListener("mouseup", this.drag_mouseup);
     },
 
     computed: {
@@ -85,27 +94,30 @@ export default {
          * @param val zu verschiebende Zeile
          */
         changeNumber(e, val) {
+            this.changeNumberHelp(e.target.value, val);
+        },
+
+        changeNumberHelp(newNumber, val) {
             let old = val.number;
-            let newVal = e.target.value;
-            if (newVal >= 0 && newVal < this.values.length) {
+            if (newNumber >= 0 && newNumber < this.values.length) {
                 //nach unten verschieben
-                if (newVal > old) {
+                if (newNumber > old) {
                     this.values.forEach(v => {
-                        if (v.number > old && v.number <= newVal) {
+                        if (v.number > old && v.number <= newNumber) {
                             v.number--;
                         }
                     });
                 }
                 //nach oben verschieben
-                if (newVal < old) {
+                if (newNumber < old) {
                     this.values.forEach(v => {
-                        if (v.number < old && v.number >= newVal) {
+                        if (v.number < old && v.number >= newNumber) {
                             v.number++;
                         }
                     });
                 }
 
-                val.number = newVal;
+                val.number = newNumber;
             }
         },
 
@@ -134,7 +146,54 @@ export default {
             if(val)
                 return JSON.parse(val);
             else
-                return {};
+                return [];
+        },
+
+        drag_mousedown(e, val) {
+            //left mouse button
+            if(e.button === 0) {
+                e.preventDefault();
+                document.body.style.cursor = "grabbing";
+                this.dragging = val;
+
+                // this.moveCopy = Object.assign(e.target.parentNode);
+                let moveCopy = e.target.parentNode.cloneNode(true);
+                moveCopy.style.position = "absolute";
+                moveCopy.style.pointerEvents = "none";
+                moveCopy.setAttribute("id", "moveCopy");
+                document.body.appendChild(moveCopy);
+            }
+        },
+
+        drag_mouseup(e) {
+            //left mouse button
+            if(e.button === 0) {
+                e.preventDefault();
+                document.body.style.cursor = "auto";
+
+                let path = e.path || (e.composedPath && e.composedPath());
+                if(! _.isEmpty(this.dragging) && path.reduce((acc, current) => {
+                    return acc || (current.classList && current.classList.contains("draggable"));
+                }, false)) {
+                    let dragTarget = path.find(element => element.classList.contains("draggable"));
+                    let order = dragTarget.dataset.order;
+
+                    this.changeNumberHelp(order, this.dragging);
+                }
+
+                this.dragging = {};
+                let moveCopy = document.getElementById("moveCopy");
+                if(moveCopy)
+                    moveCopy.remove();
+            }
+        },
+
+        drag_mousemove(e) {
+            if(! _.isEmpty(this.dragging)) {
+                let moveCopy = document.getElementById("moveCopy");
+                moveCopy.style.top = e.y + "px";
+                moveCopy.style.left = e.x + "px";
+            }
         }
     }
 }
