@@ -275,6 +275,9 @@ $(document).ready(function() {
 
     function submitAddForm(e) {
         e.preventDefault();
+
+        $("small.comment-validation-error").remove();
+
         const form = $(this);
         const input = document.getElementById($(this).attr("id").replace("form", "").toLowerCase());
         $.ajax(form.attr('action'),{
@@ -289,6 +292,17 @@ $(document).ready(function() {
                     $('a#answerComment' + response.id).click(showAnswerForm);
                     $("form#formAnswer" + response.id).submit(submitAnswerForm);
                 }
+            },
+            error: function (jqXHR) {
+                input.value = "";
+                let errors = jqXHR.responseJSON.errors;
+                Object.values(errors).forEach(err => {
+                    let res = document.createElement("small");
+                    res.classList.add("text-danger", "comment-validation-error", "text-right", "w-100", "text-small");
+                    res.innerText = err;
+                    // e.target.appendChild(res);
+                    input.parentNode.appendChild(res);
+                });
             }
         });
     }
