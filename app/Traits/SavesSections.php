@@ -65,6 +65,82 @@ trait SavesSections
     }
 
     /**
+     * Löst saveSection ab, um ein Problem zu beheben.
+     * Vergleicht die Inhalte aller aktuellen Section-Instanzen (gehörend zu $parent und $sectionOld) mit den entsprechenden
+     * feldern der $request. Bei Unterschieden wird eine neue Section-Instanz angelegt.
+     *
+     * Rückgabewert: Array mit Format: [$id => ['sequence' => $sequence]], verwendet um die gültigen Abschnitte mit
+     * $version->sections()->attach($sectionsNew) einer neuen Version-Instanz zuzuordnen.
+     *
+     * @param Request $request
+     * @param Documentation|Proposal|Section $parent
+     * @param Version $versionOld
+     * @return array|false
+     */
+    private function saveSectionsNew(Request $request, $parent, Version $versionOld)
+    {
+        $sectionsOld = $versionOld->sections->filter(function ($value) use ($parent) {
+            if($parent instanceof Proposal)
+                return $value->proposal_id == $parent->id;
+            elseif ($parent instanceof Documentation)
+                return $value->documentation_id == $parent->id;
+            elseif ($parent instanceof Section)
+                return $value->section_id == $parent->id;
+            else
+                return false;
+        });
+        // The result array; format: [$id => ['sequence' => $sequence]], used for $version->sections()->attach($sectionsNew)
+        // in order to keep the order of the sections.
+        $sectionsNew = [];
+
+        foreach($sectionsOld as $sectionOld) {
+            $name = $sectionOld->name;
+            //Erstelle ein neues Objekt, falls sich der Inhalt des Abschnitts geändert hat
+            if (! $this->sectionMatches($request, $sectionOld)) {
+                //Wenn ein Abschnitt, der gesperrt ist, geändert wurde: Lösche die neu angelegte Version und gebe eine Fehlermeldung aus.
+                if ($sectionOld->is_locked) {
+                    return false;
+                }
+
+                $sectionNew = $sectionOld->replicate();
+                $sectionNew->text = $this->getSectionText($request, $name);
+                $parent->sections()->save($sectionNew);
+                foreach ($sectionOld->images as $image) {
+                    $sectionNew->images()->save($image, ['sequence' => $image->pivot->sequence]);
+                }
+            }
+            else {
+                $sectionNew = $sectionOld;
+            }
+
+            $sectionsNew[$sectionNew->id] = ['sequence' => $sectionOld->pivot->sequence];
+
+            $help = $this->saveSectionsNew($request, $sectionOld, $versionOld);
+            if($help)
+                // $sectionsNew = array_merge($sectionsNew, $help);
+                $sectionsNew = $sectionsNew + $help;
+        }
+
+        return $sectionsNew;
+    }
+
+    /**
+     * Delete all rows in the sections-table, that are not associated with a version.
+     */
+    private function deleteUnusedSections()
+    {
+        $ids = DB::table("sections")
+            ->leftJoin("sections_versions", "sections.id", "=", "sections_versions.section_id")
+            ->select("id")
+            ->groupBy("id")
+            ->havingRaw("COUNT(version_id) = 0")
+            ->get()
+            ->map(function($obj) {return $obj->id;});
+
+        Section::destroy($ids);
+    }
+
+    /**
      * Hilfsmethode, die überprüft, ob sich der Inhalt eines Abschnitts geändert hat. Notwendig für die Abschnitte, die
      * nicht durch ein Textfeld beschrieben werden
      *

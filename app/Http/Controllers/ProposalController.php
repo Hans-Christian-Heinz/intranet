@@ -61,6 +61,7 @@ class ProposalController extends Controller
     /**
      * Beachte: In Zukunft wird eine neue Version-Instanz angelegt, mit der alle unveränderten Abschnitte assoziiert werden;
      * nur veränderte Abschnitte werden neu angelegt.
+     * Wird im Moment nicht verwendet.
      *
      * @param StoreProposalRequest $request
      * @param Project $project
@@ -97,6 +98,51 @@ class ProposalController extends Controller
 
         //return redirect(route('abschlussprojekt.antrag.index', $project))->with('status', 'Der Antrag wurde erfolgreich gespeichert.');
         return redirect()->back()->with('status', 'Der Antrag wurde erfolgreich gespeichert.');
+    }
+
+    /**
+     * Ähnlich wie store, geändert, um einen Fehler bei simultanen bzw. sehr zeitnahen post-requests zu verhindern.
+     * Zunächst werden über die Methode saveSectionsNew (Trait SavesSections) neue Section-Instanzen gespeichert,
+     * solange der bestehende Inhalt nicht mit dem entsprechenden Feld der Request übereinstimmt.
+     * Erhalten wird (von saveSectionsNew) ein Array des Formats [$sectionId => ['sequence' => $sequence], ...], der
+     * verwendet wird, um einer neuen Version-Instanz die aktuellsten Section-Instanzen zuzuordnen.
+     * Die Änderung bzgl. store ist, dass Die Version-Instanz erst erstellt wird, wenn alle Section-Datensätze vorliegen,
+     * sodass diese unmittelbar assoziiert werden können.
+     *
+     * @param StoreProposalRequest $request
+     * @param Project $project
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function storeNew(StoreProposalRequest $request, Project $project) {
+        $this->authorize('store', $project->proposal);
+
+        $proposal = $project->proposal;
+        $versionOld = $proposal->latestVersion();
+
+        $sectionsHelp = $this->saveSectionsNew($request, $proposal, $versionOld);
+
+        if($sectionsHelp) {
+            $versionNew = new Version();
+            $versionNew->user()->associate(app()->user);
+            $versionNew->proposal()->associate($proposal);
+            $versionNew->save();
+            $versionNew->sections()->attach($sectionsHelp);
+
+            //update timestamps:
+            $proposal->touch();
+
+            if (app()->user->isNot($project->user)) {
+                $project->user->notify(new CustomNotification(app()->user->full_name, 'Änderungen am Projektantrag',
+                    'An Ihrem Projektantrag wurden vom Absender Änderungen vorgenommen.'));
+            }
+
+            //return redirect(route('abschlussprojekt.antrag.index', $project))->with('status', 'Der Antrag wurde erfolgreich gespeichert.');
+            return redirect()->back()->with('status', 'Der Antrag wurde erfolgreich gespeichert.');
+        }
+        else {
+            $this->deleteUnusedSections();
+            return redirect()->back()->with('error', 'Beim Speichern des Antrags ist ein Fehler aufgetreten.');
+        }
     }
 
     public function lock(Project $project, Proposal $proposal) {

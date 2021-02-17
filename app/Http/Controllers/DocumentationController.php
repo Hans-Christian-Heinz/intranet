@@ -84,6 +84,7 @@ class DocumentationController extends Controller
 
     /**
      * Beachte: beim Ändern eines Dokuments wird eine neue Instanz erzeugt; die alte Instanz (der alte Datensatz) bleibt unverändert.
+     * Wird im Moment nicht verwendet.
      *
      * @param StoreDocumentationRequest $request
      * @param Project $project
@@ -118,6 +119,51 @@ class DocumentationController extends Controller
 
         //return redirect(route('abschlussprojekt.dokumentation.index', $project))->with('status', 'Die Dokumentation wurde erfolgreich gespeichert.');
         return redirect()->back()->with('status', 'Die Dokumentation wurde erfolgreich gespeichert.');
+    }
+
+    /**
+     * Ähnlich wie store, geändert, um einen Fehler bei simultanen bzw. sehr zeitnahen post-requests zu verhindern.
+     * Zunächst werden über die Methode saveSectionsNew (Trait SavesSections) neue Section-Instanzen gespeichert,
+     * solange der bestehende Inhalt nicht mit dem entsprechenden Feld der Request übereinstimmt.
+     * Erhalten wird (von saveSectionsNew) ein Array des Formats [$sectionId => ['sequence' => $sequence], ...], der
+     * verwendet wird, um einer neuen Version-Instanz die aktuellsten Section-Instanzen zuzuordnen.
+     * Die Änderung bzgl. store ist, dass Die Version-Instanz erst erstellt wird, wenn alle Section-Datensätze vorliegen,
+     * sodass diese unmittelbar assoziiert werden können.
+     *
+     * @param StoreDocumentationRequest $request
+     * @param Project $project
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function storeNew(StoreDocumentationRequest $request, Project $project) {
+        $this->authorize('store', $project->documentation);
+
+        $documentation = $project->documentation;
+        $versionOld = $documentation->latestVersion();
+
+        $sectionsHelp = $this->saveSectionsNew($request, $documentation, $versionOld);
+
+        if($sectionsHelp) {
+            $versionNew = new Version();
+            $versionNew->user()->associate(app()->user);
+            $versionNew->documentation()->associate($documentation);
+            $versionNew->save();
+            $versionNew->sections()->attach($sectionsHelp);
+
+            //update timestamps:
+            $documentation->touch();
+
+            if (app()->user->isNot($project->user)) {
+                $project->user->notify(new CustomNotification(app()->user->full_name, 'Änderungen an der Projektdokumentation',
+                    'An Ihrer Projektdokumentation wurden vom Absender Änderungen vorgenommen.'));
+            }
+
+            //return redirect(route('abschlussprojekt.antrag.index', $project))->with('status', 'Der Antrag wurde erfolgreich gespeichert.');
+            return redirect()->back()->with('status', 'Die Dokumentation wurde erfolgreich gespeichert.');
+        }
+        else {
+            $this->deleteUnusedSections();
+            return redirect()->back()->with('error', 'Beim Speichern der Dokumentation ist ein Fehler aufgetreten.');
+        }
     }
 
     public function lock(Project $project, Documentation $documentation) {

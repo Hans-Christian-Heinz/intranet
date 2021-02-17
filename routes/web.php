@@ -88,7 +88,8 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/create', 'ProposalController@create')->name('create');
             Route::patch('/{proposal}/lock', 'ProposalController@lock')->name('lock');
             Route::patch('/{proposal}/release', 'ProposalController@release')->name('release');
-            Route::post('/', 'ProposalController@store')->name('store');
+            // Route::post('/', 'ProposalController@store')->name('store');
+            Route::post('/', 'ProposalController@storeNew')->name('store');
             Route::post('pdf', 'ProposalController@pdf')->name('pdf');
             Route::post('/{proposal}/comment', 'CommentController@addToProposal')->name('comment');
             Route::get('/{proposal}/abschnitte/{section}/deleted_comments', 'CommentController@showDeleted_Proposal')->name('sections.deletedComments');
@@ -107,7 +108,8 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/create', 'DocumentationController@create')->name('create');
             Route::patch('/{documentation}/lock', 'DocumentationController@lock')->name('lock');
             Route::patch('/{documentation}/release', 'DocumentationController@release')->name('release');
-            Route::post('/', 'DocumentationController@store')->name('store');
+            // Route::post('/', 'DocumentationController@store')->name('store');
+            Route::post('/', 'DocumentationController@storeNew')->name('store');
             Route::post('pdf', 'DocumentationController@pdf')->name('pdf');
             Route::post('/{documentation}/comment', 'CommentController@addToDocumentation')->name('comment');
             Route::get('/{documentation}/abschnitte/{section}/deleted_comments', 'CommentController@showDeleted_Documentation')->name('sections.deletedComments');
